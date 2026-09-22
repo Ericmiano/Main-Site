@@ -1,0 +1,342 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * AAK design system: paper / ink / AAK red.
+ * An editorial newspaper register — Libre Baskerville serif headings over
+ * IBM Plex Sans body text, warm-white paper, near-black ink, a single AAK
+ * red accent, and a controlled green reserved for sustainability content.
+ * Corner radius is 0 everywhere except photographic portraits.
+ * All colours are oklch tokens; never hardcode colour utilities.
+ */
+
+@theme inline {
+  --font-display: "Libre Baskerville", ui-serif, Georgia, serif;
+  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-accent: "Libre Baskerville", ui-serif, Georgia, serif;
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-sustain: var(--sustain);
+  --color-sustain-foreground: var(--sustain-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-paper: var(--paper);
+  --color-paper-dim: var(--paper-dim);
+  --color-ink: var(--ink);
+  --color-ink-deep: var(--ink-deep);
+  --color-aak-red: var(--aak-red);
+  --color-aak-red-deep: var(--aak-red-deep);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+:root {
+  --radius: 0px;
+
+  /* Paper / ink / AAK red — the three foundational tones. */
+  --paper: oklch(0.98 0.005 85);
+  --paper-dim: oklch(0.955 0.008 82);
+  --ink: oklch(0.22 0.012 60);
+  /* Softer than --ink — for full-bleed dark sections, so stacked dark
+     blocks don't read as pure black against the warm paper ground. */
+  --ink-deep: oklch(0.29 0.024 58);
+  --aak-red: oklch(0.5 0.19 24);
+  --aak-red-deep: oklch(0.4 0.17 22);
+
+  --background: var(--paper);
+  --foreground: var(--ink);
+  --card: oklch(1 0 0);
+  --card-foreground: var(--ink);
+  --popover: oklch(1 0 0);
+  --popover-foreground: var(--ink);
+  --primary: var(--aak-red);
+  --primary-foreground: var(--paper);
+  --secondary: var(--paper-dim);
+  --secondary-foreground: var(--ink);
+  --muted: var(--paper-dim);
+  --muted-foreground: oklch(0.46 0.014 66);
+  --accent: oklch(0.94 0.025 30);
+  --accent-foreground: var(--ink);
+  --sustain: oklch(0.46 0.09 152);
+  --sustain-foreground: var(--paper);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: var(--paper);
+  --border: oklch(0.88 0.012 78);
+  --input: oklch(0.88 0.012 78);
+  --ring: var(--aak-red);
+  --chart-1: var(--aak-red);
+  --chart-2: var(--sustain);
+  --chart-3: var(--ink);
+  --chart-4: oklch(0.72 0.11 60);
+  --chart-5: oklch(0.508 0.014 66);
+  --sidebar: var(--paper);
+  --sidebar-foreground: var(--ink);
+  --sidebar-primary: var(--aak-red);
+  --sidebar-primary-foreground: var(--paper);
+  --sidebar-accent: var(--paper-dim);
+  --sidebar-accent-foreground: var(--ink);
+  --sidebar-border: oklch(0.88 0.012 78);
+  --sidebar-ring: var(--aak-red);
+}
+
+.dark {
+  --background: oklch(0.176 0.008 62);
+  --foreground: oklch(0.958 0.006 84);
+  --card: oklch(0.226 0.01 62);
+  --card-foreground: oklch(0.958 0.006 84);
+  --popover: oklch(0.226 0.01 62);
+  --popover-foreground: oklch(0.958 0.006 84);
+  --primary: oklch(0.635 0.152 38.5);
+  --primary-foreground: oklch(0.176 0.008 62);
+  --secondary: oklch(0.268 0.01 62);
+  --secondary-foreground: oklch(0.958 0.006 84);
+  --muted: oklch(0.268 0.01 62);
+  --muted-foreground: oklch(0.712 0.012 70);
+  --accent: oklch(0.298 0.018 50);
+  --accent-foreground: oklch(0.958 0.006 84);
+  --sustain: oklch(0.62 0.086 152);
+  --sustain-foreground: oklch(0.176 0.008 62);
+  --destructive: oklch(0.704 0.191 22.216);
+  --destructive-foreground: oklch(0.958 0.006 84);
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 16%);
+  --ring: oklch(0.635 0.152 38.5);
+  --sidebar: oklch(0.176 0.008 62);
+  --sidebar-foreground: oklch(0.958 0.006 84);
+  --sidebar-primary: oklch(0.635 0.152 38.5);
+  --sidebar-primary-foreground: oklch(0.176 0.008 62);
+  --sidebar-accent: oklch(0.268 0.01 62);
+  --sidebar-accent-foreground: oklch(0.958 0.006 84);
+  --sidebar-border: oklch(1 0 0 / 12%);
+  --sidebar-ring: oklch(0.635 0.152 38.5);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 6rem;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+/* Scroll reveal: "ink rise" -------------------------------------------- */
+.reveal {
+  opacity: 0;
+  transform: translate3d(0, 18px, 0);
+  transition:
+    opacity 600ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Scroll reveal: "rule draw" — a horizontal rule that extends into view.
+   Pairs with .reveal on the same element via Reveal's `ruleDraw` prop. */
+.rule-draw {
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.rule-draw-in {
+  transform: scaleX(1);
+}
+
+/* Hero entrance ------------------------------------------------------ */
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 22px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes hero-scale {
+  from {
+    transform: scale(1.08);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.hero-item {
+  opacity: 0;
+  animation: hero-rise 1000ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.hero-delay-1 {
+  animation-delay: 120ms;
+}
+.hero-delay-2 {
+  animation-delay: 240ms;
+}
+.hero-delay-3 {
+  animation-delay: 360ms;
+}
+.hero-delay-4 {
+  animation-delay: 480ms;
+}
+
+.hero-zoom {
+  animation: hero-scale 2400ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Link underline ----------------------------------------------------- */
+.link-underline {
+  position: relative;
+}
+
+.link-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  height: 1px;
+  width: 100%;
+  background-color: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.link-underline:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* Horizontal event rail --------------------------------------------- */
+.rail,
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.rail::-webkit-scrollbar,
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Status pulse --------------------------------------------------------- */
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(0.7);
+  }
+}
+
+.pulse-dot {
+  animation: pulse-dot 1.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Partner marquee ------------------------------------------------------ */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee {
+  animation: marquee 28s linear infinite;
+}
+
+.marquee-slow {
+  animation: marquee 60s linear infinite;
+}
+
+/* Plain (unlayered) rule on purpose: an unlayered style always wins over a
+   Tailwind utility, which lives in @layer utilities — so a group-hover:[...]
+   arbitrary-property utility can never actually override the `animation`
+   shorthand set above. Pausing on hover has to be unlayered too. */
+.group:hover .marquee,
+.group:hover .marquee-slow {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .reveal,
+  .rule-draw,
+  .hero-item,
+  .hero-zoom {
+    opacity: 1;
+    transform: none;
+    animation: none;
+    transition: none;
+  }
+
+  .link-underline::after {
+    transition: none;
+  }
+
+  .pulse-dot,
+  .marquee,
+  .marquee-slow {
+    animation: none;
+  }
+}
