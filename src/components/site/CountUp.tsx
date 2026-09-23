@@ -22,7 +22,10 @@ export function CountUp({
   grouped = true,
 }: CountUpProps) {
   const ref = useRef<HTMLSpanElement | null>(null);
-  const [display, setDisplay] = useState(0);
+  // Start at the real value, not 0 — SSR output and no-JS clients must see
+  // the true figure, not a placeholder zero. The reveal animation (below)
+  // briefly counts back up to this same value once it scrolls into view.
+  const [display, setDisplay] = useState(value);
   const started = useRef(false);
 
   useEffect(() => {

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { IconArrowUpRight as ArrowUpRight } from "@tabler/icons-react";
 import { Link } from "@tanstack/react-router";
 import { initiatives } from "@/data/site";
@@ -5,8 +6,9 @@ import { Reveal } from "@/components/site/Reveal";
 import { cn } from "@/lib/utils";
 
 export function Initiatives() {
-  const [featured, ...rest] = initiatives;
-  if (!featured) return null;
+  const [active, setActive] = useState(0);
+  const selected = initiatives[active];
+  if (!selected) return null;
 
   return (
     <section
@@ -16,120 +18,101 @@ export function Initiatives() {
     >
       <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
         <Reveal className="max-w-2xl">
-          <div className="flex items-center gap-2.5 text-xs font-semibold uppercase tracking-[0.18em] text-primary">
-            <span aria-hidden="true" className="h-1.5 w-1.5 bg-primary" />
-            <span>Projects &amp; initiatives</span>
-          </div>
+          <p className="meta-label text-primary">Public impact</p>
           <h2
             id="initiatives-title"
             className="mt-4 font-display text-4xl font-semibold leading-[0.98] tracking-tight text-balance text-background sm:text-5xl lg:text-6xl"
           >
-            Programmes we run for the public good
+            Programmes we run for the public good.
           </h2>
           <p className="mt-5 max-w-xl text-base leading-relaxed text-background/65">
             Long-running initiatives where our members put professional expertise to work for Kenyan
-            communities.
+            communities. Select one to explore it.
           </p>
         </Reveal>
 
-        <Reveal className="mt-14">
-          <div className="group grid overflow-hidden rounded-2xl border border-background/12 bg-background/5 transition-colors duration-300 hover:border-primary/60 hover:bg-background/10 lg:grid-cols-2">
-            <Link to="/initiatives/$slug" params={{ slug: featured.slug }} className="contents">
-              <div className="overflow-hidden bg-secondary">
-                <img
-                  src={featured.image}
-                  alt={`${featured.title} initiative`}
-                  loading="lazy"
-                  className="aspect-16/10 h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105 lg:aspect-auto"
-                />
-              </div>
-              <div className="relative z-20 flex flex-col justify-center p-8 sm:p-10 lg:p-12">
+        <Reveal delay={100} className="mt-14 grid gap-10 lg:grid-cols-2 lg:gap-14">
+          <Link
+            to="/initiatives/$slug"
+            params={{ slug: selected.slug }}
+            className="group block overflow-hidden rounded-2xl bg-secondary"
+          >
+            <div className="relative aspect-4/3 lg:aspect-auto lg:h-[32rem]">
+              <img
+                src={selected.image}
+                alt={`${selected.title} initiative`}
+                loading="lazy"
+                className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
+              />
+              <div className="absolute inset-x-0 bottom-0 bg-linear-to-t from-ink-deep/90 to-transparent p-8">
                 <span
                   className={cn(
-                    "inline-flex items-center gap-2.5 text-xs font-semibold uppercase tracking-[0.18em]",
-                    featured.tone === "green" ? "text-sustain" : "text-primary",
+                    "meta-label",
+                    selected.tone === "green" ? "text-sustain" : "text-primary",
                   )}
                 >
-                  <span
-                    aria-hidden="true"
-                    className={cn(
-                      "h-1.5 w-1.5",
-                      featured.tone === "green" ? "bg-sustain" : "bg-primary",
-                    )}
-                  />
-                  Flagship &middot; {featured.eyebrow}
+                  {selected.eyebrow}
                 </span>
-                <h3 className="mt-5 font-display text-3xl font-semibold leading-[1.05] tracking-tight text-balance text-background sm:text-4xl">
-                  {featured.title}
+                <h3 className="mt-2 font-display text-2xl font-semibold text-background sm:text-3xl">
+                  {selected.title}
                 </h3>
-                <p className="mt-5 max-w-lg text-[0.95rem] leading-relaxed text-background/65">
-                  {featured.description}
+                <p className="mt-3 max-w-md text-sm leading-relaxed text-background/75">
+                  {selected.description}
                 </p>
                 <span
                   className={cn(
-                    "mt-8 inline-flex w-fit items-center gap-3 rounded-xl px-6 py-3.5 text-sm font-semibold transition-transform duration-300 group-hover:-translate-y-0.5",
-                    featured.tone === "green"
-                      ? "bg-sustain text-sustain-foreground"
-                      : "bg-primary text-primary-foreground",
+                    "mt-5 inline-flex items-center gap-2 text-sm font-semibold",
+                    selected.tone === "green" ? "text-sustain" : "text-primary",
                   )}
                 >
-                  {featured.cta}
+                  {selected.cta}
                   <ArrowUpRight className="h-4 w-4" />
                 </span>
               </div>
-            </Link>
-          </div>
-        </Reveal>
+            </div>
+          </Link>
 
-        <ul className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {rest.map((initiative, i) => (
-            <li key={initiative.id}>
-              <Reveal delay={i * 100} className="h-full">
-                <div className="h-full rounded-2xl border border-background/12 bg-background/5 transition-colors duration-300 hover:border-primary/60 hover:bg-background/10">
-                  <Link
-                    to="/initiatives/$slug"
-                    params={{ slug: initiative.slug }}
-                    className="group flex h-full flex-col"
-                  >
-                    <div className="overflow-hidden bg-secondary">
-                      <img
-                        src={initiative.image}
-                        alt={`${initiative.title} initiative`}
-                        loading="lazy"
-                        className="aspect-16/10 w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
-                      />
-                    </div>
-                    <div className="relative z-20 flex flex-1 flex-col p-8">
-                      <span
-                        className={cn(
-                          "text-[11px] font-semibold uppercase tracking-[0.16em]",
-                          initiative.tone === "green" ? "text-sustain" : "text-primary",
-                        )}
-                      >
-                        {initiative.eyebrow}
-                      </span>
-                      <h3 className="mt-4 font-display text-2xl font-semibold tracking-tight text-background">
-                        {initiative.title}
-                      </h3>
-                      <p className="mt-4 flex-1 text-sm leading-relaxed text-background/65">
-                        {initiative.description}
-                      </p>
-                      <span className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-background">
-                        {initiative.cta}
-                        <ArrowUpRight
-                          className={cn(
-                            "h-4 w-4",
-                            initiative.tone === "green" ? "text-sustain" : "text-primary",
-                          )}
-                        />
-                      </span>
-                    </div>
-                  </Link>
-                </div>
-              </Reveal>
-            </li>
-          ))}
-        </ul>
+          <ul className="border-t border-background/12">
+            {initiatives.map((initiative, i) => (
+              <li key={initiative.id} className="border-b border-background/12">
+                <button
+                  type="button"
+                  onMouseEnter={() => setActive(i)}
+                  onFocus={() => setActive(i)}
+                  onClick={() => setActive(i)}
+                  aria-pressed={i === active}
+                  className="flex w-full items-center justify-between gap-4 py-5 text-left"
+                >
+                  <span className="flex items-center gap-4">
+                    <span
+                      className={cn(
+                        "meta-label",
+                        i === active ? "text-primary" : "text-background/35",
+                      )}
+                    >
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <span
+                      className={cn(
+                        "font-display text-xl font-semibold transition-colors duration-300 sm:text-2xl",
+                        i === active ? "text-background" : "text-background/40",
+                      )}
+                    >
+                      {initiative.title}
+                    </span>
+                  </span>
+                  <ArrowUpRight
+                    className={cn(
+                      "h-5 w-5 shrink-0 transition-opacity duration-300",
+                      i === active ? "opacity-100 text-primary" : "opacity-0",
+                    )}
+                    aria-hidden="true"
+                  />
+                </button>
+              </li>
+            ))}
+          </ul>
+        </Reveal>
       </div>
     </section>
   );

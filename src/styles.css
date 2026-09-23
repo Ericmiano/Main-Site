@@ -1,4 +1,4 @@
-@import "tailwindcss" source(none);
+@import "tailwindcss";
 @source "../src";
 @import "tw-animate-css";
 
@@ -71,14 +71,14 @@
 :root {
   --radius: 0px;
 
-  /* Paper / ink / AAK red — the three foundational tones. Kept neutral
-     (no warm/brown hue) for a brighter, cleaner ground. */
-  --paper: oklch(0.99 0 0);
-  --paper-dim: oklch(0.965 0 0);
-  --ink: oklch(0.16 0 0);
+  /* Paper / ink / AAK red — the three foundational tones. Warm stone/charcoal,
+     not sterile white — reads as architectural paper rather than a SaaS app. */
+  --paper: #f3f0e9;
+  --paper-dim: #e9e4d8;
+  --ink: #1b1b1b;
   /* Softer than --ink — for full-bleed dark sections, so stacked dark
      blocks don't read as pure black against the paper ground. */
-  --ink-deep: oklch(0.22 0 0);
+  --ink-deep: #151515;
   --aak-red: oklch(0.5 0.19 24);
   --aak-red-deep: oklch(0.4 0.17 22);
 
@@ -93,15 +93,15 @@
   --secondary: var(--paper-dim);
   --secondary-foreground: var(--ink);
   --muted: var(--paper-dim);
-  --muted-foreground: oklch(0.46 0 0);
+  --muted-foreground: #6d6a63;
   --accent: oklch(0.94 0.025 30);
   --accent-foreground: var(--ink);
   --sustain: oklch(0.46 0.09 152);
   --sustain-foreground: var(--paper);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: var(--paper);
-  --border: oklch(0.9 0 0);
-  --input: oklch(0.9 0 0);
+  --border: #ddd8cc;
+  --input: #ddd8cc;
   --ring: var(--aak-red);
   --chart-1: var(--aak-red);
   --chart-2: var(--sustain);
@@ -114,7 +114,7 @@
   --sidebar-primary-foreground: var(--paper);
   --sidebar-accent: var(--paper-dim);
   --sidebar-accent-foreground: var(--ink);
-  --sidebar-border: oklch(0.9 0 0);
+  --sidebar-border: #ddd8cc;
   --sidebar-ring: var(--aak-red);
 }
 
@@ -192,6 +192,16 @@
 
 .rule-draw-in {
   transform: scaleX(1);
+}
+
+/* Editorial metadata label — small tracked-out uppercase for numbering,
+   dates, locations and categories (e.g. "01 / 08", "NAIROBI", "2026"). */
+.meta-label {
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
 }
 
 /* Hero entrance ------------------------------------------------------ */
