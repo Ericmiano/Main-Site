@@ -71,13 +71,14 @@
 :root {
   --radius: 0px;
 
-  /* Paper / ink / AAK red — the three foundational tones. */
-  --paper: oklch(0.98 0.005 85);
-  --paper-dim: oklch(0.955 0.008 82);
-  --ink: oklch(0.22 0.012 60);
+  /* Paper / ink / AAK red — the three foundational tones. Kept neutral
+     (no warm/brown hue) for a brighter, cleaner ground. */
+  --paper: oklch(0.99 0 0);
+  --paper-dim: oklch(0.965 0 0);
+  --ink: oklch(0.16 0 0);
   /* Softer than --ink — for full-bleed dark sections, so stacked dark
-     blocks don't read as pure black against the warm paper ground. */
-  --ink-deep: oklch(0.29 0.024 58);
+     blocks don't read as pure black against the paper ground. */
+  --ink-deep: oklch(0.22 0 0);
   --aak-red: oklch(0.5 0.19 24);
   --aak-red-deep: oklch(0.4 0.17 22);
 
@@ -92,28 +93,28 @@
   --secondary: var(--paper-dim);
   --secondary-foreground: var(--ink);
   --muted: var(--paper-dim);
-  --muted-foreground: oklch(0.46 0.014 66);
+  --muted-foreground: oklch(0.46 0 0);
   --accent: oklch(0.94 0.025 30);
   --accent-foreground: var(--ink);
   --sustain: oklch(0.46 0.09 152);
   --sustain-foreground: var(--paper);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: var(--paper);
-  --border: oklch(0.88 0.012 78);
-  --input: oklch(0.88 0.012 78);
+  --border: oklch(0.9 0 0);
+  --input: oklch(0.9 0 0);
   --ring: var(--aak-red);
   --chart-1: var(--aak-red);
   --chart-2: var(--sustain);
   --chart-3: var(--ink);
   --chart-4: oklch(0.72 0.11 60);
-  --chart-5: oklch(0.508 0.014 66);
+  --chart-5: oklch(0.508 0 0);
   --sidebar: var(--paper);
   --sidebar-foreground: var(--ink);
   --sidebar-primary: var(--aak-red);
   --sidebar-primary-foreground: var(--paper);
   --sidebar-accent: var(--paper-dim);
   --sidebar-accent-foreground: var(--ink);
-  --sidebar-border: oklch(0.88 0.012 78);
+  --sidebar-border: oklch(0.9 0 0);
   --sidebar-ring: var(--aak-red);
 }
 

@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { IconChevronDown as ChevronDown, IconSearch as Search } from "@tabler/icons-react";
 import {
-  chapters,
   initiatives,
   memberPortalUrl,
   navMenu,
@@ -10,7 +9,7 @@ import {
   type NavMenuEntry,
 } from "@/data/site";
 import { cn } from "@/lib/utils";
-import logoMark from "@/assets/aak-logo-mark.png";
+import logoHorizontal from "@/assets/aak-logo-horizontal.png";
 import {
   Accordion,
   AccordionContent,
@@ -54,7 +53,6 @@ function NavItem({
 }
 
 function menuLabel(entry: NavMenuEntry): string {
-  if (entry.type === "chapters") return "Chapters";
   if (entry.type === "initiatives") return "Initiatives";
   return entry.label;
 }
@@ -168,21 +166,16 @@ export function Header() {
         <div className="mx-auto flex max-w-[1400px] items-stretch justify-between px-6 lg:px-12">
           <Link
             to="/"
-            className="flex items-center gap-3 py-4"
+            className="flex items-center py-4"
             aria-label="Architectural Association of Kenya, home"
             onClick={closeMenuNow}
           >
-            <img
-              src={logoMark}
-              alt=""
-              className="h-11 w-11 object-contain"
-              width={44}
-              height={44}
-            />
-            <span className="hidden max-w-[13rem] text-[11px] leading-tight uppercase tracking-[0.16em] text-primary-foreground/95 sm:block">
-              Architectural Association
-              <br />
-              of Kenya
+            <span className="flex items-center rounded-lg bg-background px-3 py-2">
+              <img
+                src={logoHorizontal}
+                alt="AAK — Promoting excellence in the built environment"
+                className="h-8 w-auto object-contain"
+              />
             </span>
           </Link>
 
@@ -302,45 +295,7 @@ export function Header() {
         {activeEntry ? (
           <div className="absolute inset-x-0 top-full z-40 hidden animate-in fade-in slide-in-from-top-2 border-t border-background/10 bg-ink-deep text-background shadow-2xl duration-200 lg:block">
             <div className="mx-auto max-w-[1400px] px-6 py-10 lg:px-12">
-              {activeEntry.type === "chapters" ? (
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
-                    Chapters
-                  </p>
-                  <h3 className="mt-2 font-display text-2xl font-semibold text-background">
-                    Eight professional chapters, one association
-                  </h3>
-                  <ul className="mt-8 grid gap-x-8 gap-y-6 sm:grid-cols-2 lg:grid-cols-4">
-                    {chapters.map((chapter) => (
-                      <li key={chapter.slug}>
-                        <Link
-                          to="/chapters/$slug"
-                          params={{ slug: chapter.slug }}
-                          onClick={closeMenuNow}
-                          className="group flex items-center gap-3"
-                        >
-                          <span className="h-12 w-12 shrink-0 overflow-hidden rounded-full bg-secondary">
-                            <img
-                              src={chapter.image}
-                              alt=""
-                              loading="lazy"
-                              className="h-full w-full object-cover grayscale transition-[filter] duration-300 group-hover:grayscale-0"
-                            />
-                          </span>
-                          <span>
-                            <span className="block text-sm font-semibold text-background transition-colors group-hover:text-primary">
-                              {chapter.name}
-                            </span>
-                            <span className="block text-xs text-background/50">
-                              Explore chapter
-                            </span>
-                          </span>
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ) : activeEntry.type === "initiatives" ? (
+              {activeEntry.type === "initiatives" ? (
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
                     Initiatives
@@ -443,44 +398,31 @@ export function Header() {
                       </AccordionTrigger>
                       <AccordionContent>
                         <ul className="space-y-1 pb-2">
-                          {entry.type === "chapters"
-                            ? chapters.map((chapter) => (
-                                <li key={chapter.slug}>
+                          {entry.type === "initiatives"
+                            ? initiatives.map((initiative) => (
+                                <li key={initiative.slug}>
                                   <Link
-                                    to="/chapters/$slug"
-                                    params={{ slug: chapter.slug }}
+                                    to="/initiatives/$slug"
+                                    params={{ slug: initiative.slug }}
                                     onClick={() => setOpen(false)}
                                     className="flex min-h-11 items-center text-base text-muted-foreground transition-colors hover:text-foreground"
                                   >
-                                    {chapter.name}
+                                    {initiative.title}
                                   </Link>
                                 </li>
                               ))
-                            : entry.type === "initiatives"
-                              ? initiatives.map((initiative) => (
-                                  <li key={initiative.slug}>
-                                    <Link
-                                      to="/initiatives/$slug"
-                                      params={{ slug: initiative.slug }}
-                                      onClick={() => setOpen(false)}
-                                      className="flex min-h-11 items-center text-base text-muted-foreground transition-colors hover:text-foreground"
-                                    >
-                                      {initiative.title}
-                                    </Link>
-                                  </li>
-                                ))
-                              : entry.links.map((link) => (
-                                  <li key={link.label}>
-                                    <NavItem
-                                      href={link.href}
-                                      external={link.external}
-                                      onClick={() => setOpen(false)}
-                                      className="flex min-h-11 items-center text-base text-muted-foreground transition-colors hover:text-foreground"
-                                    >
-                                      {link.label}
-                                    </NavItem>
-                                  </li>
-                                ))}
+                            : entry.links.map((link) => (
+                                <li key={link.label}>
+                                  <NavItem
+                                    href={link.href}
+                                    external={link.external}
+                                    onClick={() => setOpen(false)}
+                                    className="flex min-h-11 items-center text-base text-muted-foreground transition-colors hover:text-foreground"
+                                  >
+                                    {link.label}
+                                  </NavItem>
+                                </li>
+                              ))}
                         </ul>
                       </AccordionContent>
                     </AccordionItem>

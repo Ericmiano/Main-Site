@@ -574,15 +574,12 @@ export interface NavMenuGroup {
 }
 
 /** Top-level header entries: a plain link, a text group panel, or the
- * chapters/initiatives panels (rendered from `chapters`/`initiatives` directly, with imagery). */
+ * initiatives panel (rendered from `initiatives` directly, with imagery). */
 export type NavMenuEntry =
-  | ({ type: "link" } & NavLink)
-  | ({ type: "group" } & NavMenuGroup)
-  | { type: "chapters" }
-  | { type: "initiatives" };
+  ({ type: "link" } & NavLink) | ({ type: "group" } & NavMenuGroup) | { type: "initiatives" };
 
 export const navMenu: NavMenuEntry[] = [
-  { type: "chapters" },
+  { type: "link", label: "Home", href: "/" },
   {
     type: "group",
     label: "About",
@@ -596,7 +593,7 @@ export const navMenu: NavMenuEntry[] = [
       { label: "Contact us", href: "/contact" },
     ],
   },
-  { type: "link", label: "Events", href: "/events" },
+  { type: "link", label: "Coming up", href: "/events" },
   { type: "initiatives" },
   {
     type: "group",
@@ -608,7 +605,6 @@ export const navMenu: NavMenuEntry[] = [
       // { label: "Arbitration", href: "/arbitration" },
       { label: "Awards & honours", href: "/awards" },
       { label: "Student affiliates", href: "/students" },
-      { label: "Store", href: "/store" },
       {
         label: "Members directory",
         href: "https://members.aak.or.ke/directory",
@@ -622,6 +618,7 @@ export const navMenu: NavMenuEntry[] = [
     ],
   },
   { type: "link", label: "Media", href: "/#media" },
+  { type: "link", label: "Store", href: "/store" },
 ];
 
 export const utilityLinks: NavLink[] = [
@@ -659,15 +656,16 @@ export const regionalBranches: ChapterLead[] = [
 ];
 
 /**
- * AAK Secretariat: the salaried operational staff who run the Association's
- * day-to-day affairs, distinct from the elected Governing Council.
- * (Caroline Kagendo's role is confirmed directly by AAK's 2026 AGM Report,
- * which records her succeeding Christine Mwaura as Membership &
- * Communications Manager.)
+ * AAK Secretariat. Most entries are the salaried operational staff who run
+ * the Association's day-to-day affairs; the six Executive Council members
+ * (President through Honorary Registrar) are sourced from
+ * aak.or.ke/about-us/ and included here at the site owner's request,
+ * even though that page lists them separately from the Secretariat proper.
  *
  * Photos and titles for most members are sourced from AAK's own internal
- * Secretariat photo set. Judy Jerotich and Kelvin Munene aren't in that set
- * yet, so they stay photo-less until confirmed, rather than guessing.
+ * Secretariat photo set; the Executive Council members' photos are pulled
+ * from aak.or.ke/about-us/ and listed in rank order (President through
+ * Honorary Registrar), matching that page.
  */
 export interface SecretariatMember {
   name: string;
@@ -682,9 +680,36 @@ export const secretariat: SecretariatMember[] = [
     title: "Chief Executive Officer",
     photo: "/secretariat-photos/jacob-mwangi.jpg",
   },
-  { name: "Judy Jerotich", title: "Finance & Administration Manager" },
-  { name: "Kelvin Munene", title: "Finance & Administration Officer" },
-  { name: "Caroline Kagendo", title: "Membership & Communications Manager" },
+  {
+    name: "Arch. George Arabbu Ndege",
+    title: "President",
+    photo: "/secretariat-photos/george-arabbu-ndege.jpg",
+  },
+  {
+    name: "Arch. Brenda Nyawara",
+    title: "Vice President",
+    photo: "/secretariat-photos/brenda-nyawara.jpg",
+  },
+  {
+    name: "L/Arch. Ruth Mwai",
+    title: "Honorary Secretary",
+    photo: "/secretariat-photos/ruth-mwai.jpg",
+  },
+  {
+    name: "Arch. Bernard Segecha",
+    title: "Assistant Sec.",
+    photo: "/secretariat-photos/bernard-segecha.jpg",
+  },
+  {
+    name: "QS. Diana Musyoka",
+    title: "Honorary Treasurer",
+    photo: "/secretariat-photos/diana-musyoka.jpg",
+  },
+  {
+    name: "Eng. Nashon O. Tambo",
+    title: "Honorary Registrar",
+    photo: "/secretariat-photos/nashon-tambo.jpg",
+  },
   {
     name: "Sheila Okongo",
     title: "Membership Officer",

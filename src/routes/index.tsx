@@ -5,6 +5,7 @@ import { Footer } from "@/components/site/Footer";
 import { Hero } from "@/components/home/Hero";
 import { EventsStrip } from "@/components/home/EventsStrip";
 import { Spotlight } from "@/components/home/Spotlight";
+import { Biennale } from "@/components/home/Biennale";
 import { Initiatives } from "@/components/home/Initiatives";
 import { Chapters } from "@/components/home/Chapters";
 import { Partners } from "@/components/home/Partners";
@@ -87,6 +88,7 @@ function Index() {
         <Hero />
         <EventsStrip />
         <Spotlight />
+        <Biennale />
         <Initiatives />
         <Chapters />
         <Partners />

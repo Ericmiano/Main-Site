@@ -33,29 +33,14 @@ export const Route = createFileRoute("/resources")({
 // category — BuildHub — that lives on a different domain entirely.
 const categories = [
   {
-    title: "BuildHub",
-    body: "AAK's portal for obtaining a building permit or planning approval in Kenya, with step-by-step guidance, timelines and fees by county.",
-    href: "https://buildhub.aak.or.ke/",
-  },
-  {
-    title: "Status of the Built Environment Report",
-    body: "AAK's annual analysis of trends, challenges and professional opportunities in Kenya's construction and urban development sector. Archive runs from 2018 to 2025.",
-    to: "/status-of-the-built-environment" as const,
-  },
-  {
-    title: "AGM Reports",
-    body: "Annual General Meeting reports, published each year following the AAK AGM.",
-    to: "/agm-reports" as const,
-  },
-  {
-    title: "BuildPress Magazine",
-    body: "AAK's magazine covering the profession, chapters and industry issues.",
-    to: "/buildpress-magazine" as const,
-  },
-  {
     title: "Bills",
     body: "Parliamentary bills tracked by AAK's advocacy team, with the association's submissions where made.",
     to: "/bills" as const,
+  },
+  {
+    title: "General Downloads",
+    body: "Forms, guides and other documents for members and the public.",
+    to: "/general-downloads" as const,
   },
   {
     title: "Building Regulations",
@@ -73,6 +58,26 @@ const categories = [
     to: "/opinion-editorials" as const,
   },
   {
+    title: "BuildPress Magazine",
+    body: "AAK's magazine covering the profession, chapters and industry issues.",
+    to: "/buildpress-magazine" as const,
+  },
+  {
+    title: "BuildHub",
+    body: "AAK's portal for obtaining a building permit or planning approval in Kenya, with step-by-step guidance, timelines and fees by county.",
+    href: "https://buildhub.aak.or.ke/",
+  },
+  {
+    title: "Status of the Built Environment Report",
+    body: "AAK's annual analysis of trends, challenges and professional opportunities in Kenya's construction and urban development sector. Archive runs from 2018 to 2025.",
+    to: "/status-of-the-built-environment" as const,
+  },
+  {
+    title: "AGM Reports",
+    body: "Annual General Meeting reports, published each year following the AAK AGM.",
+    to: "/agm-reports" as const,
+  },
+  {
     title: "Salary Survey",
     body: "AAK's periodic survey of remuneration across the built and natural environment professions.",
     to: "/salary-survey" as const,
@@ -86,11 +91,6 @@ const categories = [
     title: "Liaison Committees Reports",
     body: "Reports from AAK's liaison committees with regulators and partner bodies.",
     to: "/liaison-committees-reports" as const,
-  },
-  {
-    title: "General Downloads",
-    body: "Forms, guides and other documents for members and the public.",
-    to: "/general-downloads" as const,
   },
   {
     title: "Mulika Mjengo Report",
@@ -141,45 +141,7 @@ function ResourcesPage() {
           </div>
         </section>
 
-        <section aria-labelledby="latest-title" className="py-16 lg:py-24">
-          <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
-            <h2
-              id="latest-title"
-              className="font-display text-2xl font-semibold tracking-tight text-foreground"
-            >
-              Latest downloads
-            </h2>
-            <ul className="mt-8 border-t border-border">
-              {publications.map((doc, i) => (
-                <li key={doc.title}>
-                  <Reveal delay={i * 60}>
-                    <a
-                      href={doc.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="group flex flex-col gap-2 border-b border-border py-6 transition-colors hover:bg-secondary/60 sm:flex-row sm:items-center sm:justify-between sm:gap-8"
-                    >
-                      <div className="flex items-center gap-4">
-                        <FileText className="h-5 w-5 shrink-0 text-primary" aria-hidden="true" />
-                        <h3 className="font-display text-base font-semibold text-foreground">
-                          {doc.title}
-                        </h3>
-                      </div>
-                      <span className="pl-9 text-xs uppercase tracking-[0.14em] text-muted-foreground sm:pl-0">
-                        {doc.meta}
-                      </span>
-                    </a>
-                  </Reveal>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
-
-        <section
-          aria-labelledby="categories-title"
-          className="border-t border-border bg-secondary/40 py-16 lg:py-24"
-        >
+        <section aria-labelledby="categories-title" className="py-16 lg:py-24">
           <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
             <h2
               id="categories-title"
@@ -226,6 +188,44 @@ function ResourcesPage() {
                   </li>
                 );
               })}
+            </ul>
+          </div>
+        </section>
+
+        <section
+          aria-labelledby="latest-title"
+          className="border-t border-border bg-secondary/40 py-16 lg:py-24"
+        >
+          <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
+            <h2
+              id="latest-title"
+              className="font-display text-2xl font-semibold tracking-tight text-foreground"
+            >
+              Latest downloads
+            </h2>
+            <ul className="mt-8 border-t border-border">
+              {publications.map((doc, i) => (
+                <li key={doc.title}>
+                  <Reveal delay={i * 60}>
+                    <a
+                      href={doc.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group flex flex-col gap-2 border-b border-border py-6 transition-colors hover:bg-secondary/60 sm:flex-row sm:items-center sm:justify-between sm:gap-8"
+                    >
+                      <div className="flex items-center gap-4">
+                        <FileText className="h-5 w-5 shrink-0 text-primary" aria-hidden="true" />
+                        <h3 className="font-display text-base font-semibold text-foreground">
+                          {doc.title}
+                        </h3>
+                      </div>
+                      <span className="pl-9 text-xs uppercase tracking-[0.14em] text-muted-foreground sm:pl-0">
+                        {doc.meta}
+                      </span>
+                    </a>
+                  </Reveal>
+                </li>
+              ))}
             </ul>
           </div>
         </section>
