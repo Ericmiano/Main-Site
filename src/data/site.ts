@@ -110,30 +110,6 @@ export const events: SiteEvent[] = [
     externalSiteHref: "https://www.biennale.aak.or.ke/",
   },
   {
-    slug: "grow-a-classroom-2026-10",
-    title: "Grow A Classroom Project",
-    kicker: "Professional CSR",
-    date: "1 October 2026",
-    isoDate: "2026-10-01",
-    location: "Kenya · venue to be announced",
-    venue: "Venue to be announced",
-    status: "upcoming",
-    summary:
-      "A scheduled site day under AAK's Grow A Classroom programme, on the association's official 2026 calendar of events.",
-    body: [
-      "Part of AAK's official 2026 calendar, this is one of two scheduled Grow A Classroom site days for the year (the other falls in April). Grow A Classroom builds master-planned classrooms and furniture from mature on-site timber for under-served schools, paired with tree planting. Details on venue are published on AAK's events calendar closer to the date.",
-    ],
-    facts: [
-      { label: "Date", value: "1 October 2026" },
-      { label: "Programme", value: "Grow A Classroom" },
-    ],
-    image: "/grow-a-classroom-mabokoni/img-2307.jpg",
-    imageAlt: "AAK members and pupils at a Grow A Classroom site day",
-    registerTo: { to: "/initiatives/$slug", params: { slug: "grow-a-classroom" } },
-    registerLabel: "Learn about Grow A Classroom",
-    cta: "View details",
-  },
-  {
     slug: "sports-wellness-day-2026",
     title: "AAK Sports & Wellness Day",
     kicker: "World Mental Health Awareness",
