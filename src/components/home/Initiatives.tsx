@@ -21,9 +21,14 @@ export function Initiatives() {
     <section
       id="initiatives"
       aria-labelledby="initiatives-title"
-      className="bg-ink-deep py-24 lg:py-32"
+      className="relative isolate bg-ink-deep py-24 lg:py-32"
     >
-      <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
+      {/* Continues Biennale's light tone into this dark section's top edge. */}
+      <div
+        className="absolute inset-x-0 top-0 h-24 bg-linear-to-b from-background to-transparent lg:h-32"
+        aria-hidden="true"
+      />
+      <div className="relative mx-auto max-w-[1400px] px-6 lg:px-12">
         <Reveal className="max-w-2xl">
           <p className="meta-label text-primary">Public impact</p>
           <h2

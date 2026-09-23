@@ -3,6 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { IconArrowUpRight as ArrowUpRight } from "@tabler/icons-react";
 import { chapters } from "@/data/site";
 import { Reveal } from "@/components/site/Reveal";
+import { useScrollParallax } from "@/hooks/use-scroll-parallax";
 import { cn } from "@/lib/utils";
 
 const COUNT = chapters.length;
@@ -14,6 +15,9 @@ const COUNT = chapters.length;
 function PinnedChapters() {
   const itemRefs = useRef<(HTMLLIElement | null)[]>([]);
   const [active, setActive] = useState(0);
+  // Tracks the whole scroll track's progress so the pinned image can drift
+  // subtly in place, even while its own container stays stuck via `sticky`.
+  const track = useScrollParallax<HTMLUListElement>(18);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -40,18 +44,23 @@ function PinnedChapters() {
   return (
     <div className="hidden lg:motion-safe:grid lg:grid-cols-2 lg:gap-16">
       <div className="sticky top-28 h-[70vh] self-start overflow-hidden rounded-2xl bg-secondary">
-        {chapters.map((chapter, i) => (
-          <img
-            key={chapter.slug}
-            src={chapter.image}
-            alt=""
-            loading={i === 0 ? "eager" : "lazy"}
-            className={cn(
-              "absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ease-out",
-              i === active ? "opacity-100" : "opacity-0",
-            )}
-          />
-        ))}
+        <div
+          className="absolute inset-0 will-change-transform"
+          style={{ transform: `translateY(${track.offset}px) scale(1.1)` }}
+        >
+          {chapters.map((chapter, i) => (
+            <img
+              key={chapter.slug}
+              src={chapter.image}
+              alt=""
+              loading={i === 0 ? "eager" : "lazy"}
+              className={cn(
+                "absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ease-out",
+                i === active ? "opacity-100" : "opacity-0",
+              )}
+            />
+          ))}
+        </div>
         <div className="absolute inset-x-0 bottom-0 z-10 flex items-end justify-between bg-linear-to-t from-ink-deep/80 to-transparent p-8">
           <span className="font-display text-2xl font-semibold text-background">
             {activeChapter.name}
@@ -62,7 +71,7 @@ function PinnedChapters() {
         </div>
       </div>
 
-      <ul>
+      <ul ref={track.ref}>
         {chapters.map((chapter, i) => (
           <li
             key={chapter.slug}
@@ -145,9 +154,14 @@ export function Chapters() {
     <section
       id="chapters"
       aria-labelledby="chapters-title"
-      className="bg-background py-24 lg:py-32"
+      className="relative isolate bg-background py-24 lg:py-32"
     >
-      <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
+      {/* Continues the preceding dark section's tone into this light section's top edge. */}
+      <div
+        className="absolute inset-x-0 top-0 h-24 bg-linear-to-b from-ink-deep to-transparent lg:h-32"
+        aria-hidden="true"
+      />
+      <div className="relative mx-auto max-w-[1400px] px-6 lg:px-12">
         <Reveal className="max-w-2xl">
           <p className="meta-label text-primary">The association</p>
           <h2

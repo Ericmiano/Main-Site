@@ -9,8 +9,17 @@ export function EventsStrip() {
   const events = getSortedEvents().filter((event) => getEventDisplayStatus(event) !== "past");
 
   return (
-    <section id="events" aria-labelledby="events-title" className="bg-ink-deep py-20 lg:py-28">
-      <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
+    <section
+      id="events"
+      aria-labelledby="events-title"
+      className="relative isolate bg-ink-deep py-20 lg:py-28"
+    >
+      {/* Continues Origin's light tone into this dark section's top edge. */}
+      <div
+        className="absolute inset-x-0 top-0 h-20 bg-linear-to-b from-background to-transparent lg:h-28"
+        aria-hidden="true"
+      />
+      <div className="relative mx-auto max-w-[1400px] px-6 lg:px-12">
         <Reveal className="grid gap-8 border-b border-background/12 pb-10 lg:grid-cols-[1fr_auto] lg:items-end">
           <div>
             <p className="meta-label text-primary">AAK now</p>

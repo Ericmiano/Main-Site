@@ -8,6 +8,7 @@ import { EventsStrip } from "@/components/home/EventsStrip";
 import { Spotlight } from "@/components/home/Spotlight";
 import { Biennale } from "@/components/home/Biennale";
 import { Initiatives } from "@/components/home/Initiatives";
+import { Statement } from "@/components/home/Statement";
 import { Chapters } from "@/components/home/Chapters";
 import { Partners } from "@/components/home/Partners";
 import { MediaGrid } from "@/components/home/MediaGrid";
@@ -92,6 +93,7 @@ function Index() {
         <Spotlight />
         <Biennale />
         <Initiatives />
+        <Statement />
         <Chapters />
         <Partners />
         <MediaGrid />

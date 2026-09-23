@@ -27,9 +27,14 @@ export function Membership() {
     <section
       id="membership"
       aria-labelledby="membership-title"
-      className="bg-ink-deep py-24 text-background lg:py-32"
+      className="relative isolate bg-ink-deep py-24 text-background lg:py-32"
     >
-      <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
+      {/* Continues Publications' light tone into this dark section's top edge. */}
+      <div
+        className="absolute inset-x-0 top-0 h-24 bg-linear-to-b from-background to-transparent lg:h-32"
+        aria-hidden="true"
+      />
+      <div className="relative mx-auto max-w-[1400px] px-6 lg:px-12">
         <Reveal className="max-w-3xl">
           <div className="flex items-center gap-2.5 text-xs font-semibold uppercase tracking-[0.18em] text-primary">
             <span aria-hidden="true" className="h-1.5 w-1.5 bg-primary" />
