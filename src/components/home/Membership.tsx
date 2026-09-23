@@ -31,7 +31,7 @@ export function Membership() {
     >
       {/* Continues Publications' light tone into this dark section's top edge. */}
       <div
-        className="absolute inset-x-0 top-0 h-24 bg-linear-to-b from-background to-transparent lg:h-32"
+        className="absolute inset-x-0 top-0 h-24 bg-linear-to-b from-background/90 via-background/35 to-transparent lg:h-32"
         aria-hidden="true"
       />
       <div className="relative mx-auto max-w-[1400px] px-6 lg:px-12">

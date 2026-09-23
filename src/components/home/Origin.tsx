@@ -19,7 +19,7 @@ export function Origin() {
           so the dark-to-light handoff reads as one continuous gradient
           rather than a hard cut between two blocks. */}
       <div
-        className="absolute inset-x-0 top-0 h-28 bg-linear-to-b from-ink-deep to-transparent lg:h-40"
+        className="absolute inset-x-0 top-0 h-28 bg-linear-to-b from-ink-deep/85 via-ink-deep/25 to-transparent lg:h-40"
         aria-hidden="true"
       />
       <div className="relative mx-auto max-w-[1400px] px-6 lg:px-12">

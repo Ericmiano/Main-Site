@@ -14,7 +14,7 @@ export function Spotlight() {
       {/* Continues EventsStrip's dark bottom edge into this section's top,
           same bridge technique as Hero -> Origin. */}
       <div
-        className="absolute inset-x-0 top-0 h-28 bg-linear-to-b from-ink-deep to-transparent lg:h-40"
+        className="absolute inset-x-0 top-0 h-28 bg-linear-to-b from-ink-deep/85 via-ink-deep/25 to-transparent lg:h-40"
         aria-hidden="true"
       />
       <div className="relative mx-auto max-w-[1400px] px-6 lg:px-12">

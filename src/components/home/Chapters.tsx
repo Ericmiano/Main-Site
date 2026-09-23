@@ -158,7 +158,7 @@ export function Chapters() {
     >
       {/* Continues the preceding dark section's tone into this light section's top edge. */}
       <div
-        className="absolute inset-x-0 top-0 h-24 bg-linear-to-b from-ink-deep to-transparent lg:h-32"
+        className="absolute inset-x-0 top-0 h-24 bg-linear-to-b from-ink-deep/85 via-ink-deep/25 to-transparent lg:h-32"
         aria-hidden="true"
       />
       <div className="relative mx-auto max-w-[1400px] px-6 lg:px-12">
