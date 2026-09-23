@@ -10,8 +10,19 @@ const moments = [
 
 export function Origin() {
   return (
-    <section id="origin" aria-labelledby="origin-title" className="bg-background py-28 lg:py-40">
-      <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
+    <section
+      id="origin"
+      aria-labelledby="origin-title"
+      className="relative isolate bg-background py-28 lg:py-40"
+    >
+      {/* Continues the hero's bottom scrim into this section's top edge,
+          so the dark-to-light handoff reads as one continuous gradient
+          rather than a hard cut between two blocks. */}
+      <div
+        className="absolute inset-x-0 top-0 h-28 bg-linear-to-b from-ink-deep to-transparent lg:h-40"
+        aria-hidden="true"
+      />
+      <div className="relative mx-auto max-w-[1400px] px-6 lg:px-12">
         <Reveal>
           <h2
             id="origin-title"
