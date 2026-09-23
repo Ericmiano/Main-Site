@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { IconArrowUpRight as ArrowUpRight } from "@tabler/icons-react";
 import { Link } from "@tanstack/react-router";
 import { initiatives } from "@/data/site";
@@ -14,10 +13,6 @@ const orderedInitiatives = [
 ];
 
 export function Initiatives() {
-  const [active, setActive] = useState(0);
-  const selected = orderedInitiatives[active];
-  if (!selected) return null;
-
   return (
     <section
       id="initiatives"
@@ -35,92 +30,76 @@ export function Initiatives() {
           </h2>
           <p className="mt-5 max-w-xl text-base leading-relaxed text-foreground/70">
             Long-running initiatives where our members put professional expertise to work for Kenyan
-            communities. Select one to explore it.
+            communities.
           </p>
         </Reveal>
 
-        <Reveal delay={100} className="mt-14 grid gap-10 lg:grid-cols-2 lg:gap-14">
-          <Link
-            to="/initiatives/$slug"
-            params={{ slug: selected.slug }}
-            className="group block overflow-hidden rounded-2xl bg-secondary"
-          >
-            <div className="relative aspect-4/3 lg:aspect-auto lg:h-[32rem]">
-              <img
-                src={selected.image}
-                alt={`${selected.title} initiative`}
-                loading="lazy"
-                className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
-              />
-              <div className="absolute inset-x-0 bottom-0 bg-linear-to-t from-ink-deep/90 to-transparent p-8">
-                <span
-                  className={cn(
-                    "meta-label",
-                    selected.tone === "green" ? "text-sustain" : "text-primary",
-                  )}
-                >
-                  {selected.eyebrow}
-                </span>
-                <h3 className="mt-2 font-display text-2xl font-semibold text-background sm:text-3xl">
-                  {selected.title}
-                </h3>
-                <p className="mt-3 max-w-md text-sm leading-relaxed text-background/75">
-                  {selected.description}
-                </p>
-                <span
-                  className={cn(
-                    "mt-5 inline-flex items-center gap-2 text-sm font-semibold",
-                    selected.tone === "green" ? "text-sustain" : "text-primary",
-                  )}
-                >
-                  {selected.cta}
-                  <ArrowUpRight className="h-4 w-4" />
-                </span>
-              </div>
-            </div>
-          </Link>
-
-          <ul className="border-t border-foreground/15">
-            {orderedInitiatives.map((initiative, i) => (
-              <li key={initiative.id} className="border-b border-foreground/15">
-                <button
-                  type="button"
-                  onMouseEnter={() => setActive(i)}
-                  onFocus={() => setActive(i)}
-                  onClick={() => setActive(i)}
-                  aria-pressed={i === active}
-                  className="flex w-full items-center justify-between gap-4 py-5 text-left"
-                >
-                  <span className="flex items-center gap-4">
-                    <span
-                      className={cn(
-                        "meta-label",
-                        i === active ? "text-primary" : "text-foreground/60",
-                      )}
-                    >
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-                    <span
-                      className={cn(
-                        "font-display text-xl font-semibold transition-colors duration-300 sm:text-2xl",
-                        i === active ? "text-foreground" : "text-foreground/60",
-                      )}
-                    >
-                      {initiative.title}
-                    </span>
-                  </span>
-                  <ArrowUpRight
+        <ul className="mt-16 border-t border-foreground/15">
+          {orderedInitiatives.map((initiative, i) => {
+            const flip = i % 2 === 1;
+            return (
+              <li key={initiative.id} className="border-b border-foreground/15 py-12 lg:py-16">
+                <Reveal delay={(i % 3) * 60}>
+                  <Link
+                    to="/initiatives/$slug"
+                    params={{ slug: initiative.slug }}
                     className={cn(
-                      "h-5 w-5 shrink-0 transition-opacity duration-300",
-                      i === active ? "opacity-100 text-primary" : "opacity-0",
+                      "group grid items-center gap-8 lg:gap-16",
+                      i === 0
+                        ? "lg:grid-cols-1"
+                        : flip
+                          ? "lg:grid-cols-[1.3fr_1fr] lg:[&>*:first-child]:order-2"
+                          : "lg:grid-cols-[1fr_1.3fr]",
                     )}
-                    aria-hidden="true"
-                  />
-                </button>
+                  >
+                    <div>
+                      <span className="font-display text-lg text-foreground/30">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <h3
+                        className={cn(
+                          "mt-2 font-display font-semibold tracking-tight text-balance text-foreground",
+                          i === 0 ? "text-4xl sm:text-5xl" : "text-2xl sm:text-3xl",
+                        )}
+                      >
+                        {initiative.title}
+                      </h3>
+                      <span
+                        className={cn(
+                          "meta-label mt-3 block",
+                          initiative.tone === "green" ? "text-sustain" : "text-primary",
+                        )}
+                      >
+                        {initiative.eyebrow} &middot; Kenya
+                      </span>
+                      <p className="mt-4 max-w-md text-sm leading-relaxed text-foreground/70">
+                        {initiative.description}
+                      </p>
+                      <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-foreground opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                        {initiative.cta}
+                        <ArrowUpRight className="h-4 w-4 text-primary" />
+                      </span>
+                    </div>
+
+                    <div
+                      className={cn(
+                        "overflow-hidden bg-secondary",
+                        i === 0 ? "aspect-21/9" : "aspect-4/3",
+                      )}
+                    >
+                      <img
+                        src={initiative.image}
+                        alt={`${initiative.title} initiative`}
+                        loading="lazy"
+                        className="h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
+                      />
+                    </div>
+                  </Link>
+                </Reveal>
               </li>
-            ))}
-          </ul>
-        </Reveal>
+            );
+          })}
+        </ul>
       </div>
     </section>
   );

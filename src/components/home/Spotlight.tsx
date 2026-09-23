@@ -16,7 +16,7 @@ export function Spotlight() {
           href="https://aak.or.ke/wp-content/uploads/2026/01/AAK-DURACOAT-AWARDS-OF-EXCELLENCE-2026-1-scaled.webp"
           target="_blank"
           rel="noopener noreferrer"
-          className="relative z-10 -mt-24 block max-w-xl overflow-hidden shadow-2xl lg:-mt-36"
+          className="relative z-10 -mt-12 block overflow-hidden shadow-2xl lg:-mt-16"
           initial={{ opacity: 0, y: 48 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
@@ -26,7 +26,7 @@ export function Spotlight() {
             src="https://aak.or.ke/wp-content/uploads/2026/01/AAK-DURACOAT-AWARDS-OF-EXCELLENCE-2026-1-scaled.webp"
             alt="AAK Basco DuraCoat Awards of Excellence in Architecture campaign banner, dated 27 February 2026"
             loading="lazy"
-            className="aspect-3/2 w-full object-cover"
+            className="aspect-[2560/233] w-full object-cover"
           />
         </motion.a>
       </div>
