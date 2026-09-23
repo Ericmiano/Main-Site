@@ -24,17 +24,21 @@ export function Hero() {
 
       <div className="relative mx-auto w-full max-w-[1400px] px-6 pt-20 lg:px-12 lg:pt-24">
         <p className="hero-item meta-label text-background/70">AAK</p>
-        <h1 className="hero-item hero-delay-1 mt-5 max-w-4xl font-display text-5xl font-semibold leading-[0.94] tracking-tight text-balance text-background sm:text-7xl lg:text-[6rem]">
+        <p className="hero-item hero-delay-1 mt-5 max-w-2xl font-display text-2xl font-medium leading-snug text-balance text-background/80 sm:text-3xl">
           The Architectural Association of Kenya
+        </p>
+        <h1 className="hero-item hero-delay-2 mt-4 max-w-4xl font-display text-4xl font-semibold leading-[0.98] tracking-tight text-balance text-background sm:text-6xl lg:text-[5.25rem]">
+          Promoting excellence in the{" "}
+          <span className="font-accent italic font-medium text-primary">built environment</span>.
         </h1>
-        <p className="hero-item hero-delay-2 meta-label mt-7 text-background/70">
+        <p className="hero-item hero-delay-3 meta-label mt-8 text-background/70">
           Est. 1967 &middot; Nairobi, Kenya
         </p>
       </div>
 
       <a
         href="#origin"
-        className="hero-item hero-delay-3 group absolute bottom-10 left-1/2 z-10 flex -translate-x-1/2 items-center gap-2.5 text-background/80 transition-colors hover:text-background"
+        className="hero-item hero-delay-4 group absolute bottom-10 left-1/2 z-10 flex -translate-x-1/2 items-center gap-2.5 text-background/80 transition-colors hover:text-background"
       >
         <span className="meta-label">Scroll to explore</span>
         <span

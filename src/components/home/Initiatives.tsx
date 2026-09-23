@@ -5,9 +5,16 @@ import { initiatives } from "@/data/site";
 import { Reveal } from "@/components/site/Reveal";
 import { cn } from "@/lib/utils";
 
+// Homepage display order only — leads with Grow A Classroom. The nav menu's
+// initiatives panel keeps the canonical `initiatives` order from site.ts.
+const orderedInitiatives = [
+  ...initiatives.filter((initiative) => initiative.slug === "grow-a-classroom"),
+  ...initiatives.filter((initiative) => initiative.slug !== "grow-a-classroom"),
+];
+
 export function Initiatives() {
   const [active, setActive] = useState(0);
-  const selected = initiatives[active];
+  const selected = orderedInitiatives[active];
   if (!selected) return null;
 
   return (
@@ -73,7 +80,7 @@ export function Initiatives() {
           </Link>
 
           <ul className="border-t border-background/12">
-            {initiatives.map((initiative, i) => (
+            {orderedInitiatives.map((initiative, i) => (
               <li key={initiative.id} className="border-b border-background/12">
                 <button
                   type="button"
