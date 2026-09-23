@@ -5,10 +5,7 @@ import { Reveal } from "@/components/site/Reveal";
 
 export function Spotlight() {
   return (
-    <section
-      aria-labelledby="spotlight-title"
-      className="overflow-hidden bg-background pb-28 lg:pb-36"
-    >
+    <section aria-labelledby="spotlight-title" className="bg-background pb-28 lg:pb-36">
       {/* The awards banner crosses the boundary from EventsStrip above —
           pulled up on top of that dark section instead of a gradient blend. */}
       <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
