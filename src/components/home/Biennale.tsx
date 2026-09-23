@@ -1,6 +1,7 @@
 import { IconArrowRight as ArrowRight } from "@tabler/icons-react";
 import { Link } from "@tanstack/react-router";
 import { Reveal } from "@/components/site/Reveal";
+import { SectionRule } from "@/components/site/SectionRule";
 
 const BIENNALE_URL = "https://www.biennale.aak.or.ke/";
 
@@ -8,23 +9,24 @@ export function Biennale() {
   return (
     <section
       aria-labelledby="biennale-title"
-      className="overflow-hidden border-t border-border bg-background py-28 lg:py-36"
+      className="overflow-hidden bg-ink-deep py-32 lg:py-44"
     >
       <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
         <Reveal className="max-w-2xl">
-          <div className="flex items-center gap-2.5 text-xs font-semibold uppercase tracking-[0.18em] text-primary">
+          <SectionRule index="03" label="Biennale" tone="dark" />
+          <div className="mt-8 flex items-center gap-2.5 text-xs font-semibold uppercase tracking-[0.18em] text-primary">
             <span aria-hidden="true" className="h-1.5 w-1.5 bg-primary" />
             Shifting the Center &middot; 7&ndash;12 September 2026
           </div>
           <h2
             id="biennale-title"
-            className="mt-5 font-display text-3xl font-semibold leading-[1.04] tracking-tight text-balance text-foreground sm:text-4xl lg:text-[2.75rem]"
+            className="mt-5 font-display text-4xl font-semibold leading-[1.02] tracking-tight text-balance text-background sm:text-6xl lg:text-7xl"
           >
             AAK&rsquo;s first{" "}
             <span className="font-accent italic font-medium text-primary">Nairobi Biennale</span> of
             Architecture &amp; Art
           </h2>
-          <p className="mt-6 text-[0.95rem] leading-relaxed text-muted-foreground">
+          <p className="mt-7 max-w-lg text-base leading-relaxed text-background/70">
             Exhibitions, conversations and public programming exploring Africa&rsquo;s built
             environment, under the theme &ldquo;Shifting the Center: From Fragility to
             Resilience.&rdquo; Held at the ASK Nairobi Showground, Jamhuri Park.
@@ -42,19 +44,19 @@ export function Biennale() {
             <Link
               to="/events/$slug"
               params={{ slug: "nairobi-biennale-2026" }}
-              className="link-underline text-sm font-medium text-foreground"
+              className="link-underline text-sm font-medium text-background/80"
             >
               Event details on AAK
             </Link>
           </div>
         </Reveal>
 
-        <Reveal delay={100} className="mt-14">
+        <Reveal delay={100} className="mt-16">
           <a
             href={BIENNALE_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="block overflow-hidden rounded-2xl bg-secondary"
+            className="block overflow-hidden bg-background/5"
           >
             <img
               src="/biennale/featured.webp"

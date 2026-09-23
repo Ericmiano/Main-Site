@@ -1,23 +1,37 @@
 import { IconArrowRight as ArrowRight } from "@tabler/icons-react";
 import { Link } from "@tanstack/react-router";
+import { motion } from "motion/react";
 import { Reveal } from "@/components/site/Reveal";
-import { useScrollParallax } from "@/hooks/use-scroll-parallax";
 
 export function Spotlight() {
-  const banner = useScrollParallax<HTMLImageElement>(16);
-
   return (
     <section
       aria-labelledby="spotlight-title"
-      className="relative isolate overflow-hidden bg-background py-28 lg:py-36"
+      className="overflow-hidden bg-background pb-28 lg:pb-36"
     >
-      {/* Continues EventsStrip's dark bottom edge into this section's top,
-          same bridge technique as Hero -> Origin. */}
-      <div
-        className="absolute inset-x-0 top-0 h-28 bg-linear-to-b from-ink-deep/85 via-ink-deep/25 to-transparent lg:h-40"
-        aria-hidden="true"
-      />
-      <div className="relative mx-auto max-w-[1400px] px-6 lg:px-12">
+      {/* The awards banner crosses the boundary from EventsStrip above —
+          pulled up on top of that dark section instead of a gradient blend. */}
+      <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
+        <motion.a
+          href="https://aak.or.ke/wp-content/uploads/2026/01/AAK-DURACOAT-AWARDS-OF-EXCELLENCE-2026-1-scaled.webp"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="relative z-10 -mt-24 block max-w-xl overflow-hidden shadow-2xl lg:-mt-36"
+          initial={{ opacity: 0, y: 48 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <img
+            src="https://aak.or.ke/wp-content/uploads/2026/01/AAK-DURACOAT-AWARDS-OF-EXCELLENCE-2026-1-scaled.webp"
+            alt="AAK Basco DuraCoat Awards of Excellence in Architecture campaign banner, dated 27 February 2026"
+            loading="lazy"
+            className="aspect-3/2 w-full object-cover"
+          />
+        </motion.a>
+      </div>
+
+      <div className="mx-auto max-w-[1400px] px-6 pt-14 lg:px-12 lg:pt-20">
         <Reveal className="max-w-2xl">
           <div className="flex items-center gap-2.5 text-xs font-semibold uppercase tracking-[0.18em] text-primary">
             <span aria-hidden="true" className="h-1.5 w-1.5 bg-primary" />
@@ -55,23 +69,6 @@ export function Spotlight() {
               About the Architects Chapter
             </Link>
           </div>
-        </Reveal>
-
-        <Reveal delay={100} className="mt-14">
-          <figure className="overflow-hidden rounded-2xl bg-secondary">
-            <img
-              ref={banner.ref}
-              src="https://aak.or.ke/wp-content/uploads/2026/01/AAK-DURACOAT-AWARDS-OF-EXCELLENCE-2026-1-scaled.webp"
-              alt="AAK Basco DuraCoat Awards of Excellence in Architecture campaign banner, dated 27 February 2026"
-              loading="lazy"
-              style={{ transform: `translateY(${banner.offset}px)` }}
-              className="aspect-[2560/233] w-full scale-110 object-cover will-change-transform"
-            />
-            <figcaption className="border-t border-border bg-card px-5 py-3 text-xs text-muted-foreground">
-              Original call-for-entries campaign artwork for the 2026 cycle. Entries have since
-              closed and winners are announced above.
-            </figcaption>
-          </figure>
         </Reveal>
       </div>
     </section>

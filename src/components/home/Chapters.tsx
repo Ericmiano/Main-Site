@@ -3,6 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { IconArrowUpRight as ArrowUpRight } from "@tabler/icons-react";
 import { chapters } from "@/data/site";
 import { Reveal } from "@/components/site/Reveal";
+import { SectionRule } from "@/components/site/SectionRule";
 import { useScrollParallax } from "@/hooks/use-scroll-parallax";
 import { cn } from "@/lib/utils";
 
@@ -154,19 +155,14 @@ export function Chapters() {
     <section
       id="chapters"
       aria-labelledby="chapters-title"
-      className="relative isolate bg-background py-24 lg:py-32"
+      className="bg-background py-24 lg:py-32"
     >
-      {/* Continues the preceding dark section's tone into this light section's top edge. */}
-      <div
-        className="absolute inset-x-0 top-0 h-24 bg-linear-to-b from-ink-deep/85 via-ink-deep/25 to-transparent lg:h-32"
-        aria-hidden="true"
-      />
-      <div className="relative mx-auto max-w-[1400px] px-6 lg:px-12">
+      <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
         <Reveal className="max-w-2xl">
-          <p className="meta-label text-primary">The association</p>
+          <SectionRule index="05" label="The association" />
           <h2
             id="chapters-title"
-            className="mt-4 font-display text-4xl font-semibold leading-[1.02] tracking-tight text-balance text-foreground sm:text-5xl"
+            className="mt-8 font-display text-4xl font-semibold leading-[1.02] tracking-tight text-balance text-foreground sm:text-5xl"
           >
             Eight professional chapters, one association.
           </h2>

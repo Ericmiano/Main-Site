@@ -45,6 +45,7 @@
   --color-destructive-foreground: var(--destructive-foreground);
   --color-paper: var(--paper);
   --color-paper-dim: var(--paper-dim);
+  --color-paper-earth: var(--paper-earth);
   --color-ink: var(--ink);
   --color-ink-deep: var(--ink-deep);
   --color-aak-red: var(--aak-red);
@@ -79,6 +80,9 @@
   /* Softer than --ink — for full-bleed dark sections, so stacked dark
      blocks don't read as pure black against the paper ground. */
   --ink-deep: #151515;
+  /* A distinct "public impact" surface — the Initiatives section's own
+     material, separate from the institutional paper tone elsewhere. */
+  --paper-earth: #ddd7cc;
   --aak-red: oklch(0.5 0.19 24);
   --aak-red-deep: oklch(0.4 0.17 22);
 

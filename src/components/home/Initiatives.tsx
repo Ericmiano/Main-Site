@@ -3,6 +3,7 @@ import { IconArrowUpRight as ArrowUpRight } from "@tabler/icons-react";
 import { Link } from "@tanstack/react-router";
 import { initiatives } from "@/data/site";
 import { Reveal } from "@/components/site/Reveal";
+import { SectionRule } from "@/components/site/SectionRule";
 import { cn } from "@/lib/utils";
 
 // Homepage display order only — leads with Grow A Classroom. The nav menu's
@@ -21,23 +22,18 @@ export function Initiatives() {
     <section
       id="initiatives"
       aria-labelledby="initiatives-title"
-      className="relative isolate bg-ink-deep py-24 lg:py-32"
+      className="bg-paper-earth py-24 lg:py-32"
     >
-      {/* Continues Biennale's light tone into this dark section's top edge. */}
-      <div
-        className="absolute inset-x-0 top-0 h-24 bg-linear-to-b from-background/90 via-background/35 to-transparent lg:h-32"
-        aria-hidden="true"
-      />
-      <div className="relative mx-auto max-w-[1400px] px-6 lg:px-12">
+      <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
         <Reveal className="max-w-2xl">
-          <p className="meta-label text-primary">Public impact</p>
+          <SectionRule index="04" label="Public impact" />
           <h2
             id="initiatives-title"
-            className="mt-4 font-display text-4xl font-semibold leading-[0.98] tracking-tight text-balance text-background sm:text-5xl lg:text-6xl"
+            className="mt-8 font-display text-4xl font-semibold leading-[0.98] tracking-tight text-balance text-foreground sm:text-5xl lg:text-6xl"
           >
             Programmes we run for the public good.
           </h2>
-          <p className="mt-5 max-w-xl text-base leading-relaxed text-background/65">
+          <p className="mt-5 max-w-xl text-base leading-relaxed text-foreground/70">
             Long-running initiatives where our members put professional expertise to work for Kenyan
             communities. Select one to explore it.
           </p>
@@ -84,9 +80,9 @@ export function Initiatives() {
             </div>
           </Link>
 
-          <ul className="border-t border-background/12">
+          <ul className="border-t border-foreground/15">
             {orderedInitiatives.map((initiative, i) => (
-              <li key={initiative.id} className="border-b border-background/12">
+              <li key={initiative.id} className="border-b border-foreground/15">
                 <button
                   type="button"
                   onMouseEnter={() => setActive(i)}
@@ -99,7 +95,7 @@ export function Initiatives() {
                     <span
                       className={cn(
                         "meta-label",
-                        i === active ? "text-primary" : "text-background/35",
+                        i === active ? "text-primary" : "text-foreground/60",
                       )}
                     >
                       {String(i + 1).padStart(2, "0")}
@@ -107,7 +103,7 @@ export function Initiatives() {
                     <span
                       className={cn(
                         "font-display text-xl font-semibold transition-colors duration-300 sm:text-2xl",
-                        i === active ? "text-background" : "text-background/40",
+                        i === active ? "text-foreground" : "text-foreground/60",
                       )}
                     >
                       {initiative.title}
