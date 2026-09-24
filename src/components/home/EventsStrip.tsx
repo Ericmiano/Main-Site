@@ -10,7 +10,11 @@ export function EventsStrip() {
   const events = getSortedEvents().filter((event) => getEventDisplayStatus(event) !== "past");
 
   return (
-    <section id="events" aria-labelledby="events-title" className="bg-ink-deep py-20 lg:py-28">
+    <section
+      id="events"
+      aria-labelledby="events-title"
+      className="bg-ink-deep pt-20 pb-36 lg:pt-28 lg:pb-44"
+    >
       <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
         <Reveal>
           <SectionRule index="02" label="AAK now" tone="dark" />

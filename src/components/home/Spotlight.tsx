@@ -1,40 +1,137 @@
-import { IconArrowRight as ArrowRight } from "@tabler/icons-react";
+import { useRef } from "react";
+import {
+  IconArrowLeft as ArrowLeft,
+  IconArrowRight as ArrowRight,
+  IconArrowUpRight as ArrowUpRight,
+} from "@tabler/icons-react";
 import { Link } from "@tanstack/react-router";
 import { motion, useReducedMotion } from "motion/react";
 import { Reveal } from "@/components/site/Reveal";
-import { awardCategories } from "@/data/site";
+import { awardCategories, awardWinners2024 } from "@/data/site";
+import { cn } from "@/lib/utils";
+
+const RANK = ["Winner", "1st Runner-up", "Runner-up", "2nd Runner-up"];
+
+// Headline results only; honourable mentions stay on /awards.
+const featured = awardWinners2024
+  .filter((w) => RANK.includes(w.result))
+  .sort((a, b) => Number(a.result !== "Winner") - Number(b.result !== "Winner"));
 
 export function Spotlight() {
   const reduceMotion = useReducedMotion();
+  const rail = useRef<HTMLOListElement>(null);
+
+  const scrollRail = (direction: -1 | 1) => {
+    const el = rail.current;
+    if (!el) return;
+    const card = el.querySelector("li");
+    el.scrollBy({
+      left: direction * ((card?.getBoundingClientRect().width ?? 300) + 20),
+      behavior: reduceMotion ? "auto" : "smooth",
+    });
+  };
+
   return (
-    <section aria-labelledby="spotlight-title" className="bg-background pb-28 lg:pb-36">
-      {/* The awards banner crosses the boundary from EventsStrip above —
+    // flow-root stops the rail's negative margin collapsing through the section,
+    // which would drag this light background up over EventsStrip.
+    <section aria-labelledby="spotlight-title" className="flow-root bg-background pb-28 lg:pb-36">
+      {/* The winners rail crosses the boundary from EventsStrip above —
           pulled up on top of that dark section instead of a gradient blend. */}
-      <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
-        <motion.a
-          href="/img/aak-duracoat-awards-of-excellence-2026.webp"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="relative z-10 -mt-12 block overflow-hidden shadow-2xl lg:-mt-16"
-          initial={reduceMotion ? false : { opacity: 0, y: 48 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      <motion.div
+        className="relative z-10 mx-auto -mt-20 max-w-[1400px] px-6 lg:-mt-24 lg:px-12"
+        initial={reduceMotion ? false : { opacity: 0, y: 48 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      >
+        <div className="flex items-end justify-between gap-6 pb-4">
+          <p className="meta-label text-background/80">
+            Awards of Excellence &middot; 2024 winners
+          </p>
+          <div className="hidden gap-2 sm:flex">
+            <button
+              type="button"
+              onClick={() => scrollRail(-1)}
+              aria-label="Previous winners"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-background/30 text-background transition-colors hover:bg-background/10"
+            >
+              <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+            </button>
+            <button
+              type="button"
+              onClick={() => scrollRail(1)}
+              aria-label="More winners"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-background/30 text-background transition-colors hover:bg-background/10"
+            >
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </button>
+          </div>
+        </div>
+
+        <ol
+          ref={rail}
+          className="-mx-6 flex snap-x snap-mandatory gap-5 overflow-x-auto px-6 pb-6 [scrollbar-width:none] lg:mr-[-3rem] lg:ml-0 lg:pl-0 lg:pr-12"
         >
-          <img
-            src="/img/aak-duracoat-awards-of-excellence-2026.webp"
-            alt="AAK Basco DuraCoat Awards of Excellence in Architecture campaign banner, dated 27 February 2026"
-            loading="lazy"
-            className="aspect-[2560/233] w-full object-cover"
-          />
-        </motion.a>
-      </div>
+          {featured.map((winner) => (
+            <li
+              key={`${winner.project}-${winner.category}`}
+              className="w-[78%] shrink-0 snap-start sm:w-72 lg:w-80"
+            >
+              <a
+                href={winner.pdfHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex h-full flex-col bg-card shadow-xl ring-1 ring-foreground/5"
+              >
+                <div className="overflow-hidden bg-secondary">
+                  <img
+                    src={winner.image}
+                    alt={`${winner.project}, ${winner.category}`}
+                    loading="lazy"
+                    className="aspect-4/3 w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
+                  />
+                </div>
+                <div className="flex flex-1 flex-col gap-2 p-5">
+                  <span
+                    className={cn(
+                      "meta-label",
+                      winner.result === "Winner" ? "text-primary" : "text-muted-foreground",
+                    )}
+                  >
+                    {winner.result}
+                  </span>
+                  <h3 className="font-display text-lg font-semibold leading-snug text-balance text-foreground">
+                    {winner.project}
+                  </h3>
+                  <p className="mt-auto pt-2 text-xs leading-relaxed text-muted-foreground">
+                    {winner.category}
+                  </p>
+                </div>
+              </a>
+            </li>
+          ))}
+          <li className="w-[78%] shrink-0 snap-start sm:w-72 lg:w-80">
+            <Link
+              to="/awards"
+              className="group flex h-full min-h-72 flex-col justify-between bg-ink-deep p-6 text-background shadow-xl"
+            >
+              <span className="meta-label text-background/60">
+                {awardWinners2024.length} recognised projects
+              </span>
+              <span className="font-display text-2xl font-semibold leading-tight">
+                See every winner, runner-up and honourable mention
+                <ArrowUpRight className="ml-2 inline h-5 w-5 text-primary transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+              </span>
+            </Link>
+          </li>
+        </ol>
+      </motion.div>
 
       <div className="mx-auto grid max-w-[1400px] gap-14 px-6 pt-14 lg:grid-cols-[1fr_1.15fr] lg:gap-20 lg:px-12 lg:pt-20">
         <Reveal className="max-w-2xl lg:sticky lg:top-32 lg:self-start">
           <div className="flex items-center gap-2.5 text-xs font-semibold uppercase tracking-[0.18em] text-primary">
             <span aria-hidden="true" className="h-1.5 w-1.5 bg-primary" />
-            In the spotlight &middot; 2026 winners announced
+            In the spotlight &middot; Awards of Excellence
           </div>
           <h2
             id="spotlight-title"
@@ -48,7 +145,7 @@ export function Spotlight() {
           </h2>
           <p className="mt-6 text-[0.95rem] leading-relaxed text-muted-foreground">
             Hosted by the Architects Chapter, the Awards of Excellence recognise outstanding
-            architectural achievement across Kenya and East Africa. The 2026 cycle judged projects
+            architectural achievement across Kenya and East Africa. The 2026 cycle covers projects
             completed between 2020 and 2025 across nine categories, from Best Residential and
             Commercial to Best Student Project.
           </p>

@@ -6,7 +6,7 @@ import { Footer } from "@/components/site/Footer";
 import { Reveal } from "@/components/site/Reveal";
 import { SectionHeading } from "@/components/site/SectionHeading";
 import { PageBreadcrumb } from "@/components/site/PageBreadcrumb";
-import { awardCategories as categories } from "@/data/site";
+import { awardCategories as categories, awardWinners2024 as winners2024 } from "@/data/site";
 
 const SITE_URL = "https://aak.or.ke";
 const TITLE = "Awards & Honours | Architectural Association of Kenya";
@@ -68,129 +68,6 @@ const jury = [
   { name: "Arch. Flora Runumi", org: "Uganda Society of Architects (USA)" },
   { name: "Prof. Paul Maringa", org: "Architectural Association of Kenya (AAK)" },
   { name: "Arch. Nikos Fintikakis", org: "International Union of Architects (UIA)" },
-];
-
-interface Winner {
-  project: string;
-  category: string;
-  result: string;
-  image: string;
-  pdfHref: string;
-}
-
-const winners2024: Winner[] = [
-  {
-    project: "The Agora",
-    category: "Best Student Project",
-    result: "Winner",
-    image: "/img/screenshot-2026-06-08-164835.webp",
-    pdfHref: "/documents/THE-AGORA-PROJECT.pdf",
-  },
-  {
-    project: "Kigandani Industrial Hub",
-    category: "Best Student Project",
-    result: "1st Runner-up",
-    image: "/img/screenshot-2026-06-08-164317.webp",
-    pdfHref: "/documents/KIGANDANI-INDUSTRIAL-HUB-PROJECT.pdf",
-  },
-  {
-    project: "Mombasa Ferry Terminal",
-    category: "Best Student Project",
-    result: "2nd Runner-up",
-    image: "/img/screenshot-2026-06-08-163554.webp",
-    pdfHref: "/documents/MOMBASA-FERRY-TERMINAL-PROJECT.pdf",
-  },
-  {
-    project: "Mzizi ECD Centre",
-    category: "Best Student Project",
-    result: "Honorable Mention",
-    image: "/img/screenshot-2026-05-07-091425.webp",
-    pdfHref: "/documents/MZIZI-ECD-CENTRE-PROJECT.pdf",
-  },
-  {
-    project: "Kenya Advanced Institute of Science and Technology",
-    category: "Best Institutional Project",
-    result: "Honorable Mention",
-    image: "/img/screenshot-2026-05-06-170210.webp",
-    pdfHref: "/documents/KENYA-ADVANCED-INSTITUTE-OF-SCIENCE-OF-TECHNOLOGY-PROJECT.pdf",
-  },
-  {
-    project: "Lodwar Referral Hospital",
-    category: "Best Institutional Project",
-    result: "Honorable Mention",
-    image: "/img/screenshot-2026-06-08-132017-e1780914111723.webp",
-    pdfHref: "/documents/LODWAR-REFERRAL-HOSPITAL-PROJECT.pdf",
-  },
-  {
-    project: "Wajir County Referral Hospital",
-    category: "Best Institutional Project",
-    result: "Honorable Mention",
-    image: "/img/screenshot-2026-05-06-152302.webp",
-    pdfHref: "/documents/WAJIR-REFERRAL-HOSPITAL.pdf",
-  },
-  {
-    project: "Skanem",
-    category: "Best Commercial Project",
-    result: "Honorable Mention",
-    image: "/img/screenshot-2026-06-08-161321.webp",
-    pdfHref: "/documents/SKANEM-PROJECT.pdf",
-  },
-  {
-    project: "Global Trade Center",
-    category: "Best Commercial Project",
-    result: "Honorable Mention",
-    image: "/img/screenshot-2026-05-06-142005.webp",
-    pdfHref: "/documents/GLOBAL-TRADE-CENTRE-PROJECT.pdf",
-  },
-  {
-    project: "The Bidi Bidi Music and Arts Centre",
-    category: "Best Empowerment and Social Equity Through Design",
-    result: "Winner",
-    image: "/img/screenshot-2026-05-06-131531.webp",
-    pdfHref: "/documents/THE-BIDI-BIDI-PERFORMING-ARTS-CENTRE-PROJECT.pdf",
-  },
-  {
-    project: "Ufi at Kahawa Soweto Settlement",
-    category: "Best Empowerment and Social Equity Through Design",
-    result: "Runner-up",
-    image: "/img/screenshot-2026-06-08-153946.webp",
-    pdfHref: "/documents/URBAN-FABRIC-INITIATIVE-PROJECT.pdf",
-  },
-  {
-    project: "Standard Chartered Bank HQ",
-    category: "Best Interior Environment",
-    result: "Winner",
-    image: "/img/screenshot-2026-06-08-152537.webp",
-    pdfHref: "/documents/STANDARD-CHATERED-BANK-HQ-PROJECT.pdf",
-  },
-  {
-    project: "Lady of Victoria Monastery",
-    category: "Best Religious / Monumental",
-    result: "Winner",
-    image: "/img/screenshot-2026-06-08-150532.webp",
-    pdfHref: "/documents/OUR-LADY-VICTORIA-MONASTERY-PROJECT.pdf",
-  },
-  {
-    project: "Nairobi Waldorf School",
-    category: "Best Africa (Re)presentation",
-    result: "Winner",
-    image: "/img/screenshot-2026-06-08-133208.webp",
-    pdfHref: "/documents/NAIROBI-WALDORF-SCHOOL-PROJECT.pdf",
-  },
-  {
-    project: "Lodwar Referral Hospital",
-    category: "Best Africa (Re)presentation",
-    result: "Juror's Honourable Mention",
-    image: "/img/screenshot-2026-06-08-132017-e1780914111723.webp",
-    pdfHref: "/documents/LODWAR-REFERRAL-HOSPITAL-PROJECT.pdf",
-  },
-  {
-    project: "The Bidi Bidi Music and Arts Centre",
-    category: "Best Africa (Re)presentation",
-    result: "Juror's Choice Honorable Mention",
-    image: "/img/screenshot-2026-05-06-131531.webp",
-    pdfHref: "/documents/THE-BIDI-BIDI-PERFORMING-ARTS-CENTRE-PROJECT.pdf",
-  },
 ];
 
 function structuredData() {
