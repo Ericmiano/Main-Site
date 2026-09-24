@@ -89,7 +89,7 @@ export const initiativeDetails: InitiativeDetail[] = [
       { label: "Partners", value: "NCA & County Governments" },
       { label: "Coverage", value: "Nairobi County (initial rollout)" },
     ],
-    image: "https://aak.or.ke/wp-content/uploads/2025/06/1H5A2307-1200x800.jpg",
+    image: "/img/1h5a2307-1200x800.webp",
     imageAlt: "AAK members inspecting a construction site",
     documents: [
       {
@@ -117,19 +117,19 @@ export const initiativeDetails: InitiativeDetail[] = [
       "The campaign has run alongside a published report, campaign videos and radio coverage across multiple Kenyan stations, including Bahari FM, Kameme FM, Radio Citizen, Musyi FM, Mulembe FM and Egesa FM, extending its reach well beyond Nairobi's built-up areas.",
     ],
     stats: [{ label: "Format", value: "Print, radio and on-site campaigns" }],
-    image: "https://aak.or.ke/wp-content/uploads/2025/06/1H5A2307-1200x800.jpg",
+    image: "/img/1h5a2307-1200x800.webp",
     imageAlt: "AAK public awareness campaign materials",
     gallery: [
       {
-        src: "https://aak.or.ke/wp-content/uploads/2026/02/Uthiru-collapse.jpeg",
+        src: "/img/uthiru-collapse.webp",
         alt: "Aftermath of a building collapse in Uthiru, cited as a Mulika Mjengo case",
       },
       {
-        src: "https://aak.or.ke/wp-content/uploads/2026/02/Radio-Citizen-pic-scaled.jpeg",
+        src: "/img/radio-citizen-pic.webp",
         alt: "Radio Citizen coverage of the Je Una Mjengo campaign",
       },
       {
-        src: "https://aak.or.ke/wp-content/uploads/2026/02/Kamulu-MM-10-HP-HP-HP-HP-HP.jpg",
+        src: "/img/kamulu-mm-10-hp-hp-hp-hp-hp.webp",
         alt: "Mulika Mjengo site inspection in Kamulu",
       },
     ],
@@ -369,7 +369,7 @@ export const initiativeDetails: InitiativeDetail[] = [
       { label: "Noise control & acoustics", value: "5% weighting" },
       { label: "Innovation", value: "5% weighting" },
     ],
-    image: "https://aak.or.ke/wp-content/uploads/2025/05/0Q9A0926-1200x800.jpg",
+    image: "/img/0q9a0926-1200x800.webp",
     imageAlt: "A sustainably designed building facade",
     documents: [
       {
@@ -394,19 +394,19 @@ export const initiativeDetails: InitiativeDetail[] = [
       { label: "Framework", value: "15 pillars" },
       { label: "Partner", value: "Habitat for Humanity International" },
     ],
-    image: "https://aak.or.ke/wp-content/uploads/2026/02/Launch-of-HHGC-scaled.webp",
+    image: "/img/launch-of-hhgc.webp",
     imageAlt: "Launch of the Healthy Homes Guidelines and Checklist",
     gallery: [
       {
-        src: "https://aak.or.ke/wp-content/uploads/2026/02/WHD18.webp",
+        src: "/img/whd18.webp",
         alt: "World Habitat Day activities tied to the Healthy Homes Guidelines",
       },
       {
-        src: "https://aak.or.ke/wp-content/uploads/2026/02/Building-a-healthy-home-in-Homabay.webp",
+        src: "/img/building-a-healthy-home-in-homabay.webp",
         alt: "Building a healthy home in Homa Bay under the guidelines",
       },
       {
-        src: "https://aak.or.ke/wp-content/uploads/2026/02/Artisans-and-contractors-training.jpeg",
+        src: "/img/artisans-and-contractors-training.webp",
         alt: "Artisans and contractors training on the Healthy Homes Guidelines",
       },
     ],
@@ -434,7 +434,7 @@ export const initiativeDetails: InitiativeDetail[] = [
       { label: "Partner", value: "UN-Habitat, World Urban Campaign" },
       { label: "Led by", value: "Town Planners Chapter" },
     ],
-    image: "https://aak.or.ke/wp-content/uploads/2025/06/1H5A2307-1200x800.jpg",
+    image: "/img/1h5a2307-1200x800.webp",
     imageAlt: "Members in discussion at an AAK Urban Thinkers Campus session",
     documents: [
       {

@@ -92,10 +92,10 @@ function ProgrammesPage() {
             <PageBreadcrumb trail={[{ label: "Programmes" }]} />
 
             <Reveal className="mt-8 max-w-2xl">
-              <div className="flex items-center gap-3 text-xs font-medium uppercase tracking-[0.22em] text-muted-foreground">
+              <div className="meta-label flex items-center gap-3 border-t border-border pt-5 text-muted-foreground">
                 <span>Public interest</span>
               </div>
-              <h1 className="mt-5 font-display text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
+              <h1 className="mt-5 font-display text-4xl font-semibold leading-[1.02] tracking-tight text-balance text-foreground sm:text-5xl lg:text-6xl">
                 AAK programmes
               </h1>
               <p className="mt-5 text-base leading-relaxed text-muted-foreground">

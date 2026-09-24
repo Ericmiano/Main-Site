@@ -200,12 +200,14 @@
 
 /* Editorial metadata label — small tracked-out uppercase for numbering,
    dates, locations and categories (e.g. "01 / 08", "NAIROBI", "2026"). */
-.meta-label {
-  font-family: var(--font-sans);
-  font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
+@layer components {
+  .meta-label {
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
 }
 
 /* Hero entrance ------------------------------------------------------ */

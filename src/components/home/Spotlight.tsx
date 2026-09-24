@@ -1,9 +1,11 @@
 import { IconArrowRight as ArrowRight } from "@tabler/icons-react";
 import { Link } from "@tanstack/react-router";
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import { Reveal } from "@/components/site/Reveal";
+import { awardCategories } from "@/data/site";
 
 export function Spotlight() {
+  const reduceMotion = useReducedMotion();
   return (
     <section aria-labelledby="spotlight-title" className="bg-background pb-28 lg:pb-36">
       {/* The awards banner crosses the boundary from EventsStrip above —
@@ -14,7 +16,7 @@ export function Spotlight() {
           target="_blank"
           rel="noopener noreferrer"
           className="relative z-10 -mt-12 block overflow-hidden shadow-2xl lg:-mt-16"
-          initial={{ opacity: 0, y: 48 }}
+          initial={reduceMotion ? false : { opacity: 0, y: 48 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
@@ -28,8 +30,8 @@ export function Spotlight() {
         </motion.a>
       </div>
 
-      <div className="mx-auto max-w-[1400px] px-6 pt-14 lg:px-12 lg:pt-20">
-        <Reveal className="max-w-2xl">
+      <div className="mx-auto grid max-w-[1400px] gap-14 px-6 pt-14 lg:grid-cols-[1fr_1.15fr] lg:gap-20 lg:px-12 lg:pt-20">
+        <Reveal className="max-w-2xl lg:sticky lg:top-32 lg:self-start">
           <div className="flex items-center gap-2.5 text-xs font-semibold uppercase tracking-[0.18em] text-primary">
             <span aria-hidden="true" className="h-1.5 w-1.5 bg-primary" />
             In the spotlight &middot; 2026 winners announced
@@ -67,6 +69,37 @@ export function Spotlight() {
             </Link>
           </div>
         </Reveal>
+
+        <div>
+          <div className="flex items-baseline justify-between border-b border-border pb-4">
+            <span className="meta-label text-muted-foreground">The categories</span>
+            <span className="meta-label text-muted-foreground">
+              Projects completed 2020&ndash;2025
+            </span>
+          </div>
+          <ol className="grid grid-cols-1 sm:grid-cols-3">
+            {awardCategories.map((category, i) => (
+              <li
+                key={category.name}
+                className="border-b border-border sm:border-r sm:[&:nth-child(3n)]:border-r-0"
+              >
+                <Reveal delay={(i % 3) * 70} className="h-full">
+                  <Link
+                    to="/awards"
+                    className="group flex h-full flex-row items-baseline gap-4 px-0 py-4 transition-colors hover:bg-secondary/60 sm:min-h-40 sm:flex-col sm:justify-between sm:gap-6 sm:p-5"
+                  >
+                    <span className="font-display text-sm text-primary">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <span className="font-display text-lg font-semibold leading-snug text-balance text-foreground">
+                      {category.name.replace(/^Best /, "")}
+                    </span>
+                  </Link>
+                </Reveal>
+              </li>
+            ))}
+          </ol>
+        </div>
       </div>
     </section>
   );

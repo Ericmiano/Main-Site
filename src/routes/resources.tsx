@@ -133,7 +133,7 @@ function ResourcesPage() {
             <PageBreadcrumb trail={[{ label: "Resource Centre" }]} />
 
             <Reveal className="mt-8 max-w-2xl">
-              <h1 className="mt-2 font-display text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
+              <h1 className="mt-2 font-display text-4xl font-semibold leading-[1.02] tracking-tight text-balance text-foreground sm:text-5xl lg:text-6xl">
                 Resource Centre
               </h1>
               <p className="mt-5 text-base leading-relaxed text-muted-foreground">{DESCRIPTION}</p>

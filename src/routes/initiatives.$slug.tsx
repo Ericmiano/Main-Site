@@ -141,7 +141,7 @@ function InitiativeDetail() {
                 >
                   {initiative.eyebrow}
                 </span>
-                <h1 className="mt-4 font-display text-4xl font-semibold leading-[1.05] tracking-tight text-foreground sm:text-5xl">
+                <h1 className="mt-4 font-display text-4xl font-semibold leading-[1.02] tracking-tight text-balance text-foreground sm:text-5xl lg:text-6xl">
                   {initiative.title}
                 </h1>
                 <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground">

@@ -6,6 +6,7 @@ import { Footer } from "@/components/site/Footer";
 import { Reveal } from "@/components/site/Reveal";
 import { SectionHeading } from "@/components/site/SectionHeading";
 import { PageBreadcrumb } from "@/components/site/PageBreadcrumb";
+import { awardCategories as categories } from "@/data/site";
 
 const SITE_URL = "https://aak.or.ke";
 const TITLE = "Awards & Honours | Architectural Association of Kenya";
@@ -32,54 +33,6 @@ export const Route = createFileRoute("/awards")({
   }),
   component: AwardsPage,
 });
-
-const categories = [
-  {
-    name: "Best Africa (Re)presentation",
-    description:
-      "Entries in this category should demonstrate a meaningful and contemporary interpretation of African cultural identity. Submissions are expected to draw inspiration from local ways of life, tradition and culture, materials, artefacts, patterns, and environmental knowledge systems. Projects must articulate how these references have informed the design approach, resulting in architecture that resonates with regional relevance and expresses African heritage in a clear and intentional manner.",
-  },
-  {
-    name: "Best Commercial Project",
-    description:
-      "This category recognizes commercial developments that excel in functionality, spatial organization, user experience and contextual integration. Submissions must clearly demonstrate how the design supports commercial operations, enhances productivity or customer engagement, and responds sensitively to its physical and socio-economic setting. Consideration is given to environmental performance, material strategy and the project's overall contribution to its urban and natural environment.",
-  },
-  {
-    name: "Best Empowerment and Social Equity Through Design",
-    description:
-      "Submissions must illustrate how architectural design has directly enhanced dignity, accessibility, inclusion and livelihood opportunities for underserved or marginalized communities. Projects should highlight built-form solutions that improve participation, safety, equity and long-term community resilience. Emphasis is placed on tangible design interventions that uplift vulnerable populations and support social transformation.",
-  },
-  {
-    name: "Best Hospitality Project",
-    description:
-      "This category recognizes hotels, lodges, resorts and other guest-focused environments that deliver exceptional spatial quality, comfort and place-specific experience. Submissions should highlight how the design integrates with its landscape or urban setting, enhances ambience, and supports intuitive movement and relaxation. Priority is given to thoughtful material choices, environmental responsiveness, and memorable, context-driven hospitality environments.",
-  },
-  {
-    name: "Best Institutional Project",
-    description:
-      "This category recognizes institutional projects, including educational facilities, healthcare centers, government buildings, cultural institutions and community facilities, that excel in functionality, spatial organization, user experience and contextual integration. Consideration is given to environmental performance, material strategy, durability for public use, and the project's overall contribution to its urban and natural environment.",
-  },
-  {
-    name: "Best Religious / Monumental Project",
-    description:
-      "Entries should exemplify architecture that carries symbolic, spiritual or cultural significance, including churches, mosques, temples, meditation centers and monumental civic structures. Submissions are expected to show how form, materiality, procession, light and spatial organization work together to evoke meaning, support ritual practices and serve the surrounding community with dignity and clarity.",
-  },
-  {
-    name: "Best Interior Environment",
-    description:
-      "Submissions in this category must demonstrate refined and innovative interior design that enhances the function, atmosphere and comfort of indoor spaces, illustrating effective spatial planning, material selection, lighting strategies, furniture integration, ventilation considerations and overall aesthetic harmony.",
-  },
-  {
-    name: "Best Residential Project",
-    description:
-      "This category recognizes exemplary residential design, from single family homes to multi-unit housing and residential developments, that successfully combines aesthetics, functionality, climatic responsiveness and contextual harmony, highlighting thoughtful spatial organization, material interplay and relationship to landscape.",
-  },
-  {
-    name: "Best Student Project",
-    description:
-      "Submissions must be conceptual work produced by students enrolled in accredited architecture programs, demonstrating strong conceptual grounding, clear articulation of design principles, contextual awareness, sustainability considerations and high-quality presentation.",
-  },
-];
 
 const evaluationCriteria = [
   { weight: "45%", text: "Design, Innovation, Technologies, Originality and Creativity" },
@@ -131,114 +84,112 @@ const winners2024: Winner[] = [
     project: "The Agora",
     category: "Best Student Project",
     result: "Winner",
-    image: "https://aak.or.ke/wp-content/uploads/2026/06/Screenshot-2026-06-08-164835.png",
+    image: "/img/screenshot-2026-06-08-164835.webp",
     pdfHref: "/documents/THE-AGORA-PROJECT.pdf",
   },
   {
     project: "Kigandani Industrial Hub",
     category: "Best Student Project",
     result: "1st Runner-up",
-    image: "https://aak.or.ke/wp-content/uploads/2026/06/Screenshot-2026-06-08-164317.png",
+    image: "/img/screenshot-2026-06-08-164317.webp",
     pdfHref: "/documents/KIGANDANI-INDUSTRIAL-HUB-PROJECT.pdf",
   },
   {
     project: "Mombasa Ferry Terminal",
     category: "Best Student Project",
     result: "2nd Runner-up",
-    image: "https://aak.or.ke/wp-content/uploads/2026/06/Screenshot-2026-06-08-163554.png",
+    image: "/img/screenshot-2026-06-08-163554.webp",
     pdfHref: "/documents/MOMBASA-FERRY-TERMINAL-PROJECT.pdf",
   },
   {
     project: "Mzizi ECD Centre",
     category: "Best Student Project",
     result: "Honorable Mention",
-    image: "https://aak.or.ke/wp-content/uploads/2026/06/Screenshot-2026-05-07-091425.png",
+    image: "/img/screenshot-2026-05-07-091425.webp",
     pdfHref: "/documents/MZIZI-ECD-CENTRE-PROJECT.pdf",
   },
   {
     project: "Kenya Advanced Institute of Science and Technology",
     category: "Best Institutional Project",
     result: "Honorable Mention",
-    image: "https://aak.or.ke/wp-content/uploads/2026/06/Screenshot-2026-05-06-170210.png",
+    image: "/img/screenshot-2026-05-06-170210.webp",
     pdfHref: "/documents/KENYA-ADVANCED-INSTITUTE-OF-SCIENCE-OF-TECHNOLOGY-PROJECT.pdf",
   },
   {
     project: "Lodwar Referral Hospital",
     category: "Best Institutional Project",
     result: "Honorable Mention",
-    image:
-      "https://aak.or.ke/wp-content/uploads/2026/06/Screenshot-2026-06-08-132017-e1780914111723.png",
+    image: "/img/screenshot-2026-06-08-132017-e1780914111723.webp",
     pdfHref: "/documents/LODWAR-REFERRAL-HOSPITAL-PROJECT.pdf",
   },
   {
     project: "Wajir County Referral Hospital",
     category: "Best Institutional Project",
     result: "Honorable Mention",
-    image: "https://aak.or.ke/wp-content/uploads/2026/06/Screenshot-2026-05-06-152302.png",
+    image: "/img/screenshot-2026-05-06-152302.webp",
     pdfHref: "/documents/WAJIR-REFERRAL-HOSPITAL.pdf",
   },
   {
     project: "Skanem",
     category: "Best Commercial Project",
     result: "Honorable Mention",
-    image: "https://aak.or.ke/wp-content/uploads/2026/06/Screenshot-2026-06-08-161321.png",
+    image: "/img/screenshot-2026-06-08-161321.webp",
     pdfHref: "/documents/SKANEM-PROJECT.pdf",
   },
   {
     project: "Global Trade Center",
     category: "Best Commercial Project",
     result: "Honorable Mention",
-    image: "https://aak.or.ke/wp-content/uploads/2026/06/Screenshot-2026-05-06-142005.png",
+    image: "/img/screenshot-2026-05-06-142005.webp",
     pdfHref: "/documents/GLOBAL-TRADE-CENTRE-PROJECT.pdf",
   },
   {
     project: "The Bidi Bidi Music and Arts Centre",
     category: "Best Empowerment and Social Equity Through Design",
     result: "Winner",
-    image: "https://aak.or.ke/wp-content/uploads/2026/06/Screenshot-2026-05-06-131531.png",
+    image: "/img/screenshot-2026-05-06-131531.webp",
     pdfHref: "/documents/THE-BIDI-BIDI-PERFORMING-ARTS-CENTRE-PROJECT.pdf",
   },
   {
     project: "Ufi at Kahawa Soweto Settlement",
     category: "Best Empowerment and Social Equity Through Design",
     result: "Runner-up",
-    image: "https://aak.or.ke/wp-content/uploads/2026/06/Screenshot-2026-06-08-153946.png",
+    image: "/img/screenshot-2026-06-08-153946.webp",
     pdfHref: "/documents/URBAN-FABRIC-INITIATIVE-PROJECT.pdf",
   },
   {
     project: "Standard Chartered Bank HQ",
     category: "Best Interior Environment",
     result: "Winner",
-    image: "https://aak.or.ke/wp-content/uploads/2026/06/Screenshot-2026-06-08-152537.png",
+    image: "/img/screenshot-2026-06-08-152537.webp",
     pdfHref: "/documents/STANDARD-CHATERED-BANK-HQ-PROJECT.pdf",
   },
   {
     project: "Lady of Victoria Monastery",
     category: "Best Religious / Monumental",
     result: "Winner",
-    image: "https://aak.or.ke/wp-content/uploads/2026/06/Screenshot-2026-06-08-150532.png",
+    image: "/img/screenshot-2026-06-08-150532.webp",
     pdfHref: "/documents/OUR-LADY-VICTORIA-MONASTERY-PROJECT.pdf",
   },
   {
     project: "Nairobi Waldorf School",
     category: "Best Africa (Re)presentation",
     result: "Winner",
-    image: "https://aak.or.ke/wp-content/uploads/2026/06/Screenshot-2026-06-08-133208.png",
+    image: "/img/screenshot-2026-06-08-133208.webp",
     pdfHref: "/documents/NAIROBI-WALDORF-SCHOOL-PROJECT.pdf",
   },
   {
     project: "Lodwar Referral Hospital",
     category: "Best Africa (Re)presentation",
     result: "Juror's Honourable Mention",
-    image:
-      "https://aak.or.ke/wp-content/uploads/2026/06/Screenshot-2026-06-08-132017-e1780914111723.png",
+    image: "/img/screenshot-2026-06-08-132017-e1780914111723.webp",
     pdfHref: "/documents/LODWAR-REFERRAL-HOSPITAL-PROJECT.pdf",
   },
   {
     project: "The Bidi Bidi Music and Arts Centre",
     category: "Best Africa (Re)presentation",
     result: "Juror's Choice Honorable Mention",
-    image: "https://aak.or.ke/wp-content/uploads/2026/06/Screenshot-2026-05-06-131531.png",
+    image: "/img/screenshot-2026-05-06-131531.webp",
     pdfHref: "/documents/THE-BIDI-BIDI-PERFORMING-ARTS-CENTRE-PROJECT.pdf",
   },
 ];
@@ -283,11 +234,11 @@ function AwardsPage() {
             <PageBreadcrumb trail={[{ label: "Awards & Honours" }]} />
 
             <Reveal className="mt-8 max-w-2xl">
-              <div className="flex items-center gap-3 text-xs font-medium uppercase tracking-[0.22em] text-muted-foreground">
+              <div className="meta-label flex items-center gap-3 border-t border-border pt-5 text-muted-foreground">
                 <Trophy className="h-4 w-4 text-primary" aria-hidden="true" />
                 <span>Recognising professional mastery</span>
               </div>
-              <h1 className="mt-5 font-display text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
+              <h1 className="mt-5 font-display text-4xl font-semibold leading-[1.02] tracking-tight text-balance text-foreground sm:text-5xl lg:text-6xl">
                 AAK-Basco DuraCoat Awards of Excellence in Architecture
               </h1>
               <p className="mt-5 text-base leading-relaxed text-muted-foreground">

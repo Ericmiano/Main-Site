@@ -121,7 +121,40 @@ function PinnedChapters() {
 /** Mobile and reduced-motion fallback — full content, no pinning/crossfade. */
 function StackedChapters() {
   return (
-    <ul className="grid gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-4 lg:motion-safe:hidden">
+    <>
+      {/* Phones: a compact numbered index rather than eight full-height cards. */}
+      <ol className="border-t border-border sm:hidden">
+        {chapters.map((chapter, i) => (
+          <li key={chapter.slug} className="border-b border-border">
+            <Link
+              to="/chapters/$slug"
+              params={{ slug: chapter.slug }}
+              className="flex min-h-20 items-center gap-4 py-3"
+            >
+              <span className="meta-label w-6 shrink-0 text-primary">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <span className="flex-1 font-display text-lg font-semibold leading-tight text-foreground">
+                {chapter.name}
+              </span>
+              <img
+                src={chapter.image}
+                alt=""
+                loading="lazy"
+                className="h-14 w-14 shrink-0 object-cover"
+              />
+            </Link>
+          </li>
+        ))}
+      </ol>
+      <StackedChapterGrid />
+    </>
+  );
+}
+
+function StackedChapterGrid() {
+  return (
+    <ul className="hidden gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid sm:grid-cols-2 lg:grid-cols-4 lg:motion-safe:hidden">
       {chapters.map((chapter, i) => (
         <li key={chapter.slug} className="bg-card">
           <Reveal delay={(i % 4) * 70}>

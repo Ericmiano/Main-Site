@@ -29,25 +29,26 @@ export function SectionHeading({
     <Reveal
       className={cn("flex flex-col gap-7 md:flex-row md:items-end md:justify-between", className)}
     >
-      <div className="max-w-2xl">
-        <div
-          className={cn(
-            "flex items-center gap-2.5 text-xs uppercase tracking-[0.18em] text-primary",
-            bold ? "font-extrabold" : "font-semibold",
-          )}
-        >
+      <div className="max-w-2xl flex-1">
+        {/* Same thin numbered rule as the homepage's SectionRule. */}
+        <div className="flex items-center justify-between border-t border-border pt-5">
+          <span
+            className={cn(
+              "meta-label text-muted-foreground",
+              bold && "font-extrabold text-foreground",
+            )}
+          >
+            {eyebrow}
+          </span>
           {index ? (
-            <span aria-hidden="true" className="font-accent italic text-muted-foreground">
+            <span aria-hidden="true" className="meta-label text-primary">
               {index}
             </span>
-          ) : (
-            <span aria-hidden="true" className="h-1.5 w-1.5 bg-primary" />
-          )}
-          <span>{eyebrow}</span>
+          ) : null}
         </div>
         <h2
           className={cn(
-            "mt-4 font-display text-4xl leading-[0.98] tracking-tight text-balance text-foreground sm:text-5xl lg:text-6xl",
+            "mt-7 font-display text-4xl leading-[0.98] tracking-tight text-balance text-foreground sm:text-5xl lg:text-6xl",
             bold ? "font-bold" : "font-semibold",
           )}
         >

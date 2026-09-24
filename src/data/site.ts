@@ -73,7 +73,7 @@ export const events: SiteEvent[] = [
       { label: "Venue", value: "Diamonds Leisure Beach & Golf Resort, Diani" },
       { label: "Starts at", value: "KES 18,000" },
     ],
-    image: "https://aak.or.ke/wp-content/uploads/2025/05/0Q9A0926-1200x800.jpg",
+    image: "/img/0q9a0926-1200x800.webp",
     imageAlt: "Delegates in session at a previous AAK annual convention",
     registerHref: "https://members.aak.or.ke/publicevents",
     registerLabel: "Register (from KES 18,000)",
@@ -127,7 +127,7 @@ export const events: SiteEvent[] = [
       { label: "Date", value: "10 October 2026" },
       { label: "Theme", value: "World Mental Health Awareness" },
     ],
-    image: "https://aak.or.ke/wp-content/uploads/2025/06/1H5A2307-1200x800.jpg",
+    image: "/img/1h5a2307-1200x800.webp",
     imageAlt: "AAK members at a professional gathering",
     registerTo: { to: "/events" },
     registerLabel: "View the AAK events calendar",
@@ -151,7 +151,7 @@ export const events: SiteEvent[] = [
       { label: "Date", value: "26 October 2026" },
       { label: "Run by", value: "Town Planners Chapter" },
     ],
-    image: "https://aak.or.ke/wp-content/uploads/2025/06/1H5A2307-1200x800.jpg",
+    image: "/img/1h5a2307-1200x800.webp",
     imageAlt: "Members in discussion at an AAK Town Planners Chapter event",
     registerTo: { to: "/initiatives/$slug", params: { slug: "urban-thinkers-campus" } },
     registerLabel: "Learn about Urban Thinkers Campus",
@@ -175,7 +175,7 @@ export const events: SiteEvent[] = [
       { label: "Date", value: "9 December 2026" },
       { label: "Includes", value: "Status of the Built Environment Report launch" },
     ],
-    image: "https://aak.or.ke/wp-content/uploads/2025/05/0Q9A0926-1200x800.jpg",
+    image: "/img/0q9a0926-1200x800.webp",
     imageAlt: "AAK members at a professional dinner event",
     registerTo: { to: "/status-of-the-built-environment" },
     registerLabel: "Read the Status of the Built Environment Report",
@@ -236,7 +236,7 @@ export const initiatives: Initiative[] = [
       "A public policing initiative empowering citizens to identify and report structural hazards and illegal construction, feeding multi-agency inspections with the NCA and county governments.",
     href: "https://aak.or.ke/mulika-mjengo/",
     cta: "Report a concern",
-    image: "https://aak.or.ke/wp-content/uploads/2025/06/1H5A2307-1200x800.jpg",
+    image: "/img/1h5a2307-1200x800.webp",
     tone: "primary",
   },
   {
@@ -248,7 +248,7 @@ export const initiatives: Initiative[] = [
       "AAK's public-facing campaign encouraging Kenyans to engage registered professionals from the outset of any building project, rather than after problems appear.",
     href: "https://aak.or.ke/je-una-mjengo/",
     cta: "See the campaign",
-    image: "https://aak.or.ke/wp-content/uploads/2025/06/1H5A2307-1200x800.jpg",
+    image: "/img/1h5a2307-1200x800.webp",
     tone: "primary",
   },
   {
@@ -272,7 +272,7 @@ export const initiatives: Initiative[] = [
       "A national rating system for resource-efficient building across East Africa's climatic zones, scored on passive design, resource efficiency, energy, landscape and innovation.",
     href: "https://aak.or.ke/safari-green-building-index/",
     cta: "View guidelines",
-    image: "https://aak.or.ke/wp-content/uploads/2025/05/0Q9A0926-1200x800.jpg",
+    image: "/img/0q9a0926-1200x800.webp",
     tone: "green",
   },
   {
@@ -284,7 +284,7 @@ export const initiatives: Initiative[] = [
       "Guidelines developed with Habitat for Humanity International addressing sick-building conditions in Nairobi's informal settlements, set out across fifteen pillars.",
     href: "https://aak.or.ke/healthy-homes-guidelines/",
     cta: "View the guidelines",
-    image: "https://aak.or.ke/wp-content/uploads/2025/06/1H5A2307-1200x800.jpg",
+    image: "/img/1h5a2307-1200x800.webp",
     tone: "green",
   },
   {
@@ -296,7 +296,7 @@ export const initiatives: Initiative[] = [
       "An open platform for critical exchange between urban researchers, professionals and decision-makers, run with UN-Habitat since 2020.",
     href: "https://aak.or.ke/urban-thinkers-campus/",
     cta: "Explore the platform",
-    image: "https://aak.or.ke/wp-content/uploads/2025/06/1H5A2307-1200x800.jpg",
+    image: "/img/1h5a2307-1200x800.webp",
     tone: "primary",
   },
 ];
@@ -320,7 +320,7 @@ export const chapters: Chapter[] = [
     name: "Architects",
     slug: "architects",
     href: "https://aak.or.ke/architects-chapter/",
-    image: "https://aak.or.ke/wp-content/uploads/2026/03/arch-scaled.webp",
+    image: "/img/arch.webp",
     definition:
       "An Architect is a professional trained in the design and construction of buildings and structures that primarily provide shelter: preparing designs, coordinating with contractors and consultants, and certifying construction compliance with approved standards.",
     tagline: "Architecture is the science and art of building.",
@@ -330,7 +330,7 @@ export const chapters: Chapter[] = [
     name: "Quantity Surveyors",
     slug: "quantity-surveyors",
     href: "https://aak.or.ke/quantity-surveyors-chapter/",
-    image: "https://aak.or.ke/wp-content/uploads/2026/03/QS.png",
+    image: "/img/qs.webp",
     definition:
       "A Quantity Surveyor is a professional who provides expert advice on construction costs, ensuring that proposed projects are affordable and offer value for money: preparing cost estimates, managing project costs, advising on contractual matters and supporting dispute resolution.",
     tagline: "The essential link between client commission and building completion.",
@@ -340,7 +340,7 @@ export const chapters: Chapter[] = [
     name: "Town Planners",
     slug: "town-planners",
     href: "https://aak.or.ke/town-planners-chapter/",
-    image: "https://aak.or.ke/wp-content/uploads/2026/03/TPC.jpg-scaled.jpeg",
+    image: "/img/tpc.webp",
     definition:
       "A Town Planner is a trained professional who develops plans and programmes for land use and urban development: assessing development feasibility, reviewing proposals, advising planning authorities and ensuring compliance with zoning regulations.",
     tagline: "Providing harmony and efficiency among diverse activities within the town or region.",
@@ -350,7 +350,7 @@ export const chapters: Chapter[] = [
     name: "Engineers",
     slug: "engineers",
     href: "https://aak.or.ke/engineers-chapter/",
-    image: "https://aak.or.ke/wp-content/uploads/2026/03/Eng.png",
+    image: "/img/eng.webp",
     definition:
       "An Engineer is a trained professional concerned with the design and physical integrity of buildings, ensuring their safety, stability and durability: preparing detailed structural designs and drawings, and conducting site investigations to ensure compliance with technical and safety standards across the built landscape.",
     tagline: "Ensuring structural safety, stability, and durability in the built environment.",
@@ -360,7 +360,7 @@ export const chapters: Chapter[] = [
     name: "Landscape Architects",
     slug: "landscape-architects",
     href: "https://aak.or.ke/landscape-architects-chapter/",
-    image: "https://aak.or.ke/wp-content/uploads/2026/03/Landscape.jpeg",
+    image: "/img/landscape.webp",
     definition:
       "A Landscape Architect is a trained professional who designs outdoor spaces such as parks, public areas and private gardens: organising land features and selecting materials to maintain the ecological and aesthetic health of the built and natural environment.",
     tagline: "Conserving and improving the natural environment through sound design and planning.",
@@ -370,7 +370,7 @@ export const chapters: Chapter[] = [
     name: "Environmental Design Consultants",
     slug: "environmental-design-consultants",
     href: "https://aak.or.ke/environmental-design-consultants-chapter/",
-    image: "https://aak.or.ke/wp-content/uploads/2026/03/EDC.JPG-scaled.jpeg",
+    image: "/img/edc.webp",
     definition:
       "An Environmental Design Consultant is a professional concerned with environmental issues related to construction projects, including air, land, water, renewable energy and waste management: assessing the environmental suitability of developments and recommending mitigation measures to promote sustainable construction across the built and natural environment.",
     tagline: "Promoting sustainable construction through expert environmental advisory.",
@@ -380,7 +380,7 @@ export const chapters: Chapter[] = [
     name: "Construction Project Managers",
     slug: "construction-project-managers",
     href: "https://aak.or.ke/construction-project-management-chapter/",
-    image: "https://aak.or.ke/wp-content/uploads/2026/03/CPM.jpeg",
+    image: "/img/cpm.webp",
     definition:
       "A Construction Project Manager is a professional who oversees the planning, coordination and execution of construction projects from inception to completion: managing timelines, quality standards and resources, and coordinating project teams to ensure the functional and financial success of every development.",
     tagline: "Planning, coordinating, and controlling projects from inception to completion.",
@@ -390,7 +390,7 @@ export const chapters: Chapter[] = [
     name: "Interior Designers",
     slug: "interior-designers",
     href: "https://aak.or.ke/interior-designers-chapter/",
-    image: "https://aak.or.ke/wp-content/uploads/2026/03/Interior-design-scaled.webp",
+    image: "/img/interior-design.webp",
     definition:
       "An Interior Designer is a trained professional who designs functional and aesthetically pleasing interior spaces, with a strong understanding of design principles, space planning and building codes: collaborating with clients and consultants, and coordinating the selection and installation of materials, finishes, furniture and fixtures to ensure spatial excellence.",
     tagline: "Enhancing the human experience through technical precision and aesthetic harmony.",
@@ -422,7 +422,7 @@ export const media: MediaItem[] = [
     category: "Awards",
     caption:
       "A civic gathering space organised around a stepped public court. Awarded Best Student Project at the Awards of Excellence.",
-    image: "https://aak.or.ke/wp-content/uploads/2026/06/Screenshot-2026-06-08-164835.png",
+    image: "/img/screenshot-2026-06-08-164835.webp",
     href: "/documents/THE-AGORA-PROJECT.pdf",
     hrefLabel: "Read the project brief (PDF)",
     span: "wide",
@@ -433,7 +433,7 @@ export const media: MediaItem[] = [
     category: "Student project",
     caption:
       "A light-industrial cluster planned around shared loading yards and a stormwater spine, submitted to the student category.",
-    image: "https://aak.or.ke/wp-content/uploads/2026/06/Screenshot-2026-06-08-164317.png",
+    image: "/img/screenshot-2026-06-08-164317.webp",
     href: "/documents/KIGANDANI-INDUSTRIAL-HUB-PROJECT.pdf",
     hrefLabel: "Read the project brief (PDF)",
     span: "regular",
@@ -444,7 +444,7 @@ export const media: MediaItem[] = [
     category: "Student project",
     caption:
       "A terminal proposal handling pedestrian and vehicle ferry traffic on a single tidal frontage, with shaded queuing halls.",
-    image: "https://aak.or.ke/wp-content/uploads/2026/06/Screenshot-2026-06-08-163554.png",
+    image: "/img/screenshot-2026-06-08-163554.webp",
     href: "/documents/MOMBASA-FERRY-TERMINAL-PROJECT.pdf",
     hrefLabel: "Read the project brief (PDF)",
     span: "regular",
@@ -455,7 +455,7 @@ export const media: MediaItem[] = [
     category: "Institutional",
     caption:
       "Laboratory and teaching blocks arranged around a shaded research quadrangle, with servicing routed below the deck.",
-    image: "https://aak.or.ke/wp-content/uploads/2026/06/Screenshot-2026-05-06-170210.png",
+    image: "/img/screenshot-2026-05-06-170210.webp",
     href: "/documents/KENYA-ADVANCED-INSTITUTE-OF-SCIENCE-OF-TECHNOLOGY-PROJECT.pdf",
     hrefLabel: "Read the project brief (PDF)",
     span: "tall",
@@ -466,7 +466,7 @@ export const media: MediaItem[] = [
     category: "Events",
     caption:
       "Members on a live Nairobi site during the Build Tour, walking the structural frame with the resident engineer.",
-    image: "https://aak.or.ke/wp-content/uploads/2021/08/AAK-BUILD-TOUR-66-1200x800-600x400-1.jpg",
+    image: "/img/aak-build-tour-66-1200x800-600x400-1.webp",
     span: "regular",
   },
   {
@@ -475,7 +475,7 @@ export const media: MediaItem[] = [
     category: "Grow A Classroom",
     caption:
       "An early-childhood centre built with local artisans under member supervision, part of the Grow A Classroom programme.",
-    image: "https://aak.or.ke/wp-content/uploads/2026/06/Screenshot-2026-05-07-091425.png",
+    image: "/img/screenshot-2026-05-07-091425.webp",
     href: "/documents/MZIZI-ECD-CENTRE-PROJECT.pdf",
     hrefLabel: "Read the project brief (PDF)",
     span: "regular",
@@ -800,4 +800,53 @@ export const collegeOfFellows: string[] = [
   "Njau Gilbert",
   "Masinde Augustine",
   "Mehta Hitesh",
+];
+
+/** The nine judged categories of the AAK-Basco DuraCoat Awards of Excellence. */
+export const awardCategories = [
+  {
+    name: "Best Africa (Re)presentation",
+    description:
+      "Entries in this category should demonstrate a meaningful and contemporary interpretation of African cultural identity. Submissions are expected to draw inspiration from local ways of life, tradition and culture, materials, artefacts, patterns, and environmental knowledge systems. Projects must articulate how these references have informed the design approach, resulting in architecture that resonates with regional relevance and expresses African heritage in a clear and intentional manner.",
+  },
+  {
+    name: "Best Commercial Project",
+    description:
+      "This category recognizes commercial developments that excel in functionality, spatial organization, user experience and contextual integration. Submissions must clearly demonstrate how the design supports commercial operations, enhances productivity or customer engagement, and responds sensitively to its physical and socio-economic setting. Consideration is given to environmental performance, material strategy and the project's overall contribution to its urban and natural environment.",
+  },
+  {
+    name: "Best Empowerment and Social Equity Through Design",
+    description:
+      "Submissions must illustrate how architectural design has directly enhanced dignity, accessibility, inclusion and livelihood opportunities for underserved or marginalized communities. Projects should highlight built-form solutions that improve participation, safety, equity and long-term community resilience. Emphasis is placed on tangible design interventions that uplift vulnerable populations and support social transformation.",
+  },
+  {
+    name: "Best Hospitality Project",
+    description:
+      "This category recognizes hotels, lodges, resorts and other guest-focused environments that deliver exceptional spatial quality, comfort and place-specific experience. Submissions should highlight how the design integrates with its landscape or urban setting, enhances ambience, and supports intuitive movement and relaxation. Priority is given to thoughtful material choices, environmental responsiveness, and memorable, context-driven hospitality environments.",
+  },
+  {
+    name: "Best Institutional Project",
+    description:
+      "This category recognizes institutional projects, including educational facilities, healthcare centers, government buildings, cultural institutions and community facilities, that excel in functionality, spatial organization, user experience and contextual integration. Consideration is given to environmental performance, material strategy, durability for public use, and the project's overall contribution to its urban and natural environment.",
+  },
+  {
+    name: "Best Religious / Monumental Project",
+    description:
+      "Entries should exemplify architecture that carries symbolic, spiritual or cultural significance, including churches, mosques, temples, meditation centers and monumental civic structures. Submissions are expected to show how form, materiality, procession, light and spatial organization work together to evoke meaning, support ritual practices and serve the surrounding community with dignity and clarity.",
+  },
+  {
+    name: "Best Interior Environment",
+    description:
+      "Submissions in this category must demonstrate refined and innovative interior design that enhances the function, atmosphere and comfort of indoor spaces, illustrating effective spatial planning, material selection, lighting strategies, furniture integration, ventilation considerations and overall aesthetic harmony.",
+  },
+  {
+    name: "Best Residential Project",
+    description:
+      "This category recognizes exemplary residential design, from single family homes to multi-unit housing and residential developments, that successfully combines aesthetics, functionality, climatic responsiveness and contextual harmony, highlighting thoughtful spatial organization, material interplay and relationship to landscape.",
+  },
+  {
+    name: "Best Student Project",
+    description:
+      "Submissions must be conceptual work produced by students enrolled in accredited architecture programs, demonstrating strong conceptual grounding, clear articulation of design principles, contextual awareness, sustainability considerations and high-quality presentation.",
+  },
 ];

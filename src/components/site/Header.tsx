@@ -72,6 +72,7 @@ export function Header() {
   const [searchLoaded, setSearchLoaded] = useState(false);
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const navRef = useRef<HTMLDivElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
   const closeTimer = useRef<number | null>(null);
 
   const openMenu = (label: string) => {
@@ -97,14 +98,34 @@ export function Header() {
 
   useEffect(() => {
     if (!open) return;
+    const panel = document.getElementById("mobile-nav");
+    const trigger = menuButtonRef.current;
+    const focusables = () =>
+      Array.from(panel?.querySelectorAll<HTMLElement>("a[href], button:not([disabled])") ?? []);
+    focusables()[1]?.focus();
+
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setOpen(false);
+      if (e.key !== "Tab") return;
+      // Keep focus inside the full-screen menu while it covers the page.
+      const items = focusables();
+      const first = items[0];
+      const last = items[items.length - 1];
+      if (!first || !last) return;
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
     };
     document.addEventListener("keydown", onKey);
     document.body.style.overflow = "hidden";
     return () => {
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = "";
+      trigger?.focus();
     };
   }, [open]);
 
@@ -283,6 +304,7 @@ export function Header() {
             </button>
 
             <button
+              ref={menuButtonRef}
               type="button"
               onClick={() => setOpen((v) => !v)}
               aria-expanded={open}
@@ -391,6 +413,9 @@ export function Header() {
       {open ? (
         <div
           id="mobile-nav"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Site menu"
           className="animate-in fade-in fixed inset-0 z-50 flex flex-col bg-ink-deep text-background duration-200 lg:hidden"
         >
           <div className="flex items-center justify-between border-b border-background/15 px-6 py-4">

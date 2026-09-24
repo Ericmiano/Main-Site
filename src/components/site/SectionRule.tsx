@@ -1,8 +1,19 @@
 import { cn } from "@/lib/utils";
 
+const tones = {
+  light: { rule: "border-border", label: "text-muted-foreground", index: "text-primary" },
+  dark: { rule: "border-background/15", label: "text-background/60", index: "text-primary" },
+  // On the brand-red surface the red index would disappear.
+  primary: {
+    rule: "border-primary-foreground/25",
+    label: "text-primary-foreground/80",
+    index: "text-primary-foreground",
+  },
+};
+
 /** A thin numbered rule marking the start of a homepage section — the
  * editorial/architectural structural motif ("01 ─── LABEL") used in place
- * of a plain eyebrow line, on both light and dark sections. */
+ * of a plain eyebrow line, on light, dark and brand-red sections. */
 export function SectionRule({
   index,
   label,
@@ -10,24 +21,13 @@ export function SectionRule({
 }: {
   index: string;
   label: string;
-  tone?: "light" | "dark";
+  tone?: keyof typeof tones;
 }) {
+  const t = tones[tone];
   return (
-    <div
-      className={cn(
-        "flex items-center justify-between border-t pt-6",
-        tone === "dark" ? "border-background/15" : "border-border",
-      )}
-    >
-      <span
-        className={cn(
-          "meta-label",
-          tone === "dark" ? "text-background/60" : "text-muted-foreground",
-        )}
-      >
-        {label}
-      </span>
-      <span className="meta-label text-primary">{index}</span>
+    <div className={cn("flex items-center justify-between border-t pt-6", t.rule)}>
+      <span className={cn("meta-label", t.label)}>{label}</span>
+      <span className={cn("meta-label", t.index)}>{index}</span>
     </div>
   );
 }

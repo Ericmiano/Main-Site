@@ -142,7 +142,7 @@ function EventDetail() {
           <section className="py-14 lg:py-20">
             <div className="mx-auto grid max-w-[1400px] gap-14 px-6 lg:grid-cols-[1.1fr_1fr] lg:px-12">
               <Reveal>
-                <div className="flex items-center gap-4 text-xs font-medium uppercase tracking-[0.22em] text-muted-foreground">
+                <div className="meta-label flex items-center gap-3 border-t border-border pt-5 text-muted-foreground">
                   <span
                     className={
                       status === "ongoing"
@@ -157,7 +157,7 @@ function EventDetail() {
                   </span>
                   <span>{event.kicker}</span>
                 </div>
-                <h1 className="mt-5 font-display text-4xl font-semibold leading-[1.08] tracking-tight text-foreground sm:text-5xl">
+                <h1 className="mt-5 font-display text-4xl font-semibold leading-[1.02] tracking-tight text-balance text-foreground sm:text-5xl lg:text-6xl">
                   {event.title}
                 </h1>
                 <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground">

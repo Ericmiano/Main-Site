@@ -40,7 +40,8 @@ export function MediaGrid() {
           </p>
         </Reveal>
 
-        <div className="mt-16 grid grid-cols-1 gap-5 sm:grid-cols-3">
+        {/* Phones: a swipeable rail of equal plates. sm+: the asymmetric mosaic. */}
+        <div className="-mx-6 mt-12 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-2 [scrollbar-width:none] sm:mx-0 sm:mt-16 sm:grid sm:grid-cols-3 sm:gap-5 sm:overflow-visible sm:px-0 sm:pb-0">
           {media.map((item, i) => {
             const isLead = i === 0;
             const isTall = !isLead && item.span === "tall";
@@ -48,27 +49,31 @@ export function MediaGrid() {
               <Reveal
                 key={item.id}
                 delay={(i % 3) * 80}
-                className={cn(isLead ? "sm:col-span-3" : (spanClass[item.span] ?? ""))}
+                className={cn(
+                  "w-[82%] shrink-0 snap-start sm:w-auto",
+                  isLead ? "sm:col-span-3" : (spanClass[item.span] ?? ""),
+                )}
               >
                 <button
                   type="button"
                   onClick={() => setOpenIndex(i)}
                   className="group relative flex h-full w-full flex-col overflow-hidden bg-card text-left"
                 >
-                  <div className={cn("overflow-hidden bg-secondary", isTall ? "h-full" : "")}>
+                  <div className={cn("overflow-hidden bg-secondary", isTall && "sm:h-full")}>
                     <img
                       src={item.image}
                       alt={item.title}
                       loading="lazy"
                       className={cn(
-                        "w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-105",
-                        isLead ? "aspect-21/9" : isTall ? "h-full" : "aspect-4/3",
+                        "aspect-4/3 w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-105",
+                        isLead && "sm:aspect-21/9",
+                        isTall && "sm:aspect-auto sm:h-full",
                       )}
                     />
                   </div>
 
                   {isTall ? (
-                    <div className="absolute inset-x-0 bottom-0 z-10 bg-linear-to-t from-ink-deep/85 to-transparent px-6 py-6">
+                    <div className="absolute inset-x-0 bottom-0 z-10 hidden bg-linear-to-t from-ink-deep/85 to-transparent px-6 py-6 sm:block">
                       <span className="text-[11px] font-medium uppercase tracking-[0.18em] text-background/70">
                         Plate {String(i + 1).padStart(2, "0")} &nbsp;/&nbsp; {item.category}
                       </span>
@@ -76,21 +81,25 @@ export function MediaGrid() {
                         {item.title}
                       </h3>
                     </div>
-                  ) : (
-                    <div className="flex flex-1 flex-col justify-end gap-2 px-6 py-6">
-                      <span className="text-[11px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
-                        Plate {String(i + 1).padStart(2, "0")} &nbsp;/&nbsp; {item.category}
-                      </span>
-                      <h3
-                        className={cn(
-                          "font-display font-semibold leading-snug text-foreground",
-                          isLead ? "text-2xl sm:text-3xl" : "text-lg",
-                        )}
-                      >
-                        {item.title}
-                      </h3>
-                    </div>
-                  )}
+                  ) : null}
+                  <div
+                    className={cn(
+                      "flex flex-1 flex-col justify-end gap-2 px-6 py-6",
+                      isTall && "sm:hidden",
+                    )}
+                  >
+                    <span className="text-[11px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
+                      Plate {String(i + 1).padStart(2, "0")} &nbsp;/&nbsp; {item.category}
+                    </span>
+                    <h3
+                      className={cn(
+                        "font-display font-semibold leading-snug text-foreground",
+                        isLead ? "text-2xl sm:text-3xl" : "text-lg",
+                      )}
+                    >
+                      {item.title}
+                    </h3>
+                  </div>
                 </button>
               </Reveal>
             );

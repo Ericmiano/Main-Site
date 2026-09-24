@@ -48,44 +48,43 @@ const items: StoreItem[] = [
     name: "AAK Hats",
     price: "Out of stock",
     category: "Merchandise",
-    image: "https://aak.or.ke/wp-content/uploads/2021/08/AAK-Caps.png",
+    image: "/img/aak-caps.webp",
   },
   {
     name: "Branded AAK Cups",
     price: "Out of stock",
     category: "Merchandise",
-    image: "https://aak.or.ke/wp-content/uploads/2023/06/branded-aak-cups.png",
+    image: "/img/branded-aak-cups.webp",
   },
   {
     name: "Certificate of Good Making",
     price: "KES 2,320-4,060",
     category: "Industry documents",
-    image: "https://aak.or.ke/wp-content/uploads/2021/08/Certificate-of-Good-Making-1.jpg",
+    image: "/img/certificate-of-good-making-1.webp",
   },
   {
     name: "Certificate of Practical Completion",
     price: "KES 2,320-4,060",
     category: "Industry documents",
-    image: "https://aak.or.ke/wp-content/uploads/2021/08/Certificate-of-Practical-Completion.jpg",
+    image: "/img/certificate-of-practical-completion.webp",
   },
   {
     name: "Interim Certificate",
     price: "KES 2,320-4,060",
     category: "Industry documents",
-    image: "https://aak.or.ke/wp-content/uploads/2021/08/AAK-Interim-Certificate.jpg",
+    image: "/img/aak-interim-certificate.webp",
   },
   {
     name: "JBC Contract Green Book",
     price: "KES 4,060-5,800",
     category: "Industry documents",
-    image:
-      "https://aak.or.ke/wp-content/uploads/2021/08/Joint-Building-Council-Contract-Book-Green-Book-e1551606319777.jpg",
+    image: "/img/joint-building-council-contract-book-green-book-e1551606319777.webp",
   },
   {
     name: "Standard Method of Measurement Book",
     price: "KES 600-2,000",
     category: "Industry documents",
-    image: "https://aak.or.ke/wp-content/uploads/2021/08/Standard-Method-of-Measurement-SMM.jpg",
+    image: "/img/standard-method-of-measurement-smm.webp",
   },
   {
     name: "David Mutiso Bursary Fund",
@@ -106,7 +105,7 @@ function StorePage() {
             <PageBreadcrumb trail={[{ label: "Store" }]} />
 
             <Reveal className="mt-8 max-w-2xl">
-              <h1 className="mt-2 font-display text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
+              <h1 className="mt-2 font-display text-4xl font-semibold leading-[1.02] tracking-tight text-balance text-foreground sm:text-5xl lg:text-6xl">
                 Store
               </h1>
               <p className="mt-5 text-base leading-relaxed text-muted-foreground">
