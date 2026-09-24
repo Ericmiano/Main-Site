@@ -2,7 +2,7 @@ import { useState } from "react";
 import { IconArrowUpRight as ArrowUpRight, IconFileText as FileText } from "@tabler/icons-react";
 import { publications } from "@/data/site";
 import { Reveal } from "@/components/site/Reveal";
-import { SectionHeading } from "@/components/site/SectionHeading";
+import { SectionRule } from "@/components/site/SectionRule";
 import { Lightbox } from "@/components/site/Lightbox";
 
 export function Publications() {
@@ -23,34 +23,44 @@ export function Publications() {
       className="bg-background py-24 lg:py-32"
     >
       <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
-        <SectionHeading
-          eyebrow="Publications"
-          title={<span id="publications-title">Research, policy and the record</span>}
-          description="The association's submissions, reports and magazines: public documents that shape how Kenya builds."
-        />
+        <Reveal className="max-w-2xl">
+          <SectionRule index="07" label="Knowledge archive" />
+          <h2
+            id="publications-title"
+            className="mt-8 font-display text-4xl font-semibold leading-[0.98] tracking-tight text-balance text-foreground sm:text-5xl"
+          >
+            Research, policy and the record.
+          </h2>
+          <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground">
+            The association&rsquo;s submissions, reports and magazines: public documents that shape
+            how Kenya builds.
+          </p>
+        </Reveal>
 
-        <ul className="mt-14 border-t border-border">
+        <ul className="mt-16 grid grid-cols-1 gap-5 sm:grid-cols-3">
           {publications.map((doc, i) => (
             <li key={doc.title}>
-              <Reveal delay={i * 60}>
+              <Reveal delay={i * 80}>
                 <button
                   type="button"
                   onClick={() => setOpenIndex(i)}
-                  className="group flex w-full flex-col gap-2 border-b border-border py-7 text-left transition-colors hover:bg-secondary/60 sm:flex-row sm:items-center sm:justify-between sm:gap-8"
+                  className="group flex aspect-3/4 w-full flex-col justify-between border border-border p-7 text-left transition-colors duration-300 hover:bg-secondary/60"
                 >
-                  <div className="flex items-start gap-6 sm:items-center">
-                    <span className="pt-1 font-display text-xs tabular-nums text-muted-foreground sm:pt-0">
+                  <div className="flex items-start justify-between">
+                    <span className="font-display text-sm text-muted-foreground/60">
                       {String(i + 1).padStart(2, "0")}
                     </span>
-                    <h3 className="font-display text-lg font-semibold leading-snug text-foreground sm:text-xl">
+                    <FileText className="h-5 w-5 text-primary" aria-hidden="true" />
+                  </div>
+                  <div>
+                    <span className="meta-label text-primary">{doc.meta}</span>
+                    <h3 className="mt-3 font-display text-2xl font-semibold leading-tight text-balance text-foreground">
                       {doc.title}
                     </h3>
-                  </div>
-                  <div className="flex items-center gap-4 pl-12 sm:pl-0">
-                    <span className="text-xs uppercase tracking-[0.16em] text-muted-foreground">
-                      {doc.meta}
+                    <span className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-foreground opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                      Open PDF
+                      <ArrowUpRight className="h-4 w-4 text-primary" />
                     </span>
-                    <ArrowUpRight className="h-5 w-5 shrink-0 text-primary" />
                   </div>
                 </button>
               </Reveal>

@@ -2,19 +2,14 @@ import { useState } from "react";
 import { IconArrowUpRight as ArrowUpRight } from "@tabler/icons-react";
 import { media } from "@/data/site";
 import { Reveal } from "@/components/site/Reveal";
-import { SectionHeading } from "@/components/site/SectionHeading";
+import { SectionRule } from "@/components/site/SectionRule";
 import { Lightbox } from "@/components/site/Lightbox";
+import { cn } from "@/lib/utils";
 
 const spanClass: Record<string, string> = {
   wide: "sm:col-span-2",
-  tall: "",
+  tall: "sm:row-span-2",
   regular: "",
-};
-
-const aspectClass: Record<string, string> = {
-  wide: "aspect-16/9",
-  tall: "aspect-4/3",
-  regular: "aspect-4/3",
 };
 
 export function MediaGrid() {
@@ -31,39 +26,75 @@ export function MediaGrid() {
   return (
     <section id="media" aria-labelledby="media-title" className="bg-secondary py-24 lg:py-32">
       <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
-        <SectionHeading
-          eyebrow="Media & projects"
-          title={<span id="media-title">Work, events and award-winning projects</span>}
-          description="A rolling record of what members are building, the sites we visit and the projects recognised at the Awards of Excellence."
-        />
+        <Reveal className="max-w-2xl">
+          <SectionRule index="06" label="The archive" />
+          <h2
+            id="media-title"
+            className="mt-8 font-display text-4xl font-semibold leading-[0.98] tracking-tight text-balance text-foreground sm:text-5xl"
+          >
+            Work, events and award-winning projects.
+          </h2>
+          <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground">
+            A rolling record of what members are building, the sites we visit and the projects
+            recognised at the Awards of Excellence.
+          </p>
+        </Reveal>
 
-        <div className="mt-16 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {media.map((item, i) => (
-            <Reveal key={item.id} delay={(i % 3) * 80} className={spanClass[item.span] ?? ""}>
-              <button
-                type="button"
-                onClick={() => setOpenIndex(i)}
-                className="group flex h-full w-full flex-col overflow-hidden rounded-2xl bg-card text-left"
+        <div className="mt-16 grid grid-cols-1 gap-5 sm:grid-cols-3">
+          {media.map((item, i) => {
+            const isLead = i === 0;
+            const isTall = !isLead && item.span === "tall";
+            return (
+              <Reveal
+                key={item.id}
+                delay={(i % 3) * 80}
+                className={cn(isLead ? "sm:col-span-3" : (spanClass[item.span] ?? ""))}
               >
-                <div className="overflow-hidden bg-secondary">
-                  <img
-                    src={item.image}
-                    alt={item.title}
-                    loading="lazy"
-                    className={`w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-105 ${aspectClass[item.span] ?? "aspect-4/3"}`}
-                  />
-                </div>
-                <div className="flex flex-1 flex-col justify-end gap-2 px-6 py-6">
-                  <span className="text-[11px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
-                    Plate {String(i + 1).padStart(2, "0")} &nbsp;/&nbsp; {item.category}
-                  </span>
-                  <h3 className="font-display text-lg font-semibold leading-snug text-foreground">
-                    {item.title}
-                  </h3>
-                </div>
-              </button>
-            </Reveal>
-          ))}
+                <button
+                  type="button"
+                  onClick={() => setOpenIndex(i)}
+                  className="group relative flex h-full w-full flex-col overflow-hidden bg-card text-left"
+                >
+                  <div className={cn("overflow-hidden bg-secondary", isTall ? "h-full" : "")}>
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      loading="lazy"
+                      className={cn(
+                        "w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-105",
+                        isLead ? "aspect-21/9" : isTall ? "h-full" : "aspect-4/3",
+                      )}
+                    />
+                  </div>
+
+                  {isTall ? (
+                    <div className="absolute inset-x-0 bottom-0 z-10 bg-linear-to-t from-ink-deep/85 to-transparent px-6 py-6">
+                      <span className="text-[11px] font-medium uppercase tracking-[0.18em] text-background/70">
+                        Plate {String(i + 1).padStart(2, "0")} &nbsp;/&nbsp; {item.category}
+                      </span>
+                      <h3 className="mt-2 font-display text-lg font-semibold leading-snug text-background">
+                        {item.title}
+                      </h3>
+                    </div>
+                  ) : (
+                    <div className="flex flex-1 flex-col justify-end gap-2 px-6 py-6">
+                      <span className="text-[11px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
+                        Plate {String(i + 1).padStart(2, "0")} &nbsp;/&nbsp; {item.category}
+                      </span>
+                      <h3
+                        className={cn(
+                          "font-display font-semibold leading-snug text-foreground",
+                          isLead ? "text-2xl sm:text-3xl" : "text-lg",
+                        )}
+                      >
+                        {item.title}
+                      </h3>
+                    </div>
+                  )}
+                </button>
+              </Reveal>
+            );
+          })}
         </div>
       </div>
 
