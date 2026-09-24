@@ -12,7 +12,7 @@ export function Spotlight() {
           pulled up on top of that dark section instead of a gradient blend. */}
       <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
         <motion.a
-          href="https://aak.or.ke/wp-content/uploads/2026/01/AAK-DURACOAT-AWARDS-OF-EXCELLENCE-2026-1-scaled.webp"
+          href="/img/aak-duracoat-awards-of-excellence-2026.webp"
           target="_blank"
           rel="noopener noreferrer"
           className="relative z-10 -mt-12 block overflow-hidden shadow-2xl lg:-mt-16"
@@ -22,7 +22,7 @@ export function Spotlight() {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         >
           <img
-            src="https://aak.or.ke/wp-content/uploads/2026/01/AAK-DURACOAT-AWARDS-OF-EXCELLENCE-2026-1-scaled.webp"
+            src="/img/aak-duracoat-awards-of-excellence-2026.webp"
             alt="AAK Basco DuraCoat Awards of Excellence in Architecture campaign banner, dated 27 February 2026"
             loading="lazy"
             className="aspect-[2560/233] w-full object-cover"

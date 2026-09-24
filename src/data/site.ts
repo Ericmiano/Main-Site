@@ -102,7 +102,7 @@ export const events: SiteEvent[] = [
       { label: "Venue", value: "ASK Nairobi Showground, Jamhuri Park" },
       { label: "Theme", value: "Shifting the Center: From Fragility to Resilience" },
     ],
-    image: "https://www.biennale.aak.or.ke/assets/images/carousel/carousel_1.webp",
+    image: "/img/biennale-carousel-1.webp",
     imageAlt: "Nairobi Biennale of Architecture & Art 2026 campaign imagery",
     registerHref: "https://www.biennale.aak.or.ke/",
     registerLabel: "Visit the Biennale site",

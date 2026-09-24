@@ -23,8 +23,7 @@ export const Route = createFileRoute("/awards")({
       { property: "og:type", content: "website" },
       {
         property: "og:image",
-        content:
-          "https://aak.or.ke/wp-content/uploads/2026/01/AAK-DURACOAT-AWARDS-OF-EXCELLENCE-2026-1-scaled.webp",
+        content: `${SITE_URL}/img/aak-duracoat-awards-of-excellence-2026.webp`,
       },
       { property: "og:url", content: `${SITE_URL}/awards` },
       { name: "twitter:card", content: "summary_large_image" },
