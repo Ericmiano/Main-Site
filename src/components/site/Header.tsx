@@ -1,6 +1,10 @@
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { IconChevronDown as ChevronDown, IconSearch as Search } from "@tabler/icons-react";
+import {
+  IconChevronDown as ChevronDown,
+  IconSearch as Search,
+  IconX as Close,
+} from "@tabler/icons-react";
 import {
   initiatives,
   memberPortalUrl,
@@ -382,21 +386,51 @@ export function Header() {
         ) : null}
       </div>
 
+      {/* Full-screen spatial takeover, mobile/tablet only — the desktop hover
+          mega-menu above stays as the primary nav there. */}
       {open ? (
-        <div id="mobile-nav" className="border-b border-foreground/12 bg-background lg:hidden">
-          <nav aria-label="Mobile" className="mx-auto max-w-[1400px] px-6 py-4">
+        <div
+          id="mobile-nav"
+          className="animate-in fade-in fixed inset-0 z-50 flex flex-col bg-ink-deep text-background duration-200 lg:hidden"
+        >
+          <div className="flex items-center justify-between border-b border-background/15 px-6 py-4">
+            <Link
+              to="/"
+              className="flex items-center"
+              aria-label="Architectural Association of Kenya, home"
+              onClick={() => setOpen(false)}
+            >
+              <span className="flex items-center rounded-lg bg-background px-3 py-2">
+                <img src={logoHorizontal} alt="" className="h-7 w-auto object-contain" />
+              </span>
+            </Link>
+            <button
+              type="button"
+              onClick={() => setOpen(false)}
+              aria-label="Close menu"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-background/25 text-background"
+            >
+              <Close className="h-5 w-5" aria-hidden="true" />
+            </button>
+          </div>
+
+          <nav aria-label="Mobile" className="flex-1 overflow-y-auto px-6 py-6">
             <ul>
-              {navMenu.map((entry) => {
+              {navMenu.map((entry, i) => {
+                const num = String(i + 1).padStart(2, "0");
                 if (entry.type === "link") {
                   return (
-                    <li key={entry.label}>
+                    <li key={entry.label} className="border-b border-background/12">
                       <NavItem
                         href={entry.href}
                         external={entry.external}
                         onClick={() => setOpen(false)}
-                        className="flex min-h-12 items-center border-b border-foreground/10 py-3 font-display text-xl font-semibold text-foreground"
+                        className="group flex min-h-16 items-baseline gap-4 py-4"
                       >
-                        {entry.label}
+                        <span className="font-display text-xs text-background/35">{num}</span>
+                        <span className="font-display text-2xl font-semibold tracking-tight text-balance transition-colors group-hover:text-primary sm:text-3xl">
+                          {entry.label}
+                        </span>
                       </NavItem>
                     </li>
                   );
@@ -405,12 +439,17 @@ export function Header() {
                 const label = menuLabel(entry);
                 return (
                   <Accordion key={label} type="single" collapsible>
-                    <AccordionItem value={label} className="border-foreground/10">
-                      <AccordionTrigger className="min-h-12 py-3 font-display text-xl font-semibold text-foreground hover:no-underline">
-                        {label}
+                    <AccordionItem value={label} className="border-background/12">
+                      <AccordionTrigger className="min-h-16 py-4 hover:no-underline">
+                        <span className="flex items-baseline gap-4">
+                          <span className="font-display text-xs text-background/35">{num}</span>
+                          <span className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">
+                            {label}
+                          </span>
+                        </span>
                       </AccordionTrigger>
                       <AccordionContent>
-                        <ul className="space-y-1 pb-2">
+                        <ul className="space-y-1 py-2 pl-9">
                           {entry.type === "initiatives"
                             ? initiatives.map((initiative) => (
                                 <li key={initiative.slug}>
@@ -418,7 +457,7 @@ export function Header() {
                                     to="/initiatives/$slug"
                                     params={{ slug: initiative.slug }}
                                     onClick={() => setOpen(false)}
-                                    className="flex min-h-11 items-center text-base text-muted-foreground transition-colors hover:text-foreground"
+                                    className="flex min-h-11 items-center text-base text-background/65 transition-colors hover:text-background"
                                   >
                                     {initiative.title}
                                   </Link>
@@ -430,7 +469,7 @@ export function Header() {
                                     href={link.href}
                                     external={link.external}
                                     onClick={() => setOpen(false)}
-                                    className="flex min-h-11 items-center text-base text-muted-foreground transition-colors hover:text-foreground"
+                                    className="flex min-h-11 items-center text-base text-background/65 transition-colors hover:text-background"
                                   >
                                     {link.label}
                                   </NavItem>
@@ -447,7 +486,7 @@ export function Header() {
               href={memberPortalUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-5 flex min-h-12 items-center justify-center rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground"
+              className="mt-8 flex min-h-12 items-center justify-center rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground"
             >
               Member portal
             </a>
