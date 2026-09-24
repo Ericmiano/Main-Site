@@ -66,9 +66,7 @@ export function Footer() {
           </div>
 
           <nav aria-label="Chapters">
-            <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-background/60">
-              Chapters
-            </h3>
+            <h3 className="meta-label text-background/50">Chapters</h3>
             <ul className="mt-5 space-y-3 text-sm text-background/85">
               {chapters.map((chapter) => (
                 <li key={chapter.name}>
@@ -85,9 +83,7 @@ export function Footer() {
           </nav>
 
           <nav aria-label="Association">
-            <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-background/60">
-              Association
-            </h3>
+            <h3 className="meta-label text-background/50">Association</h3>
             <ul className="mt-5 space-y-3 text-sm text-background/85">
               {associationLinks.map((link) => (
                 <li key={link.label}>
@@ -103,9 +99,7 @@ export function Footer() {
           </nav>
 
           <nav aria-label="Resources">
-            <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-background/60">
-              Resources
-            </h3>
+            <h3 className="meta-label text-background/50">Resources</h3>
             <ul className="mt-5 space-y-3 text-sm text-background/85">
               {resourceLinks.map((link) => (
                 <li key={link.label}>
@@ -143,9 +137,7 @@ export function Footer() {
           </nav>
 
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-background/60">
-              Follow
-            </h3>
+            <h3 className="meta-label text-background/50">Follow</h3>
             <ul className="mt-5 space-y-3 text-sm text-background/85">
               <li>
                 <a
