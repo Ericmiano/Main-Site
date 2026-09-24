@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { IconChevronDown as ChevronDown, IconSearch as Search } from "@tabler/icons-react";
 import {
@@ -16,7 +16,12 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { SearchDialog } from "./SearchDialog";
+// cmdk + the Radix dialog primitive it needs are ~30KB gzipped and only
+// matter once someone actually opens search — split them out of the
+// header's own chunk (loaded on every page) instead of bundling eagerly.
+const SearchDialog = lazy(() =>
+  import("./SearchDialog").then((mod) => ({ default: mod.SearchDialog })),
+);
 
 function NavItem({
   href,
@@ -60,6 +65,7 @@ function menuLabel(entry: NavMenuEntry): string {
 export function Header() {
   const [open, setOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [searchLoaded, setSearchLoaded] = useState(false);
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const navRef = useRef<HTMLDivElement>(null);
   const closeTimer = useRef<number | null>(null);
@@ -102,6 +108,7 @@ export function Header() {
     const onKey = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
         e.preventDefault();
+        setSearchLoaded(true);
         setSearchOpen((v) => !v);
       }
     };
@@ -235,7 +242,10 @@ export function Header() {
               <li className="flex items-center pl-2">
                 <button
                   type="button"
-                  onClick={() => setSearchOpen(true)}
+                  onClick={() => {
+                    setSearchLoaded(true);
+                    setSearchOpen(true);
+                  }}
                   aria-label="Search the site"
                   className="flex h-10 w-10 items-center justify-center rounded-xl text-primary-foreground/85 transition-colors hover:text-primary-foreground focus-visible:text-primary-foreground"
                 >
@@ -258,7 +268,10 @@ export function Header() {
           <div className="flex items-center gap-2 lg:hidden">
             <button
               type="button"
-              onClick={() => setSearchOpen(true)}
+              onClick={() => {
+                setSearchLoaded(true);
+                setSearchOpen(true);
+              }}
               aria-label="Search the site"
               className="my-2 inline-flex h-11 w-11 items-center justify-center rounded-xl border border-primary-foreground/30 text-primary-foreground"
             >
@@ -442,7 +455,11 @@ export function Header() {
         </div>
       ) : null}
 
-      <SearchDialog open={searchOpen} onOpenChange={setSearchOpen} />
+      {searchLoaded ? (
+        <Suspense fallback={null}>
+          <SearchDialog open={searchOpen} onOpenChange={setSearchOpen} />
+        </Suspense>
+      ) : null}
     </header>
   );
 }
