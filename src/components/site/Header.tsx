@@ -322,7 +322,7 @@ export function Header() {
                   rel="noopener noreferrer"
                   className="rounded-xl bg-primary-foreground px-6 py-3 text-sm font-semibold text-primary transition-colors hover:bg-ink-deep hover:text-background"
                 >
-                  Member portal
+                  Member log in
                 </a>
               </li>
             </ul>
@@ -561,7 +561,7 @@ export function Header() {
               rel="noopener noreferrer"
               className="mt-8 flex min-h-12 items-center justify-center rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground"
             >
-              Member portal
+              Member log in
             </a>
           </nav>
         </div>

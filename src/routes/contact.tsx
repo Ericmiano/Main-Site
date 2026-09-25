@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
+  IconArrowUpRight as ArrowUpRight,
   IconClock as Clock,
   IconMail as Mail,
   IconMapPin as MapPin,
@@ -117,6 +118,15 @@ function ContactPage() {
                     </a>
                   </li>
                 </ul>
+                <a
+                  href="https://wa.me/254721691337"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-auto inline-flex items-center gap-2 pt-2 text-sm font-semibold text-foreground transition-colors hover:text-primary"
+                >
+                  Chat on WhatsApp
+                  <ArrowUpRight className="h-4 w-4 text-primary" aria-hidden="true" />
+                </a>
               </div>
             </Reveal>
 
@@ -179,6 +189,43 @@ function ContactPage() {
               </div>
             </div>
           </Reveal>
+        </section>
+
+        <section
+          aria-labelledby="map-title"
+          className="border-t border-border bg-secondary/40 py-16 lg:py-20"
+        >
+          <div className="mx-auto grid max-w-[1400px] gap-8 px-6 lg:grid-cols-[0.7fr_1.6fr] lg:items-center lg:px-12">
+            <div>
+              <h2
+                id="map-title"
+                className="font-display text-2xl font-semibold tracking-tight text-foreground"
+              >
+                Find the secretariat
+              </h2>
+              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                Blue Violets Plaza, 6th Floor, Room 605, Kindaruma Rd, off Ngong Rd, Nairobi.
+              </p>
+              <a
+                href="https://www.google.com/maps/search/?api=1&query=Blue+Violet+Plaza+Kindaruma+Road+Nairobi"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-foreground transition-colors hover:text-primary"
+              >
+                Get directions
+                <ArrowUpRight className="h-4 w-4 text-primary" aria-hidden="true" />
+              </a>
+            </div>
+            <div className="aspect-[16/10] overflow-hidden rounded-2xl border border-border bg-secondary lg:aspect-[16/8]">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.7954780058567!2d36.790491314254716!3d-1.2974023990537153!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f109787542ce1%3A0x1fff8b8ca80946c!2sBlue+Violet+Plaza%2C+Kamburu+Dr%2C+Nairobi!5e0!3m2!1sen!2ske!4v1549692093091"
+                title="Map showing Blue Violet Plaza, Nairobi"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                className="h-full w-full border-0"
+              />
+            </div>
+          </div>
         </section>
       </main>
       <Footer />

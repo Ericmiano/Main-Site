@@ -15,6 +15,7 @@ import { MediaGrid } from "@/components/home/MediaGrid";
 import { Publications } from "@/components/home/Publications";
 import { Membership } from "@/components/home/Membership";
 import { SectionIndicator } from "@/components/home/SectionIndicator";
+import { FeaturedFirm } from "@/components/home/FeaturedFirm";
 import { MemberStats } from "@/components/site/MemberStats";
 import { getSortedEvents } from "@/data/site";
 
@@ -100,6 +101,7 @@ function Index() {
         <MemberStats />
         <Partners />
         <MediaGrid />
+        <FeaturedFirm />
         <Publications />
         <Membership />
       </main>

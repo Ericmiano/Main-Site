@@ -68,6 +68,8 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   );
 }
 
+const CF_BEACON_TOKEN = import.meta.env["VITE_CF_BEACON_TOKEN"] as string | undefined;
+
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
     meta: [
@@ -101,6 +103,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
       { rel: "shortcut icon", href: "/favicon.ico" },
     ],
+    // Cloudflare Web Analytics: set VITE_CF_BEACON_TOKEN at build time to switch it on.
+    scripts: CF_BEACON_TOKEN
+      ? [
+          {
+            src: "https://static.cloudflareinsights.com/beacon.min.js",
+            defer: true,
+            "data-cf-beacon": JSON.stringify({ token: CF_BEACON_TOKEN }),
+          },
+        ]
+      : [],
   }),
 
   shellComponent: RootShell,

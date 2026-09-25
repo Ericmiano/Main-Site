@@ -578,6 +578,8 @@ export interface NavMenuGroup {
 export type NavMenuEntry =
   ({ type: "link" } & NavLink) | ({ type: "group" } & NavMenuGroup) | { type: "initiatives" };
 
+const MEMBER_PORTAL = "https://members.aak.or.ke";
+
 export const navMenu: NavMenuEntry[] = [
   { type: "link", label: "Home", href: "/" },
   {
@@ -586,7 +588,6 @@ export const navMenu: NavMenuEntry[] = [
     description: "Who we are and how to get involved.",
     links: [
       { label: "About us", href: "/about" },
-      { label: "Membership", href: "/membership" },
       { label: "Programmes", href: "/programs" },
       { label: "Corporate social responsibility", href: "/csr" },
       { label: "The team", href: "/team" },
@@ -604,30 +605,43 @@ export const navMenu: NavMenuEntry[] = [
       // Arbitration: on hold while the system behind it is still being built. Re-add once ready.
       // { label: "Arbitration", href: "/arbitration" },
       { label: "Awards & honours", href: "/awards" },
-      { label: "Student affiliates", href: "/students" },
-      {
-        label: "Members directory",
-        href: "https://members.aak.or.ke/directory",
-        external: true,
-      },
-      {
-        label: "Validate a certificate",
-        href: "https://members.aak.or.ke/validate",
-        external: true,
-      },
+      { label: "Media & archive", href: "/#media" },
     ],
   },
-  { type: "link", label: "Media", href: "/#media" },
+  {
+    type: "group",
+    label: "Membership",
+    description: "Join, renew and use your membership. Portal services open on members.aak.or.ke.",
+    links: [
+      { label: "Membership, tiers & fees", href: "/membership" },
+      {
+        label: "New membership registration",
+        href: `${MEMBER_PORTAL}/application/registerv3`,
+        external: true,
+      },
+      {
+        label: "Renew your membership",
+        href: `${MEMBER_PORTAL}/public/pay?for=MEMBERSHIP`,
+        external: true,
+      },
+      { label: "Members directory", href: `${MEMBER_PORTAL}/directory`, external: true },
+      { label: "Validate a certificate", href: `${MEMBER_PORTAL}/validate`, external: true },
+      { label: "Job portal", href: `${MEMBER_PORTAL}/jobs/`, external: true },
+      { label: "Student affiliates", href: "/students" },
+    ],
+  },
   { type: "link", label: "Store", href: "/store" },
 ];
 
 export const utilityLinks: NavLink[] = [
-  { label: "Members directory", href: "https://members.aak.or.ke/directory", external: true },
-  { label: "Validate a certificate", href: "https://members.aak.or.ke/validate", external: true },
-  { label: "aak@aak.or.ke", href: "mailto:aak@aak.or.ke", external: true },
+  { label: "Register", href: `${MEMBER_PORTAL}/application/registerv3`, external: true },
+  { label: "Renew membership", href: `${MEMBER_PORTAL}/public/pay?for=MEMBERSHIP`, external: true },
+  { label: "Job portal", href: `${MEMBER_PORTAL}/jobs/`, external: true },
+  { label: "Validate a certificate", href: `${MEMBER_PORTAL}/validate`, external: true },
 ];
 
-export const memberPortalUrl = "https://members.aak.or.ke/";
+/** Sign-in page of the members portal, used by the header's log-in button. */
+export const memberPortalUrl = `${MEMBER_PORTAL}/signin`;
 
 /* Team & governance --------------------------------------------------
  * Sourced from aak.or.ke/about-us/.
@@ -986,3 +1000,49 @@ export const membershipFees: { category: string; entrance: string; annual: strin
   { category: "Visiting", entrance: "None", annual: "75,000.00" },
   { category: "Institutional Members", entrance: "5,000.00", annual: "50,000.00" },
 ];
+
+/** Member firm featured on the homepage, as showcased on aak.or.ke. Swap the
+ * entry to feature a different firm. */
+export interface FeaturedFirm {
+  name: string;
+  photo: { src: string; alt: string; caption: string };
+  intro: string;
+  projects: { name: string; image: string; facts: { label: string; value: string }[] }[];
+}
+
+export const featuredFirm: FeaturedFirm = {
+  name: "DMJ Architects",
+  photo: {
+    src: "/img/featured-firm/dmj-recognition.webp",
+    alt: "DMJ Architects receiving a plaque of recognition from AAK at the DMJ office",
+    caption: "Receiving AAK’s plaque of recognition",
+  },
+  intro:
+    "Founded by Robert Marshall in 1965, DMJ Architects is a Nairobi based firm renowned for exceptional design in sensitive environment landscapes such as the Serengeti National Park and the Kenyan Coast.",
+  projects: [
+    {
+      name: "Galleria Gardens",
+      image: "/img/featured-firm/galleria-gardens.webp",
+      facts: [
+        { label: "Scope", value: "Large Scale Residential" },
+        { label: "Status", value: "Successfully Completed" },
+      ],
+    },
+    {
+      name: "Swiss Chancery Nairobi",
+      image: "/img/featured-firm/swiss-chancery.webp",
+      facts: [
+        { label: "Chapter", value: "Architects Chapter" },
+        { label: "Status", value: "Award of Excellence" },
+      ],
+    },
+    {
+      name: "Buffalo Mall",
+      image: "/img/featured-firm/buffalo-mall.webp",
+      facts: [
+        { label: "Location", value: "Naivasha, Kenya" },
+        { label: "Scope", value: "Commercial Development" },
+      ],
+    },
+  ],
+};

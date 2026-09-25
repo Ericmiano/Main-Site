@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   IconArrowUpRight as ArrowUpRight,
   IconCalendar as CalendarDays,
+  IconFileDownload as FileDownload,
   IconMapPin as MapPin,
 } from "@tabler/icons-react";
 
@@ -94,6 +95,25 @@ function EventsIndex() {
               <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground">
                 {DESCRIPTION}
               </p>
+              <div className="mt-8 flex flex-wrap items-center gap-x-7 gap-y-4">
+                <a
+                  href="/documents/2026-AAK-Calendar-of-Events.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group inline-flex items-center gap-3 rounded-xl bg-foreground px-6 py-3.5 text-sm font-semibold text-background transition-transform duration-300 hover:-translate-y-0.5"
+                >
+                  <FileDownload className="h-4 w-4" aria-hidden="true" />
+                  2026 calendar of events (PDF)
+                </a>
+                <a
+                  href="https://members.aak.or.ke/publicevents"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="link-underline text-sm font-medium text-foreground"
+                >
+                  Register for events on the member portal
+                </a>
+              </div>
             </Reveal>
           </div>
         </section>
