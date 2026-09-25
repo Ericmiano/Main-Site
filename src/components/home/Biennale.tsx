@@ -30,7 +30,7 @@ export function Biennale() {
           loading="lazy"
           width={1920}
           height={1280}
-          className="absolute inset-0 -z-10 h-[115%] w-full object-cover will-change-transform"
+          className="photo-grade absolute inset-0 -z-10 h-[115%] w-full object-cover will-change-transform"
           style={{ transform: `translateY(${parallax.offset - 40}px)` }}
         />
         <div

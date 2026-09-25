@@ -198,6 +198,25 @@
   transform: scaleX(1);
 }
 
+/* Scroll reveal: "wipe" — photographs uncover top-down instead of fading.
+   Pairs with .reveal via Reveal's `wipe` prop. */
+.wipe {
+  clip-path: inset(0 0 100% 0);
+  transition:
+    opacity 600ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 600ms cubic-bezier(0.16, 1, 0.3, 1),
+    clip-path 1100ms cubic-bezier(0.77, 0, 0.18, 1);
+}
+
+.wipe-in {
+  clip-path: inset(0 0 0 0);
+}
+
+/* One shared grade so photographs from different shoots read as a set. */
+.photo-grade {
+  filter: saturate(0.9) contrast(1.05) sepia(0.06);
+}
+
 /* Editorial metadata label — small tracked-out uppercase for numbering,
    dates, locations and categories (e.g. "01 / 08", "NAIROBI", "2026"). */
 @layer components {
@@ -339,10 +358,12 @@
 
   .reveal,
   .rule-draw,
+  .wipe,
   .hero-item,
   .hero-zoom {
     opacity: 1;
     transform: none;
+    clip-path: none;
     animation: none;
     transition: none;
   }

@@ -1,6 +1,7 @@
 import { IconArrowRight as ArrowRight } from "@tabler/icons-react";
 import { Reveal } from "@/components/site/Reveal";
 import { SectionRule } from "@/components/site/SectionRule";
+import { ChapterPicker } from "./ChapterPicker";
 
 const paths = [
   {
@@ -68,6 +69,8 @@ export function Membership() {
             </div>
           ))}
         </div>
+
+        <ChapterPicker />
       </div>
     </section>
   );

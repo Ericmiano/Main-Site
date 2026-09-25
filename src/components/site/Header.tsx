@@ -74,6 +74,33 @@ export function Header() {
   const navRef = useRef<HTMLDivElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const closeTimer = useRef<number | null>(null);
+  const progressRef = useRef<HTMLDivElement>(null);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    let frame: number | null = null;
+    const update = () => {
+      frame = null;
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      setScrolled(window.scrollY > 80);
+      // Written straight to the element so scrolling doesn't re-render the header.
+      progressRef.current?.style.setProperty(
+        "transform",
+        `scaleX(${max > 0 ? Math.min(1, window.scrollY / max) : 0})`,
+      );
+    };
+    const onScroll = () => {
+      if (frame === null) frame = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (frame !== null) cancelAnimationFrame(frame);
+    };
+  }, []);
 
   const openMenu = (label: string) => {
     if (closeTimer.current) {
@@ -166,7 +193,12 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 bg-background">
       {/* Utility strip */}
-      <div className="hidden bg-ink-deep text-background lg:block">
+      <div
+        className={cn(
+          "hidden overflow-hidden bg-ink-deep text-background transition-[max-height] duration-300 lg:block",
+          scrolled ? "max-h-0" : "max-h-9",
+        )}
+      >
         <div className="mx-auto flex h-9 max-w-[1400px] items-center justify-between px-6 text-[11px] tracking-[0.14em] uppercase lg:px-12">
           <p className="text-background/50">
             Blue Violets Plaza, Kindaruma Rd, Off Ngong Rd, Nairobi
@@ -198,7 +230,10 @@ export function Header() {
         <div className="mx-auto flex max-w-[1400px] items-stretch justify-between px-6 lg:px-12">
           <Link
             to="/"
-            className="flex items-center py-4"
+            className={cn(
+              "flex items-center transition-[padding] duration-300",
+              scrolled ? "py-2.5" : "py-4",
+            )}
             aria-label="Architectural Association of Kenya, home"
             onClick={closeMenuNow}
           >
@@ -206,7 +241,10 @@ export function Header() {
               <img
                 src={logoHorizontal}
                 alt="AAK — Promoting excellence in the built environment"
-                className="h-8 w-auto object-contain"
+                className={cn(
+                  "w-auto object-contain transition-[height] duration-300",
+                  scrolled ? "h-7" : "h-8",
+                )}
               />
             </span>
           </Link>
@@ -328,6 +366,16 @@ export function Header() {
               </span>
             </button>
           </div>
+        </div>
+
+        <div
+          aria-hidden="true"
+          className="absolute inset-x-0 bottom-0 h-0.5 bg-primary-foreground/15"
+        >
+          <div
+            ref={progressRef}
+            className="h-full origin-left scale-x-0 bg-primary-foreground/80"
+          />
         </div>
 
         {/* Mega menu panel */}

@@ -25,7 +25,11 @@ export function SectionRule({
 }) {
   const t = tones[tone];
   return (
-    <div className={cn("flex items-center justify-between border-t pt-6", t.rule)}>
+    <div
+      data-section-index={index}
+      data-section-label={label}
+      className={cn("flex items-center justify-between border-t pt-6", t.rule)}
+    >
       <span className={cn("meta-label", t.label)}>{label}</span>
       <span className={cn("meta-label", t.index)}>{index}</span>
     </div>

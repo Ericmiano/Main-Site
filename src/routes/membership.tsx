@@ -11,6 +11,7 @@ import {
 } from "@tabler/icons-react";
 
 import { Header } from "@/components/site/Header";
+import { membershipFees as fees } from "@/data/site";
 import { Footer } from "@/components/site/Footer";
 import { Reveal } from "@/components/site/Reveal";
 import { SectionHeading } from "@/components/site/SectionHeading";
@@ -58,17 +59,6 @@ const steps = [
     title: "Validate",
     body: "Anyone can confirm a member's certificate is genuine and current at members.aak.or.ke/validate.",
   },
-];
-
-const fees: { category: string; entrance: string; annual: string }[] = [
-  { category: "Corporate", entrance: "1,000.00", annual: "7,500.00" },
-  { category: "Licentiate", entrance: "1,000.00", annual: "5,500.00" },
-  { category: "Graduate", entrance: "600.00", annual: "3,750.00" },
-  { category: "Student", entrance: "None", annual: "500.00" },
-  { category: "Firm", entrance: "2,000.00", annual: "15,000.00" },
-  { category: "Technician", entrance: "600.00", annual: "1,500.00" },
-  { category: "Visiting", entrance: "None", annual: "75,000.00" },
-  { category: "Institutional Members", entrance: "5,000.00", annual: "50,000.00" },
 ];
 
 const applicationProcess = [

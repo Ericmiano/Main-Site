@@ -9,6 +9,8 @@ interface RevealProps {
   /** Also draw this element in via a left-to-right scaleX, e.g. for a
    * horizontal rule under a section heading. */
   ruleDraw?: boolean;
+  /** Uncover top-down with a clip-path wipe, for photographs. */
+  wipe?: boolean;
 }
 
 export function Reveal({
@@ -17,6 +19,7 @@ export function Reveal({
   delay = 0,
   as: Tag = "div",
   ruleDraw = false,
+  wipe = false,
 }: RevealProps) {
   const ref = useRef<HTMLElement | null>(null);
   const [shown, setShown] = useState(false);
@@ -63,7 +66,13 @@ export function Reveal({
         className,
       )}
     >
-      {children}
+      {wipe ? (
+        // The clip lives on an inner wrapper: a fully clipped observed element
+        // never counts as intersecting, so the wipe would never start.
+        <div className={cn("wipe h-full", shown && "wipe-in")}>{children}</div>
+      ) : (
+        children
+      )}
     </Tag>
   );
 }

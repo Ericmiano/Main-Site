@@ -81,7 +81,7 @@ function StatementMorph() {
   const lightOpacity = useTransform(progress, [0.86, 1], [0, 1]);
 
   return (
-    <section ref={track} aria-label="AAK statement" className="relative h-[200vh] lg:h-[240vh]">
+    <section ref={track} aria-label="AAK statement" className="relative h-[160vh] lg:h-[180vh]">
       <p className="sr-only">
         We shape the places where life happens, across every discipline of the built environment.
       </p>

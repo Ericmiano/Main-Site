@@ -236,7 +236,7 @@ export const initiatives: Initiative[] = [
       "A public policing initiative empowering citizens to identify and report structural hazards and illegal construction, feeding multi-agency inspections with the NCA and county governments.",
     href: "https://aak.or.ke/mulika-mjengo/",
     cta: "Report a concern",
-    image: "/img/1h5a2307-1200x800.webp",
+    image: "/img/kamulu-mm-10-hp-hp-hp-hp-hp.webp",
     tone: "primary",
   },
   {
@@ -248,7 +248,7 @@ export const initiatives: Initiative[] = [
       "AAK's public-facing campaign encouraging Kenyans to engage registered professionals from the outset of any building project, rather than after problems appear.",
     href: "https://aak.or.ke/je-una-mjengo/",
     cta: "See the campaign",
-    image: "/img/1h5a2307-1200x800.webp",
+    image: "/img/radio-citizen-pic.webp",
     tone: "primary",
   },
   {
@@ -260,7 +260,7 @@ export const initiatives: Initiative[] = [
       "Master plans, landscaping and classrooms built from mature on-site timber for under-served schools, paired with tree planting to grow national tree cover and carbon credits.",
     href: "https://aak.or.ke/grow-a-classroom/",
     cta: "Explore the project",
-    image: "/grow-a-classroom-mabokoni/img-2307.jpg",
+    image: "/img/grow-a-classroom-2307.webp",
     tone: "primary",
   },
   {
@@ -284,7 +284,7 @@ export const initiatives: Initiative[] = [
       "Guidelines developed with Habitat for Humanity International addressing sick-building conditions in Nairobi's informal settlements, set out across fifteen pillars.",
     href: "https://aak.or.ke/healthy-homes-guidelines/",
     cta: "View the guidelines",
-    image: "/img/1h5a2307-1200x800.webp",
+    image: "/img/launch-of-hhgc.webp",
     tone: "green",
   },
   {
@@ -973,4 +973,16 @@ export const awardWinners2024: AwardWinner[] = [
     image: "/img/screenshot-2026-05-06-131531.webp",
     pdfHref: "/documents/THE-BIDI-BIDI-PERFORMING-ARTS-CENTRE-PROJECT.pdf",
   },
+];
+
+/** Membership categories and fees in KES, as listed on /membership. */
+export const membershipFees: { category: string; entrance: string; annual: string }[] = [
+  { category: "Corporate", entrance: "1,000.00", annual: "7,500.00" },
+  { category: "Licentiate", entrance: "1,000.00", annual: "5,500.00" },
+  { category: "Graduate", entrance: "600.00", annual: "3,750.00" },
+  { category: "Student", entrance: "None", annual: "500.00" },
+  { category: "Firm", entrance: "2,000.00", annual: "15,000.00" },
+  { category: "Technician", entrance: "600.00", annual: "1,500.00" },
+  { category: "Visiting", entrance: "None", annual: "75,000.00" },
+  { category: "Institutional Members", entrance: "5,000.00", annual: "50,000.00" },
 ];

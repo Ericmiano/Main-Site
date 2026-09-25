@@ -25,6 +25,8 @@ export function Lightbox({
   children,
   className,
 }: LightboxProps) {
+  const touchStart = React.useRef<{ x: number; y: number } | null>(null);
+
   return (
     <DialogPrimitive.Root open={open} onOpenChange={onOpenChange}>
       <DialogPrimitive.Portal>
@@ -39,6 +41,20 @@ export function Lightbox({
               event.preventDefault();
               onNavigate(1);
             }
+          }}
+          onTouchStart={(event) => {
+            const t = event.touches[0];
+            touchStart.current = t ? { x: t.clientX, y: t.clientY } : null;
+          }}
+          onTouchEnd={(event) => {
+            const start = touchStart.current;
+            const t = event.changedTouches[0];
+            touchStart.current = null;
+            if (!start || !t) return;
+            const dx = t.clientX - start.x;
+            const dy = t.clientY - start.y;
+            // Only a clearly horizontal swipe pages; vertical drags still scroll the panel.
+            if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) onNavigate(dx < 0 ? 1 : -1);
           }}
           className="fixed inset-0 z-50 flex items-center justify-center p-4 outline-none sm:p-8"
         >

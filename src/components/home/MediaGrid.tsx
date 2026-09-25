@@ -49,6 +49,7 @@ export function MediaGrid() {
               <Reveal
                 key={item.id}
                 delay={(i % 3) * 80}
+                wipe={isLead}
                 className={cn(
                   "w-[82%] shrink-0 snap-start sm:w-auto",
                   isLead ? "sm:col-span-3" : (spanClass[item.span] ?? ""),

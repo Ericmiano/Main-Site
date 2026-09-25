@@ -44,7 +44,7 @@ export function Publications() {
                 <button
                   type="button"
                   onClick={() => setOpenIndex(i)}
-                  className="group flex aspect-3/4 w-full flex-col justify-between border border-border p-7 text-left transition-colors duration-300 hover:bg-secondary/60"
+                  className="group flex w-full flex-col justify-between gap-8 border border-border p-6 text-left transition-colors duration-300 hover:bg-secondary/60 sm:aspect-3/4 sm:p-7"
                 >
                   <div className="flex items-start justify-between">
                     <span className="font-display text-sm text-muted-foreground/60">
@@ -57,7 +57,7 @@ export function Publications() {
                     <h3 className="mt-3 font-display text-2xl font-semibold leading-tight text-balance text-foreground">
                       {doc.title}
                     </h3>
-                    <span className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-foreground opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                    <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-foreground transition-opacity duration-300 sm:opacity-0 sm:group-hover:opacity-100 sm:group-focus-visible:opacity-100">
                       Open PDF
                       <ArrowUpRight className="h-4 w-4 text-primary" />
                     </span>

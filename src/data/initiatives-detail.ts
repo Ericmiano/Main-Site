@@ -89,8 +89,8 @@ export const initiativeDetails: InitiativeDetail[] = [
       { label: "Partners", value: "NCA & County Governments" },
       { label: "Coverage", value: "Nairobi County (initial rollout)" },
     ],
-    image: "/img/1h5a2307-1200x800.webp",
-    imageAlt: "AAK members inspecting a construction site",
+    image: "/img/kamulu-mm-10-hp-hp-hp-hp-hp.webp",
+    imageAlt: "Mulika Mjengo site inspection in Kamulu",
     documents: [
       {
         title: "Mulika Mjengo Initiative",
@@ -117,8 +117,8 @@ export const initiativeDetails: InitiativeDetail[] = [
       "The campaign has run alongside a published report, campaign videos and radio coverage across multiple Kenyan stations, including Bahari FM, Kameme FM, Radio Citizen, Musyi FM, Mulembe FM and Egesa FM, extending its reach well beyond Nairobi's built-up areas.",
     ],
     stats: [{ label: "Format", value: "Print, radio and on-site campaigns" }],
-    image: "/img/1h5a2307-1200x800.webp",
-    imageAlt: "AAK public awareness campaign materials",
+    image: "/img/radio-citizen-pic.webp",
+    imageAlt: "Radio Citizen coverage of the Je Una Mjengo campaign",
     gallery: [
       {
         src: "/img/uthiru-collapse.webp",

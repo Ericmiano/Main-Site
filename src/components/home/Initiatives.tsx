@@ -7,12 +7,16 @@ import { cn } from "@/lib/utils";
 
 // Homepage display order only — leads with Grow A Classroom. The nav menu's
 // initiatives panel keeps the canonical `initiatives` order from site.ts.
-const orderedInitiatives = [
+const [featured, ...rest] = [
   ...initiatives.filter((initiative) => initiative.slug === "grow-a-classroom"),
   ...initiatives.filter((initiative) => initiative.slug !== "grow-a-classroom"),
 ];
 
+const toneClass = (tone: string) => (tone === "green" ? "text-sustain" : "text-primary");
+
 export function Initiatives() {
+  if (!featured) return null;
+
   return (
     <section
       id="initiatives"
@@ -34,72 +38,79 @@ export function Initiatives() {
           </p>
         </Reveal>
 
-        <ul className="mt-16 border-t border-foreground/15">
-          {orderedInitiatives.map((initiative, i) => {
-            const flip = i % 2 === 1;
-            return (
-              <li key={initiative.id} className="border-b border-foreground/15 py-12 lg:py-16">
-                <Reveal delay={(i % 3) * 60}>
+        <div className="mt-14 grid gap-10 lg:grid-cols-[1.15fr_1fr] lg:gap-16">
+          <Reveal wipe>
+            <Link to="/initiatives/$slug" params={{ slug: featured.slug }} className="group block">
+              <div className="overflow-hidden bg-secondary">
+                <img
+                  src={featured.image}
+                  alt={`${featured.title} initiative`}
+                  loading="lazy"
+                  className="photo-grade aspect-4/3 w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105 lg:aspect-5/4"
+                />
+              </div>
+              <div className="mt-6 flex items-baseline gap-4">
+                <span className="meta-label text-foreground/50">01</span>
+                <span className={cn("meta-label", toneClass(featured.tone))}>
+                  {featured.eyebrow} &middot; Kenya
+                </span>
+              </div>
+              <h3 className="mt-3 font-display text-3xl font-semibold tracking-tight text-balance text-foreground sm:text-4xl">
+                {featured.title}
+              </h3>
+              <p className="mt-3 max-w-lg text-sm leading-relaxed text-foreground/70">
+                {featured.description}
+              </p>
+              <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-foreground">
+                {featured.cta}
+                <ArrowUpRight className="h-4 w-4 text-primary transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </span>
+            </Link>
+          </Reveal>
+
+          <ol className="border-t border-foreground/15">
+            {rest.map((initiative, i) => (
+              <li key={initiative.id} className="border-b border-foreground/15">
+                <Reveal delay={i * 60}>
                   <Link
                     to="/initiatives/$slug"
                     params={{ slug: initiative.slug }}
-                    className={cn(
-                      "group grid items-center gap-8 lg:gap-16",
-                      i === 0
-                        ? "lg:grid-cols-1"
-                        : flip
-                          ? "lg:grid-cols-[1.3fr_1fr] lg:[&>*:first-child]:order-2"
-                          : "lg:grid-cols-[1fr_1.3fr]",
-                    )}
+                    className="group grid grid-cols-[5.5rem_1fr] items-center gap-5 py-5 sm:grid-cols-[7rem_1fr]"
                   >
-                    <div>
-                      <span className="font-display text-lg text-foreground/30">
-                        {String(i + 1).padStart(2, "0")}
-                      </span>
-                      <h3
-                        className={cn(
-                          "mt-2 font-display font-semibold tracking-tight text-balance text-foreground",
-                          i === 0 ? "text-4xl sm:text-5xl" : "text-2xl sm:text-3xl",
-                        )}
-                      >
-                        {initiative.title}
-                      </h3>
-                      <span
-                        className={cn(
-                          "meta-label mt-3 block",
-                          initiative.tone === "green" ? "text-sustain" : "text-primary",
-                        )}
-                      >
-                        {initiative.eyebrow} &middot; Kenya
-                      </span>
-                      <p className="mt-4 max-w-md text-sm leading-relaxed text-foreground/70">
-                        {initiative.description}
-                      </p>
-                      <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-foreground opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                        {initiative.cta}
-                        <ArrowUpRight className="h-4 w-4 text-primary" />
-                      </span>
-                    </div>
-
-                    <div
-                      className={cn(
-                        "overflow-hidden bg-secondary",
-                        i === 0 ? "aspect-21/9" : "aspect-4/3",
-                      )}
-                    >
+                    <div className="overflow-hidden bg-secondary">
                       <img
                         src={initiative.image}
-                        alt={`${initiative.title} initiative`}
+                        alt=""
                         loading="lazy"
-                        className="h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
+                        className="photo-grade aspect-4/3 w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
                       />
+                    </div>
+                    <div className="min-w-0">
+                      <div className="flex items-baseline gap-3">
+                        <span className="meta-label text-foreground/50">
+                          {String(i + 2).padStart(2, "0")}
+                        </span>
+                        <span className={cn("meta-label truncate", toneClass(initiative.tone))}>
+                          {initiative.eyebrow}
+                        </span>
+                      </div>
+                      <h3 className="mt-1.5 flex items-center gap-2 font-display text-xl font-semibold leading-snug text-foreground">
+                        {initiative.title}
+                        <ArrowUpRight
+                          aria-hidden="true"
+                          className="h-4 w-4 shrink-0 text-primary opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                        />
+                      </h3>
+                      <p className="mt-1 line-clamp-2 text-sm leading-relaxed text-foreground/70">
+                        {initiative.description}
+                      </p>
                     </div>
                   </Link>
                 </Reveal>
               </li>
-            );
-          })}
-        </ul>
+            ))}
+          </ol>
+        </div>
       </div>
     </section>
   );

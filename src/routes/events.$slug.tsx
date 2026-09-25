@@ -9,6 +9,7 @@ import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { Reveal } from "@/components/site/Reveal";
 import { Countdown } from "@/components/site/Countdown";
+import { AddToCalendar } from "@/components/site/AddToCalendar";
 import { PageBreadcrumb } from "@/components/site/PageBreadcrumb";
 import { getEvent, getEventDisplayStatus, type SiteEvent } from "@/data/site";
 
@@ -187,6 +188,12 @@ function EventDetail() {
                     event={event}
                     className="group inline-flex items-center gap-3 rounded-xl bg-foreground px-7 py-4 text-sm font-semibold text-background transition-transform duration-300 hover:-translate-y-0.5"
                   />
+                  {status !== "past" ? (
+                    <AddToCalendar
+                      event={event}
+                      className="inline-flex items-center gap-2 text-sm font-semibold text-foreground transition-colors hover:text-primary"
+                    />
+                  ) : null}
                   <Link to="/events" className="link-underline text-sm font-medium text-foreground">
                     Back to all events
                   </Link>
