@@ -95,8 +95,8 @@ export const gacSchools: GacSchool[] = [
     allPhotos: mabokoniFiles.map(mabokoni),
   },
   {
-    id: "ilani-nzambani",
-    name: "Ilani, Nzambani",
+    id: "iiani-nzambani",
+    name: "Iiani, Nzambani",
     county: "Makueni County",
     kind: "Past event",
     outcomes: [
@@ -107,34 +107,34 @@ export const gacSchools: GacSchool[] = [
     ],
     highlights: [
       photo(
-        "ilani-nzambani",
+        "iiani-nzambani",
         "01-masterplan-model-handover",
-        "AAK team and school leaders present the masterplan model to Ilani School, Nzambani, Makueni County",
+        "AAK team and school leaders present the masterplan model to Iiani School, Nzambani, Makueni County",
       ),
       photo(
-        "ilani-nzambani",
+        "iiani-nzambani",
         "02-tree-planting-pupils",
-        "Pupils plant trees with AAK volunteers at Ilani School, Nzambani",
+        "Pupils plant trees with AAK volunteers at Iiani School, Nzambani",
       ),
       photo(
-        "ilani-nzambani",
+        "iiani-nzambani",
         "03-tree-planting-volunteers",
-        "AAK volunteers and pupils planting seedlings at Ilani School, Nzambani",
+        "AAK volunteers and pupils planting seedlings at Iiani School, Nzambani",
       ),
       photo(
-        "ilani-nzambani",
+        "iiani-nzambani",
         "04-certificates",
-        "Pupils and parents receive certificates during the Grow A Classroom visit to Ilani School",
+        "Pupils and parents receive certificates during the Grow A Classroom visit to Iiani School",
       ),
       photo(
-        "ilani-nzambani",
+        "iiani-nzambani",
         "05-pupils-view-masterplan-model",
-        "Pupils gather around the school masterplan model at Ilani School, Nzambani",
+        "Pupils gather around the school masterplan model at Iiani School, Nzambani",
       ),
       photo(
-        "ilani-nzambani",
+        "iiani-nzambani",
         "06-masterplan-classroom-session",
-        "AAK architect explains the school masterplan to pupils in a classroom at Ilani School",
+        "AAK architect explains the school masterplan to pupils in a classroom at Iiani School",
       ),
     ],
   },
