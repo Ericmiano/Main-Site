@@ -47,14 +47,13 @@ const pages: SearchEntry[] = [
     category: "Page",
     href: "/team",
   },
-  // Arbitration: on hold while the system behind it is still being built. Re-add once ready.
-  // {
-  //   title: "Arbitration",
-  //   description:
-  //     "Construction-dispute arbitration in Kenya: the Joint Building Council contract framework, the Arbitration Act 1995, and how to reach AAK's secretariat.",
-  //   category: "Page",
-  //   href: "/arbitration",
-  // },
+  {
+    title: "Arbitration",
+    description:
+      "Construction-dispute arbitration in Kenya: the Joint Building Council contract framework, the Arbitration Act 1995, and how to reach AAK's secretariat.",
+    category: "Page",
+    href: "/arbitration",
+  },
   {
     title: "Resource Centre",
     description:
@@ -155,6 +154,8 @@ const reportArchiveEntries: SearchEntry[] = reportArchivePages.flatMap((page) =>
   })),
 );
 
+// The same PDF can be listed by several sources (publications, initiative
+// documents, report archives); keep the first occurrence of each.
 export const searchIndex: SearchEntry[] = [
   ...pages,
   ...chapterEntries,
@@ -163,4 +164,12 @@ export const searchIndex: SearchEntry[] = [
   ...publicationEntries,
   ...initiativeDocumentEntries,
   ...reportArchiveEntries,
-];
+].filter(
+  (entry, i, all) =>
+    all.findIndex(
+      (other) =>
+        other.category === entry.category &&
+        other.title === entry.title &&
+        other.href === entry.href,
+    ) === i,
+);

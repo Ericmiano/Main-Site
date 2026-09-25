@@ -15,6 +15,9 @@ const TITLE = "Arbitration | Architectural Association of Kenya";
 const DESCRIPTION =
   "Construction-dispute arbitration in Kenya: the Joint Building Council contract framework, the Arbitration Act 1995, and how to reach AAK's secretariat.";
 
+/** Set to the published Microsoft Forms link; until then the button emails the secretariat. */
+const ARBITRATION_FORM_URL: string | null = null;
+
 export const Route = createFileRoute("/arbitration")({
   head: () => ({
     meta: [
@@ -182,12 +185,15 @@ function ArbitrationPage() {
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
               JBC, FIDIC, NCA or independently negotiated: check the dispute-resolution clause,
               apply below.
+              {ARBITRATION_FORM_URL
+                ? null
+                : " Email the secretariat a copy of the contract and a short description of the dispute."}
             </p>
             <a
-              // TODO: replace with the live Microsoft Forms link once it's published.
-              href="https://forms.office.com/r/REPLACE_WITH_ARBITRATION_FORM_ID"
-              target="_blank"
-              rel="noopener noreferrer"
+              href={
+                ARBITRATION_FORM_URL ?? "mailto:aak@aak.or.ke?subject=Arbitration%20application"
+              }
+              {...(ARBITRATION_FORM_URL ? { target: "_blank", rel: "noopener noreferrer" } : {})}
               className="group mt-7 inline-flex items-center gap-3 rounded-xl bg-primary px-7 py-4 text-sm font-semibold text-primary-foreground transition-transform duration-300 hover:-translate-y-0.5"
             >
               Apply for arbitration
