@@ -3,8 +3,6 @@ import {
   IconArrowLeft as ArrowLeft,
   IconArrowRight as ArrowRight,
   IconArrowUpRight as ArrowUpRight,
-  IconPlayerPauseFilled as Pause,
-  IconPlayerPlayFilled as Play,
 } from "@tabler/icons-react";
 import { Link } from "@tanstack/react-router";
 import { motion, useReducedMotion } from "motion/react";
@@ -42,20 +40,6 @@ export function Spotlight() {
             Awards of Excellence &middot; 2024 winners
           </p>
           <div className="flex gap-2">
-            {auto.canAutoplay ? (
-              <button
-                type="button"
-                onClick={auto.togglePaused}
-                aria-label={auto.paused ? "Play winners slideshow" : "Pause winners slideshow"}
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-border text-foreground transition-colors hover:bg-secondary"
-              >
-                {auto.paused ? (
-                  <Play className="h-3.5 w-3.5" aria-hidden="true" />
-                ) : (
-                  <Pause className="h-3.5 w-3.5" aria-hidden="true" />
-                )}
-              </button>
-            ) : null}
             <button
               type="button"
               onClick={auto.prev}

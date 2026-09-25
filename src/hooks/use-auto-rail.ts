@@ -4,12 +4,11 @@ import { useCallback, useEffect, useRef, useState, type RefObject } from "react"
  * Auto-advances a horizontally scrolling list one item at a time and loops
  * back to the start after the last item. Holds still while the visitor is
  * hovering, touching or keyboard-focused inside it, while it's off screen or
- * the tab is hidden, when they've paused it, and never runs for
+ * the tab is hidden, and never runs for
  * prefers-reduced-motion. Does nothing when the list doesn't overflow
  * (e.g. when it becomes a grid at larger breakpoints).
  */
 export function useAutoRail<T extends HTMLElement>(ref: RefObject<T | null>, intervalMs = 4500) {
-  const [paused, setPaused] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
   const busy = useRef({ hover: false, focus: false, touch: false, hidden: false, offscreen: true });
 
@@ -92,21 +91,14 @@ export function useAutoRail<T extends HTMLElement>(ref: RefObject<T | null>, int
   }, [ref]);
 
   useEffect(() => {
-    if (paused || reducedMotion) return;
+    if (reducedMotion) return;
     const timer = window.setInterval(() => {
       const b = busy.current;
       if (b.hover || b.focus || b.touch || b.hidden || b.offscreen) return;
       step(1);
     }, intervalMs);
     return () => window.clearInterval(timer);
-  }, [paused, reducedMotion, intervalMs, step]);
+  }, [reducedMotion, intervalMs, step]);
 
-  return {
-    next: () => step(1),
-    prev: () => step(-1),
-    paused: paused || reducedMotion,
-    /** False when reduced motion is on: there's nothing to pause. */
-    canAutoplay: !reducedMotion,
-    togglePaused: () => setPaused((p) => !p),
-  };
+  return { next: () => step(1), prev: () => step(-1) };
 }
