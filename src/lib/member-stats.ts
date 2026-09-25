@@ -18,6 +18,7 @@ export const memberStatsSchema = z.object({
         chapter: z.string().min(1),
         members: z.number().int().nonnegative(),
         inGoodStanding: z.number().int().nonnegative(),
+        firms: z.number().int().nonnegative().optional(),
       }),
     )
     .default([]),
