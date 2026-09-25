@@ -6,19 +6,23 @@ export function FeaturedFirm() {
   const [lead, ...rest] = featuredFirm.projects;
 
   return (
-    <section aria-labelledby="featured-firm-title" className="bg-background py-24 lg:py-32">
+    <section
+      aria-labelledby="featured-firm-title"
+      className="bg-ink-deep py-24 text-background lg:py-32"
+    >
       <div className="mx-auto grid max-w-[1400px] gap-12 px-6 lg:grid-cols-[0.8fr_1.6fr] lg:gap-16 lg:px-12">
         <Reveal className="lg:self-center">
-          <p className="meta-label border-t border-border pt-6 text-muted-foreground">
-            Featured member firm
+          <p className="meta-label flex items-center justify-between border-t border-background/15 pt-6 text-background/60">
+            <span>Feature firm &middot; Showcase</span>
+            <span className="text-[oklch(0.75_0.13_38.5)]">Member firm</span>
           </p>
           <h2
             id="featured-firm-title"
-            className="mt-8 font-display text-3xl font-semibold tracking-tight text-foreground sm:text-4xl"
+            className="mt-8 font-display text-4xl font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl"
           >
             {featuredFirm.name}
           </h2>
-          <p className="mt-5 max-w-md text-base leading-relaxed text-muted-foreground">
+          <p className="mt-5 max-w-md text-base leading-relaxed text-background/75">
             {featuredFirm.intro}
           </p>
           <figure className="mt-8 max-w-sm">
@@ -28,7 +32,7 @@ export function FeaturedFirm() {
               loading="lazy"
               className="aspect-4/3 w-full object-cover object-top"
             />
-            <figcaption className="meta-label mt-3 text-muted-foreground">
+            <figcaption className="meta-label mt-3 text-background/55">
               {featuredFirm.photo.caption}
             </figcaption>
           </figure>
@@ -39,7 +43,7 @@ export function FeaturedFirm() {
             project ? (
               <li key={project.name} className={cn(i === 0 && "sm:col-span-2")}>
                 <Reveal wipe={i === 0} delay={i * 70} className="h-full">
-                  <figure className="group relative h-full overflow-hidden bg-secondary">
+                  <figure className="group relative h-full overflow-hidden bg-background/5">
                     <img
                       src={project.image}
                       alt={project.name}

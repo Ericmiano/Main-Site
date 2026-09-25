@@ -580,6 +580,14 @@ export type NavMenuEntry =
 
 const MEMBER_PORTAL = "https://members.aak.or.ke";
 
+/** AAK's sister platforms, listed under Key Initiatives on aak.or.ke. */
+export const aakPlatforms: NavLink[] = [
+  { label: "AAK Sacco", href: "https://sacco.aak.or.ke/", external: true },
+  { label: "BuildHub", href: "https://buildhub.aak.or.ke/", external: true },
+  { label: "AAK Annual Convention", href: "https://convention.aak.or.ke/", external: true },
+  { label: "Nairobi Biennale", href: "https://www.biennale.aak.or.ke/", external: true },
+];
+
 export const navMenu: NavMenuEntry[] = [
   { type: "link", label: "Home", href: "/" },
   {
@@ -627,6 +635,7 @@ export const navMenu: NavMenuEntry[] = [
       { label: "Members directory", href: `${MEMBER_PORTAL}/directory`, external: true },
       { label: "Validate a certificate", href: `${MEMBER_PORTAL}/validate`, external: true },
       { label: "Job portal", href: `${MEMBER_PORTAL}/jobs/`, external: true },
+      { label: "AAK Sacco", href: "https://sacco.aak.or.ke/", external: true },
       { label: "Student affiliates", href: "/students" },
     ],
   },

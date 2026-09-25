@@ -6,6 +6,7 @@ import {
   IconX as Close,
 } from "@tabler/icons-react";
 import {
+  aakPlatforms,
   initiatives,
   memberPortalUrl,
   navMenu,
@@ -424,6 +425,20 @@ export function Header() {
                       </li>
                     ))}
                   </ul>
+                  <div className="mt-8 flex flex-wrap items-baseline gap-x-8 gap-y-3 border-t border-background/10 pt-6">
+                    <span className="meta-label text-background/50">More from AAK</span>
+                    {aakPlatforms.map((link) => (
+                      <NavItem
+                        key={link.label}
+                        href={link.href}
+                        external={link.external}
+                        onClick={closeMenuNow}
+                        className="link-underline text-sm font-medium text-background/85 transition-colors hover:text-background"
+                      >
+                        {link.label}
+                      </NavItem>
+                    ))}
+                  </div>
                 </div>
               ) : (
                 <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_2fr]">
@@ -524,18 +539,33 @@ export function Header() {
                       <AccordionContent>
                         <ul className="space-y-1 py-2 pl-9">
                           {entry.type === "initiatives"
-                            ? initiatives.map((initiative) => (
-                                <li key={initiative.slug}>
-                                  <Link
-                                    to="/initiatives/$slug"
-                                    params={{ slug: initiative.slug }}
-                                    onClick={() => setOpen(false)}
-                                    className="flex min-h-11 items-center text-base text-background/65 transition-colors hover:text-background"
-                                  >
-                                    {initiative.title}
-                                  </Link>
-                                </li>
-                              ))
+                            ? initiatives
+                                .map((initiative) => (
+                                  <li key={initiative.slug}>
+                                    <Link
+                                      to="/initiatives/$slug"
+                                      params={{ slug: initiative.slug }}
+                                      onClick={() => setOpen(false)}
+                                      className="flex min-h-11 items-center text-base text-background/65 transition-colors hover:text-background"
+                                    >
+                                      {initiative.title}
+                                    </Link>
+                                  </li>
+                                ))
+                                .concat(
+                                  aakPlatforms.map((link) => (
+                                    <li key={link.label}>
+                                      <NavItem
+                                        href={link.href}
+                                        external={link.external}
+                                        onClick={() => setOpen(false)}
+                                        className="flex min-h-11 items-center text-base text-background/65 transition-colors hover:text-background"
+                                      >
+                                        {link.label}
+                                      </NavItem>
+                                    </li>
+                                  )),
+                                )
                             : entry.links.map((link) => (
                                 <li key={link.label}>
                                   <NavItem
