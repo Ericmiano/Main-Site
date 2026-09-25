@@ -34,10 +34,12 @@ import { Route as StatusOfTheBuiltEnvironmentRouteImport } from './routes/status
 import { Route as StoreRouteImport } from './routes/store'
 import { Route as StudentsRouteImport } from './routes/students'
 import { Route as TeamRouteImport } from './routes/team'
+import { Route as ApiMemberStatsRouteImport } from './routes/api.member-stats'
 import { Route as ChaptersSlugRouteImport } from './routes/chapters.$slug'
 import { Route as EventsIndexRouteImport } from './routes/events.index'
 import { Route as EventsSlugRouteImport } from './routes/events.$slug'
 import { Route as InitiativesSlugRouteImport } from './routes/initiatives.$slug'
+import { Route as InitiativesGrowAClassroomRouteImport } from './routes/initiatives.grow-a-classroom'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -166,6 +168,11 @@ const TeamRoute = TeamRouteImport.update({
   path: '/team',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiMemberStatsRoute = ApiMemberStatsRouteImport.update({
+  id: '/api/member-stats',
+  path: '/api/member-stats',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ChaptersSlugRoute = ChaptersSlugRouteImport.update({
   id: '/chapters/$slug',
   path: '/chapters/$slug',
@@ -186,6 +193,12 @@ const InitiativesSlugRoute = InitiativesSlugRouteImport.update({
   path: '/initiatives/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const InitiativesGrowAClassroomRoute =
+  InitiativesGrowAClassroomRouteImport.update({
+    id: '/initiatives/grow-a-classroom',
+    path: '/initiatives/grow-a-classroom',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -213,9 +226,11 @@ export interface FileRoutesByFullPath {
   '/store': typeof StoreRoute
   '/students': typeof StudentsRoute
   '/team': typeof TeamRoute
+  '/api/member-stats': typeof ApiMemberStatsRoute
   '/chapters/$slug': typeof ChaptersSlugRoute
   '/events/$slug': typeof EventsSlugRoute
   '/initiatives/$slug': typeof InitiativesSlugRoute
+  '/initiatives/grow-a-classroom': typeof InitiativesGrowAClassroomRoute
   '/events/': typeof EventsIndexRoute
 }
 export interface FileRoutesByTo {
@@ -244,9 +259,11 @@ export interface FileRoutesByTo {
   '/store': typeof StoreRoute
   '/students': typeof StudentsRoute
   '/team': typeof TeamRoute
+  '/api/member-stats': typeof ApiMemberStatsRoute
   '/chapters/$slug': typeof ChaptersSlugRoute
   '/events/$slug': typeof EventsSlugRoute
   '/initiatives/$slug': typeof InitiativesSlugRoute
+  '/initiatives/grow-a-classroom': typeof InitiativesGrowAClassroomRoute
   '/events': typeof EventsIndexRoute
 }
 export interface FileRoutesById {
@@ -276,9 +293,11 @@ export interface FileRoutesById {
   '/store': typeof StoreRoute
   '/students': typeof StudentsRoute
   '/team': typeof TeamRoute
+  '/api/member-stats': typeof ApiMemberStatsRoute
   '/chapters/$slug': typeof ChaptersSlugRoute
   '/events/$slug': typeof EventsSlugRoute
   '/initiatives/$slug': typeof InitiativesSlugRoute
+  '/initiatives/grow-a-classroom': typeof InitiativesGrowAClassroomRoute
   '/events/': typeof EventsIndexRoute
 }
 export interface FileRouteTypes {
@@ -309,9 +328,11 @@ export interface FileRouteTypes {
     | '/store'
     | '/students'
     | '/team'
+    | '/api/member-stats'
     | '/chapters/$slug'
     | '/events/$slug'
     | '/initiatives/$slug'
+    | '/initiatives/grow-a-classroom'
     | '/events/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -340,9 +361,11 @@ export interface FileRouteTypes {
     | '/store'
     | '/students'
     | '/team'
+    | '/api/member-stats'
     | '/chapters/$slug'
     | '/events/$slug'
     | '/initiatives/$slug'
+    | '/initiatives/grow-a-classroom'
     | '/events'
   id:
     | '__root__'
@@ -371,9 +394,11 @@ export interface FileRouteTypes {
     | '/store'
     | '/students'
     | '/team'
+    | '/api/member-stats'
     | '/chapters/$slug'
     | '/events/$slug'
     | '/initiatives/$slug'
+    | '/initiatives/grow-a-classroom'
     | '/events/'
   fileRoutesById: FileRoutesById
 }
@@ -403,9 +428,11 @@ export interface RootRouteChildren {
   StoreRoute: typeof StoreRoute
   StudentsRoute: typeof StudentsRoute
   TeamRoute: typeof TeamRoute
+  ApiMemberStatsRoute: typeof ApiMemberStatsRoute
   ChaptersSlugRoute: typeof ChaptersSlugRoute
   EventsSlugRoute: typeof EventsSlugRoute
   InitiativesSlugRoute: typeof InitiativesSlugRoute
+  InitiativesGrowAClassroomRoute: typeof InitiativesGrowAClassroomRoute
   EventsIndexRoute: typeof EventsIndexRoute
 }
 
@@ -586,6 +613,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TeamRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/member-stats': {
+      id: '/api/member-stats'
+      path: '/api/member-stats'
+      fullPath: '/api/member-stats'
+      preLoaderRoute: typeof ApiMemberStatsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/chapters/$slug': {
       id: '/chapters/$slug'
       path: '/chapters/$slug'
@@ -612,6 +646,13 @@ declare module '@tanstack/react-router' {
       path: '/initiatives/$slug'
       fullPath: '/initiatives/$slug'
       preLoaderRoute: typeof InitiativesSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/initiatives/grow-a-classroom': {
+      id: '/initiatives/grow-a-classroom'
+      path: '/initiatives/grow-a-classroom'
+      fullPath: '/initiatives/grow-a-classroom'
+      preLoaderRoute: typeof InitiativesGrowAClassroomRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -643,9 +684,11 @@ const rootRouteChildren: RootRouteChildren = {
   StoreRoute: StoreRoute,
   StudentsRoute: StudentsRoute,
   TeamRoute: TeamRoute,
+  ApiMemberStatsRoute: ApiMemberStatsRoute,
   ChaptersSlugRoute: ChaptersSlugRoute,
   EventsSlugRoute: EventsSlugRoute,
   InitiativesSlugRoute: InitiativesSlugRoute,
+  InitiativesGrowAClassroomRoute: InitiativesGrowAClassroomRoute,
   EventsIndexRoute: EventsIndexRoute,
 }
 export const routeTree = rootRouteImport

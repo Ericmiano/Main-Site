@@ -10,11 +10,7 @@ export function EventsStrip() {
   const events = getSortedEvents().filter((event) => getEventDisplayStatus(event) !== "past");
 
   return (
-    <section
-      id="events"
-      aria-labelledby="events-title"
-      className="bg-ink-deep pt-20 pb-36 lg:pt-28 lg:pb-44"
-    >
+    <section id="events" aria-labelledby="events-title" className="bg-ink-deep py-20 lg:py-28">
       <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
         <Reveal>
           <SectionRule index="02" label="AAK now" tone="dark" />
@@ -115,6 +111,19 @@ export function EventsStrip() {
             );
           })}
         </ul>
+
+        <Reveal className="mt-10 flex flex-wrap items-center justify-between gap-6">
+          <p className="text-sm text-background/65">
+            Conventions, CPD sessions, site visits and more across the year.
+          </p>
+          <Link
+            to="/events"
+            className="group inline-flex items-center gap-3 rounded-xl bg-background px-6 py-3.5 text-sm font-semibold text-ink-deep transition-transform duration-300 hover:-translate-y-0.5"
+          >
+            View all events
+            <ArrowUpRight className="h-4 w-4 text-primary transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          </Link>
+        </Reveal>
       </div>
     </section>
   );

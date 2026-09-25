@@ -32,20 +32,19 @@ export function Spotlight() {
   };
 
   return (
-    // flow-root stops the rail's negative margin collapsing through the section,
-    // which would drag this light background up over EventsStrip.
-    <section aria-labelledby="spotlight-title" className="flow-root bg-background pb-28 lg:pb-36">
-      {/* The winners rail crosses the boundary from EventsStrip above —
-          pulled up on top of that dark section instead of a gradient blend. */}
+    <section
+      aria-labelledby="spotlight-title"
+      className="bg-background pt-20 pb-28 lg:pt-28 lg:pb-36"
+    >
       <motion.div
-        className="relative z-10 mx-auto -mt-20 max-w-[1400px] px-6 lg:-mt-24 lg:px-12"
+        className="mx-auto max-w-[1400px] px-6 lg:px-12"
         initial={reduceMotion ? false : { opacity: 0, y: 48 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.2 }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
       >
         <div className="flex items-end justify-between gap-6 pb-4">
-          <p className="meta-label text-background/80">
+          <p className="meta-label text-muted-foreground">
             Awards of Excellence &middot; 2024 winners
           </p>
           <div className="hidden gap-2 sm:flex">
@@ -53,7 +52,7 @@ export function Spotlight() {
               type="button"
               onClick={() => scrollRail(-1)}
               aria-label="Previous winners"
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-background/30 text-background transition-colors hover:bg-background/10"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-border text-foreground transition-colors hover:bg-secondary"
             >
               <ArrowLeft className="h-4 w-4" aria-hidden="true" />
             </button>
@@ -61,7 +60,7 @@ export function Spotlight() {
               type="button"
               onClick={() => scrollRail(1)}
               aria-label="More winners"
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-background/30 text-background transition-colors hover:bg-background/10"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-border text-foreground transition-colors hover:bg-secondary"
             >
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </button>

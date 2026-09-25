@@ -15,6 +15,7 @@ import { MediaGrid } from "@/components/home/MediaGrid";
 import { Publications } from "@/components/home/Publications";
 import { Membership } from "@/components/home/Membership";
 import { SectionIndicator } from "@/components/home/SectionIndicator";
+import { MemberStats } from "@/components/site/MemberStats";
 import { getSortedEvents } from "@/data/site";
 
 const SITE_URL = "https://aak.or.ke";
@@ -96,6 +97,7 @@ function Index() {
         <Initiatives />
         <Statement />
         <Chapters />
+        <MemberStats />
         <Partners />
         <MediaGrid />
         <Publications />

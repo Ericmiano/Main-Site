@@ -12,6 +12,7 @@ import {
 
 import { Header } from "@/components/site/Header";
 import { membershipFees as fees } from "@/data/site";
+import { MemberStats } from "@/components/site/MemberStats";
 import { Footer } from "@/components/site/Footer";
 import { Reveal } from "@/components/site/Reveal";
 import { SectionHeading } from "@/components/site/SectionHeading";
@@ -156,6 +157,8 @@ function MembershipPage() {
             </Reveal>
           </div>
         </section>
+
+        <MemberStats />
 
         <section aria-labelledby="join-steps-title" className="py-16 lg:py-24">
           <div className="mx-auto max-w-[1400px] px-6 lg:px-12">

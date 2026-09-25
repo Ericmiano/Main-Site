@@ -177,7 +177,7 @@ export const initiativeDetails: InitiativeDetail[] = [
       { label: "Land targeted", value: "300,000 acres" },
       { label: "Goal", value: "Push tree cover beyond 12%" },
     ],
-    image: "/grow-a-classroom-mabokoni/img-2307.jpg",
+    image: "/gac/mabokoni/img-2307.webp",
     imageAlt:
       "AAK members and pupils at Mabokoni Primary School celebrating the Grow A Classroom programme",
     videos: [
@@ -198,151 +198,151 @@ export const initiativeDetails: InitiativeDetail[] = [
         },
         gallery: [
           {
-            src: "/grow-a-classroom-mabokoni/img-1839.jpg",
+            src: "/gac/mabokoni/img-1839.webp",
             alt: "Mabokoni Primary School site visit",
           },
           {
-            src: "/grow-a-classroom-mabokoni/img-1896.jpg",
+            src: "/gac/mabokoni/img-1896.webp",
             alt: "Mabokoni Primary School site visit",
           },
           {
-            src: "/grow-a-classroom-mabokoni/img-1911.jpg",
+            src: "/gac/mabokoni/img-1911.webp",
             alt: "Mabokoni Primary School site visit",
           },
           {
-            src: "/grow-a-classroom-mabokoni/img-1912.jpg",
+            src: "/gac/mabokoni/img-1912.webp",
             alt: "Mabokoni Primary School site visit",
           },
           {
-            src: "/grow-a-classroom-mabokoni/img-1952.jpg",
+            src: "/gac/mabokoni/img-1952.webp",
             alt: "Mabokoni Primary School site visit",
           },
           {
-            src: "/grow-a-classroom-mabokoni/img-1981.jpg",
+            src: "/gac/mabokoni/img-1981.webp",
             alt: "Mabokoni Primary School site visit",
           },
           {
-            src: "/grow-a-classroom-mabokoni/img-2005.jpg",
+            src: "/gac/mabokoni/img-2005.webp",
             alt: "Mabokoni Primary School site visit",
           },
           {
-            src: "/grow-a-classroom-mabokoni/img-2038.jpg",
+            src: "/gac/mabokoni/img-2038.webp",
             alt: "Mabokoni Primary School site visit",
           },
           {
-            src: "/grow-a-classroom-mabokoni/img-2052.jpg",
+            src: "/gac/mabokoni/img-2052.webp",
             alt: "Mabokoni Primary School site visit",
           },
           {
-            src: "/grow-a-classroom-mabokoni/img-2103.jpg",
+            src: "/gac/mabokoni/img-2103.webp",
             alt: "Mabokoni Primary School site visit",
           },
           {
-            src: "/grow-a-classroom-mabokoni/img-2135.jpg",
+            src: "/gac/mabokoni/img-2135.webp",
             alt: "Mabokoni Primary School site visit",
           },
           {
-            src: "/grow-a-classroom-mabokoni/img-2151.jpg",
+            src: "/gac/mabokoni/img-2151.webp",
             alt: "Mabokoni Primary School site visit",
           },
           {
-            src: "/grow-a-classroom-mabokoni/img-2164.jpg",
+            src: "/gac/mabokoni/img-2164.webp",
             alt: "Mabokoni Primary School site visit",
           },
           {
-            src: "/grow-a-classroom-mabokoni/img-2171.jpg",
+            src: "/gac/mabokoni/img-2171.webp",
             alt: "Mabokoni Primary School site visit",
           },
           {
-            src: "/grow-a-classroom-mabokoni/img-2188.jpg",
+            src: "/gac/mabokoni/img-2188.webp",
             alt: "Mabokoni Primary School site visit",
           },
           {
-            src: "/grow-a-classroom-mabokoni/img-2191.jpg",
+            src: "/gac/mabokoni/img-2191.webp",
             alt: "Mabokoni Primary School site visit",
           },
           {
-            src: "/grow-a-classroom-mabokoni/img-2213.jpg",
+            src: "/gac/mabokoni/img-2213.webp",
             alt: "Mabokoni Primary School site visit",
           },
           {
-            src: "/grow-a-classroom-mabokoni/img-2218.jpg",
+            src: "/gac/mabokoni/img-2218.webp",
             alt: "Mabokoni Primary School site visit",
           },
           {
-            src: "/grow-a-classroom-mabokoni/img-2282.jpg",
+            src: "/gac/mabokoni/img-2282.webp",
             alt: "Mabokoni Primary School site visit",
           },
           {
-            src: "/grow-a-classroom-mabokoni/img-2288.jpg",
+            src: "/gac/mabokoni/img-2288.webp",
             alt: "Mabokoni Primary School site visit",
           },
           {
-            src: "/grow-a-classroom-mabokoni/img-2294.jpg",
+            src: "/gac/mabokoni/img-2294.webp",
             alt: "Mabokoni Primary School site visit",
           },
           {
-            src: "/grow-a-classroom-mabokoni/img-2309.jpg",
+            src: "/gac/mabokoni/img-2309.webp",
             alt: "Mabokoni Primary School site visit",
           },
           {
-            src: "/grow-a-classroom-mabokoni/img-2317.jpg",
+            src: "/gac/mabokoni/img-2317.webp",
             alt: "Mabokoni Primary School site visit",
           },
           {
-            src: "/grow-a-classroom-mabokoni/img-2333.jpg",
+            src: "/gac/mabokoni/img-2333.webp",
             alt: "Mabokoni Primary School site visit",
           },
           {
-            src: "/grow-a-classroom-mabokoni/img-2340.jpg",
+            src: "/gac/mabokoni/img-2340.webp",
             alt: "Mabokoni Primary School site visit",
           },
           {
-            src: "/grow-a-classroom-mabokoni/img-2364.jpg",
+            src: "/gac/mabokoni/img-2364.webp",
             alt: "Mabokoni Primary School site visit",
           },
           {
-            src: "/grow-a-classroom-mabokoni/img-2368.jpg",
+            src: "/gac/mabokoni/img-2368.webp",
             alt: "Mabokoni Primary School site visit",
           },
           {
-            src: "/grow-a-classroom-mabokoni/img-2374.jpg",
+            src: "/gac/mabokoni/img-2374.webp",
             alt: "Mabokoni Primary School site visit",
           },
           {
-            src: "/grow-a-classroom-mabokoni/img-2388.jpg",
+            src: "/gac/mabokoni/img-2388.webp",
             alt: "Mabokoni Primary School site visit",
           },
           {
-            src: "/grow-a-classroom-mabokoni/img-2393.jpg",
+            src: "/gac/mabokoni/img-2393.webp",
             alt: "Mabokoni Primary School site visit",
           },
           {
-            src: "/grow-a-classroom-mabokoni/img-2428.jpg",
+            src: "/gac/mabokoni/img-2428.webp",
             alt: "Mabokoni Primary School site visit",
           },
           {
-            src: "/grow-a-classroom-mabokoni/img-2444.jpg",
+            src: "/gac/mabokoni/img-2444.webp",
             alt: "Mabokoni Primary School site visit",
           },
           {
-            src: "/grow-a-classroom-mabokoni/img-2446.jpg",
+            src: "/gac/mabokoni/img-2446.webp",
             alt: "Mabokoni Primary School site visit",
           },
           {
-            src: "/grow-a-classroom-mabokoni/img-2449.jpg",
+            src: "/gac/mabokoni/img-2449.webp",
             alt: "Mabokoni Primary School site visit",
           },
           {
-            src: "/grow-a-classroom-mabokoni/img-2489.jpg",
+            src: "/gac/mabokoni/img-2489.webp",
             alt: "Mabokoni Primary School site visit",
           },
           {
-            src: "/grow-a-classroom-mabokoni/img-2511.jpg",
+            src: "/gac/mabokoni/img-2511.webp",
             alt: "Mabokoni Primary School site visit",
           },
           {
-            src: "/grow-a-classroom-mabokoni/img-2547.jpg",
+            src: "/gac/mabokoni/img-2547.webp",
             alt: "Mabokoni Primary School site visit",
           },
         ],
