@@ -12,7 +12,7 @@ import {
 } from "@tabler/icons-react";
 import { CountUp } from "@/components/site/CountUp";
 import { chapters } from "@/data/site";
-import type { MemberStats as Stats } from "@/lib/member-stats";
+import type { MemberStats as Stats, MemberStatsSource } from "@/lib/member-stats";
 import { cn } from "@/lib/utils";
 
 const REFRESH_MS = 5 * 60_000;
@@ -44,7 +44,7 @@ const fmt = (n: number) => n.toLocaleString("en-GB");
 /** "The Register": live member counts from the members portal, laid out
  * like BORAQS's register. Renders nothing until the feed has answered. */
 export function MemberStats({ className }: { className?: string }) {
-  const [stats, setStats] = useState<Stats | null>(null);
+  const [stats, setStats] = useState<(Stats & { source?: MemberStatsSource }) | null>(null);
 
   useEffect(() => {
     let alive = true;
@@ -52,7 +52,10 @@ export function MemberStats({ className }: { className?: string }) {
       try {
         const res = await fetch("/api/member-stats");
         if (!res.ok) return;
-        const data = (await res.json()) as Stats & { available?: boolean };
+        const data = (await res.json()) as Stats & {
+          available?: boolean;
+          source?: MemberStatsSource;
+        };
         if (alive && data.available !== false) setStats(data);
       } catch {
         // Keep whatever we last showed.
@@ -72,12 +75,13 @@ export function MemberStats({ className }: { className?: string }) {
   if (!stats) return null;
 
   const rows = [...stats.byChapter].sort((a, b) => order(a.chapter) - order(b.chapter));
-  const updated = new Date(stats.updatedAt).toLocaleString("en-GB", {
-    day: "numeric",
-    month: "short",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+  const live = stats.source !== "snapshot";
+  const updated = new Date(stats.updatedAt).toLocaleString(
+    "en-GB",
+    live
+      ? { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }
+      : { day: "numeric", month: "long", year: "numeric" },
+  );
   const totals = [
     { label: "Registered members", value: stats.totals.members },
     { label: "In good standing", value: stats.totals.inGoodStanding },
@@ -94,8 +98,17 @@ export function MemberStats({ className }: { className?: string }) {
       <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
         <header className="text-center">
           <p className="meta-label inline-flex items-center gap-2 text-muted-foreground">
-            <span aria-hidden="true" className="pulse-dot h-1.5 w-1.5 rounded-full bg-sustain" />
-            Live from the member register &middot; updated {updated}
+            {live ? (
+              <>
+                <span
+                  aria-hidden="true"
+                  className="pulse-dot h-1.5 w-1.5 rounded-full bg-sustain"
+                />
+                Live from the member register &middot; updated {updated}
+              </>
+            ) : (
+              <>Member register &middot; as of {updated}</>
+            )}
           </p>
           <h2
             id="register-title"

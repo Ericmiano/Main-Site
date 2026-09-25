@@ -29,31 +29,56 @@ export const memberStatsSchema = z.object({
 
 export type MemberStats = z.infer<typeof memberStatsSchema>;
 
+export type MemberStatsSource = "live" | "snapshot";
+
+// Placeholder chapters that exist in the portal's data but aren't real
+// chapters ("TEST CHAPTER", "TEST EMAIL", "LS").
+const isTestChapter = (name: string) => /test|^ls$/i.test(name.trim());
+
+const clean = (data: MemberStats): MemberStats => ({
+  ...data,
+  byChapter: data.byChapter.filter((row) => !isTestChapter(row.chapter)),
+});
+
 const TTL_MS = 5 * 60_000;
 let cache: { at: number; data: MemberStats } | null = null;
 
-/** Fetches the register feed, cached per Worker isolate. Returns null when no
- * feed is configured; on a failed refresh, serves the last good copy. */
-export async function getMemberStats(): Promise<MemberStats | null> {
-  const url = process.env["MEMBER_STATS_URL"];
-  if (!url) return null;
-  if (cache && Date.now() - cache.at < TTL_MS) return cache.data;
+async function fetchFeed(url: string): Promise<MemberStats> {
+  const token = process.env["MEMBER_STATS_TOKEN"];
+  const res = await fetch(url, {
+    headers: {
+      accept: "application/json",
+      ...(token ? { authorization: `Bearer ${token}` } : {}),
+    },
+    signal: AbortSignal.timeout(8000),
+  });
+  if (!res.ok) throw new Error(`Member stats feed responded ${res.status}`);
+  return clean(memberStatsSchema.parse(await res.json()));
+}
 
-  try {
-    const token = process.env["MEMBER_STATS_TOKEN"];
-    const res = await fetch(url, {
-      headers: {
-        accept: "application/json",
-        ...(token ? { authorization: `Bearer ${token}` } : {}),
-      },
-      signal: AbortSignal.timeout(8000),
-    });
-    if (!res.ok) throw new Error(`Member stats feed responded ${res.status}`);
-    const data = memberStatsSchema.parse(await res.json());
-    cache = { at: Date.now(), data };
-    return data;
-  } catch (error) {
-    console.error("member-stats:", error);
-    return cache?.data ?? null;
+/**
+ * The live portal feed when configured (cached per Worker isolate; on a
+ * failed refresh, the last good copy). Otherwise, or if the feed has never
+ * answered, the hand-entered snapshot. Null when neither exists.
+ */
+export async function getMemberStats(): Promise<{
+  source: MemberStatsSource;
+  data: MemberStats;
+} | null> {
+  const url = process.env["MEMBER_STATS_URL"];
+  if (url) {
+    if (cache && Date.now() - cache.at < TTL_MS) return { source: "live", data: cache.data };
+    try {
+      const data = await fetchFeed(url);
+      cache = { at: Date.now(), data };
+      return { source: "live", data };
+    } catch (error) {
+      console.error("member-stats:", error);
+      if (cache) return { source: "live", data: cache.data };
+    }
   }
+  const { registerSnapshot } = await import("@/data/member-register-snapshot");
+  return registerSnapshot
+    ? { source: "snapshot", data: clean(memberStatsSchema.parse(registerSnapshot)) }
+    : null;
 }

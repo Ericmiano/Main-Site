@@ -5,19 +5,22 @@ export const Route = createFileRoute("/api/member-stats")({
   server: {
     handlers: {
       GET: async () => {
-        const stats = await getMemberStats();
-        if (!stats) {
+        const result = await getMemberStats();
+        if (!result) {
           return new Response(JSON.stringify({ available: false }), {
             status: 503,
             headers: { "content-type": "application/json", "cache-control": "no-store" },
           });
         }
-        return new Response(JSON.stringify({ available: true, ...stats }), {
-          headers: {
-            "content-type": "application/json",
-            "cache-control": "public, max-age=60",
+        return new Response(
+          JSON.stringify({ available: true, source: result.source, ...result.data }),
+          {
+            headers: {
+              "content-type": "application/json",
+              "cache-control": "public, max-age=60",
+            },
           },
-        });
+        );
       },
     },
   },
