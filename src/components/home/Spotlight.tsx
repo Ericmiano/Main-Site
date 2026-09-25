@@ -3,11 +3,14 @@ import {
   IconArrowLeft as ArrowLeft,
   IconArrowRight as ArrowRight,
   IconArrowUpRight as ArrowUpRight,
+  IconPlayerPauseFilled as Pause,
+  IconPlayerPlayFilled as Play,
 } from "@tabler/icons-react";
 import { Link } from "@tanstack/react-router";
 import { motion, useReducedMotion } from "motion/react";
 import { Reveal } from "@/components/site/Reveal";
 import { awardCategories, awardWinners2024 } from "@/data/site";
+import { useAutoRail } from "@/hooks/use-auto-rail";
 import { cn } from "@/lib/utils";
 
 const RANK = ["Winner", "1st Runner-up", "Runner-up", "2nd Runner-up"];
@@ -20,16 +23,7 @@ const featured = awardWinners2024
 export function Spotlight() {
   const reduceMotion = useReducedMotion();
   const rail = useRef<HTMLOListElement>(null);
-
-  const scrollRail = (direction: -1 | 1) => {
-    const el = rail.current;
-    if (!el) return;
-    const card = el.querySelector("li");
-    el.scrollBy({
-      left: direction * ((card?.getBoundingClientRect().width ?? 300) + 20),
-      behavior: reduceMotion ? "auto" : "smooth",
-    });
-  };
+  const auto = useAutoRail(rail);
 
   return (
     <section
@@ -47,20 +41,34 @@ export function Spotlight() {
           <p className="meta-label text-muted-foreground">
             Awards of Excellence &middot; 2024 winners
           </p>
-          <div className="hidden gap-2 sm:flex">
+          <div className="flex gap-2">
+            {auto.canAutoplay ? (
+              <button
+                type="button"
+                onClick={auto.togglePaused}
+                aria-label={auto.paused ? "Play winners slideshow" : "Pause winners slideshow"}
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-border text-foreground transition-colors hover:bg-secondary"
+              >
+                {auto.paused ? (
+                  <Play className="h-3.5 w-3.5" aria-hidden="true" />
+                ) : (
+                  <Pause className="h-3.5 w-3.5" aria-hidden="true" />
+                )}
+              </button>
+            ) : null}
             <button
               type="button"
-              onClick={() => scrollRail(-1)}
+              onClick={auto.prev}
               aria-label="Previous winners"
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-border text-foreground transition-colors hover:bg-secondary"
+              className="hidden h-10 sm:flex w-10 items-center justify-center rounded-full border border-border text-foreground transition-colors hover:bg-secondary"
             >
               <ArrowLeft className="h-4 w-4" aria-hidden="true" />
             </button>
             <button
               type="button"
-              onClick={() => scrollRail(1)}
+              onClick={auto.next}
               aria-label="More winners"
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-border text-foreground transition-colors hover:bg-secondary"
+              className="hidden h-10 sm:flex w-10 items-center justify-center rounded-full border border-border text-foreground transition-colors hover:bg-secondary"
             >
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </button>

@@ -1,10 +1,15 @@
-import { useState } from "react";
-import { IconArrowUpRight as ArrowUpRight } from "@tabler/icons-react";
+import { useRef, useState } from "react";
+import {
+  IconArrowUpRight as ArrowUpRight,
+  IconPlayerPauseFilled as Pause,
+  IconPlayerPlayFilled as Play,
+} from "@tabler/icons-react";
 import { media } from "@/data/site";
 import { Reveal } from "@/components/site/Reveal";
 import { SectionRule } from "@/components/site/SectionRule";
 import { Lightbox } from "@/components/site/Lightbox";
 import { cn } from "@/lib/utils";
+import { useAutoRail } from "@/hooks/use-auto-rail";
 
 const spanClass: Record<string, string> = {
   wide: "sm:col-span-2",
@@ -14,6 +19,8 @@ const spanClass: Record<string, string> = {
 
 export function MediaGrid() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const rail = useRef<HTMLDivElement>(null);
+  const auto = useAutoRail(rail);
   const activeItem = openIndex !== null ? media[openIndex] : undefined;
 
   const navigate = (direction: -1 | 1) => {
@@ -40,8 +47,30 @@ export function MediaGrid() {
           </p>
         </Reveal>
 
-        {/* Phones: a swipeable rail of equal plates. sm+: the asymmetric mosaic. */}
-        <div className="-mx-6 mt-12 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-2 [scrollbar-width:none] sm:mx-0 sm:mt-16 sm:grid sm:grid-cols-3 sm:gap-5 sm:overflow-visible sm:px-0 sm:pb-0">
+        {/* Phones: a swipeable, auto-advancing rail of equal plates. sm+: the asymmetric mosaic. */}
+        {auto.canAutoplay ? (
+          <div className="mt-10 flex justify-end sm:hidden">
+            <button
+              type="button"
+              onClick={auto.togglePaused}
+              aria-label={auto.paused ? "Play archive slideshow" : "Pause archive slideshow"}
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-border text-foreground"
+            >
+              {auto.paused ? (
+                <Play className="h-3.5 w-3.5" aria-hidden="true" />
+              ) : (
+                <Pause className="h-3.5 w-3.5" aria-hidden="true" />
+              )}
+            </button>
+          </div>
+        ) : null}
+        <div
+          ref={rail}
+          className={cn(
+            "-mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-2 [scrollbar-width:none] sm:mx-0 sm:mt-16 sm:grid sm:grid-cols-3 sm:gap-5 sm:overflow-visible sm:px-0 sm:pb-0",
+            auto.canAutoplay ? "mt-4" : "mt-12",
+          )}
+        >
           {media.map((item, i) => {
             const isLead = i === 0;
             const isTall = !isLead && item.span === "tall";
