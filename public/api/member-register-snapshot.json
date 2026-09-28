@@ -1,1 +1,9 @@
-null
+{
+  "updatedAt": "2026-09-28T10:46:00+03:00",
+  "totals": { "members": 5513, "inGoodStanding": 5503, "firms": 217 },
+  "byChapter": [],
+  "byCategory": [
+    { "category": "individual", "members": 5296 },
+    { "category": "corporate", "members": 217 }
+  ]
+}

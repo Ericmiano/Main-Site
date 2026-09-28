@@ -120,9 +120,9 @@ export function MemberStats({ className }: { className?: string }) {
           <span aria-hidden="true" className="mx-auto mt-5 block h-1 w-14 bg-primary" />
         </header>
 
-        <dl className="mx-auto mt-12 flex max-w-3xl flex-wrap justify-center divide-x divide-border">
+        <dl className="mx-auto mt-12 flex max-w-3xl justify-center divide-x divide-border">
           {totals.map((t) => (
-            <div key={t.label} className="flex flex-col-reverse px-6 py-2 text-center sm:px-10">
+            <div key={t.label} className="flex flex-col-reverse px-3 py-2 text-center sm:px-10">
               <dt className="mt-1 text-sm text-muted-foreground">{t.label}</dt>
               <dd className="font-display text-3xl font-semibold tabular-nums text-foreground sm:text-4xl">
                 <CountUp value={t.value} grouped />
