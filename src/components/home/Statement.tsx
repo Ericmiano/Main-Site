@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion, useScroll, useTransform, type MotionValue } from "motion/react";
 import { Reveal } from "@/components/site/Reveal";
 import { cn } from "@/lib/utils";
@@ -96,9 +96,13 @@ function StatementMorph() {
 }
 
 export function Statement() {
-  const reduceMotion = useReducedMotion();
+  const prefersReduced = useReducedMotion();
+  // The server can't know the setting, so the first client render must match
+  // its morph markup; swap to the static version once mounted.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
-  if (reduceMotion) {
+  if (mounted && prefersReduced) {
     return (
       <section aria-label="AAK statement" className="bg-ink-deep py-32 lg:py-48">
         <div className="mx-auto max-w-[1400px] px-6 lg:px-12">

@@ -30,10 +30,11 @@ export function Spotlight() {
     >
       <motion.div
         className="mx-auto max-w-[1400px] px-6 lg:px-12"
-        initial={reduceMotion ? false : { opacity: 0, y: 48 }}
+        // Same initial markup as the server render; reduced motion just skips the tween.
+        initial={{ opacity: 0, y: 48 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.2 }}
-        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        transition={reduceMotion ? { duration: 0 } : { duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
       >
         <div className="flex items-end justify-between gap-6 pb-4">
           <p className="meta-label text-muted-foreground">
@@ -128,7 +129,7 @@ export function Spotlight() {
       </motion.div>
 
       <div className="mx-auto grid max-w-[1400px] gap-14 px-6 pt-14 lg:grid-cols-[1fr_1.15fr] lg:gap-20 lg:px-12 lg:pt-20">
-        <Reveal className="max-w-2xl lg:sticky lg:top-32 lg:self-start">
+        <Reveal className="max-w-2xl lg:sticky lg:top-[calc(var(--header-h,5rem)+var(--register-h,0px)+2rem)] lg:self-start">
           <div className="meta-label text-muted-foreground">
             In the spotlight &middot; Awards of Excellence
           </div>

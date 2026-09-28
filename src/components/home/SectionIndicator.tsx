@@ -64,9 +64,14 @@ export function SectionIndicator() {
 
   const jump = (el: HTMLElement) => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    // Offset for the sticky header so the section's rule lands in view.
+    // Offset for the sticky header and register strip so the section's rule lands in view.
+    const css = getComputedStyle(document.documentElement);
+    const offset =
+      (parseFloat(css.getPropertyValue("--header-h")) || 86) +
+      (parseFloat(css.getPropertyValue("--register-h")) || 0) +
+      24;
     window.scrollTo({
-      top: el.getBoundingClientRect().top + window.scrollY - 110,
+      top: el.getBoundingClientRect().top + window.scrollY - offset,
       behavior: reduce ? "auto" : "smooth",
     });
     setOpen(false);

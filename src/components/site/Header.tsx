@@ -77,6 +77,20 @@ export function Header() {
   const closeTimer = useRef<number | null>(null);
   const progressRef = useRef<HTMLDivElement>(null);
   const [scrolled, setScrolled] = useState(false);
+  const headerRef = useRef<HTMLElement>(null);
+
+  // Publish the header's live height (it shrinks once scrolled) so other
+  // sticky bars, like the member register strip, can park right beneath it.
+  useEffect(() => {
+    const header = headerRef.current;
+    if (!header) return;
+    const root = document.documentElement;
+    const observer = new ResizeObserver(() =>
+      root.style.setProperty("--header-h", `${header.offsetHeight}px`),
+    );
+    observer.observe(header);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     let frame: number | null = null;
@@ -192,7 +206,7 @@ export function Header() {
   );
 
   return (
-    <header className="sticky top-0 z-50 bg-background">
+    <header ref={headerRef} className="sticky top-0 z-50 bg-background">
       {/* Utility strip */}
       <div
         className={cn(

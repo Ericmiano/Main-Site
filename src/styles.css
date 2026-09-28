@@ -162,7 +162,7 @@
 
   html {
     scroll-behavior: smooth;
-    scroll-padding-top: 6rem;
+    scroll-padding-top: calc(var(--header-h, 5rem) + var(--register-h, 0px) + 1rem);
   }
 
   body {

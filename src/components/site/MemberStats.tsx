@@ -1,62 +1,48 @@
-import { useEffect, useState, type ComponentType } from "react";
+import { useEffect, useRef, useState, type ComponentType } from "react";
 import {
-  IconArmchair,
-  IconBuildingArch,
-  IconBuildingCommunity,
-  IconCalculator,
-  IconCrane,
-  IconHelmet,
-  IconLeaf,
-  IconMap2,
-  IconTrees,
+  IconArrowUpRight,
+  IconBuildingSkyscraper,
+  IconUser,
+  IconUserCheck,
+  IconUsers,
 } from "@tabler/icons-react";
 import { CountUp } from "@/components/site/CountUp";
-import { chapters } from "@/data/site";
+import { registerSnapshot } from "@/data/member-register-snapshot";
 import type { MemberStats as Stats, MemberStatsSource } from "@/lib/member-stats";
 import { cn } from "@/lib/utils";
 
 const REFRESH_MS = 5 * 60_000;
+const DIRECTORY_URL = "https://members.aak.or.ke/directory";
 
 type Icon = ComponentType<{ className?: string; stroke?: number; "aria-hidden"?: boolean }>;
+type Data = Stats & { source?: MemberStatsSource };
 
-// Matched on a keyword so small naming differences in the feed still resolve.
-const ICONS: [string, Icon][] = [
-  ["landscape", IconTrees],
-  ["architect", IconBuildingArch],
-  ["quantity", IconCalculator],
-  ["planner", IconMap2],
-  ["engineer", IconHelmet],
-  ["environment", IconLeaf],
-  ["project", IconCrane],
-  ["interior", IconArmchair],
-];
-const iconFor = (name: string): Icon =>
-  ICONS.find(([k]) => name.toLowerCase().includes(k))?.[1] ?? IconBuildingCommunity;
+const capitalise = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
-// Order the feed's chapters like the rest of the site; unknown names go last.
-const order = (name: string) => {
-  const i = chapters.findIndex((c) => c.name.toLowerCase() === name.trim().toLowerCase());
-  return i === -1 ? chapters.length : i;
-};
-
-const fmt = (n: number) => n.toLocaleString("en-GB");
-
-/** "The Register": live member counts from the members portal, laid out
- * like BORAQS's register. Renders nothing until the feed has answered. */
-export function MemberStats({ className }: { className?: string }) {
-  const [stats, setStats] = useState<(Stats & { source?: MemberStatsSource }) | null>(null);
+/**
+ * The member register as a slim band of headline figures, after the
+ * BORAQS register strip. With `sticky`, it parks under the header from
+ * md up (phones keep it in the flow so it doesn't eat the screen).
+ *
+ * It renders the baked-in snapshot straight away, so there's no layout
+ * jump, then refreshes from /api/member-stats (the portal feed or the
+ * host's snapshot file). Hidden only if the endpoint says there's no data.
+ */
+export function MemberStats({ sticky = false }: { sticky?: boolean }) {
+  const [stats, setStats] = useState<Data | null>(
+    registerSnapshot ? { ...registerSnapshot, source: "snapshot" } : null,
+  );
+  const ref = useRef<HTMLElement>(null);
 
   useEffect(() => {
     let alive = true;
     const load = async () => {
       try {
         const res = await fetch("/api/member-stats");
-        if (!res.ok) return;
-        const data = (await res.json()) as Stats & {
-          available?: boolean;
-          source?: MemberStatsSource;
-        };
-        if (alive && data.available !== false) setStats(data);
+        const data = (await res.json()) as Data & { available?: boolean };
+        if (!alive) return;
+        if (data.available === false) setStats(null);
+        else if (res.ok) setStats(data);
       } catch {
         // Keep whatever we last showed.
       }
@@ -72,102 +58,107 @@ export function MemberStats({ className }: { className?: string }) {
     };
   }, []);
 
+  // Tell other sticky elements how much room the strip takes once stuck.
+  const shown = stats !== null;
+  useEffect(() => {
+    const el = ref.current;
+    if (!sticky || !el) return;
+    const root = document.documentElement;
+    const observer = new ResizeObserver(() => {
+      const stuck = getComputedStyle(el).position === "sticky";
+      root.style.setProperty("--register-h", `${stuck ? el.offsetHeight : 0}px`);
+    });
+    observer.observe(el);
+    return () => {
+      observer.disconnect();
+      root.style.removeProperty("--register-h");
+    };
+  }, [sticky, shown]);
+
   if (!stats) return null;
 
-  const rows = [...stats.byChapter].sort((a, b) => order(a.chapter) - order(b.chapter));
-  const live = stats.source !== "snapshot";
+  const live = stats.source === "live";
   const updated = new Date(stats.updatedAt).toLocaleString(
     "en-GB",
     live
       ? { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }
-      : { day: "numeric", month: "long", year: "numeric" },
+      : { day: "numeric", month: "short", year: "numeric" },
   );
-  const totals = [
-    { label: "Registered members", value: stats.totals.members },
-    { label: "In good standing", value: stats.totals.inGoodStanding },
-    ...(stats.totals.firms !== undefined
-      ? [{ label: "Member firms", value: stats.totals.firms }]
+
+  const items: { label: string; value: number; icon: Icon }[] = [
+    { label: "Registered members", value: stats.totals.members, icon: IconUsers },
+    { label: "In good standing", value: stats.totals.inGoodStanding, icon: IconUserCheck },
+    ...stats.byCategory.map((c) => ({
+      label: `${capitalise(c.category)} members`,
+      value: c.members,
+      icon: /corporate|firm/i.test(c.category) ? IconBuildingSkyscraper : IconUser,
+    })),
+    // Firms only when categories don't already cover them.
+    ...(!stats.byCategory.length && stats.totals.firms !== undefined
+      ? [{ label: "Member firms", value: stats.totals.firms, icon: IconBuildingSkyscraper }]
       : []),
   ];
 
   return (
     <section
-      aria-labelledby="register-title"
-      className={cn("border-y border-border bg-background py-20 lg:py-28", className)}
+      ref={ref}
+      id="register-strip"
+      aria-label="Member register"
+      className={cn(
+        "border-b border-border bg-background",
+        sticky && "z-40 md:sticky md:top-[var(--header-h,0px)]",
+      )}
     >
-      <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
-        <header className="text-center">
-          <p className="meta-label inline-flex items-center gap-2 text-muted-foreground">
+      <div className="mx-auto flex max-w-[1400px] flex-col gap-2 px-6 py-3 md:flex-row md:items-center md:gap-8 lg:px-12">
+        <p className="meta-label flex shrink-0 items-center gap-2 text-[0.6875rem] text-foreground/70 md:flex-col md:items-start md:gap-0.5">
+          <span className="flex items-center gap-2">
             {live ? (
-              <>
-                <span
-                  aria-hidden="true"
-                  className="pulse-dot h-1.5 w-1.5 rounded-full bg-sustain"
-                />
-                Live from the member register &middot; updated {updated}
-              </>
-            ) : (
-              <>Member register &middot; as of {updated}</>
-            )}
-          </p>
-          <h2
-            id="register-title"
-            className="mt-5 font-display text-4xl tracking-tight text-foreground sm:text-5xl"
-          >
-            <span className="font-accent italic font-normal">The</span>{" "}
-            <span className="font-semibold">Register</span>
-          </h2>
-          <span aria-hidden="true" className="mx-auto mt-5 block h-1 w-14 bg-primary" />
-        </header>
+              <span aria-hidden="true" className="pulse-dot h-1.5 w-1.5 rounded-full bg-sustain" />
+            ) : null}
+            Member register
+          </span>
+          <span className="font-normal normal-case tracking-normal text-muted-foreground">
+            <span aria-hidden="true" className="md:hidden">
+              &middot;{" "}
+            </span>
+            {live ? `Live · updated ${updated}` : `As of ${updated}`}
+          </span>
+        </p>
 
-        <dl className="mx-auto mt-12 flex max-w-3xl justify-center divide-x divide-border">
-          {totals.map((t) => (
-            <div key={t.label} className="flex flex-col-reverse px-3 py-2 text-center sm:px-10">
-              <dt className="mt-1 text-sm text-muted-foreground">{t.label}</dt>
-              <dd className="font-display text-3xl font-semibold tabular-nums text-foreground sm:text-4xl">
-                <CountUp value={t.value} grouped />
-              </dd>
-            </div>
+        <ul
+          className={cn(
+            "grid flex-1 gap-x-3 md:divide-x md:divide-border",
+            items.length > 3 ? "grid-cols-4" : "grid-cols-3",
+          )}
+        >
+          {items.map(({ label, value, icon: ItemIcon }) => (
+            <li key={label} className="flex items-center gap-3 md:px-5 md:first:pl-0">
+              <ItemIcon
+                className="hidden h-6 w-6 shrink-0 text-foreground/55 xl:block"
+                stroke={1.5}
+                aria-hidden
+              />
+              <p className="flex flex-col">
+                <span className="font-display text-lg font-semibold tabular-nums text-foreground md:text-xl">
+                  <CountUp value={value} grouped />
+                </span>
+                <span className="text-[0.6875rem] leading-tight text-muted-foreground md:text-xs">
+                  {label}
+                </span>
+              </p>
+            </li>
           ))}
-        </dl>
+        </ul>
 
-        {rows.length ? (
-          <ul className="mt-14 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-border bg-border lg:grid-cols-4">
-            {rows.map((row) => {
-              const Icon = iconFor(row.chapter);
-              return (
-                <li
-                  key={row.chapter}
-                  className="flex flex-col items-center bg-background px-4 py-10 text-center"
-                >
-                  <span className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary">
-                    <Icon className="h-8 w-8" stroke={1.6} aria-hidden />
-                  </span>
-                  <p className="mt-5 font-display text-4xl font-semibold tabular-nums text-foreground sm:text-5xl">
-                    <CountUp value={row.members} grouped />
-                  </p>
-                  <p className="mt-2 text-base font-medium text-primary">{row.chapter}</p>
-                  <p className="mt-3 text-xs text-muted-foreground">
-                    {fmt(row.inGoodStanding)} in good standing
-                    {row.firms !== undefined ? <> &middot; {fmt(row.firms)} firms</> : null}
-                  </p>
-                </li>
-              );
-            })}
-          </ul>
-        ) : null}
-
-        {stats.byCategory.length ? (
-          <p className="mt-8 text-center text-sm text-muted-foreground">
-            By category:{" "}
-            {stats.byCategory.map((c, i) => (
-              <span key={c.category}>
-                {i ? " · " : ""}
-                <span className="font-medium text-foreground">{fmt(c.members)}</span> {c.category}
-              </span>
-            ))}
-          </p>
-        ) : null}
+        <a
+          href={DIRECTORY_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="link-quiet hidden shrink-0 items-center gap-1 text-sm lg:inline-flex"
+        >
+          Find a member
+          <IconArrowUpRight className="h-4 w-4" aria-hidden="true" />
+        </a>
       </div>
     </section>
   );

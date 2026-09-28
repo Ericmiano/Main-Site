@@ -91,6 +91,7 @@ function Index() {
       <Header />
       <main>
         <Hero />
+        <MemberStats sticky />
         <Origin />
         <EventsStrip />
         <Spotlight />
@@ -98,7 +99,6 @@ function Index() {
         <Initiatives />
         <Statement />
         <Chapters />
-        <MemberStats />
         <Partners />
         <MediaGrid />
         <Publications />
