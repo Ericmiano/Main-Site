@@ -35,7 +35,9 @@ DirectorySlash Off
 # without the guard a host missing either would 500 every request.
 <IfModule mod_deflate.c>
   <IfModule mod_filter.c>
-    AddOutputFilterByType DEFLATE text/html text/css application/javascript application/json image/svg+xml application/xml text/plain
+    # Current Apache mime.types serve .js as text/javascript; older ones use
+    # application/javascript. List both or the JS bundles go out uncompressed.
+    AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript application/x-javascript application/json application/manifest+json image/svg+xml application/xml text/xml text/plain
   </IfModule>
 </IfModule>
 

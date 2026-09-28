@@ -5,7 +5,6 @@ import {
   IconArrowUpRight as ArrowUpRight,
 } from "@tabler/icons-react";
 import { Link } from "@tanstack/react-router";
-import { motion, useReducedMotion } from "motion/react";
 import { Reveal } from "@/components/site/Reveal";
 import { awardCategories, awardWinners2024 } from "@/data/site";
 import { useAutoRail } from "@/hooks/use-auto-rail";
@@ -19,7 +18,6 @@ const featured = awardWinners2024
   .sort((a, b) => Number(a.result !== "Winner") - Number(b.result !== "Winner"));
 
 export function Spotlight() {
-  const reduceMotion = useReducedMotion();
   const rail = useRef<HTMLOListElement>(null);
   const auto = useAutoRail(rail, 3000, { seamless: true });
 
@@ -28,14 +26,7 @@ export function Spotlight() {
       aria-labelledby="spotlight-title"
       className="bg-background pt-20 pb-28 lg:pt-28 lg:pb-36"
     >
-      <motion.div
-        className="mx-auto max-w-[1400px] px-6 lg:px-12"
-        // Same initial markup as the server render; reduced motion just skips the tween.
-        initial={{ opacity: 0, y: 48 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.2 }}
-        transition={reduceMotion ? { duration: 0 } : { duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      >
+      <Reveal className="mx-auto max-w-[1400px] px-6 lg:px-12">
         <div className="flex items-end justify-between gap-6 pb-4">
           <p className="meta-label text-muted-foreground">
             Awards of Excellence &middot; 2024 winners
@@ -126,7 +117,7 @@ export function Spotlight() {
             </li>,
           ])}
         </ol>
-      </motion.div>
+      </Reveal>
 
       <div className="mx-auto grid max-w-[1400px] gap-14 px-6 pt-14 lg:grid-cols-[1fr_1.15fr] lg:gap-20 lg:px-12 lg:pt-20">
         <Reveal className="max-w-2xl lg:sticky lg:top-[calc(var(--header-h,5rem)+var(--register-h,0px)+2rem)] lg:self-start">

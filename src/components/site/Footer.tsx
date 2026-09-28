@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { chapters } from "@/data/site";
-import logoMark from "@/assets/aak-logo-mark.png";
+import logoMark from "@/assets/aak-logo-mark.webp";
 
 const associationLinks = [
   { label: "About Us", to: "/about" as const },

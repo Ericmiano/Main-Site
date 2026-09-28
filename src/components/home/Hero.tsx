@@ -1,6 +1,9 @@
 import { IconArrowRight as ArrowRight } from "@tabler/icons-react";
 import { Link } from "@tanstack/react-router";
-import heroImage from "@/assets/hero-architecture.jpg";
+import hero640 from "@/assets/hero-architecture-640.webp";
+import hero960 from "@/assets/hero-architecture-960.webp";
+import hero1280 from "@/assets/hero-architecture-1280.webp";
+import hero1920 from "@/assets/hero-architecture-1920.webp";
 import { Countdown } from "@/components/site/Countdown";
 import { getEventDisplayStatus, getSortedEvents } from "@/data/site";
 
@@ -11,7 +14,10 @@ export function Hero() {
     // Shorter than the viewport so the next section visibly begins below it.
     <section className="relative isolate flex min-h-[calc(100svh-12rem)] items-end overflow-hidden bg-ink-deep">
       <img
-        src={heroImage}
+        // Phones get the 640/960 file (20–36KB) instead of the full 1920 one.
+        src={hero1920}
+        srcSet={`${hero640} 640w, ${hero960} 960w, ${hero1280} 1280w, ${hero1920} 1920w`}
+        sizes="100vw"
         alt="Golden-hour view of a modern Nairobi building facade with a deep concrete grid"
         width={1920}
         height={1280}

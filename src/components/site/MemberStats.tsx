@@ -6,7 +6,6 @@ import {
   IconUserCheck,
   IconUsers,
 } from "@tabler/icons-react";
-import { CountUp } from "@/components/site/CountUp";
 import { registerSnapshot } from "@/data/member-register-snapshot";
 import type { MemberStats as Stats, MemberStatsSource } from "@/lib/member-stats";
 import { cn } from "@/lib/utils";
@@ -17,6 +16,8 @@ const DIRECTORY_URL = "https://members.aak.or.ke/directory";
 type Icon = ComponentType<{ className?: string; stroke?: number; "aria-hidden"?: boolean }>;
 type Data = Stats & { source?: MemberStatsSource };
 
+// Static figures, like BORAQS: the strip is in view from first paint, so a
+// count-up would re-render every frame while the page is still loading.
 const capitalise = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
 /**
@@ -140,7 +141,7 @@ export function MemberStats({ sticky = false }: { sticky?: boolean }) {
               />
               <p className="flex flex-col">
                 <span className="font-display text-lg font-semibold tabular-nums text-foreground md:text-xl">
-                  <CountUp value={value} grouped />
+                  {value.toLocaleString("en-GB")}
                 </span>
                 <span className="text-[0.6875rem] leading-tight text-muted-foreground md:text-xs">
                   {label}

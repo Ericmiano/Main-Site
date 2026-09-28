@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { IconArrowUpRight as ArrowUpRight } from "@tabler/icons-react";
-import logoMark from "@/assets/aak-logo-mark.png";
+import logoMark from "@/assets/aak-logo-mark.webp";
 
 // Plain links only: on cPanel this renders as static HTML with no scripts.
 const destinations = [

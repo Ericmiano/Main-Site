@@ -14,7 +14,7 @@ import {
   type NavMenuEntry,
 } from "@/data/site";
 import { cn } from "@/lib/utils";
-import logoHorizontal from "@/assets/aak-logo-horizontal.png";
+import logoHorizontal from "@/assets/aak-logo-horizontal.webp";
 import {
   Accordion,
   AccordionContent,
@@ -255,6 +255,8 @@ export function Header() {
             <span className="flex items-center rounded-lg bg-background px-3 py-2">
               <img
                 src={logoHorizontal}
+                width={405}
+                height={96}
                 alt="AAK — Promoting excellence in the built environment"
                 className={cn(
                   "w-auto object-contain transition-[height] duration-300",
@@ -499,7 +501,13 @@ export function Header() {
               onClick={() => setOpen(false)}
             >
               <span className="flex items-center rounded-lg bg-background px-3 py-2">
-                <img src={logoHorizontal} alt="" className="h-7 w-auto object-contain" />
+                <img
+                  src={logoHorizontal}
+                  alt=""
+                  width={405}
+                  height={96}
+                  className="h-7 w-auto object-contain"
+                />
               </span>
             </Link>
             <button
