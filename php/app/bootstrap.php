@@ -24,6 +24,13 @@ function route_table(): array
     ];
 }
 
+/** Help and policy notice metadata (php/app/lib/info-docs.php). */
+function info_docs(): array
+{
+    static $docs = null;
+    return $docs ?? ($docs = require APP_DIR . '/lib/info-docs.php');
+}
+
 /** Resolve a path to [template, params] or null for a 404. */
 function resolve_route(string $path): ?array
 {
@@ -35,9 +42,14 @@ function resolve_route(string $path): ?array
     if (isset($archives[$path])) {
         return ['archive', ['archive' => $archives[$path]]];
     }
+    foreach (info_docs() as $key => $doc) {
+        if ($doc['path'] === $path) {
+            return ['info', ['doc' => $doc, 'docKey' => $key]];
+        }
+    }
     // /about -> pages/about.php, for every single-segment page. Templates
     // that back dynamic routes or special cases aren't reachable directly.
-    $reserved = ['home', '404', 'event', 'chapter', 'initiative', 'grow-a-classroom', 'archive'];
+    $reserved = ['home', '404', 'event', 'chapter', 'initiative', 'grow-a-classroom', 'archive', 'info'];
     if (preg_match('#^/([a-z0-9-]+)$#', $path, $m) && !in_array($m[1], $reserved, true)
         && is_file(APP_DIR . '/pages/' . $m[1] . '.php')) {
         return [$m[1], []];
@@ -82,6 +94,10 @@ function render_page(string $template, array $params = []): void
         return;
     }
     $content = (string) ob_get_clean();
+    if (!empty($page['fragment'])) {
+        echo $content; // pop-up fragment: body only, no layout
+        return;
+    }
     require APP_DIR . '/views/layout.php';
 }
 

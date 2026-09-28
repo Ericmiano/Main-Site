@@ -303,6 +303,14 @@ function info_cards(array $items): string
     return $out . '</ul>';
 }
 
+/** Shown on legal notices until LEGAL_PAGES_APPROVED is set (InfoPage.tsx). */
+function draft_notice(string $class = ''): string
+{
+    return '<div role="note" class="' . e(cx('flex gap-3 rounded-xl border border-foreground/20 bg-paper-earth p-5 text-sm leading-relaxed text-foreground', $class)) . '">'
+        . icon('AlertTriangle', 'mt-0.5 h-5 w-5 shrink-0')
+        . '<p><strong>Draft pending AAK approval.</strong> This notice describes how the website works today. Its wording has not yet been approved by the Association and may change.</p></div>';
+}
+
 /* Page head ----------------------------------------------------------- */
 
 /** JSON-LD script tag. */

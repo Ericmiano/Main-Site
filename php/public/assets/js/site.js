@@ -549,7 +549,57 @@
     });
   }
 
+  /* Notice pop-ups (InfoDialogHost.tsx) --------------------------------- */
+  function initInfoDialog() {
+    var dialog = $("[data-info-dialog]");
+    if (!dialog || typeof dialog.showModal !== "function" || !window.fetch) return;
+    var paths = dialog.dataset.infoPaths.split(" ");
+    var body = $("[data-info-body]", dialog);
+    var cache = {};
+    var open = function (path) {
+      $("[data-info-title]", dialog).textContent = "";
+      $("[data-info-intro]", dialog).textContent = "";
+      $("[data-info-updated]", dialog).textContent = "";
+      $("[data-info-draft]", dialog).hidden = true;
+      body.innerHTML = '<p class="text-sm text-muted-foreground" role="status">Loading&hellip;</p>';
+      if (!dialog.open) dialog.showModal();
+      var got = cache[path] || (cache[path] = fetch(path + "?fragment=1").then(function (r) {
+        if (!r.ok) throw new Error(r.status);
+        return r.text();
+      }));
+      got.then(function (html) {
+        var tpl = document.createElement("template");
+        tpl.innerHTML = html;
+        var doc = tpl.content.querySelector("[data-info-doc]");
+        $("[data-info-title]", dialog).textContent = doc.dataset.title;
+        $("[data-info-intro]", dialog).textContent = doc.dataset.intro;
+        $("[data-info-updated]", dialog).textContent = "Last updated " + doc.dataset.updated;
+        $("[data-info-draft]", dialog).hidden = !doc.hasAttribute("data-draft");
+        body.replaceChildren.apply(body, Array.prototype.slice.call(doc.childNodes));
+        dialog.scrollTop = 0;
+      }).catch(function () {
+        delete cache[path];
+        window.location.href = path; // fall back to the full page
+      });
+    };
+    // Capture phase: runs before anything else can act on the click.
+    document.addEventListener("click", function (e) {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      var link = e.target.closest && e.target.closest("a");
+      if (!link || (link.target && link.target !== "_self") || link.hasAttribute("download")) return;
+      var url = new URL(link.href, window.location.href);
+      if (url.origin !== window.location.origin) return;
+      var path = url.pathname.replace(/\/$/, "");
+      if (paths.indexOf(path) === -1) return;
+      e.preventDefault();
+      open(path);
+    }, true);
+    $("[data-info-close]", dialog).addEventListener("click", function () { dialog.close(); });
+    dialog.addEventListener("click", function (e) { if (e.target === dialog) dialog.close(); });
+  }
+
   var ready = function () {
+    initInfoDialog();
     initExpanders();
     initCopy();
     initMaps();

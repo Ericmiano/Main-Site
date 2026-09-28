@@ -38,6 +38,7 @@ $canonical = SITE_URL . ($page['path'] === '/' ? '/' : $page['path']);
 <?= $content ?>
 <?php if (!$page['bare']) {
     require APP_DIR . '/views/footer.php';
+    require APP_DIR . '/views/info-dialog.php';
 } ?>
 </body>
 </html>
