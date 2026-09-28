@@ -7,7 +7,7 @@ const associationLinks = [
   { label: "Programmes", to: "/programs" as const },
   { label: "Corporate Social Responsibility", to: "/csr" as const },
   { label: "Membership", to: "/membership" as const },
-  { label: "The team", to: "/team" as const },
+  { label: "AAK Leadership", to: "/team" as const },
   { label: "Contact us", to: "/contact" as const },
 ];
 

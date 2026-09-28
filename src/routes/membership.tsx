@@ -240,7 +240,7 @@ function MembershipPage() {
           <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
             <SectionHeading
               eyebrow="Benefits"
-              title={<span id="benefits-title">What membership includes</span>}
+              title={<span id="benefits-title">Membership Benefits</span>}
             />
             <ul className="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
               {benefits.map(({ icon: Icon, text, href }, i) => (

@@ -3,6 +3,7 @@ import { IconAlertTriangle as Alert } from "@tabler/icons-react";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { PageBreadcrumb } from "@/components/site/PageBreadcrumb";
+import { cn } from "@/lib/utils";
 
 /** Legal pages stay marked as drafts (and out of search results) until AAK
  * approves the wording. Flip to true once approved. */
@@ -21,6 +22,25 @@ export const infoPageMeta = (title: string, description: string, path: string, d
     links: [{ rel: "canonical", href: `https://aak.or.ke${path}` }],
   };
 };
+
+/** Shown on legal notices until LEGAL_PAGES_APPROVED is set. */
+export function DraftNotice({ className }: { className?: string }) {
+  return (
+    <div
+      role="note"
+      className={cn(
+        "flex gap-3 rounded-xl border border-foreground/20 bg-paper-earth p-5 text-sm leading-relaxed text-foreground",
+        className,
+      )}
+    >
+      <Alert className="mt-0.5 h-5 w-5 shrink-0" aria-hidden="true" />
+      <p>
+        <strong>Draft pending AAK approval.</strong> This notice describes how the website works
+        today. Its wording has not yet been approved by the Association and may change.
+      </p>
+    </div>
+  );
+}
 
 /** Shared layout for FAQs, legal and accessibility pages. */
 export function InfoPage({
@@ -56,19 +76,7 @@ export function InfoPage({
         </section>
 
         <div className="mx-auto max-w-[1400px] px-6 py-14 lg:px-12 lg:py-20">
-          {draft ? (
-            <div
-              role="note"
-              className="mb-10 flex max-w-3xl gap-3 rounded-xl border border-foreground/20 bg-paper-earth p-5 text-sm leading-relaxed text-foreground"
-            >
-              <Alert className="mt-0.5 h-5 w-5 shrink-0" aria-hidden="true" />
-              <p>
-                <strong>Draft pending AAK approval.</strong> This page describes how the website
-                works today. Its wording has not yet been approved by the Association and may
-                change.
-              </p>
-            </div>
-          ) : null}
+          {draft ? <DraftNotice className="mb-10 max-w-3xl" /> : null}
           <div className="info-prose max-w-3xl">{children}</div>
         </div>
       </main>

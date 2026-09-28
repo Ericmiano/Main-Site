@@ -71,7 +71,9 @@ export function Biennale() {
             </div>
             <div>
               <p className="meta-label text-background/60">Edition</p>
-              <p className="mt-2 font-display text-lg leading-snug">AAK&rsquo;s first Biennale</p>
+              <p className="mt-2 font-display text-lg leading-snug">
+                Nairobi&rsquo;s first Architecture Biennale
+              </p>
             </div>
           </div>
         </div>

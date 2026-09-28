@@ -9,12 +9,13 @@ import { Footer } from "@/components/site/Footer";
 import { Reveal } from "@/components/site/Reveal";
 import { SectionHeading } from "@/components/site/SectionHeading";
 import { PageBreadcrumb } from "@/components/site/PageBreadcrumb";
+import { InitiativeLink } from "@/components/site/InitiativeLink";
 import { initiatives } from "@/data/site";
 
 const SITE_URL = "https://aak.or.ke";
 const TITLE = "Corporate Social Responsibility | Architectural Association of Kenya";
 const DESCRIPTION =
-  "AAK gives back to society through BuildRun, supporting the Association's bursary initiative and the refurbishment of Anwa Junior Academy in Kibra, Nairobi.";
+  "AAK's corporate social responsibility programmes: BuildRun, the David Mutiso Bursary Fund and the Grow A Classroom Initiative.";
 
 export const Route = createFileRoute("/csr")({
   head: () => ({
@@ -36,18 +37,21 @@ export const Route = createFileRoute("/csr")({
   component: CsrPage,
 });
 
-const programmes = [
+const gac = initiatives.find((initiative) => initiative.slug === "grow-a-classroom");
+
+const programmes: { title: string; body: string; to?: "/initiatives/grow-a-classroom" }[] = [
   {
     title: "BuildRun",
     body: "AAK's annual charity run, and the mechanism through which the Association funds its bursary initiative and community projects.",
   },
   {
-    title: "Bursary initiative",
+    title: "David Mutiso Bursary Fund",
     body: "Support for deserving students pursuing courses in the built and natural environment. Over 100 students have been supported through to graduation to date.",
   },
   {
-    title: "Anwa Junior Academy",
-    body: "Refurbishment of Anwa Junior Academy in Kibra, Nairobi, benefitting the over 350 pupils who study at the school.",
+    title: "Grow A Classroom Initiative",
+    body: gac?.description ?? "",
+    to: "/initiatives/grow-a-classroom" as const,
   },
 ];
 
@@ -94,7 +98,6 @@ function CsrPage() {
               <h1 className="mt-5 font-display text-4xl font-semibold leading-[1.02] tracking-tight text-balance text-foreground sm:text-5xl lg:text-6xl">
                 Corporate Social Responsibility
               </h1>
-              <p className="mt-5 text-base leading-relaxed text-muted-foreground">{DESCRIPTION}</p>
             </Reveal>
           </div>
         </section>
@@ -115,6 +118,15 @@ function CsrPage() {
                       <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
                         {programme.body}
                       </p>
+                      {programme.to ? (
+                        <Link
+                          to={programme.to}
+                          className="group mt-auto inline-flex items-center gap-2 pt-6 text-sm font-semibold text-foreground"
+                        >
+                          About the initiative
+                          <ArrowUpRight className="h-4 w-4 text-primary" />
+                        </Link>
+                      ) : null}
                     </div>
                   </Reveal>
                 </li>
@@ -129,7 +141,7 @@ function CsrPage() {
                 <h3 className="font-display text-lg font-semibold text-foreground">
                   Support the bursary fund
                 </h3>
-                <p className="mt-2 max-w-xl text-sm leading-relaxed text-muted-foreground">
+                <p className="mt-2 max-w-xl text-sm leading-relaxed text-foreground/75">
                   Donations to the David Mutiso Bursary Fund are made through the AAK store.
                 </p>
               </div>
@@ -155,26 +167,29 @@ function CsrPage() {
               description="CSR sits alongside AAK's built-environment initiatives, run for the public good by members across all eight chapters."
             />
             <ul className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {initiatives.map((initiative, i) => (
-                <li key={initiative.id}>
-                  <Reveal delay={i * 80} className="h-full">
-                    <Link
-                      to="/initiatives/$slug"
-                      params={{ slug: initiative.slug }}
-                      className="group flex h-full flex-col rounded-2xl border border-border bg-card p-7"
-                    >
-                      <span className="meta-label text-muted-foreground">{initiative.eyebrow}</span>
-                      <h3 className="mt-4 font-display text-lg font-semibold leading-snug text-foreground">
-                        {initiative.title}
-                      </h3>
-                      <span className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-foreground">
-                        {initiative.cta}
-                        <ArrowUpRight className="h-4 w-4 text-primary" />
-                      </span>
-                    </Link>
-                  </Reveal>
-                </li>
-              ))}
+              {initiatives
+                .filter((initiative) => initiative.slug !== "grow-a-classroom")
+                .map((initiative, i) => (
+                  <li key={initiative.id}>
+                    <Reveal delay={i * 80} className="h-full">
+                      <InitiativeLink
+                        initiative={initiative}
+                        className="group flex h-full flex-col rounded-2xl border border-border bg-card p-7"
+                      >
+                        <span className="meta-label text-muted-foreground">
+                          {initiative.eyebrow}
+                        </span>
+                        <h3 className="mt-4 font-display text-lg font-semibold leading-snug text-foreground">
+                          {initiative.title}
+                        </h3>
+                        <span className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-foreground">
+                          {initiative.cta}
+                          <ArrowUpRight className="h-4 w-4 text-primary" />
+                        </span>
+                      </InitiativeLink>
+                    </Reveal>
+                  </li>
+                ))}
             </ul>
           </div>
         </section>

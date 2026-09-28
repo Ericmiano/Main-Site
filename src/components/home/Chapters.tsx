@@ -150,7 +150,7 @@ export function Chapters() {
         <Reveal className="max-w-2xl">
           <SectionRule index="05" label="The association" />
           <h2 id="chapters-title" className="type-section mt-8 text-foreground">
-            Eight professional chapters, one association.
+            Umbrella association of eight professional chapters.
           </h2>
           <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground">
             Experts across the built and natural environment disciplines, united behind technical

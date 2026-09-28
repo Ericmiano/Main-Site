@@ -33,7 +33,7 @@ export function Membership() {
     >
       <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
         <Reveal className="max-w-3xl">
-          <SectionRule index="08" label="Your AAK" />
+          <SectionRule index="07" label="Your AAK" />
           <h2 id="membership-title" className="type-section mt-8">
             Practise with the standing of a recognised professional body.
           </h2>

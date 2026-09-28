@@ -14,6 +14,7 @@ import {
   type NavMenuEntry,
 } from "@/data/site";
 import { cn } from "@/lib/utils";
+import { InitiativeLink } from "@/components/site/InitiativeLink";
 import logoHorizontal from "@/assets/aak-logo-horizontal.webp";
 import {
   Accordion,
@@ -401,16 +402,14 @@ export function Header() {
             <div className="mx-auto max-w-[1400px] px-6 py-10 lg:px-12">
               {activeEntry.type === "initiatives" ? (
                 <div>
-                  <p className="meta-label text-background/60">Initiatives</p>
-                  <h3 className="mt-2 font-display text-2xl font-semibold text-background">
-                    Programmes we run for the public good
+                  <h3 className="font-display text-2xl font-semibold text-background">
+                    AAK Initiatives
                   </h3>
                   <ul className="mt-8 grid gap-x-8 gap-y-6 sm:grid-cols-2 lg:grid-cols-3">
                     {initiatives.map((initiative) => (
                       <li key={initiative.slug}>
-                        <Link
-                          to="/initiatives/$slug"
-                          params={{ slug: initiative.slug }}
+                        <InitiativeLink
+                          initiative={initiative}
                           onClick={closeMenuNow}
                           className="group flex items-center gap-3"
                         >
@@ -435,7 +434,7 @@ export function Header() {
                               {initiative.eyebrow}
                             </span>
                           </span>
-                        </Link>
+                        </InitiativeLink>
                       </li>
                     ))}
                   </ul>
@@ -458,9 +457,11 @@ export function Header() {
                 <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_2fr]">
                   <div>
                     <p className="meta-label text-background/60">{activeEntry.label}</p>
-                    <p className="mt-3 max-w-xs text-sm leading-relaxed text-background/65">
-                      {activeEntry.description}
-                    </p>
+                    {activeEntry.description ? (
+                      <p className="mt-3 max-w-xs text-sm leading-relaxed text-background/65">
+                        {activeEntry.description}
+                      </p>
+                    ) : null}
                   </div>
                   <ul className="grid gap-x-8 gap-y-1 sm:grid-cols-2">
                     {activeEntry.links.map((link) => (
@@ -560,29 +561,34 @@ export function Header() {
                             ? initiatives
                                 .map((initiative) => (
                                   <li key={initiative.slug}>
-                                    <Link
-                                      to="/initiatives/$slug"
-                                      params={{ slug: initiative.slug }}
+                                    <InitiativeLink
+                                      initiative={initiative}
                                       onClick={() => setOpen(false)}
                                       className="flex min-h-11 items-center text-base text-background/65 transition-colors hover:text-background"
                                     >
                                       {initiative.title}
-                                    </Link>
+                                    </InitiativeLink>
                                   </li>
                                 ))
                                 .concat(
-                                  aakPlatforms.map((link) => (
-                                    <li key={link.label}>
-                                      <NavItem
-                                        href={link.href}
-                                        external={link.external}
-                                        onClick={() => setOpen(false)}
-                                        className="flex min-h-11 items-center text-base text-background/65 transition-colors hover:text-background"
-                                      >
-                                        {link.label}
-                                      </NavItem>
-                                    </li>
-                                  )),
+                                  // Skip platforms already listed as an initiative (BuildHub).
+                                  aakPlatforms
+                                    .filter(
+                                      (link) =>
+                                        !initiatives.some((i) => i.externalUrl === link.href),
+                                    )
+                                    .map((link) => (
+                                      <li key={link.label}>
+                                        <NavItem
+                                          href={link.href}
+                                          external={link.external}
+                                          onClick={() => setOpen(false)}
+                                          className="flex min-h-11 items-center text-base text-background/65 transition-colors hover:text-background"
+                                        >
+                                          {link.label}
+                                        </NavItem>
+                                      </li>
+                                    )),
                                 )
                             : entry.links.map((link) => (
                                 <li key={link.label}>

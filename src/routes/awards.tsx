@@ -8,6 +8,15 @@ import { SectionHeading } from "@/components/site/SectionHeading";
 import { PageBreadcrumb } from "@/components/site/PageBreadcrumb";
 import { awardCategories as categories, awardWinners2024 as winners2024 } from "@/data/site";
 
+// Winners, then runners-up, then honourable mentions, keeping the source
+// order within each result.
+const RESULT_ORDER = ["Winner", "1st Runner-up", "Runner-up", "2nd Runner-up"];
+const rank = (result: string) => {
+  const i = RESULT_ORDER.indexOf(result);
+  return i === -1 ? RESULT_ORDER.length : i;
+};
+const winnersFirst = [...winners2024].sort((a, b) => rank(a.result) - rank(b.result));
+
 const SITE_URL = "https://aak.or.ke";
 const TITLE = "Awards & Honours | Architectural Association of Kenya";
 const DESCRIPTION =
@@ -128,7 +137,56 @@ function AwardsPage() {
           </div>
         </section>
 
-        <section aria-labelledby="why-enter-title" className="py-16 lg:py-24">
+        <section aria-labelledby="winners-title" className="py-16 lg:py-24">
+          <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
+            <SectionHeading
+              eyebrow="Latest Awards of Excellence · 2024"
+              title={<span id="winners-title">Winning projects</span>}
+            />
+            <ul className="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {winnersFirst.map((winner, i) => (
+                <li key={`${winner.project}-${winner.category}-${winner.result}`}>
+                  <Reveal delay={(i % 3) * 60} className="h-full">
+                    <a
+                      href={winner.pdfHref}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card"
+                    >
+                      <div className="overflow-hidden bg-secondary">
+                        <img
+                          src={winner.image}
+                          alt={winner.project}
+                          loading="lazy"
+                          className="aspect-4/3 w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
+                        />
+                      </div>
+                      <div className="flex flex-1 flex-col justify-between gap-3 p-5">
+                        <div>
+                          <span className="meta-label text-muted-foreground">
+                            {winner.category}
+                          </span>
+                          <h3 className="mt-2 font-display text-base font-semibold leading-snug text-foreground">
+                            {winner.project}
+                          </h3>
+                        </div>
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="text-xs text-muted-foreground">{winner.result}</span>
+                          <ArrowUpRight className="h-4 w-4 shrink-0 text-primary" />
+                        </div>
+                      </div>
+                    </a>
+                  </Reveal>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+
+        <section
+          aria-labelledby="why-enter-title"
+          className="border-t border-border py-16 lg:py-24"
+        >
           <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
             <SectionHeading
               eyebrow="Regional recognition"
@@ -224,52 +282,6 @@ function AwardsPage() {
                       </p>
                       <p className="mt-1 text-xs text-muted-foreground">{member.org}</p>
                     </div>
-                  </Reveal>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
-
-        <section aria-labelledby="winners-title" className="py-16 lg:py-24">
-          <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
-            <SectionHeading
-              eyebrow="2024 cycle"
-              title={<span id="winners-title">Winning submissions</span>}
-            />
-            <ul className="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {winners2024.map((winner, i) => (
-                <li key={`${winner.project}-${winner.category}-${winner.result}`}>
-                  <Reveal delay={(i % 3) * 60} className="h-full">
-                    <a
-                      href={winner.pdfHref}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card"
-                    >
-                      <div className="overflow-hidden bg-secondary">
-                        <img
-                          src={winner.image}
-                          alt={winner.project}
-                          loading="lazy"
-                          className="aspect-4/3 w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
-                        />
-                      </div>
-                      <div className="flex flex-1 flex-col justify-between gap-3 p-5">
-                        <div>
-                          <span className="meta-label text-muted-foreground">
-                            {winner.category}
-                          </span>
-                          <h3 className="mt-2 font-display text-base font-semibold leading-snug text-foreground">
-                            {winner.project}
-                          </h3>
-                        </div>
-                        <div className="flex items-center justify-between gap-2">
-                          <span className="text-xs text-muted-foreground">{winner.result}</span>
-                          <ArrowUpRight className="h-4 w-4 shrink-0 text-primary" />
-                        </div>
-                      </div>
-                    </a>
                   </Reveal>
                 </li>
               ))}

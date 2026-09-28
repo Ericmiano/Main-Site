@@ -1,5 +1,5 @@
-import { useMemo, useState } from "react";
-import { createFileRoute } from "@tanstack/react-router";
+import { useMemo, useState, type ReactNode } from "react";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { IconAward as Award, IconChevronDown as ChevronDown } from "@tabler/icons-react";
 
 import { Header } from "@/components/site/Header";
@@ -7,12 +7,31 @@ import { Footer } from "@/components/site/Footer";
 import { Reveal } from "@/components/site/Reveal";
 import { SectionHeading } from "@/components/site/SectionHeading";
 import { PageBreadcrumb } from "@/components/site/PageBreadcrumb";
-import { chapterChairs, collegeOfFellows, regionalBranches, secretariat } from "@/data/site";
+import { chapterBranches, chapterCouncils, type CouncilRole } from "@/data/chapter-councils";
+import { chapterChairs, chapters, collegeOfFellows, secretariat } from "@/data/site";
 
 const SITE_URL = "https://aak.or.ke";
-const TITLE = "Team | Architectural Association of Kenya";
+const TITLE = "AAK Leadership | Architectural Association of Kenya";
 const DESCRIPTION =
-  "The chapter chairpersons, regional branch leadership, Secretariat and College of Fellows of the Architectural Association of Kenya, 2025/2027 term.";
+  "The Executive Committee, Secretariat, chapter councils, regional branch councils and College of Fellows of the Architectural Association of Kenya, 2025/2027 term.";
+
+// Executive Committee titles, in rank order (aak.or.ke/about-us/). The
+// `secretariat` list holds them alongside the operational staff.
+const EXECUTIVE_TITLES = [
+  "President",
+  "Vice President",
+  "Honorary Secretary",
+  "Assistant Secretary",
+  "Honorary Treasurer",
+  "Honorary Registrar",
+];
+const executive = EXECUTIVE_TITLES.flatMap((title) =>
+  secretariat.filter((member) => member.title === title),
+);
+const staff = secretariat.filter((member) => !EXECUTIVE_TITLES.includes(member.title));
+
+// The three regional branches' councils (2026 AGM Report rosters).
+const branches = chapterBranches["landscape-architects"] ?? [];
 
 export const Route = createFileRoute("/team")({
   head: () => ({
@@ -48,7 +67,7 @@ function structuredData() {
         "@type": "BreadcrumbList",
         itemListElement: [
           { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
-          { "@type": "ListItem", position: 2, name: "Team", item: `${SITE_URL}/team` },
+          { "@type": "ListItem", position: 2, name: "AAK Leadership", item: `${SITE_URL}/team` },
         ],
       },
       {
@@ -65,6 +84,62 @@ function structuredData() {
 }
 
 const FELLOWS_PAGE_SIZE = 15;
+
+function PeopleGrid({ people }: { people: typeof secretariat }) {
+  return (
+    <ul className="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      {people.map((member, i) => (
+        <li key={member.name}>
+          <Reveal delay={(i % 4) * 60} className="h-full">
+            <div className="flex h-full flex-col items-start gap-4 rounded-2xl border border-border bg-background p-6">
+              {member.photo ? (
+                <img
+                  src={member.photo}
+                  alt=""
+                  loading="lazy"
+                  className="h-14 w-14 shrink-0 rounded-xl object-cover"
+                />
+              ) : (
+                <span
+                  aria-hidden="true"
+                  className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-primary font-display text-lg font-semibold text-primary-foreground"
+                >
+                  {initials(member.name)}
+                </span>
+              )}
+              <div>
+                <h3 className="font-display text-base font-semibold leading-snug text-foreground">
+                  {member.name}
+                </h3>
+                <p className="mt-1 text-sm text-muted-foreground">{member.title}</p>
+              </div>
+            </div>
+          </Reveal>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+/** A council's office holders, in the order the source lists them. */
+function RosterCard({ title, members }: { title: ReactNode; members: CouncilRole[] }) {
+  return (
+    <div className="h-full rounded-2xl border border-border bg-background p-6">
+      <h3 className="font-display text-lg font-semibold leading-snug text-foreground">{title}</h3>
+      <dl className="mt-4 divide-y divide-border text-sm">
+        {members.map((m) => (
+          <div
+            key={m.name + m.role}
+            className="flex flex-col-reverse py-2 sm:flex-row-reverse sm:justify-between sm:gap-4"
+          >
+            <dt className="text-muted-foreground sm:text-right">{m.role}</dt>
+            <dd className="font-medium text-foreground">{m.name}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  );
+}
 
 function TeamPage() {
   const [fellowsExpanded, setFellowsExpanded] = useState(false);
@@ -83,73 +158,33 @@ function TeamPage() {
       <main>
         <section className="border-b border-border bg-secondary/40 py-14 lg:py-20">
           <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
-            <PageBreadcrumb trail={[{ label: "Team" }]} />
+            <PageBreadcrumb trail={[{ label: "AAK Leadership" }]} />
 
             <Reveal className="mt-8 max-w-3xl">
               <div className="meta-label flex items-center gap-3 border-t border-border pt-5 text-muted-foreground">
-                <span>Governance</span>
+                <span>Governance &middot; 2025/2027 term</span>
               </div>
               <h1 className="mt-5 font-display text-4xl font-semibold leading-[1.02] tracking-tight text-balance text-foreground sm:text-5xl lg:text-6xl">
-                The people leading AAK
+                AAK Leadership
               </h1>
               <p className="mt-5 text-base leading-relaxed text-muted-foreground">
-                The chapter chairpersons and regional branch leadership for the 2025/2027 term, the
-                Secretariat that runs AAK day to day, and the College of Fellows: the highest honour
-                AAK bestows on its members.
+                The Executive Committee, the Secretariat that runs AAK day to day, the councils of
+                the eight chapters and three regional branches, and the College of Fellows: the
+                highest honour AAK bestows on its members.
               </p>
             </Reveal>
           </div>
         </section>
 
-        <section aria-labelledby="chapters-leadership-title" className="py-16 lg:py-24">
+        <section aria-labelledby="executive-title" className="py-16 lg:py-24">
           <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
             <SectionHeading
-              eyebrow="Chapter chairpersons"
-              title={<span id="chapters-leadership-title">One chair per discipline</span>}
+              eyebrow="Office bearers"
+              title={<span id="executive-title">Executive Committee</span>}
+              description="The Association's elected office bearers for the 2025/2027 term."
               bold
             />
-            <ul className="mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {chapterChairs.map((lead, i) => (
-                <li key={lead.chapter}>
-                  <Reveal delay={i * 50} className="h-full">
-                    <div className="h-full rounded-2xl bg-card p-6">
-                      <span
-                        aria-hidden="true"
-                        className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary text-sm font-semibold text-primary-foreground"
-                      >
-                        {initials(lead.chair)}
-                      </span>
-                      <h3 className="mt-4 font-display text-base font-semibold leading-snug text-foreground">
-                        {lead.chair}
-                      </h3>
-                      <p className="mt-1 text-xs uppercase tracking-[0.1em] text-muted-foreground">
-                        {lead.chapter}
-                      </p>
-                    </div>
-                  </Reveal>
-                </li>
-              ))}
-            </ul>
-
-            <h3 className="mt-16 font-display text-lg font-bold text-foreground">
-              Regional branches
-            </h3>
-            <ul className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
-              {regionalBranches.map((branch, i) => (
-                <li key={branch.chapter}>
-                  <Reveal delay={i * 60} className="h-full">
-                    <div className="h-full rounded-2xl bg-card p-6">
-                      <h4 className="font-display text-base font-semibold leading-snug text-foreground">
-                        {branch.chair}
-                      </h4>
-                      <p className="mt-1 text-xs uppercase tracking-[0.1em] text-muted-foreground">
-                        {branch.chapter}
-                      </p>
-                    </div>
-                  </Reveal>
-                </li>
-              ))}
-            </ul>
+            <PeopleGrid people={executive} />
           </div>
         </section>
 
@@ -160,36 +195,63 @@ function TeamPage() {
           <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
             <SectionHeading
               eyebrow="Operations · Contact"
-              title={<span id="secretariat-title">Meet the Secretariat</span>}
+              title={<span id="secretariat-title">Secretariat</span>}
               description="The AAK Secretariat manages the day-to-day operations of the Association and serves as the primary point of contact for members and stakeholders, coordinating administrative, communication and logistical functions."
               bold
             />
-            <ul className="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-              {secretariat.map((member, i) => (
-                <li key={member.name}>
-                  <Reveal delay={i * 60} className="h-full">
-                    <div className="flex h-full flex-col items-start gap-4 rounded-2xl border border-border p-6">
-                      {member.photo ? (
-                        <img
-                          src={member.photo}
-                          alt=""
-                          className="h-14 w-14 shrink-0 rounded-xl object-cover"
-                        />
-                      ) : (
-                        <span
-                          aria-hidden="true"
-                          className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-primary font-display text-lg font-semibold text-primary-foreground"
+            <PeopleGrid people={staff} />
+          </div>
+        </section>
+
+        <section
+          aria-labelledby="chapter-councils-title"
+          className="border-t border-border py-16 lg:py-24"
+        >
+          <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
+            <SectionHeading
+              eyebrow="Eight chapters"
+              title={<span id="chapter-councils-title">Chapter Councils</span>}
+              description="Each chapter is run by its own elected council."
+              bold
+            />
+            <ul className="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {chapters.map((chapter, i) => (
+                <li key={chapter.slug}>
+                  <Reveal delay={(i % 3) * 60} className="h-full">
+                    <RosterCard
+                      title={
+                        <Link
+                          to="/chapters/$slug"
+                          params={{ slug: chapter.slug }}
+                          className="link-quiet"
                         >
-                          {initials(member.name)}
-                        </span>
-                      )}
-                      <div>
-                        <h3 className="font-display text-base font-semibold leading-snug text-foreground">
-                          {member.name}
-                        </h3>
-                        <p className="mt-1 text-sm text-muted-foreground">{member.title}</p>
-                      </div>
-                    </div>
+                          {chapter.name}
+                        </Link>
+                      }
+                      members={chapterCouncils[chapter.slug] ?? []}
+                    />
+                  </Reveal>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+
+        <section
+          aria-labelledby="branches-title"
+          className="border-t border-border bg-secondary/40 py-16 lg:py-24"
+        >
+          <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
+            <SectionHeading
+              eyebrow="Three branches"
+              title={<span id="branches-title">Regional Branch Councils</span>}
+              bold
+            />
+            <ul className="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {branches.map((branch, i) => (
+                <li key={branch.name}>
+                  <Reveal delay={i * 60} className="h-full">
+                    <RosterCard title={branch.name} members={branch.members} />
                   </Reveal>
                 </li>
               ))}

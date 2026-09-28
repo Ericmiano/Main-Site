@@ -221,6 +221,8 @@ export interface Initiative {
   title: string;
   description: string;
   href: string;
+  /** When set, links open this site in a new tab instead of /initiatives/{slug}. */
+  externalUrl?: string;
   cta: string;
   image: string;
   tone: "primary" | "green";
@@ -271,7 +273,8 @@ export const initiatives: Initiative[] = [
     description:
       "A national rating system for resource-efficient building across East Africa's climatic zones, scored on passive design, resource efficiency, energy, landscape and innovation.",
     href: "https://aak.or.ke/safari-green-building-index/",
-    cta: "View guidelines",
+    externalUrl: "https://safarigreenbuilding.org/",
+    cta: "Visit the SGBI website",
     image: "/img/0q9a0926-1200x800.webp",
     tone: "green",
   },
@@ -288,15 +291,18 @@ export const initiatives: Initiative[] = [
     tone: "green",
   },
   {
-    id: "urban-thinkers-campus",
-    slug: "urban-thinkers-campus",
-    eyebrow: "Urban policy platform",
-    title: "Urban Thinkers Campus",
+    // Replaced Urban Thinkers Campus in the initiatives list (its detail page
+    // and events stay). Wording from buildhub.aak.or.ke's own description.
+    id: "buildhub",
+    slug: "buildhub",
+    eyebrow: "Permits & approvals",
+    title: "AAK BuildHub",
     description:
-      "An open platform for critical exchange between urban researchers, professionals and decision-makers, run with UN-Habitat since 2020.",
-    href: "https://aak.or.ke/urban-thinkers-campus/",
-    cta: "Explore the platform",
-    image: "/img/1h5a2307-1200x800.webp",
+      "A portal that makes it easier to obtain a building permit or planning approval in Kenya, with step-by-step procedures, approval timelines and fees, county by county.",
+    href: "https://buildhub.aak.or.ke/",
+    externalUrl: "https://buildhub.aak.or.ke/",
+    cta: "Open BuildHub",
+    image: "/img/aak-build-tour-66-1200x800-600x400-1.webp",
     tone: "primary",
   },
 ];
@@ -569,7 +575,7 @@ export interface NavLink {
 
 export interface NavMenuGroup {
   label: string;
-  description: string;
+  description?: string;
   links: NavLink[];
 }
 
@@ -593,12 +599,11 @@ export const navMenu: NavMenuEntry[] = [
   {
     type: "group",
     label: "About",
-    description: "Who we are and how to get involved.",
     links: [
       { label: "About us", href: "/about" },
       { label: "Programmes", href: "/programs" },
       { label: "Corporate social responsibility", href: "/csr" },
-      { label: "The team", href: "/team" },
+      { label: "AAK Leadership", href: "/team" },
       { label: "Contact us", href: "/contact" },
     ],
   },
@@ -720,7 +725,7 @@ export const secretariat: SecretariatMember[] = [
   },
   {
     name: "Arch. Bernard Segecha",
-    title: "Assistant Sec.",
+    title: "Assistant Secretary",
     photo: "/secretariat-photos/bernard-segecha.jpg",
   },
   {

@@ -1,6 +1,6 @@
 import { IconArrowUpRight as ArrowUpRight } from "@tabler/icons-react";
-import { Link } from "@tanstack/react-router";
 import { initiatives } from "@/data/site";
+import { InitiativeLink } from "@/components/site/InitiativeLink";
 import { Reveal } from "@/components/site/Reveal";
 import { SectionRule } from "@/components/site/SectionRule";
 import { cn } from "@/lib/utils";
@@ -25,9 +25,9 @@ export function Initiatives() {
     >
       <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
         <Reveal className="max-w-2xl">
-          <SectionRule index="04" label="Public impact" />
+          <SectionRule index="04" label="Initiatives" />
           <h2 id="initiatives-title" className="type-section mt-8 text-foreground">
-            Programmes we run for the public good.
+            AAK Initiatives
           </h2>
           <p className="mt-5 max-w-xl text-base leading-relaxed text-foreground/70">
             Long-running initiatives where our members put professional expertise to work for Kenyan
@@ -37,7 +37,7 @@ export function Initiatives() {
 
         <div className="mt-14 grid gap-10 lg:grid-cols-[1.15fr_1fr] lg:gap-16">
           <Reveal wipe>
-            <Link to="/initiatives/$slug" params={{ slug: featured.slug }} className="group block">
+            <InitiativeLink initiative={featured} className="group block">
               <div className="overflow-hidden bg-secondary">
                 <img
                   src={featured.image}
@@ -62,16 +62,15 @@ export function Initiatives() {
                 {featured.cta}
                 <ArrowUpRight className="h-4 w-4 text-primary transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </span>
-            </Link>
+            </InitiativeLink>
           </Reveal>
 
           <ol className="border-t border-foreground/15">
             {rest.map((initiative, i) => (
               <li key={initiative.id} className="border-b border-foreground/15">
                 <Reveal delay={i * 60}>
-                  <Link
-                    to="/initiatives/$slug"
-                    params={{ slug: initiative.slug }}
+                  <InitiativeLink
+                    initiative={initiative}
                     className="group grid grid-cols-[5.5rem_1fr] items-center gap-5 py-5 sm:grid-cols-[7rem_1fr]"
                   >
                     <div className="overflow-hidden bg-secondary">
@@ -102,7 +101,7 @@ export function Initiatives() {
                         {initiative.description}
                       </p>
                     </div>
-                  </Link>
+                  </InitiativeLink>
                 </Reveal>
               </li>
             ))}

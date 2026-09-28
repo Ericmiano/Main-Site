@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { IconArrowUpRight as ArrowUpRight } from "@tabler/icons-react";
 
 import { Header } from "@/components/site/Header";
@@ -6,6 +6,7 @@ import { Footer } from "@/components/site/Footer";
 import { Reveal } from "@/components/site/Reveal";
 import { SectionHeading } from "@/components/site/SectionHeading";
 import { PageBreadcrumb } from "@/components/site/PageBreadcrumb";
+import { InitiativeLink } from "@/components/site/InitiativeLink";
 import { initiatives } from "@/data/site";
 
 const SITE_URL = "https://aak.or.ke";
@@ -147,9 +148,8 @@ function ProgrammesPage() {
               {initiatives.map((initiative, i) => (
                 <li key={initiative.id}>
                   <Reveal delay={i * 80} className="h-full">
-                    <Link
-                      to="/initiatives/$slug"
-                      params={{ slug: initiative.slug }}
+                    <InitiativeLink
+                      initiative={initiative}
                       className="group flex h-full flex-col rounded-2xl border border-border bg-card p-7"
                     >
                       <span className="meta-label text-muted-foreground">{initiative.eyebrow}</span>
@@ -160,7 +160,7 @@ function ProgrammesPage() {
                         {initiative.cta}
                         <ArrowUpRight className="h-4 w-4 text-primary" />
                       </span>
-                    </Link>
+                    </InitiativeLink>
                   </Reveal>
                 </li>
               ))}

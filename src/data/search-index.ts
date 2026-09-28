@@ -41,9 +41,9 @@ const pages: SearchEntry[] = [
     href: "/membership",
   },
   {
-    title: "Team",
+    title: "AAK Leadership",
     description:
-      "The chapter chairpersons, regional branch leadership, Secretariat and College of Fellows of the Architectural Association of Kenya.",
+      "The Executive Committee, Secretariat, chapter and regional branch councils, and College of Fellows of the Architectural Association of Kenya.",
     category: "Page",
     href: "/team",
   },
@@ -93,7 +93,7 @@ const pages: SearchEntry[] = [
   {
     title: "CSR",
     description:
-      "AAK gives back to society through BuildRun, supporting the Association's bursary initiative and the refurbishment of Anwa Junior Academy in Kibra, Nairobi.",
+      "AAK's corporate social responsibility programmes: BuildRun, the David Mutiso Bursary Fund and the Grow A Classroom Initiative.",
     category: "Page",
     href: "/csr",
   },
@@ -131,7 +131,9 @@ const initiativeEntries: SearchEntry[] = initiatives.map((initiative) => ({
   title: initiative.title,
   description: initiative.description,
   category: "Initiative",
-  href: `/initiatives/${initiative.slug}`,
+  ...(initiative.externalUrl
+    ? { href: initiative.externalUrl, external: true }
+    : { href: `/initiatives/${initiative.slug}` }),
 }));
 
 const eventEntries: SearchEntry[] = events.map((event) => ({
