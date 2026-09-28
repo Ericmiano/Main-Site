@@ -14,7 +14,8 @@ const associationLinks = [
 const resourceLinks = [
   { label: "Events", to: "/events" as const },
   { label: "Resource Centre", to: "/resources" as const },
-  { label: "Arbitration", to: "/arbitration" as const },
+  // Arbitration: on hold while the page is being finished. Re-add once ready.
+  // { label: "Arbitration", to: "/arbitration" as const },
   { label: "Awards & Honours", to: "/awards" as const },
   { label: "Student affiliates", to: "/students" as const },
   { label: "Store", to: "/store" as const },

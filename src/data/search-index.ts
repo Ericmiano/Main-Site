@@ -47,13 +47,14 @@ const pages: SearchEntry[] = [
     category: "Page",
     href: "/team",
   },
-  {
-    title: "Arbitration",
-    description:
-      "Construction-dispute arbitration in Kenya: the Joint Building Council contract framework, the Arbitration Act 1995, and how to reach AAK's secretariat.",
-    category: "Page",
-    href: "/arbitration",
-  },
+  // Arbitration: on hold while the page is being finished. Re-add once ready.
+  // {
+  //   title: "Arbitration",
+  //   description:
+  //     "Construction-dispute arbitration in Kenya: the Joint Building Council contract framework, the Arbitration Act 1995, and how to reach AAK's secretariat.",
+  //   category: "Page",
+  //   href: "/arbitration",
+  // },
   {
     title: "Resource Centre",
     description:

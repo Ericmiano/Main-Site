@@ -610,7 +610,8 @@ export const navMenu: NavMenuEntry[] = [
     description: "Reports, guidelines and member services.",
     links: [
       { label: "Resource centre", href: "/resources" },
-      { label: "Arbitration", href: "/arbitration" },
+      // Arbitration: on hold while the page is being finished. Re-add once ready.
+      // { label: "Arbitration", href: "/arbitration" },
       { label: "Awards & honours", href: "/awards" },
       { label: "Media & archive", href: "/#media" },
     ],
