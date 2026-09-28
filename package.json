@@ -10,9 +10,11 @@
     "preview": "vite preview",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "build:cpanel": "vite build --mode cpanel && node scripts/cpanel-postbuild.mjs"
+    "build:cpanel": "vite build --mode cpanel && node scripts/cpanel-postbuild.mjs",
+    "build:php": "node scripts/build-php.mjs"
   },
   "dependencies": {
+    "@gsap/react": "^2.1.2",
     "@hookform/resolvers": "^5.2.2",
     "@radix-ui/react-accordion": "^1.2.12",
     "@radix-ui/react-alert-dialog": "^1.1.15",
@@ -47,10 +49,12 @@
     "@tanstack/react-start": "1.168.32",
     "@tanstack/router-plugin": "1.168.23",
     "class-variance-authority": "^0.7.1",
+    "claude": "^0.1.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
     "date-fns": "^4.1.0",
     "embla-carousel-react": "^8.6.0",
+    "gsap": "^3.15.0",
     "input-otp": "^1.4.2",
     "motion": "^13.4.1",
     "react": "^19.2.0",
@@ -70,6 +74,7 @@
   "devDependencies": {
     "@eslint/js": "^9.32.0",
     "@lovable.dev/vite-tanstack-config": "^2.15.0",
+    "@tailwindcss/cli": "^4.2.1",
     "@types/node": "^22.16.5",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",

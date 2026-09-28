@@ -1,0 +1,9 @@
+/* PHP site stylesheet: the same design system, with Tailwind scanning the
+   PHP templates and scripts instead of the React sources. Build with
+   `npm run build:php-css`. */
+@import "tailwindcss" source(none);
+@source "../app";
+@source "../public/assets/js";
+@import "tw-animate-css";
+@import "../../src/fonts.css";
+@import "../../src/design.css";
