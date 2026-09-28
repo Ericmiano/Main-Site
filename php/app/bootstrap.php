@@ -31,9 +31,13 @@ function resolve_route(string $path): ?array
     if (isset($table[$path])) {
         return [$table[$path], []];
     }
+    $archives = require APP_DIR . '/lib/archives.php';
+    if (isset($archives[$path])) {
+        return ['archive', ['archive' => $archives[$path]]];
+    }
     // /about -> pages/about.php, for every single-segment page. Templates
     // that back dynamic routes or special cases aren't reachable directly.
-    $reserved = ['home', '404', 'event', 'chapter', 'initiative', 'grow-a-classroom'];
+    $reserved = ['home', '404', 'event', 'chapter', 'initiative', 'grow-a-classroom', 'archive'];
     if (preg_match('#^/([a-z0-9-]+)$#', $path, $m) && !in_array($m[1], $reserved, true)
         && is_file(APP_DIR . '/pages/' . $m[1] . '.php')) {
         return [$m[1], []];
