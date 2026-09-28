@@ -58,9 +58,12 @@ export default function TermsBody() {
 
       <h2>Donations</h2>
       <p>
-        Donations to <Link to="/initiatives/grow-a-classroom">Grow A Classroom</Link> are made by{" "}
-        {gacDonation.method} {gacDonation.paybill}, account {gacDonation.account}, and support that
-        programme. For confirmation of a donation or any questions, email{" "}
+        Donations to{" "}
+        <a href="https://schools.aak.or.ke/" target="_blank" rel="noopener noreferrer">
+          Grow A Classroom
+        </a>{" "}
+        are made by {gacDonation.method} {gacDonation.paybill}, account {gacDonation.account}, and
+        support that programme. For confirmation of a donation or any questions, email{" "}
         <a href="mailto:aak@aak.or.ke">aak@aak.or.ke</a>.
       </p>
 

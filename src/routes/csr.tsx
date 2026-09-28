@@ -39,7 +39,7 @@ export const Route = createFileRoute("/csr")({
 
 const gac = initiatives.find((initiative) => initiative.slug === "grow-a-classroom");
 
-const programmes: { title: string; body: string; to?: "/initiatives/grow-a-classroom" }[] = [
+const programmes: { title: string; body: string; href?: string | undefined }[] = [
   {
     title: "BuildRun",
     body: "AAK's annual charity run, and the mechanism through which the Association funds its bursary initiative and community projects.",
@@ -51,7 +51,7 @@ const programmes: { title: string; body: string; to?: "/initiatives/grow-a-class
   {
     title: "Grow A Classroom Initiative",
     body: gac?.description ?? "",
-    to: "/initiatives/grow-a-classroom" as const,
+    href: gac?.externalUrl,
   },
 ];
 
@@ -118,14 +118,16 @@ function CsrPage() {
                       <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
                         {programme.body}
                       </p>
-                      {programme.to ? (
-                        <Link
-                          to={programme.to}
+                      {programme.href ? (
+                        <a
+                          href={programme.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
                           className="group mt-auto inline-flex items-center gap-2 pt-6 text-sm font-semibold text-foreground"
                         >
-                          About the initiative
+                          Visit the Grow A Classroom site
                           <ArrowUpRight className="h-4 w-4 text-primary" />
-                        </Link>
+                        </a>
                       ) : null}
                     </div>
                   </Reveal>

@@ -140,7 +140,10 @@ const groups: { title: string; items: { q: string; a: ReactNode }[] }[] = [
             Donate by {gacDonation.method}: Paybill <strong>{gacDonation.paybill}</strong>, account{" "}
             <strong>{gacDonation.account}</strong>. To partner with the programme, email{" "}
             <a href="mailto:advocacy@aak.or.ke">advocacy@aak.or.ke</a>. Read more on the{" "}
-            <Link to="/initiatives/grow-a-classroom">Grow A Classroom page</Link>.
+            <a href="https://schools.aak.or.ke/" target="_blank" rel="noopener noreferrer">
+              Grow A Classroom website
+            </a>
+            .
           </p>
         ),
       },
