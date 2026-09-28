@@ -117,7 +117,7 @@ function StorePage() {
                 href={`https://wa.me/${WHATSAPP_NUMBER}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group mt-8 inline-flex items-center gap-3 rounded-xl bg-primary px-7 py-4 text-sm font-semibold text-primary-foreground transition-transform duration-300 hover:-translate-y-0.5"
+                className="group btn-primary mt-8"
               >
                 <MessageCircle className="h-4 w-4" aria-hidden="true" />
                 Order on WhatsApp
@@ -148,9 +148,7 @@ function StorePage() {
                       ) : null}
                       <div className="flex flex-1 flex-col justify-between p-6">
                         <div>
-                          <span className="text-[11px] font-semibold uppercase tracking-[0.1em] text-primary">
-                            {item.category}
-                          </span>
+                          <span className="meta-label text-muted-foreground">{item.category}</span>
                           <h3 className="mt-3 font-display text-base font-semibold leading-snug text-foreground">
                             {item.name}
                           </h3>
@@ -164,7 +162,7 @@ function StorePage() {
                               )}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="mt-4 inline-flex items-center justify-center gap-2 rounded-lg bg-primary/10 px-4 py-2.5 text-sm font-semibold text-primary transition-colors hover:bg-primary hover:text-primary-foreground"
+                              className="link-quiet mt-4 text-foreground"
                             >
                               <MessageCircle className="h-4 w-4" aria-hidden="true" />
                               {item.ctaLabel ?? "Order via WhatsApp"}

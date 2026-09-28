@@ -176,14 +176,11 @@ function ContactPage() {
                 <Link
                   to="/initiatives/$slug"
                   params={{ slug: "mulika-mjengo" }}
-                  className="rounded-xl bg-foreground px-5 py-2.5 text-sm font-semibold text-background transition-colors hover:bg-primary"
+                  className="group btn-primary"
                 >
                   Mulika Mjengo
                 </Link>
-                <a
-                  href="mailto:aak@aak.or.ke"
-                  className="rounded-xl border border-border px-5 py-2.5 text-sm font-semibold text-foreground transition-colors hover:border-primary/60"
-                >
+                <a href="mailto:aak@aak.or.ke" className="link-quiet text-foreground">
                   Email the secretariat
                 </a>
               </div>
@@ -216,7 +213,7 @@ function ContactPage() {
                 <ArrowUpRight className="h-4 w-4 text-primary" aria-hidden="true" />
               </a>
             </div>
-            <div className="aspect-[16/10] overflow-hidden rounded-2xl border border-border bg-secondary lg:aspect-[16/8]">
+            <div className="aspect-4/3 overflow-hidden rounded-2xl border border-border bg-secondary sm:aspect-video">
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.7954780058567!2d36.790491314254716!3d-1.2974023990537153!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f109787542ce1%3A0x1fff8b8ca80946c!2sBlue+Violet+Plaza%2C+Kamburu+Dr%2C+Nairobi!5e0!3m2!1sen!2ske!4v1549692093091"
                 title="Map showing Blue Violet Plaza, Nairobi"

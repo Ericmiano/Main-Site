@@ -35,7 +35,7 @@ export function ReportArchivePage({
             />
 
             <Reveal className="mt-8 max-w-2xl">
-              <div className="flex items-center gap-3 text-xs font-medium uppercase tracking-[0.22em] text-muted-foreground">
+              <div className="flex items-center gap-3 meta-label text-muted-foreground">
                 <span>{eyebrow}</span>
               </div>
               <h1 className="mt-5 font-display text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">

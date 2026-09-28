@@ -161,7 +161,7 @@ function ResourcesPage() {
                     <p className="mt-2 flex-1 text-sm leading-relaxed text-muted-foreground">
                       {category.body}
                     </p>
-                    <span className="mt-4 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.1em] text-foreground">
+                    <span className="mt-4 inline-flex items-center gap-2 meta-label text-foreground">
                       {category.to ? "Browse documents" : "Open BuildHub"}
                       <ArrowUpRight className="h-3.5 w-3.5 text-primary" />
                     </span>

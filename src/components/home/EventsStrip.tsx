@@ -17,16 +17,10 @@ export function EventsStrip() {
         </Reveal>
         <Reveal className="mt-8 grid gap-8 border-b border-background/12 pb-10 lg:grid-cols-[1fr_auto] lg:items-end">
           <div>
-            <h2
-              id="events-title"
-              className="mt-4 font-display text-3xl font-semibold leading-[0.98] tracking-tight text-balance text-background sm:text-4xl"
-            >
+            <h2 id="events-title" className="type-section mt-4 text-background">
               What&rsquo;s happening at AAK
             </h2>
-            <Link
-              to="/events"
-              className="link-underline mt-5 inline-block text-sm font-medium text-background/70"
-            >
+            <Link to="/events" className="link-quiet mt-5 text-background/80">
               See the full calendar
             </Link>
           </div>
@@ -55,7 +49,9 @@ export function EventsStrip() {
             const body = (
               <>
                 {month !== prevMonth ? (
-                  <span className="meta-label -mb-2 text-primary sm:col-span-full">{month}</span>
+                  <span className="meta-label -mb-2 text-background/60 sm:col-span-full">
+                    {month}
+                  </span>
                 ) : null}
                 <span className="font-display text-5xl font-semibold text-background/90 lg:text-6xl">
                   {day}
@@ -116,10 +112,7 @@ export function EventsStrip() {
           <p className="text-sm text-background/65">
             Conventions, CPD sessions, site visits and more across the year.
           </p>
-          <Link
-            to="/events"
-            className="group inline-flex items-center gap-3 rounded-xl bg-background px-6 py-3.5 text-sm font-semibold text-ink-deep transition-transform duration-300 hover:-translate-y-0.5"
-          >
+          <Link to="/events" className="group btn-primary">
             View all events
             <ArrowUpRight className="h-4 w-4 text-primary transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </Link>

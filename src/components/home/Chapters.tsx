@@ -92,7 +92,7 @@ function ChapterList() {
             params={{ slug: chapter.slug }}
             className="flex min-h-20 items-center gap-4 py-3"
           >
-            <span className="meta-label w-6 shrink-0 text-primary">{pad(i + 1)}</span>
+            <span className="meta-label w-6 shrink-0 text-muted-foreground">{pad(i + 1)}</span>
             <span className="flex-1 font-display text-lg font-semibold leading-tight text-foreground">
               {chapter.name}
             </span>
@@ -129,7 +129,7 @@ function ChapterGrid() {
                 <h3 className="font-display text-base font-semibold leading-tight text-foreground">
                   {chapter.name}
                 </h3>
-                <span className="meta-label text-primary">{pad(i + 1)}</span>
+                <span className="meta-label text-muted-foreground">{pad(i + 1)}</span>
               </div>
             </Link>
           </Reveal>
@@ -149,10 +149,7 @@ export function Chapters() {
       <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
         <Reveal className="max-w-2xl">
           <SectionRule index="05" label="The association" />
-          <h2
-            id="chapters-title"
-            className="mt-8 font-display text-4xl font-semibold leading-[1.02] tracking-tight text-balance text-foreground sm:text-5xl"
-          >
+          <h2 id="chapters-title" className="type-section mt-8 text-foreground">
             Eight professional chapters, one association.
           </h2>
           <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground">

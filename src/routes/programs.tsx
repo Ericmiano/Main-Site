@@ -152,9 +152,7 @@ function ProgrammesPage() {
                       params={{ slug: initiative.slug }}
                       className="group flex h-full flex-col rounded-2xl border border-border bg-card p-7"
                     >
-                      <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-primary">
-                        {initiative.eyebrow}
-                      </span>
+                      <span className="meta-label text-muted-foreground">{initiative.eyebrow}</span>
                       <h3 className="mt-4 font-display text-lg font-semibold leading-snug text-foreground">
                         {initiative.title}
                       </h3>

@@ -26,10 +26,7 @@ export function Initiatives() {
       <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
         <Reveal className="max-w-2xl">
           <SectionRule index="04" label="Public impact" />
-          <h2
-            id="initiatives-title"
-            className="mt-8 font-display text-4xl font-semibold leading-[0.98] tracking-tight text-balance text-foreground sm:text-5xl lg:text-6xl"
-          >
+          <h2 id="initiatives-title" className="type-section mt-8 text-foreground">
             Programmes we run for the public good.
           </h2>
           <p className="mt-5 max-w-xl text-base leading-relaxed text-foreground/70">
@@ -46,7 +43,7 @@ export function Initiatives() {
                   src={featured.image}
                   alt={`${featured.title} initiative`}
                   loading="lazy"
-                  className="photo-grade aspect-4/3 w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105 lg:aspect-5/4"
+                  className="photo-grade aspect-4/3 w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
                 />
               </div>
               <div className="mt-6 flex items-baseline gap-4">

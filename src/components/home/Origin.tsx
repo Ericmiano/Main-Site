@@ -15,10 +15,7 @@ export function Origin() {
       <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
         <Reveal>
           <SectionRule index="01" label="Origin" />
-          <h2
-            id="origin-title"
-            className="mt-8 max-w-3xl font-display text-4xl font-semibold leading-[1.02] tracking-tight text-balance text-foreground sm:text-6xl lg:text-[5rem]"
-          >
+          <h2 id="origin-title" className="type-section mt-8 max-w-3xl text-foreground">
             The people who shape Kenya.
           </h2>
         </Reveal>

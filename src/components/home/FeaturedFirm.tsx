@@ -16,10 +16,7 @@ export function FeaturedFirm() {
             <span>Feature firm &middot; Showcase</span>
             <span className="text-[oklch(0.75_0.13_38.5)]">Member firm</span>
           </p>
-          <h2
-            id="featured-firm-title"
-            className="mt-8 font-display text-4xl font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl"
-          >
+          <h2 id="featured-firm-title" className="type-section mt-8">
             {featuredFirm.name}
           </h2>
           <p className="mt-5 max-w-md text-base leading-relaxed text-background/75">
@@ -50,7 +47,7 @@ export function FeaturedFirm() {
                       loading="lazy"
                       className={cn(
                         "photo-grade w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105",
-                        i === 0 ? "aspect-[21/9]" : "aspect-[16/10]",
+                        i === 0 ? "aspect-video" : "aspect-4/3",
                       )}
                     />
                     <figcaption className="absolute inset-x-0 bottom-0 bg-linear-to-t from-ink-deep/85 to-transparent p-5 pt-16 text-background">

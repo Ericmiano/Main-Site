@@ -348,7 +348,7 @@ export function Header() {
               onClick={() => setOpen((v) => !v)}
               aria-expanded={open}
               aria-controls="mobile-nav"
-              className="my-2 inline-flex min-h-11 items-center gap-3 rounded-xl border border-primary-foreground/30 px-4 text-[11px] font-semibold uppercase tracking-[0.18em] text-primary-foreground"
+              className="my-2 inline-flex min-h-11 items-center gap-3 rounded-xl border border-primary-foreground/30 px-4 meta-label text-primary-foreground"
             >
               {open ? "Close" : "Menu"}
               <span aria-hidden="true" className="flex flex-col gap-1">
@@ -385,9 +385,7 @@ export function Header() {
             <div className="mx-auto max-w-[1400px] px-6 py-10 lg:px-12">
               {activeEntry.type === "initiatives" ? (
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
-                    Initiatives
-                  </p>
+                  <p className="meta-label text-background/60">Initiatives</p>
                   <h3 className="mt-2 font-display text-2xl font-semibold text-background">
                     Programmes we run for the public good
                   </h3>
@@ -443,9 +441,7 @@ export function Header() {
               ) : (
                 <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_2fr]">
                   <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
-                      {activeEntry.label}
-                    </p>
+                    <p className="meta-label text-background/60">{activeEntry.label}</p>
                     <p className="mt-3 max-w-xs text-sm leading-relaxed text-background/65">
                       {activeEntry.description}
                     </p>
@@ -589,7 +585,7 @@ export function Header() {
               href={memberPortalUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-8 flex min-h-12 items-center justify-center rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground"
+              className="group btn-primary mt-8 w-full justify-center"
             >
               Member log in
             </a>

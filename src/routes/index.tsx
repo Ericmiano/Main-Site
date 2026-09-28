@@ -101,8 +101,8 @@ function Index() {
         <MemberStats />
         <Partners />
         <MediaGrid />
-        <FeaturedFirm />
         <Publications />
+        <FeaturedFirm />
         <Membership />
       </main>
       <SectionIndicator />

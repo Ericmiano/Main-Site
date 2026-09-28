@@ -1,8 +1,8 @@
 import { cn } from "@/lib/utils";
 
 const tones = {
-  light: { rule: "border-border", label: "text-muted-foreground", index: "text-primary" },
-  dark: { rule: "border-background/15", label: "text-background/60", index: "text-primary" },
+  light: { rule: "border-border", label: "text-muted-foreground", index: "text-foreground/45" },
+  dark: { rule: "border-background/15", label: "text-background/60", index: "text-background/45" },
   // On the brand-red surface the red index would disappear.
   primary: {
     rule: "border-primary-foreground/25",

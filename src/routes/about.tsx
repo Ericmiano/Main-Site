@@ -157,9 +157,7 @@ function AboutPage() {
             </h2>
             <div className="grid gap-12 lg:grid-cols-2 lg:gap-20">
               <Reveal>
-                <span className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
-                  Our Mission
-                </span>
+                <span className="meta-label text-muted-foreground">Our Mission</span>
                 <p className="mt-4 font-display text-2xl font-semibold leading-snug tracking-tight text-foreground">
                   To promote professionalism and integrity in the built and natural environment,
                   ensuring that every member adheres to the highest global standards of practice and
@@ -167,9 +165,7 @@ function AboutPage() {
                 </p>
               </Reveal>
               <Reveal delay={80}>
-                <span className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
-                  Our Vision
-                </span>
+                <span className="meta-label text-muted-foreground">Our Vision</span>
                 <p className="mt-4 font-display text-2xl font-semibold leading-snug tracking-tight text-foreground">
                   To be the leading professional organization in the built and natural environment
                   in the region, driving innovation and sustainable development for future
@@ -179,9 +175,7 @@ function AboutPage() {
             </div>
 
             <Reveal delay={160} className="mt-14 border-t border-border pt-10">
-              <span className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
-                Our Core Values
-              </span>
+              <span className="meta-label text-muted-foreground">Our Core Values</span>
               <ul className="mt-4 flex flex-wrap gap-x-10 gap-y-2">
                 {coreValues.map((value) => (
                   <li key={value} className="font-display text-lg font-semibold text-foreground">
@@ -287,7 +281,7 @@ function AboutPage() {
               href="https://members.aak.or.ke/application/registerv3/"
               target="_blank"
               rel="noopener noreferrer"
-              className="group mt-7 inline-flex items-center gap-3 rounded-xl bg-primary px-7 py-4 text-sm font-semibold text-primary-foreground transition-transform duration-300 hover:-translate-y-0.5"
+              className="group btn-primary mt-7"
             >
               Start your application
               <ArrowUpRight className="h-4 w-4" />

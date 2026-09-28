@@ -67,9 +67,7 @@ export function Countdown({ targetIso, endIso, className, compact = true }: Coun
             <dd className="font-sans text-2xl font-semibold tabular-nums text-foreground sm:text-3xl">
               {String(unit.value).padStart(2, "0")}
             </dd>
-            <dd className="mt-1 text-[10px] font-medium uppercase tracking-[0.12em] text-muted-foreground">
-              {unit.label}
-            </dd>
+            <dd className="mt-1 meta-label text-muted-foreground">{unit.label}</dd>
           </div>
         ))}
       </dl>

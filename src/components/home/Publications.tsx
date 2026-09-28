@@ -25,10 +25,7 @@ export function Publications() {
       <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
         <Reveal className="max-w-2xl">
           <SectionRule index="07" label="Knowledge archive" />
-          <h2
-            id="publications-title"
-            className="mt-8 font-display text-4xl font-semibold leading-[0.98] tracking-tight text-balance text-foreground sm:text-5xl"
-          >
+          <h2 id="publications-title" className="type-section mt-8 text-foreground">
             Research, policy and the record.
           </h2>
           <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground">
@@ -53,7 +50,7 @@ export function Publications() {
                     <FileText className="h-5 w-5 text-primary" aria-hidden="true" />
                   </div>
                   <div>
-                    <span className="meta-label text-primary">{doc.meta}</span>
+                    <span className="meta-label text-muted-foreground">{doc.meta}</span>
                     <h3 className="mt-3 font-display text-2xl font-semibold leading-tight text-balance text-foreground">
                       {doc.title}
                     </h3>
@@ -84,9 +81,7 @@ export function Publications() {
               <FileText className="h-5 w-5" aria-hidden="true" />
             </span>
             <div>
-              <span className="text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground">
-                {activeDoc.meta}
-              </span>
+              <span className="meta-label text-muted-foreground">{activeDoc.meta}</span>
               <h3 className="mt-2 font-display text-xl font-semibold leading-snug text-foreground">
                 {activeDoc.title}
               </h3>
@@ -95,7 +90,7 @@ export function Publications() {
               href={activeDoc.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="group mt-2 inline-flex items-center justify-center gap-2 rounded-xl bg-foreground px-6 py-3 text-sm font-semibold text-background transition-transform duration-300 hover:-translate-y-0.5"
+              className="group btn-primary mt-2 justify-center"
             >
               Open PDF
               <ArrowUpRight className="h-4 w-4" />

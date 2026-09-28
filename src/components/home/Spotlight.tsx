@@ -21,7 +21,7 @@ const featured = awardWinners2024
 export function Spotlight() {
   const reduceMotion = useReducedMotion();
   const rail = useRef<HTMLOListElement>(null);
-  const auto = useAutoRail(rail);
+  const auto = useAutoRail(rail, 3000, { seamless: true });
 
   return (
     <section
@@ -63,76 +63,79 @@ export function Spotlight() {
           ref={rail}
           className="-mx-6 flex snap-x snap-mandatory gap-5 overflow-x-auto px-6 pb-6 [scrollbar-width:none] lg:mr-[-3rem] lg:ml-0 lg:pl-0 lg:pr-12"
         >
-          {featured.map((winner) => (
-            <li
-              key={`${winner.project}-${winner.category}`}
-              className="w-[78%] shrink-0 snap-start sm:w-72 lg:w-80"
-            >
-              <a
-                href={winner.pdfHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex h-full flex-col bg-card shadow-xl ring-1 ring-foreground/5"
+          {/* Two copies for the seamless loop; the second is hidden from
+              assistive tech and keyboard focus. */}
+          {[0, 1].map((copy) => [
+            ...featured.map((winner) => (
+              <li
+                key={`${copy}-${winner.project}-${winner.category}`}
+                className="w-[78%] shrink-0 snap-start sm:w-72 lg:w-80"
+                {...(copy ? { "aria-hidden": true, inert: true } : {})}
               >
-                <div className="overflow-hidden bg-secondary">
-                  <img
-                    src={winner.image}
-                    alt={`${winner.project}, ${winner.category}`}
-                    loading="lazy"
-                    className="aspect-4/3 w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
-                  />
-                </div>
-                <div className="flex flex-1 flex-col gap-2 p-5">
-                  <span
-                    className={cn(
-                      "meta-label",
-                      winner.result === "Winner" ? "text-primary" : "text-muted-foreground",
-                    )}
-                  >
-                    {winner.result}
-                  </span>
-                  <h3 className="font-display text-lg font-semibold leading-snug text-balance text-foreground">
-                    {winner.project}
-                  </h3>
-                  <p className="mt-auto pt-2 text-xs leading-relaxed text-muted-foreground">
-                    {winner.category}
-                  </p>
-                </div>
-              </a>
-            </li>
-          ))}
-          <li className="w-[78%] shrink-0 snap-start sm:w-72 lg:w-80">
-            <Link
-              to="/awards"
-              className="group flex h-full min-h-72 flex-col justify-between bg-ink-deep p-6 text-background shadow-xl"
+                <a
+                  href={winner.pdfHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex h-full flex-col bg-card shadow-xl ring-1 ring-foreground/5"
+                >
+                  <div className="overflow-hidden bg-secondary">
+                    <img
+                      src={winner.image}
+                      alt={`${winner.project}, ${winner.category}`}
+                      loading="lazy"
+                      className="aspect-4/3 w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
+                    />
+                  </div>
+                  <div className="flex flex-1 flex-col gap-2 p-5">
+                    <span
+                      className={cn(
+                        "meta-label",
+                        winner.result === "Winner" ? "text-primary" : "text-muted-foreground",
+                      )}
+                    >
+                      {winner.result}
+                    </span>
+                    <h3 className="font-display text-lg font-semibold leading-snug text-balance text-foreground">
+                      {winner.project}
+                    </h3>
+                    <p className="mt-auto pt-2 text-xs leading-relaxed text-muted-foreground">
+                      {winner.category}
+                    </p>
+                  </div>
+                </a>
+              </li>
+            )),
+            <li
+              key={`${copy}-all-winners`}
+              className="w-[78%] shrink-0 snap-start sm:w-72 lg:w-80"
+              {...(copy ? { "aria-hidden": true, inert: true } : {})}
             >
-              <span className="meta-label text-background/60">
-                {awardWinners2024.length} recognised projects
-              </span>
-              <span className="font-display text-2xl font-semibold leading-tight">
-                See every winner, runner-up and honourable mention
-                <ArrowUpRight className="ml-2 inline h-5 w-5 text-primary transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-              </span>
-            </Link>
-          </li>
+              <Link
+                to="/awards"
+                className="group flex h-full min-h-72 flex-col justify-between bg-ink-deep p-6 text-background shadow-xl"
+              >
+                <span className="meta-label text-background/60">
+                  {awardWinners2024.length} recognised projects
+                </span>
+                <span className="font-display text-2xl font-semibold leading-tight">
+                  See every winner, runner-up and honourable mention
+                  <ArrowUpRight className="ml-2 inline h-5 w-5 text-primary transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                </span>
+              </Link>
+            </li>,
+          ])}
         </ol>
       </motion.div>
 
       <div className="mx-auto grid max-w-[1400px] gap-14 px-6 pt-14 lg:grid-cols-[1fr_1.15fr] lg:gap-20 lg:px-12 lg:pt-20">
         <Reveal className="max-w-2xl lg:sticky lg:top-32 lg:self-start">
-          <div className="flex items-center gap-2.5 text-xs font-semibold uppercase tracking-[0.18em] text-primary">
-            <span aria-hidden="true" className="h-1.5 w-1.5 bg-primary" />
+          <div className="meta-label text-muted-foreground">
             In the spotlight &middot; Awards of Excellence
           </div>
-          <h2
-            id="spotlight-title"
-            className="mt-5 font-display text-3xl font-semibold leading-[1.04] tracking-tight text-balance text-foreground sm:text-4xl lg:text-[2.75rem]"
-          >
+          <h2 id="spotlight-title" className="type-section mt-5 text-foreground">
             AAK &ndash; Basco DuraCoat{" "}
-            <span className="font-accent italic font-medium text-primary">
-              Awards of Excellence
-            </span>{" "}
-            in Architecture
+            <span className="font-accent italic font-medium">Awards of Excellence</span> in
+            Architecture
           </h2>
           <p className="mt-6 text-[0.95rem] leading-relaxed text-muted-foreground">
             Hosted by the Architects Chapter, the Awards of Excellence recognise outstanding
@@ -141,17 +144,14 @@ export function Spotlight() {
             Commercial to Best Student Project.
           </p>
           <div className="mt-9 flex flex-wrap items-center gap-x-7 gap-y-4">
-            <Link
-              to="/awards"
-              className="group inline-flex items-center gap-3 rounded-xl bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground transition-transform duration-300 hover:-translate-y-0.5"
-            >
+            <Link to="/awards" className="group btn-primary">
               See the winning projects
               <ArrowRight className="h-4 w-4" />
             </Link>
             <Link
               to="/chapters/$slug"
               params={{ slug: "architects" }}
-              className="link-underline text-sm font-medium text-foreground"
+              className="link-quiet text-foreground"
             >
               About the Architects Chapter
             </Link>

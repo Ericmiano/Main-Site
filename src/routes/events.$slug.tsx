@@ -168,9 +168,7 @@ function EventDetail() {
                 <dl className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
                   {event.facts.map((fact) => (
                     <div key={fact.label} className="rounded-xl border border-border p-4">
-                      <dt className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                        {fact.label}
-                      </dt>
+                      <dt className="meta-label text-muted-foreground">{fact.label}</dt>
                       <dd className="mt-1.5 text-sm font-medium text-foreground">{fact.value}</dd>
                     </div>
                   ))}
@@ -184,17 +182,14 @@ function EventDetail() {
                 />
 
                 <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
-                  <RegisterCta
-                    event={event}
-                    className="group inline-flex items-center gap-3 rounded-xl bg-foreground px-7 py-4 text-sm font-semibold text-background transition-transform duration-300 hover:-translate-y-0.5"
-                  />
+                  <RegisterCta event={event} className="group btn-primary" />
                   {status !== "past" ? (
                     <AddToCalendar
                       event={event}
                       className="inline-flex items-center gap-2 text-sm font-semibold text-foreground transition-colors hover:text-primary"
                     />
                   ) : null}
-                  <Link to="/events" className="link-underline text-sm font-medium text-foreground">
+                  <Link to="/events" className="link-quiet text-foreground">
                     Back to all events
                   </Link>
                 </div>
@@ -260,9 +255,7 @@ function EventDetail() {
                         className="absolute -left-[1.6rem] top-1 h-2.5 w-2.5 bg-primary"
                         aria-hidden="true"
                       />
-                      <p className="text-xs font-semibold uppercase tracking-[0.14em] text-primary">
-                        {item.time}
-                      </p>
+                      <p className="meta-label text-muted-foreground">{item.time}</p>
                       <p className="mt-1 text-sm font-medium text-foreground">{item.label}</p>
                     </li>
                   ))}
@@ -277,10 +270,7 @@ function EventDetail() {
                 Ready to take part?
               </h2>
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{event.cta}</p>
-              <RegisterCta
-                event={event}
-                className="group mt-7 inline-flex items-center gap-3 rounded-xl bg-primary px-7 py-4 text-sm font-semibold text-primary-foreground transition-transform duration-300 hover:-translate-y-0.5"
-              />
+              <RegisterCta event={event} className="group btn-primary mt-7" />
             </div>
           </section>
         </article>
@@ -300,10 +290,7 @@ function EventNotFound() {
           <p className="mt-3 text-sm text-muted-foreground">
             This event may have closed or the link may be out of date.
           </p>
-          <Link
-            to="/events"
-            className="mt-6 inline-flex items-center justify-center rounded-xl bg-foreground px-6 py-3 text-sm font-semibold text-background"
-          >
+          <Link to="/events" className="group btn-primary mt-6 justify-center">
             View all events
           </Link>
         </div>

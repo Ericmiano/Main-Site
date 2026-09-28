@@ -88,9 +88,7 @@ function ChapterDetail() {
         <section className="py-14 lg:py-20">
           <div className="mx-auto grid max-w-[1400px] gap-14 px-6 lg:grid-cols-[1fr_1.1fr] lg:px-12">
             <Reveal>
-              <span className="text-xs font-medium uppercase tracking-[0.22em] text-muted-foreground">
-                AAK Chapter
-              </span>
+              <span className="meta-label text-muted-foreground">AAK Chapter</span>
               <h1 className="mt-5 font-display text-4xl font-semibold leading-[1.02] tracking-tight text-balance text-foreground sm:text-5xl lg:text-6xl">
                 {chapter.name}
               </h1>
@@ -179,9 +177,7 @@ function ChapterDetail() {
         ) : null}
 
         <div className="border-t border-border bg-secondary/40 py-10 text-center">
-          <span className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">
-            {chapter.footerTagline}
-          </span>
+          <span className="meta-label text-muted-foreground">{chapter.footerTagline}</span>
         </div>
 
         <section className="py-16 text-center lg:py-20">
@@ -192,10 +188,7 @@ function ChapterDetail() {
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
               Membership gives you standing, CPD access and a voice within your chapter.
             </p>
-            <Link
-              to="/membership"
-              className="group mt-7 inline-flex items-center gap-3 rounded-xl bg-primary px-7 py-4 text-sm font-semibold text-primary-foreground transition-transform duration-300 hover:-translate-y-0.5"
-            >
+            <Link to="/membership" className="group btn-primary mt-7">
               How to join
               <ArrowUpRight className="h-4 w-4" />
             </Link>
@@ -214,10 +207,7 @@ function ChapterNotFound() {
       <main className="flex min-h-[50vh] items-center justify-center px-6 py-24 text-center">
         <div>
           <h1 className="font-display text-3xl font-semibold text-foreground">Chapter not found</h1>
-          <Link
-            to="/"
-            className="mt-6 inline-flex items-center justify-center rounded-xl bg-foreground px-6 py-3 text-sm font-semibold text-background"
-          >
+          <Link to="/" className="group btn-primary mt-6 justify-center">
             Back to home
           </Link>
         </div>

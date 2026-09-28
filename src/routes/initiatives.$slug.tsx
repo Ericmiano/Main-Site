@@ -135,8 +135,8 @@ function InitiativeDetail() {
                 <span
                   className={
                     initiative.tone === "green"
-                      ? "text-[11px] font-semibold uppercase tracking-[0.16em] text-sustain"
-                      : "text-[11px] font-semibold uppercase tracking-[0.16em] text-primary"
+                      ? "meta-label text-sustain"
+                      : "meta-label text-muted-foreground"
                   }
                 >
                   {initiative.eyebrow}
@@ -152,9 +152,7 @@ function InitiativeDetail() {
                   <dl className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
                     {initiative.stats.map((stat) => (
                       <div key={stat.label} className="rounded-xl border border-border p-4">
-                        <dt className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                          {stat.label}
-                        </dt>
+                        <dt className="meta-label text-muted-foreground">{stat.label}</dt>
                         <dd className="mt-1.5 text-sm font-medium text-foreground">{stat.value}</dd>
                       </div>
                     ))}
@@ -182,9 +180,7 @@ function InitiativeDetail() {
           {moreVideos.length ? (
             <section className="border-t border-border py-14 lg:py-20">
               <div className="mx-auto max-w-3xl px-6 lg:px-12">
-                <h2 className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                  More video
-                </h2>
+                <h2 className="meta-label text-muted-foreground">More video</h2>
                 <div className="mt-4 space-y-8">
                   {moreVideos.map((video) => (
                     <div key={video.src}>
@@ -209,9 +205,7 @@ function InitiativeDetail() {
 
               {initiative.audio?.length ? (
                 <div className="mt-10 border-t border-border pt-8">
-                  <h2 className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                    Radio coverage
-                  </h2>
+                  <h2 className="meta-label text-muted-foreground">Radio coverage</h2>
                   <ul className="mt-4 space-y-5">
                     {initiative.audio.map((clip) => (
                       <li key={clip.src}>
@@ -227,9 +221,7 @@ function InitiativeDetail() {
 
               {initiative.documents?.length ? (
                 <div className="mt-10 border-t border-border pt-8">
-                  <h2 className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                    Documents
-                  </h2>
+                  <h2 className="meta-label text-muted-foreground">Documents</h2>
                   <ul className="mt-4 space-y-3">
                     {initiative.documents.map((doc) => (
                       <li key={doc.href}>
@@ -250,9 +242,7 @@ function InitiativeDetail() {
 
               {initiative.contacts?.length ? (
                 <div className="mt-10 border-t border-border pt-8">
-                  <h2 className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                    Report a concern
-                  </h2>
+                  <h2 className="meta-label text-muted-foreground">Report a concern</h2>
                   <ul className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
                     {initiative.contacts.map((contact) => (
                       <li key={contact.href}>
@@ -262,9 +252,7 @@ function InitiativeDetail() {
                           rel={contact.href.startsWith("http") ? "noopener noreferrer" : undefined}
                           className="group flex flex-col rounded-xl border border-border p-4 transition-colors hover:bg-secondary/60"
                         >
-                          <span className="text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">
-                            {contact.label}
-                          </span>
+                          <span className="meta-label text-muted-foreground">{contact.label}</span>
                           <span className="mt-1 inline-flex items-center gap-2 text-sm font-semibold text-foreground">
                             {contact.value}
                             <ArrowUpRight className="h-3.5 w-3.5 text-primary" />
@@ -333,10 +321,7 @@ function InitiativeDetail() {
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
                 Reach the secretariat to support or take part in this programme.
               </p>
-              <a
-                href="mailto:advocacy@aak.or.ke"
-                className="group mt-7 inline-flex items-center gap-3 rounded-xl bg-primary px-7 py-4 text-sm font-semibold text-primary-foreground transition-transform duration-300 hover:-translate-y-0.5"
-              >
+              <a href="mailto:advocacy@aak.or.ke" className="group btn-primary mt-7">
                 Contact advocacy@aak.or.ke
                 <ArrowUpRight className="h-4 w-4" />
               </a>
@@ -358,10 +343,7 @@ function InitiativeNotFound() {
           <h1 className="font-display text-3xl font-semibold text-foreground">
             Initiative not found
           </h1>
-          <Link
-            to="/"
-            className="mt-6 inline-flex items-center justify-center rounded-xl bg-foreground px-6 py-3 text-sm font-semibold text-background"
-          >
+          <Link to="/" className="group btn-primary mt-6 justify-center">
             Back to home
           </Link>
         </div>

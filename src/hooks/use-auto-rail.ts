@@ -7,8 +7,16 @@ import { useCallback, useEffect, useRef, useState, type RefObject } from "react"
  * the tab is hidden, and never runs for
  * prefers-reduced-motion. Does nothing when the list doesn't overflow
  * (e.g. when it becomes a grid at larger breakpoints).
+ *
+ * `seamless`: the list's children are two identical copies of the items. The
+ * rail then keeps moving forward forever, silently jumping back one copy's
+ * width when it reaches the second copy, instead of rewinding to the start.
  */
-export function useAutoRail<T extends HTMLElement>(ref: RefObject<T | null>, intervalMs = 4500) {
+export function useAutoRail<T extends HTMLElement>(
+  ref: RefObject<T | null>,
+  intervalMs = 4500,
+  { seamless = false }: { seamless?: boolean } = {},
+) {
   const [reducedMotion, setReducedMotion] = useState(false);
   const busy = useRef({ hover: false, focus: false, touch: false, hidden: false, offscreen: true });
 
@@ -22,6 +30,24 @@ export function useAutoRail<T extends HTMLElement>(ref: RefObject<T | null>, int
       const origin = items[0]?.offsetLeft ?? 0;
       const lefts = items.map((item) => item.offsetLeft - origin);
 
+      if (seamless) {
+        const period = lefts[items.length / 2] ?? 0;
+        if (period > 0) {
+          // Instant jump between identical positions, then the smooth step.
+          if (direction === 1 && el.scrollLeft >= period - 4)
+            el.scrollTo({ left: el.scrollLeft - period, behavior: "auto" });
+          if (direction === -1 && el.scrollLeft <= 4)
+            el.scrollTo({ left: el.scrollLeft + period, behavior: "auto" });
+          const at = el.scrollLeft;
+          const target =
+            direction === 1
+              ? lefts.find((l) => l > at + 4)
+              : [...lefts].reverse().find((l) => l < at - 4);
+          el.scrollTo({ left: Math.max(0, Math.min(target ?? 0, max)), behavior });
+          return;
+        }
+      }
+
       if (direction === 1) {
         if (el.scrollLeft >= max - 4) return el.scrollTo({ left: 0, behavior });
         const next = lefts.find((l) => l > el.scrollLeft + 4);
@@ -32,8 +58,32 @@ export function useAutoRail<T extends HTMLElement>(ref: RefObject<T | null>, int
         el.scrollTo({ left: Math.max(prev ?? 0, 0), behavior });
       }
     },
-    [ref, reducedMotion],
+    [ref, reducedMotion, seamless],
   );
+
+  // A visitor swiping into the second copy is moved back to the same card in
+  // the first copy once scrolling settles, so they never reach an end.
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || !seamless) return;
+    let settle: number | undefined;
+    const normalise = () => {
+      const items = [...el.children] as HTMLElement[];
+      const mid = items[items.length / 2];
+      const period = mid ? mid.offsetLeft - (items[0]?.offsetLeft ?? 0) : 0;
+      if (period > 0 && el.scrollLeft >= period - 2)
+        el.scrollTo({ left: el.scrollLeft - period, behavior: "auto" });
+    };
+    const onScroll = () => {
+      window.clearTimeout(settle);
+      settle = window.setTimeout(normalise, 180);
+    };
+    el.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.clearTimeout(settle);
+      el.removeEventListener("scroll", onScroll);
+    };
+  }, [ref, seamless]);
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");

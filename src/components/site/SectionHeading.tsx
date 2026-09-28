@@ -41,19 +41,12 @@ export function SectionHeading({
             {eyebrow}
           </span>
           {index ? (
-            <span aria-hidden="true" className="meta-label text-primary">
+            <span aria-hidden="true" className="meta-label text-muted-foreground">
               {index}
             </span>
           ) : null}
         </div>
-        <h2
-          className={cn(
-            "mt-7 font-display text-4xl leading-[0.98] tracking-tight text-balance text-foreground sm:text-5xl lg:text-6xl",
-            bold ? "font-bold" : "font-semibold",
-          )}
-        >
-          {title}
-        </h2>
+        <h2 className={cn("type-section mt-7 text-foreground", bold && "font-bold")}>{title}</h2>
         {description ? (
           <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground">
             {description}

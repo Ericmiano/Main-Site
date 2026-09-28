@@ -19,8 +19,8 @@ const chip = (selected: boolean) =>
   cn(
     "rounded-full border px-4 py-2 text-sm font-medium transition-colors",
     selected
-      ? "border-primary-foreground bg-primary-foreground text-primary"
-      : "border-primary-foreground/40 text-primary-foreground hover:border-primary-foreground",
+      ? "border-foreground bg-foreground text-background"
+      : "border-foreground/25 text-foreground hover:border-foreground",
   );
 
 export function ChapterPicker() {
@@ -31,11 +31,9 @@ export function ChapterPicker() {
   const fees = stage ? membershipFees.filter((f) => stage.categories.includes(f.category)) : [];
 
   return (
-    <div className="mt-16 border-t border-primary-foreground/25 pt-10">
-      <p className="meta-label text-primary-foreground/80">Find your fit</p>
-      <h3 className="mt-3 font-display text-2xl font-semibold sm:text-3xl">
-        Which chapter, and which membership?
-      </h3>
+    <div className="mt-16 border-t border-foreground/15 pt-10">
+      <p className="meta-label text-foreground/60">Find your fit</p>
+      <h3 className="type-title mt-3 sm:text-3xl">Which chapter, and which membership?</h3>
 
       <div className="mt-8 grid gap-8 lg:grid-cols-[1.4fr_1fr] lg:gap-14">
         <div className="space-y-7">
@@ -75,11 +73,11 @@ export function ChapterPicker() {
 
         <div
           aria-live="polite"
-          className="flex min-h-56 flex-col bg-primary-foreground p-6 text-foreground shadow-2xl lg:p-8"
+          className="flex min-h-56 flex-col bg-background p-6 text-foreground shadow-xl lg:p-8"
         >
           {chapter && stage ? (
             <>
-              <p className="meta-label text-primary">Your route in</p>
+              <p className="meta-label text-muted-foreground">Your route in</p>
               <p className="mt-3 font-display text-2xl font-semibold leading-snug">
                 {chapter.name} Chapter
               </p>
@@ -105,12 +103,12 @@ export function ChapterPicker() {
                   href={REGISTER_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground"
+                  className="group btn-primary"
                 >
                   Start application
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                 </a>
-                <Link to="/membership" className="link-underline text-sm font-medium">
+                <Link to="/membership" className="link-quiet">
                   Membership details
                 </Link>
               </div>

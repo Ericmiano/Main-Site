@@ -58,7 +58,7 @@ export function ArbitratorDirectory() {
               onClick={() => setFilter(chapter)}
               aria-pressed={activeChapter === chapter}
               className={cn(
-                "rounded-xl px-3.5 py-2 text-xs font-semibold uppercase tracking-[0.06em] transition-colors",
+                "rounded-xl px-3.5 py-2 meta-label transition-colors",
                 activeChapter === chapter
                   ? "bg-foreground text-background"
                   : "bg-card text-muted-foreground hover:text-foreground",
@@ -198,9 +198,7 @@ export function ArbitratorDirectory() {
                 />
               ) : null}
               <div className="min-w-0">
-                <span className="text-[11px] font-semibold uppercase tracking-[0.1em] text-primary">
-                  {active.chapter}
-                </span>
+                <span className="meta-label text-muted-foreground">{active.chapter}</span>
                 <h3 className="mt-2 font-display text-2xl font-semibold text-foreground">
                   {active.name}
                 </h3>
@@ -223,15 +221,11 @@ export function ArbitratorDirectory() {
 
             <dl className="mt-6 grid grid-cols-1 gap-4 border-y border-border py-6 sm:grid-cols-2">
               <div>
-                <dt className="text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">
-                  Registration
-                </dt>
+                <dt className="meta-label text-muted-foreground">Registration</dt>
                 <dd className="mt-1 text-sm text-foreground">{active.registration}</dd>
               </div>
               <div>
-                <dt className="text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">
-                  Years of practice
-                </dt>
+                <dt className="meta-label text-muted-foreground">Years of practice</dt>
                 <dd className="mt-1 text-sm text-foreground">{active.yearsOfPractice}</dd>
               </div>
             </dl>
@@ -243,9 +237,7 @@ export function ArbitratorDirectory() {
             </div>
 
             <div className="mt-6">
-              <h4 className="text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">
-                ADR experience &amp; training
-              </h4>
+              <h4 className="meta-label text-muted-foreground">ADR experience &amp; training</h4>
               <ul className="mt-2 space-y-1.5 text-sm text-muted-foreground">
                 {active.adrExperience.map((item, i) => (
                   <li key={i} className="flex gap-2">
@@ -257,9 +249,7 @@ export function ArbitratorDirectory() {
             </div>
 
             <div className="mt-6">
-              <h4 className="text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">
-                Academic qualifications
-              </h4>
+              <h4 className="meta-label text-muted-foreground">Academic qualifications</h4>
               <ul className="mt-2 space-y-1.5 text-sm text-muted-foreground">
                 {active.academicQualifications.map((item, i) => (
                   <li key={i} className="flex gap-2">
@@ -271,9 +261,7 @@ export function ArbitratorDirectory() {
             </div>
 
             <div className="mt-6">
-              <h4 className="text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">
-                Professional memberships
-              </h4>
+              <h4 className="meta-label text-muted-foreground">Professional memberships</h4>
               <ul className="mt-2 space-y-1.5 text-sm text-muted-foreground">
                 {active.memberships.map((item, i) => (
                   <li key={i} className="flex gap-2">

@@ -6,13 +6,10 @@ export function Partners() {
   return (
     <section
       aria-labelledby="partners-title"
-      className="border-y border-border bg-secondary/40 py-14"
+      className="border-y border-border bg-background py-14"
     >
       <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
-        <p
-          id="partners-title"
-          className="text-center text-xs font-medium uppercase tracking-[0.22em] text-muted-foreground"
-        >
+        <p id="partners-title" className="text-center meta-label text-muted-foreground">
           Working alongside
         </p>
       </div>

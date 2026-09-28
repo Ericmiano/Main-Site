@@ -106,10 +106,7 @@ function StudentsPage() {
               Student membership carries a reduced subscription. See the fees table for the current
               rate.
             </p>
-            <Link
-              to="/membership"
-              className="group mt-7 inline-flex items-center gap-3 rounded-xl bg-primary px-7 py-4 text-sm font-semibold text-primary-foreground transition-transform duration-300 hover:-translate-y-0.5"
-            >
+            <Link to="/membership" className="group btn-primary mt-7">
               View membership &amp; fees
               <ArrowUpRight className="h-4 w-4" />
             </Link>

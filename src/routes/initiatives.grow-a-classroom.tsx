@@ -100,7 +100,12 @@ function DonateCard({ dark = false }: { dark?: boolean }) {
         dark ? "bg-ink-deep/70 text-background backdrop-blur-md" : "bg-background text-foreground",
       )}
     >
-      <p className={cn("meta-label", dark ? "text-[oklch(0.75_0.13_38.5)]" : "text-primary")}>
+      <p
+        className={cn(
+          "meta-label",
+          dark ? "text-[oklch(0.75_0.13_38.5)]" : "text-muted-foreground",
+        )}
+      >
         Donate &middot; {gacDonation.method}
       </p>
       <div className="mt-4 flex flex-wrap gap-x-10 gap-y-4">
@@ -131,7 +136,7 @@ function SchoolStory({
     >
       <div className="grid gap-10 lg:grid-cols-[0.8fr_1.4fr] lg:gap-16">
         <Reveal className="lg:sticky lg:top-28 lg:self-start">
-          <p className="meta-label text-primary">
+          <p className="meta-label text-muted-foreground">
             {pad(index + 1)} / {pad(gacSchools.length)}
           </p>
           <h3
@@ -313,10 +318,7 @@ function GrowAClassroom() {
           <div className="mx-auto grid max-w-[1400px] gap-12 px-6 lg:grid-cols-[1fr_1.15fr] lg:gap-16 lg:px-12">
             <Reveal>
               <SectionRule index="01" label="The programme" />
-              <h2
-                id="gac-overview"
-                className="mt-8 font-display text-3xl font-semibold leading-[1.05] tracking-tight text-balance text-foreground sm:text-4xl"
-              >
+              <h2 id="gac-overview" className="type-section mt-8 text-foreground">
                 Better schools, designed by professionals and grown on site.
               </h2>
               <p className="mt-6 text-base leading-relaxed text-muted-foreground">{gacOverview}</p>
@@ -345,10 +347,7 @@ function GrowAClassroom() {
           <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
             <Reveal className="max-w-2xl">
               <SectionRule index="02" label="How it works" />
-              <h2
-                id="gac-strategy"
-                className="mt-8 font-display text-3xl font-semibold leading-[1.05] tracking-tight text-balance text-foreground sm:text-4xl"
-              >
+              <h2 id="gac-strategy" className="type-section mt-8 text-foreground">
                 A classroom that grows its own materials.
               </h2>
             </Reveal>
@@ -375,10 +374,7 @@ function GrowAClassroom() {
           <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
             <Reveal className="max-w-2xl">
               <SectionRule index="03" label="School by school" />
-              <h2
-                id="gac-schools"
-                className="mt-8 font-display text-3xl font-semibold leading-[1.05] tracking-tight text-balance text-foreground sm:text-4xl"
-              >
+              <h2 id="gac-schools" className="type-section mt-8 text-foreground">
                 {gacSchools.length} schools across {counties} counties, so far.
               </h2>
               <p className="mt-5 text-base leading-relaxed text-muted-foreground">
@@ -398,7 +394,7 @@ function GrowAClassroom() {
                       href={`#${s.id}`}
                       className="flex items-baseline gap-2 text-sm font-medium text-foreground transition-colors hover:text-primary"
                     >
-                      <span className="meta-label text-primary">{pad(i + 1)}</span>
+                      <span className="meta-label text-muted-foreground">{pad(i + 1)}</span>
                       {s.name.replace(/ Primary School$/, "")}
                       <span className="text-muted-foreground">
                         &middot; {s.county.replace(/ County$/, "")}
@@ -433,10 +429,7 @@ function GrowAClassroom() {
           <div className="mx-auto grid max-w-[1400px] gap-12 px-6 lg:grid-cols-2 lg:gap-16 lg:px-12">
             <Reveal>
               <SectionRule index="04" label="Get involved" tone="primary" />
-              <h2
-                id="gac-involved"
-                className="mt-8 font-display text-4xl font-semibold leading-[1.02] tracking-tight text-balance sm:text-5xl"
-              >
+              <h2 id="gac-involved" className="type-section mt-8">
                 Help grow the next classroom.
               </h2>
               <p className="mt-5 max-w-lg text-base leading-relaxed text-primary-foreground/90">
@@ -445,7 +438,7 @@ function GrowAClassroom() {
               </p>
               <a
                 href="mailto:advocacy@aak.or.ke?subject=Grow%20A%20Classroom%20partnership"
-                className="group mt-8 inline-flex items-center gap-2 border-b border-primary-foreground/50 pb-1 text-sm font-semibold transition-colors hover:border-primary-foreground"
+                className="group link-quiet mt-8"
               >
                 Partner with us: advocacy@aak.or.ke
                 <ArrowUpRight className="h-4 w-4" />

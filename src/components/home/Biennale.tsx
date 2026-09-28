@@ -88,7 +88,7 @@ export function Biennale() {
               href={BIENNALE_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex items-center gap-3 rounded-xl bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground transition-transform duration-300 hover:-translate-y-0.5"
+              className="group btn-primary"
             >
               Explore the Biennale
               <ArrowRight className="h-4 w-4" />
@@ -96,7 +96,7 @@ export function Biennale() {
             <Link
               to="/events/$slug"
               params={{ slug: "nairobi-biennale-2026" }}
-              className="link-underline text-sm font-medium text-background/80"
+              className="link-quiet text-background/85"
             >
               Event details on AAK
             </Link>

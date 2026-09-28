@@ -151,7 +151,7 @@ function ArbitrationPage() {
                 href="https://members.aak.or.ke/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center gap-3 rounded-xl bg-foreground px-7 py-4 text-sm font-semibold text-background transition-transform duration-300 hover:-translate-y-0.5"
+                className="group btn-primary"
               >
                 Start an application
                 <ArrowUpRight className="h-4 w-4" />
@@ -194,7 +194,7 @@ function ArbitrationPage() {
                 ARBITRATION_FORM_URL ?? "mailto:aak@aak.or.ke?subject=Arbitration%20application"
               }
               {...(ARBITRATION_FORM_URL ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-              className="group mt-7 inline-flex items-center gap-3 rounded-xl bg-primary px-7 py-4 text-sm font-semibold text-primary-foreground transition-transform duration-300 hover:-translate-y-0.5"
+              className="group btn-primary mt-7"
             >
               Apply for arbitration
               <ArrowUpRight className="h-4 w-4" />

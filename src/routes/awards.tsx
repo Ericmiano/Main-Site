@@ -257,7 +257,7 @@ function AwardsPage() {
                       </div>
                       <div className="flex flex-1 flex-col justify-between gap-3 p-5">
                         <div>
-                          <span className="text-[11px] font-semibold uppercase tracking-[0.1em] text-primary">
+                          <span className="meta-label text-muted-foreground">
                             {winner.category}
                           </span>
                           <h3 className="mt-2 font-display text-base font-semibold leading-snug text-foreground">
@@ -289,9 +289,7 @@ function AwardsPage() {
             />
             <div className="mt-14 grid grid-cols-1 gap-10 lg:grid-cols-2">
               <Reveal>
-                <h3 className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                  Eligible associations
-                </h3>
+                <h3 className="meta-label text-muted-foreground">Eligible associations</h3>
                 <ul className="mt-4 space-y-2">
                   {eligibleAssociations.map((org) => (
                     <li key={org} className="text-sm text-foreground">
@@ -300,9 +298,7 @@ function AwardsPage() {
                   ))}
                 </ul>
 
-                <h3 className="mt-10 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                  Key dates and fees
-                </h3>
+                <h3 className="mt-10 meta-label text-muted-foreground">Key dates and fees</h3>
                 <dl className="mt-4 grid grid-cols-3 gap-4">
                   <div>
                     <dt className="text-[11px] text-muted-foreground">Submission deadline</dt>
@@ -326,9 +322,7 @@ function AwardsPage() {
               </Reveal>
 
               <Reveal delay={80}>
-                <h3 className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                  Submission format
-                </h3>
+                <h3 className="meta-label text-muted-foreground">Submission format</h3>
                 <ul className="mt-4 space-y-2.5 text-sm leading-relaxed text-muted-foreground">
                   <li>
                     Maximum 8 A2 sheets in high resolution, PDF or JPEG. Clarity, quality and
@@ -391,7 +385,7 @@ function AwardsPage() {
                 href="https://forms.office.com/r/3tVqjPinXp"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center gap-3 rounded-xl bg-primary px-7 py-4 text-sm font-semibold text-primary-foreground transition-transform duration-300 hover:-translate-y-0.5"
+                className="group btn-primary"
               >
                 2026 submission portal
                 <ArrowUpRight className="h-4 w-4" />

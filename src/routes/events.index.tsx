@@ -100,7 +100,7 @@ function EventsIndex() {
                   href="/documents/2026-AAK-Calendar-of-Events.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group inline-flex items-center gap-3 rounded-xl bg-foreground px-6 py-3.5 text-sm font-semibold text-background transition-transform duration-300 hover:-translate-y-0.5"
+                  className="group btn-primary"
                 >
                   <FileDownload className="h-4 w-4" aria-hidden="true" />
                   2026 calendar of events (PDF)
@@ -109,7 +109,7 @@ function EventsIndex() {
                   href="https://members.aak.or.ke/publicevents"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="link-underline text-sm font-medium text-foreground"
+                  className="link-quiet text-foreground"
                 >
                   Register for events on the member portal
                 </a>
@@ -134,7 +134,7 @@ function EventsIndex() {
                       <div className="flex items-center gap-3">
                         <span
                           className={cn(
-                            "inline-flex items-center gap-2 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em]",
+                            "inline-flex items-center gap-2 px-3 py-1 meta-label",
                             status === "ongoing"
                               ? "bg-primary text-primary-foreground"
                               : "bg-secondary text-secondary-foreground",

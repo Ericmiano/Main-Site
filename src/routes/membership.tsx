@@ -149,7 +149,7 @@ function MembershipPage() {
                 href="https://members.aak.or.ke/register"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group mt-8 inline-flex items-center gap-3 rounded-xl bg-primary px-7 py-4 text-sm font-semibold text-primary-foreground transition-transform duration-300 hover:-translate-y-0.5"
+                className="group btn-primary mt-8"
               >
                 Start your application
                 <ArrowUpRight className="h-4 w-4" />
