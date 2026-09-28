@@ -66,7 +66,7 @@ export function Hero() {
           fetchPriority="high"
           className="absolute inset-0 h-full w-full object-cover object-[50%_60%] hero-zoom"
         />
-        <p className="absolute right-4 bottom-3 z-10 rounded-sm bg-ink-deep/70 px-2 py-1 text-[0.6875rem] text-background/90 lg:right-12">
+        <p className="absolute top-3 right-4 z-10 rounded-sm bg-ink-deep/70 lg:top-auto lg:bottom-3 px-2 py-1 text-[0.6875rem] text-background/90 lg:right-12">
           Swiss Chancery, Nairobi &middot; DMJ Architects
         </p>
 
@@ -75,7 +75,7 @@ export function Hero() {
             to="/events/$slug"
             params={{ slug: next.slug }}
             // Bleeds off the left edge like a pasted-on label; the photo clips it.
-            className="hero-item hero-delay-2 group absolute bottom-5 -left-6 w-[min(34rem,calc(100%-1.5rem))] origin-bottom-left -rotate-3 bg-primary py-7 pr-16 pl-12 text-primary-foreground shadow-[0_18px_40px_-18px_rgb(0_0_0/0.55)] transition-transform duration-300 hover:-rotate-2 sm:bottom-8 sm:py-9 sm:pl-[4.5rem] lg:top-[max(1.5rem,calc(100svh-42rem))] lg:bottom-auto lg:w-[calc(max(0px,(100vw-1400px)/2)+38rem)] lg:pl-[calc(max(0px,(100vw-1400px)/2)+4.5rem)]"
+            className="hero-item hero-delay-2 group absolute bottom-2 -left-6 w-[min(34rem,calc(100%-1.5rem))] origin-bottom-left -rotate-3 bg-primary py-7 pr-16 pl-12 text-primary-foreground shadow-[0_18px_40px_-18px_rgb(0_0_0/0.55)] transition-transform duration-300 hover:-rotate-2 sm:bottom-4 sm:py-9 sm:pl-[4.5rem] lg:top-[max(1.5rem,calc(100svh-39rem))] lg:bottom-auto lg:w-[calc(max(0px,(100vw-1400px)/2)+38rem)] lg:pl-[calc(max(0px,(100vw-1400px)/2)+4.5rem)]"
           >
             <IconArrowUpRight
               className="absolute top-5 right-5 h-9 w-9 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 sm:h-11 sm:w-11"
