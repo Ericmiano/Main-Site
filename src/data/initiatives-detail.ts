@@ -18,7 +18,7 @@ export interface InitiativeDocument {
 export type InitiativeVideo =
   | {
       kind: "youtube";
-      /** YouTube embed src, e.g. https://www.youtube.com/embed/VIDEO_ID or .../embed/videoseries?list=PLAYLIST_ID */
+      /** YouTube embed src, e.g. https://www.youtube-nocookie.com/embed/VIDEO_ID or .../embed/videoseries?list=PLAYLIST_ID */
       src: string;
       title: string;
     }
@@ -142,7 +142,7 @@ export const initiativeDetails: InitiativeDetail[] = [
     videos: [
       {
         kind: "youtube",
-        src: "https://www.youtube.com/embed/videoseries?list=PL2WvnH1y-v8NaAe9xYULHnlZpw3focI8J",
+        src: "https://www.youtube-nocookie.com/embed/videoseries?list=PL2WvnH1y-v8NaAe9xYULHnlZpw3focI8J",
         title: "Je Una Mjengo? Campaign Videos",
       },
     ],
@@ -183,7 +183,7 @@ export const initiativeDetails: InitiativeDetail[] = [
     videos: [
       {
         kind: "youtube",
-        src: "https://www.youtube.com/embed/oQSN4t1yPAM",
+        src: "https://www.youtube-nocookie.com/embed/oQSN4t1yPAM",
         title: "The Grow A Classroom Project by AAK",
       },
     ],

@@ -1,12 +1,13 @@
 import { cn } from "@/lib/utils";
 
 const tones = {
-  light: { rule: "border-border", label: "text-muted-foreground", index: "text-foreground/45" },
-  dark: { rule: "border-background/15", label: "text-background/60", index: "text-background/45" },
+  // foreground/70 clears 4.5:1 on both the paper and earth surfaces.
+  light: { rule: "border-border", label: "text-foreground/70", index: "text-foreground/70" },
+  dark: { rule: "border-background/15", label: "text-background/65", index: "text-background/65" },
   // On the brand-red surface the red index would disappear.
   primary: {
     rule: "border-primary-foreground/25",
-    label: "text-primary-foreground/80",
+    label: "text-primary-foreground",
     index: "text-primary-foreground",
   },
 };

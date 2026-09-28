@@ -244,7 +244,7 @@ function AboutPage() {
                 <h3 className="font-display text-lg font-semibold text-foreground">
                   Regional branches
                 </h3>
-                <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
+                <ul className="mt-4 space-y-3 text-sm text-foreground/70">
                   {regionalBranches.map((branch) => (
                     <li key={branch.chapter} className="flex items-center justify-between gap-3">
                       <span>{branch.chapter}</span>

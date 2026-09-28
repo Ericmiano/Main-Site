@@ -58,7 +58,7 @@ export const gacTargets: { value: number; suffix?: string; label: string }[] = [
 export const gacDonation = { method: "M-Pesa Paybill", paybill: "988 567", account: "GAC" };
 
 export const gacVideo = {
-  src: "https://www.youtube.com/embed/oQSN4t1yPAM",
+  src: "https://www.youtube-nocookie.com/embed/oQSN4t1yPAM",
   title: "The Grow A Classroom Project by AAK",
 };
 

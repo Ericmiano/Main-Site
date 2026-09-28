@@ -32,7 +32,7 @@ export function ChapterPicker() {
 
   return (
     <div className="mt-16 border-t border-foreground/15 pt-10">
-      <p className="meta-label text-foreground/60">Find your fit</p>
+      <p className="meta-label text-foreground/70">Find your fit</p>
       <h3 className="type-title mt-3 sm:text-3xl">Which chapter, and which membership?</h3>
 
       <div className="mt-8 grid gap-8 lg:grid-cols-[1.4fr_1fr] lg:gap-14">

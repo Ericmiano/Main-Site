@@ -56,6 +56,20 @@ const pages: SearchEntry[] = [
   //   href: "/arbitration",
   // },
   {
+    title: "Frequently asked questions",
+    description:
+      "Membership and renewals, certificate validation, the members directory, events, awards, Grow A Classroom donations and store orders.",
+    category: "Page",
+    href: "/faqs",
+  },
+  {
+    title: "Accessibility",
+    description:
+      "How the website supports accessible use, its known limitations, and how to report a problem.",
+    category: "Page",
+    href: "/accessibility",
+  },
+  {
     title: "Resource Centre",
     description:
       "AAK's reports, downloads and advocacy documents: the Status of the Built Environment Report, AGM reports, BuildPress Magazine, building regulations and policy submissions.",

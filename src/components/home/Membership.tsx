@@ -46,7 +46,7 @@ export function Membership() {
               className="border-b border-foreground/15 py-10 md:border-b-0 md:border-r md:px-10 md:py-0 md:first:pl-0 md:last:border-r-0 md:last:pr-0 lg:px-14"
             >
               <Reveal delay={i * 80} className="md:h-full md:py-10">
-                <span className="font-display text-sm text-foreground/45">
+                <span className="font-display text-sm text-foreground/70">
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <h3 className="type-title mt-3">{path.title}</h3>

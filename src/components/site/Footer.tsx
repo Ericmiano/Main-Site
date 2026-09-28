@@ -25,6 +25,14 @@ const resourceLinks = [
 // plain link rather than the typed `resourceLinks` above.
 const anchorLinks = [{ label: "Initiatives", href: "/#initiatives" }];
 
+const policyLinks = [
+  { label: "FAQs", to: "/faqs" as const },
+  { label: "Accessibility", to: "/accessibility" as const },
+  { label: "Privacy", to: "/privacy" as const },
+  { label: "Terms of use", to: "/terms" as const },
+  { label: "Cookies", to: "/cookies" as const },
+];
+
 const externalQuickLinks = [
   { label: "Members Directory", href: "https://members.aak.or.ke/directory" },
   { label: "Validate Certificate", href: "https://members.aak.or.ke/validate" },
@@ -203,11 +211,24 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-16 flex flex-col gap-3 border-t border-background/15 pt-8 text-xs text-background/60 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-16 flex flex-col gap-4 border-t border-background/15 pt-8 text-xs text-background/65 lg:flex-row lg:items-center lg:justify-between">
           <p>
             © {new Date().getFullYear()} Architectural Association of Kenya. All rights reserved.
           </p>
-          <p>Building a safe, sustainable and well-planned Kenya.</p>
+          <nav aria-label="Help and policies">
+            <ul className="flex flex-wrap gap-x-6 gap-y-2">
+              {policyLinks.map((link) => (
+                <li key={link.to}>
+                  <Link
+                    to={link.to}
+                    className="link-underline transition-colors hover:text-background"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
         </div>
       </div>
     </footer>

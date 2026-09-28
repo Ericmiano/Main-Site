@@ -355,7 +355,7 @@ function GrowAClassroom() {
               {gacStrategy.map((step, i) => (
                 <li key={step.title} className="bg-paper-earth">
                   <Reveal delay={i * 70} className="flex h-full flex-col p-6 lg:p-7">
-                    <span className="font-display text-4xl font-semibold text-foreground/25">
+                    <span className="font-display text-4xl font-semibold text-foreground/60">
                       {pad(i + 1)}
                     </span>
                     <h3 className="mt-6 font-display text-xl font-semibold text-foreground">

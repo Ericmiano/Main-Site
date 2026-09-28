@@ -37,7 +37,7 @@ function ChapterIndex() {
               <span
                 className={cn(
                   "font-display text-2xl font-semibold tracking-tight transition-[color,transform] duration-300 xl:text-3xl",
-                  i === active ? "translate-x-2 text-foreground" : "text-foreground/45",
+                  i === active ? "translate-x-2 text-foreground" : "text-foreground/60",
                 )}
               >
                 {chapter.name}

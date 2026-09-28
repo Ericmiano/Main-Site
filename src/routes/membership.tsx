@@ -198,7 +198,13 @@ function MembershipPage() {
               title={<span id="fees-title">Membership tiers</span>}
               description="All fees are quoted in Kenya Shillings (KES) and are subject to periodic review by the AAK Council."
             />
-            <div className="mt-14 overflow-x-auto rounded-2xl border border-border bg-card">
+            <div
+              // Scrolls sideways on phones, so it must be reachable by keyboard.
+              tabIndex={0}
+              role="region"
+              aria-label="Membership fees table"
+              className="mt-14 overflow-x-auto rounded-2xl border border-border bg-card focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            >
               <table className="w-full min-w-[480px] border-collapse text-left text-sm">
                 <caption className="sr-only">
                   AAK membership entrance and annual subscription fees

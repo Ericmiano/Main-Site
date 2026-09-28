@@ -47,7 +47,7 @@ export function Initiatives() {
                 />
               </div>
               <div className="mt-6 flex items-baseline gap-4">
-                <span className="meta-label text-foreground/50">01</span>
+                <span className="meta-label text-foreground/70">01</span>
                 <span className={cn("meta-label", toneClass(featured.tone))}>
                   {featured.eyebrow} &middot; Kenya
                 </span>
@@ -84,7 +84,7 @@ export function Initiatives() {
                     </div>
                     <div className="min-w-0">
                       <div className="flex items-baseline gap-3">
-                        <span className="meta-label text-foreground/50">
+                        <span className="meta-label text-foreground/70">
                           {String(i + 2).padStart(2, "0")}
                         </span>
                         <span className={cn("meta-label truncate", toneClass(initiative.tone))}>

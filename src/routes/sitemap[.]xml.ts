@@ -1,12 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { chapters, events } from "@/data/site";
 import { initiativeDetails } from "@/data/initiatives-detail";
+import { LEGAL_PAGES_APPROVED } from "@/components/site/InfoPage";
 
 const SITE_URL = "https://aak.or.ke";
 
 interface SitemapUrl {
   loc: string;
-  changefreq: "weekly" | "monthly";
+  changefreq: "weekly" | "monthly" | "yearly";
   priority: string;
 }
 
@@ -36,6 +37,16 @@ function buildUrls(): SitemapUrl[] {
     { loc: `${SITE_URL}/general-downloads`, changefreq: "monthly", priority: "0.5" },
     { loc: `${SITE_URL}/mulika-mjengo-report`, changefreq: "monthly", priority: "0.5" },
     { loc: `${SITE_URL}/events`, changefreq: "weekly", priority: "0.9" },
+    { loc: `${SITE_URL}/faqs`, changefreq: "monthly", priority: "0.6" },
+    { loc: `${SITE_URL}/accessibility`, changefreq: "yearly", priority: "0.3" },
+    // Legal pages are listed only once AAK approves them (they're noindex until then).
+    ...(LEGAL_PAGES_APPROVED
+      ? (["privacy", "terms", "cookies"] as const).map((page): SitemapUrl => ({
+          loc: `${SITE_URL}/${page}`,
+          changefreq: "yearly",
+          priority: "0.3",
+        }))
+      : []),
     ...events.map((event): SitemapUrl => ({
       loc: `${SITE_URL}/events/${event.slug}`,
       changefreq: "weekly",

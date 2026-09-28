@@ -44,7 +44,7 @@ export function Publications() {
                   className="group flex w-full flex-col justify-between gap-8 border border-border p-6 text-left transition-colors duration-300 hover:bg-secondary/60 sm:aspect-3/4 sm:p-7"
                 >
                   <div className="flex items-start justify-between">
-                    <span className="font-display text-sm text-muted-foreground/60">
+                    <span className="font-display text-sm text-muted-foreground">
                       {String(i + 1).padStart(2, "0")}
                     </span>
                     <FileText className="h-5 w-5 text-primary" aria-hidden="true" />

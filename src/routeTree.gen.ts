@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as R404RouteImport } from './routes/404'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as AccessibilityRouteImport } from './routes/accessibility'
 import { Route as AgmReportsRouteImport } from './routes/agm-reports'
 import { Route as ArbitrationRouteImport } from './routes/arbitration'
 import { Route as AwardsRouteImport } from './routes/awards'
@@ -19,14 +20,17 @@ import { Route as BillsRouteImport } from './routes/bills'
 import { Route as BuildingRegulationsRouteImport } from './routes/building-regulations'
 import { Route as BuildpressMagazineRouteImport } from './routes/buildpress-magazine'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as CookiesRouteImport } from './routes/cookies'
 import { Route as CpdRapporteurReportsRouteImport } from './routes/cpd-rapporteur-reports'
 import { Route as CsrRouteImport } from './routes/csr'
+import { Route as FaqsRouteImport } from './routes/faqs'
 import { Route as GeneralDownloadsRouteImport } from './routes/general-downloads'
 import { Route as LiaisonCommitteesReportsRouteImport } from './routes/liaison-committees-reports'
 import { Route as MembershipRouteImport } from './routes/membership'
 import { Route as MulikaMjengoReportRouteImport } from './routes/mulika-mjengo-report'
 import { Route as OpinionEditorialsRouteImport } from './routes/opinion-editorials'
 import { Route as PressStatementsRouteImport } from './routes/press-statements'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ProgramsRouteImport } from './routes/programs'
 import { Route as ResourcesRouteImport } from './routes/resources'
 import { Route as SalarySurveyRouteImport } from './routes/salary-survey'
@@ -35,6 +39,7 @@ import { Route as StatusOfTheBuiltEnvironmentRouteImport } from './routes/status
 import { Route as StoreRouteImport } from './routes/store'
 import { Route as StudentsRouteImport } from './routes/students'
 import { Route as TeamRouteImport } from './routes/team'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as ApiMemberStatsRouteImport } from './routes/api.member-stats'
 import { Route as ChaptersSlugRouteImport } from './routes/chapters.$slug'
 import { Route as EventsIndexRouteImport } from './routes/events.index'
@@ -55,6 +60,11 @@ const R404Route = R404RouteImport.update({
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AccessibilityRoute = AccessibilityRouteImport.update({
+  id: '/accessibility',
+  path: '/accessibility',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AgmReportsRoute = AgmReportsRouteImport.update({
@@ -92,6 +102,11 @@ const ContactRoute = ContactRouteImport.update({
   path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CookiesRoute = CookiesRouteImport.update({
+  id: '/cookies',
+  path: '/cookies',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CpdRapporteurReportsRoute = CpdRapporteurReportsRouteImport.update({
   id: '/cpd-rapporteur-reports',
   path: '/cpd-rapporteur-reports',
@@ -100,6 +115,11 @@ const CpdRapporteurReportsRoute = CpdRapporteurReportsRouteImport.update({
 const CsrRoute = CsrRouteImport.update({
   id: '/csr',
   path: '/csr',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FaqsRoute = FaqsRouteImport.update({
+  id: '/faqs',
+  path: '/faqs',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GeneralDownloadsRoute = GeneralDownloadsRouteImport.update({
@@ -131,6 +151,11 @@ const OpinionEditorialsRoute = OpinionEditorialsRouteImport.update({
 const PressStatementsRoute = PressStatementsRouteImport.update({
   id: '/press-statements',
   path: '/press-statements',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProgramsRoute = ProgramsRouteImport.update({
@@ -174,6 +199,11 @@ const TeamRoute = TeamRouteImport.update({
   path: '/team',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiMemberStatsRoute = ApiMemberStatsRouteImport.update({
   id: '/api/member-stats',
   path: '/api/member-stats',
@@ -210,6 +240,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/404': typeof R404Route
   '/about': typeof AboutRoute
+  '/accessibility': typeof AccessibilityRoute
   '/agm-reports': typeof AgmReportsRoute
   '/arbitration': typeof ArbitrationRoute
   '/awards': typeof AwardsRoute
@@ -217,14 +248,17 @@ export interface FileRoutesByFullPath {
   '/building-regulations': typeof BuildingRegulationsRoute
   '/buildpress-magazine': typeof BuildpressMagazineRoute
   '/contact': typeof ContactRoute
+  '/cookies': typeof CookiesRoute
   '/cpd-rapporteur-reports': typeof CpdRapporteurReportsRoute
   '/csr': typeof CsrRoute
+  '/faqs': typeof FaqsRoute
   '/general-downloads': typeof GeneralDownloadsRoute
   '/liaison-committees-reports': typeof LiaisonCommitteesReportsRoute
   '/membership': typeof MembershipRoute
   '/mulika-mjengo-report': typeof MulikaMjengoReportRoute
   '/opinion-editorials': typeof OpinionEditorialsRoute
   '/press-statements': typeof PressStatementsRoute
+  '/privacy': typeof PrivacyRoute
   '/programs': typeof ProgramsRoute
   '/resources': typeof ResourcesRoute
   '/salary-survey': typeof SalarySurveyRoute
@@ -233,6 +267,7 @@ export interface FileRoutesByFullPath {
   '/store': typeof StoreRoute
   '/students': typeof StudentsRoute
   '/team': typeof TeamRoute
+  '/terms': typeof TermsRoute
   '/api/member-stats': typeof ApiMemberStatsRoute
   '/chapters/$slug': typeof ChaptersSlugRoute
   '/events/$slug': typeof EventsSlugRoute
@@ -244,6 +279,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/404': typeof R404Route
   '/about': typeof AboutRoute
+  '/accessibility': typeof AccessibilityRoute
   '/agm-reports': typeof AgmReportsRoute
   '/arbitration': typeof ArbitrationRoute
   '/awards': typeof AwardsRoute
@@ -251,14 +287,17 @@ export interface FileRoutesByTo {
   '/building-regulations': typeof BuildingRegulationsRoute
   '/buildpress-magazine': typeof BuildpressMagazineRoute
   '/contact': typeof ContactRoute
+  '/cookies': typeof CookiesRoute
   '/cpd-rapporteur-reports': typeof CpdRapporteurReportsRoute
   '/csr': typeof CsrRoute
+  '/faqs': typeof FaqsRoute
   '/general-downloads': typeof GeneralDownloadsRoute
   '/liaison-committees-reports': typeof LiaisonCommitteesReportsRoute
   '/membership': typeof MembershipRoute
   '/mulika-mjengo-report': typeof MulikaMjengoReportRoute
   '/opinion-editorials': typeof OpinionEditorialsRoute
   '/press-statements': typeof PressStatementsRoute
+  '/privacy': typeof PrivacyRoute
   '/programs': typeof ProgramsRoute
   '/resources': typeof ResourcesRoute
   '/salary-survey': typeof SalarySurveyRoute
@@ -267,6 +306,7 @@ export interface FileRoutesByTo {
   '/store': typeof StoreRoute
   '/students': typeof StudentsRoute
   '/team': typeof TeamRoute
+  '/terms': typeof TermsRoute
   '/api/member-stats': typeof ApiMemberStatsRoute
   '/chapters/$slug': typeof ChaptersSlugRoute
   '/events/$slug': typeof EventsSlugRoute
@@ -279,6 +319,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/404': typeof R404Route
   '/about': typeof AboutRoute
+  '/accessibility': typeof AccessibilityRoute
   '/agm-reports': typeof AgmReportsRoute
   '/arbitration': typeof ArbitrationRoute
   '/awards': typeof AwardsRoute
@@ -286,14 +327,17 @@ export interface FileRoutesById {
   '/building-regulations': typeof BuildingRegulationsRoute
   '/buildpress-magazine': typeof BuildpressMagazineRoute
   '/contact': typeof ContactRoute
+  '/cookies': typeof CookiesRoute
   '/cpd-rapporteur-reports': typeof CpdRapporteurReportsRoute
   '/csr': typeof CsrRoute
+  '/faqs': typeof FaqsRoute
   '/general-downloads': typeof GeneralDownloadsRoute
   '/liaison-committees-reports': typeof LiaisonCommitteesReportsRoute
   '/membership': typeof MembershipRoute
   '/mulika-mjengo-report': typeof MulikaMjengoReportRoute
   '/opinion-editorials': typeof OpinionEditorialsRoute
   '/press-statements': typeof PressStatementsRoute
+  '/privacy': typeof PrivacyRoute
   '/programs': typeof ProgramsRoute
   '/resources': typeof ResourcesRoute
   '/salary-survey': typeof SalarySurveyRoute
@@ -302,6 +346,7 @@ export interface FileRoutesById {
   '/store': typeof StoreRoute
   '/students': typeof StudentsRoute
   '/team': typeof TeamRoute
+  '/terms': typeof TermsRoute
   '/api/member-stats': typeof ApiMemberStatsRoute
   '/chapters/$slug': typeof ChaptersSlugRoute
   '/events/$slug': typeof EventsSlugRoute
@@ -315,6 +360,7 @@ export interface FileRouteTypes {
     | '/'
     | '/404'
     | '/about'
+    | '/accessibility'
     | '/agm-reports'
     | '/arbitration'
     | '/awards'
@@ -322,14 +368,17 @@ export interface FileRouteTypes {
     | '/building-regulations'
     | '/buildpress-magazine'
     | '/contact'
+    | '/cookies'
     | '/cpd-rapporteur-reports'
     | '/csr'
+    | '/faqs'
     | '/general-downloads'
     | '/liaison-committees-reports'
     | '/membership'
     | '/mulika-mjengo-report'
     | '/opinion-editorials'
     | '/press-statements'
+    | '/privacy'
     | '/programs'
     | '/resources'
     | '/salary-survey'
@@ -338,6 +387,7 @@ export interface FileRouteTypes {
     | '/store'
     | '/students'
     | '/team'
+    | '/terms'
     | '/api/member-stats'
     | '/chapters/$slug'
     | '/events/$slug'
@@ -349,6 +399,7 @@ export interface FileRouteTypes {
     | '/'
     | '/404'
     | '/about'
+    | '/accessibility'
     | '/agm-reports'
     | '/arbitration'
     | '/awards'
@@ -356,14 +407,17 @@ export interface FileRouteTypes {
     | '/building-regulations'
     | '/buildpress-magazine'
     | '/contact'
+    | '/cookies'
     | '/cpd-rapporteur-reports'
     | '/csr'
+    | '/faqs'
     | '/general-downloads'
     | '/liaison-committees-reports'
     | '/membership'
     | '/mulika-mjengo-report'
     | '/opinion-editorials'
     | '/press-statements'
+    | '/privacy'
     | '/programs'
     | '/resources'
     | '/salary-survey'
@@ -372,6 +426,7 @@ export interface FileRouteTypes {
     | '/store'
     | '/students'
     | '/team'
+    | '/terms'
     | '/api/member-stats'
     | '/chapters/$slug'
     | '/events/$slug'
@@ -383,6 +438,7 @@ export interface FileRouteTypes {
     | '/'
     | '/404'
     | '/about'
+    | '/accessibility'
     | '/agm-reports'
     | '/arbitration'
     | '/awards'
@@ -390,14 +446,17 @@ export interface FileRouteTypes {
     | '/building-regulations'
     | '/buildpress-magazine'
     | '/contact'
+    | '/cookies'
     | '/cpd-rapporteur-reports'
     | '/csr'
+    | '/faqs'
     | '/general-downloads'
     | '/liaison-committees-reports'
     | '/membership'
     | '/mulika-mjengo-report'
     | '/opinion-editorials'
     | '/press-statements'
+    | '/privacy'
     | '/programs'
     | '/resources'
     | '/salary-survey'
@@ -406,6 +465,7 @@ export interface FileRouteTypes {
     | '/store'
     | '/students'
     | '/team'
+    | '/terms'
     | '/api/member-stats'
     | '/chapters/$slug'
     | '/events/$slug'
@@ -418,6 +478,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   R404Route: typeof R404Route
   AboutRoute: typeof AboutRoute
+  AccessibilityRoute: typeof AccessibilityRoute
   AgmReportsRoute: typeof AgmReportsRoute
   ArbitrationRoute: typeof ArbitrationRoute
   AwardsRoute: typeof AwardsRoute
@@ -425,14 +486,17 @@ export interface RootRouteChildren {
   BuildingRegulationsRoute: typeof BuildingRegulationsRoute
   BuildpressMagazineRoute: typeof BuildpressMagazineRoute
   ContactRoute: typeof ContactRoute
+  CookiesRoute: typeof CookiesRoute
   CpdRapporteurReportsRoute: typeof CpdRapporteurReportsRoute
   CsrRoute: typeof CsrRoute
+  FaqsRoute: typeof FaqsRoute
   GeneralDownloadsRoute: typeof GeneralDownloadsRoute
   LiaisonCommitteesReportsRoute: typeof LiaisonCommitteesReportsRoute
   MembershipRoute: typeof MembershipRoute
   MulikaMjengoReportRoute: typeof MulikaMjengoReportRoute
   OpinionEditorialsRoute: typeof OpinionEditorialsRoute
   PressStatementsRoute: typeof PressStatementsRoute
+  PrivacyRoute: typeof PrivacyRoute
   ProgramsRoute: typeof ProgramsRoute
   ResourcesRoute: typeof ResourcesRoute
   SalarySurveyRoute: typeof SalarySurveyRoute
@@ -441,6 +505,7 @@ export interface RootRouteChildren {
   StoreRoute: typeof StoreRoute
   StudentsRoute: typeof StudentsRoute
   TeamRoute: typeof TeamRoute
+  TermsRoute: typeof TermsRoute
   ApiMemberStatsRoute: typeof ApiMemberStatsRoute
   ChaptersSlugRoute: typeof ChaptersSlugRoute
   EventsSlugRoute: typeof EventsSlugRoute
@@ -470,6 +535,13 @@ declare module '@tanstack/react-router' {
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/accessibility': {
+      id: '/accessibility'
+      path: '/accessibility'
+      fullPath: '/accessibility'
+      preLoaderRoute: typeof AccessibilityRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/agm-reports': {
@@ -521,6 +593,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/cookies': {
+      id: '/cookies'
+      path: '/cookies'
+      fullPath: '/cookies'
+      preLoaderRoute: typeof CookiesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/cpd-rapporteur-reports': {
       id: '/cpd-rapporteur-reports'
       path: '/cpd-rapporteur-reports'
@@ -533,6 +612,13 @@ declare module '@tanstack/react-router' {
       path: '/csr'
       fullPath: '/csr'
       preLoaderRoute: typeof CsrRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/faqs': {
+      id: '/faqs'
+      path: '/faqs'
+      fullPath: '/faqs'
+      preLoaderRoute: typeof FaqsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/general-downloads': {
@@ -575,6 +661,13 @@ declare module '@tanstack/react-router' {
       path: '/press-statements'
       fullPath: '/press-statements'
       preLoaderRoute: typeof PressStatementsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/programs': {
@@ -633,6 +726,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TeamRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/member-stats': {
       id: '/api/member-stats'
       path: '/api/member-stats'
@@ -682,6 +782,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   R404Route: R404Route,
   AboutRoute: AboutRoute,
+  AccessibilityRoute: AccessibilityRoute,
   AgmReportsRoute: AgmReportsRoute,
   ArbitrationRoute: ArbitrationRoute,
   AwardsRoute: AwardsRoute,
@@ -689,14 +790,17 @@ const rootRouteChildren: RootRouteChildren = {
   BuildingRegulationsRoute: BuildingRegulationsRoute,
   BuildpressMagazineRoute: BuildpressMagazineRoute,
   ContactRoute: ContactRoute,
+  CookiesRoute: CookiesRoute,
   CpdRapporteurReportsRoute: CpdRapporteurReportsRoute,
   CsrRoute: CsrRoute,
+  FaqsRoute: FaqsRoute,
   GeneralDownloadsRoute: GeneralDownloadsRoute,
   LiaisonCommitteesReportsRoute: LiaisonCommitteesReportsRoute,
   MembershipRoute: MembershipRoute,
   MulikaMjengoReportRoute: MulikaMjengoReportRoute,
   OpinionEditorialsRoute: OpinionEditorialsRoute,
   PressStatementsRoute: PressStatementsRoute,
+  PrivacyRoute: PrivacyRoute,
   ProgramsRoute: ProgramsRoute,
   ResourcesRoute: ResourcesRoute,
   SalarySurveyRoute: SalarySurveyRoute,
@@ -705,6 +809,7 @@ const rootRouteChildren: RootRouteChildren = {
   StoreRoute: StoreRoute,
   StudentsRoute: StudentsRoute,
   TeamRoute: TeamRoute,
+  TermsRoute: TermsRoute,
   ApiMemberStatsRoute: ApiMemberStatsRoute,
   ChaptersSlugRoute: ChaptersSlugRoute,
   EventsSlugRoute: EventsSlugRoute,

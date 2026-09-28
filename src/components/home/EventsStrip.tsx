@@ -28,7 +28,7 @@ export function EventsStrip() {
             <p className="font-accent text-base font-medium italic leading-snug text-background/85 sm:text-lg">
               &ldquo;Shifting the Center: reclaiming Africa&rsquo;s architecture and future.&rdquo;
             </p>
-            <footer className="mt-3 text-xs uppercase tracking-[0.1em] text-background/45">
+            <footer className="meta-label mt-3 text-background/65">
               Nairobi Biennale of Architecture &amp; Art, 2026 theme
             </footer>
           </blockquote>
