@@ -1,9 +1,8 @@
 import { IconArrowRight as ArrowRight, IconArrowUpRight } from "@tabler/icons-react";
 import { Link } from "@tanstack/react-router";
-import hero640 from "@/assets/hero-architecture-640.webp";
-import hero960 from "@/assets/hero-architecture-960.webp";
-import hero1280 from "@/assets/hero-architecture-1280.webp";
-import hero1920 from "@/assets/hero-architecture-1920.webp";
+import hero640 from "@/assets/hero-swiss-chancery-640.webp";
+import hero960 from "@/assets/hero-swiss-chancery-960.webp";
+import hero1280 from "@/assets/hero-swiss-chancery-1280.webp";
 import { Countdown } from "@/components/site/Countdown";
 import { chapters, getEventDisplayStatus, getSortedEvents } from "@/data/site";
 
@@ -56,16 +55,20 @@ export function Hero() {
 
       <div className="relative isolate h-[58svh] min-h-[22rem] overflow-hidden bg-ink-deep lg:h-[68svh]">
         <img
-          // Phones get the 640/960 file (20–36KB) instead of the full 1920 one.
-          src={hero1920}
-          srcSet={`${hero640} 640w, ${hero960} 960w, ${hero1280} 1280w, ${hero1920} 1920w`}
+          // Swiss Chancery, Nairobi (DMJ Architects), an AAK Award of Excellence
+          // project. 1280px is the largest original we have; phones get 640/960.
+          src={hero1280}
+          srcSet={`${hero640} 640w, ${hero960} 960w, ${hero1280} 1280w`}
           sizes="100vw"
-          alt="Golden-hour view of a modern Nairobi building facade with a deep concrete grid"
-          width={1920}
-          height={1280}
+          alt="The Swiss Chancery in Nairobi: a rust-red building with deep-set windows above a sloping lawn"
+          width={1280}
+          height={578}
           fetchPriority="high"
-          className="absolute inset-0 h-full w-full object-cover hero-zoom"
+          className="absolute inset-0 h-full w-full object-cover object-[50%_60%] hero-zoom"
         />
+        <p className="absolute right-4 bottom-3 z-10 rounded-sm bg-ink-deep/70 px-2 py-1 text-[0.6875rem] text-background/90 lg:right-12">
+          Swiss Chancery, Nairobi &middot; DMJ Architects
+        </p>
 
         {next ? (
           <Link
