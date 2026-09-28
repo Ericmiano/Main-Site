@@ -149,6 +149,22 @@ function sorted_events(): array
     return $events;
 }
 
+/** schema.org Event node for listings (homepage, events index). */
+function event_ld(array $event): array
+{
+    return array_filter([
+        '@type' => 'Event',
+        'name' => $event['title'],
+        'startDate' => $event['isoDate'],
+        'endDate' => $event['endIsoDate'] ?? null,
+        'eventAttendanceMode' => 'https://schema.org/OfflineEventAttendanceMode',
+        'eventStatus' => 'https://schema.org/EventScheduled',
+        'location' => ['@type' => 'Place', 'name' => $event['location']],
+        'url' => SITE_URL . '/events/' . $event['slug'],
+        'organizer' => ['@id' => SITE_URL . '/#organization'],
+    ]);
+}
+
 function find_by_slug(array $items, string $slug): ?array
 {
     foreach ($items as $item) {

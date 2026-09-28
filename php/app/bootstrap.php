@@ -94,9 +94,51 @@ function render_not_found(): void
     render_page('404');
 }
 
+/** Calendar file for an event (the "Add to calendar" link). All-day, so
+ * DTEND is the day after the last day. */
+function send_event_ics(array $event): void
+{
+    $text = function (string $s): string {
+        return str_replace(['\\', "\n", ',', ';'], ['\\\\', '\\n', '\\,', '\\;'], $s);
+    };
+    $day = function (string $iso, int $offsetDays = 0): string {
+        return gmdate('Ymd', event_timestamp($iso) + $offsetDays * 86400);
+    };
+    $url = SITE_URL . '/events/' . $event['slug'];
+    $lines = [
+        'BEGIN:VCALENDAR',
+        'VERSION:2.0',
+        'PRODID:-//Architectural Association of Kenya//Events//EN',
+        'CALSCALE:GREGORIAN',
+        'BEGIN:VEVENT',
+        'UID:' . $event['slug'] . '@aak.or.ke',
+        'DTSTAMP:' . gmdate('Ymd\THis\Z'),
+        'DTSTART;VALUE=DATE:' . $day($event['isoDate']),
+        'DTEND;VALUE=DATE:' . $day($event['endIsoDate'] ?? $event['isoDate'], 1),
+        'SUMMARY:' . $text($event['title']),
+        'LOCATION:' . $text($event['venue']),
+        'DESCRIPTION:' . $text($event['summary'] . "\n\n" . $url),
+        'URL:' . $url,
+        'END:VEVENT',
+        'END:VCALENDAR',
+    ];
+    header('Content-Type: text/calendar; charset=utf-8');
+    header('Content-Disposition: attachment; filename="' . $event['slug'] . '.ics"');
+    echo implode("\r\n", $lines);
+}
+
 function dispatch(): void
 {
     $path = current_path();
+    if (preg_match('#^/events/([a-z0-9-]+)\.ics$#', $path, $m)) {
+        $event = find_by_slug(data('site', 'events'), $m[1]);
+        if ($event) {
+            send_event_ics($event);
+            return;
+        }
+        render_not_found();
+        return;
+    }
     $route = resolve_route($path);
     if ($route === null) {
         render_not_found();

@@ -161,11 +161,22 @@
         }
         var s = Math.floor((target - now) / 1000);
         var d = Math.floor(s / 86400), h = Math.floor((s % 86400) / 3600), m = Math.floor((s % 3600) / 60);
+        if (el.dataset.countdownStyle === "full") {
+          var pad = function (n) { return String(n).padStart(2, "0"); };
+          el.innerHTML = '<dl class="flex items-start gap-4 sm:gap-6">' + [["Days", d], ["Hours", h], ["Min", m], ["Sec", s % 60]].map(function (u) {
+            return '<div class="text-center"><dt class="sr-only">' + u[0] + '</dt>' +
+              '<dd class="font-sans text-2xl font-semibold tabular-nums text-foreground sm:text-3xl">' + pad(u[1]) + "</dd>" +
+              '<dd class="meta-label mt-1 text-muted-foreground">' + u[0] + "</dd></div>";
+          }).join("") + "</dl>";
+          return;
+        }
         el.textContent = "Starts in " + (d > 0 ? d + "d " + h + "h" : h > 0 ? h + "h " + m + "m" : m + "m");
       });
     };
     render();
-    setInterval(render, 60000);
+    // Full countdowns tick every second; compact ones only need the minute.
+    var full = els.some(function (el) { return el.dataset.countdownStyle === "full"; });
+    setInterval(render, full ? 1000 : 60000);
   }
 
   /* Sticky register strip: share its height with other sticky elements. */
