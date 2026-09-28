@@ -19,6 +19,8 @@ function route_table(): array
 {
     return [
         '/' => 'home',
+        // Its own richer page, ahead of the generic /initiatives/{slug}.
+        '/initiatives/grow-a-classroom' => 'grow-a-classroom',
     ];
 }
 
@@ -31,7 +33,7 @@ function resolve_route(string $path): ?array
     }
     // /about -> pages/about.php, for every single-segment page. Templates
     // that back dynamic routes or special cases aren't reachable directly.
-    $reserved = ['home', '404', 'event', 'chapter', 'initiative'];
+    $reserved = ['home', '404', 'event', 'chapter', 'initiative', 'grow-a-classroom'];
     if (preg_match('#^/([a-z0-9-]+)$#', $path, $m) && !in_array($m[1], $reserved, true)
         && is_file(APP_DIR . '/pages/' . $m[1] . '.php')) {
         return [$m[1], []];

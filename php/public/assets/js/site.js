@@ -130,11 +130,12 @@
         var el = entry.target;
         var value = Number(el.dataset.countup);
         var grouped = el.hasAttribute("data-grouped");
+        var suffix = el.dataset.suffix || "";
         var start = performance.now();
         var tick = function (now) {
           var p = Math.min((now - start) / 1400, 1);
           var n = Math.round(value * ease(p));
-          el.textContent = grouped ? n.toLocaleString("en-GB") : String(n);
+          el.textContent = (grouped ? n.toLocaleString("en-GB") : String(n)) + suffix;
           if (p < 1) requestAnimationFrame(tick);
         };
         requestAnimationFrame(tick);
@@ -420,8 +421,22 @@
     var dialog = $("[data-lightbox]");
     if (!dialog || typeof dialog.showModal !== "function") return;
     var items = [];
+    var photos = null; // photo-set mode: [{src, alt}]
     var index = 0;
+    var media = $("[data-lightbox-media]", dialog);
+    var photoFig = $("[data-lightbox-photo]", dialog);
     var show = function (i) {
+      if (photos) {
+        index = (i + photos.length) % photos.length;
+        var p = photos[index];
+        var pimg = $("[data-lightbox-photo-img]", dialog);
+        pimg.src = p.src;
+        pimg.alt = p.alt;
+        $("[data-lightbox-photo-caption]", dialog).textContent = p.alt;
+        $("[data-lightbox-photo-count]", dialog).textContent = index + 1 + " / " + photos.length;
+        dialog.setAttribute("aria-label", p.alt);
+        return;
+      }
       index = (i + items.length) % items.length;
       var it = items[index].dataset;
       var img = $("[data-lightbox-img]", dialog);
@@ -437,9 +452,28 @@
         $("[data-lightbox-link-label]", dialog).textContent = it.lightboxHrefLabel || "View";
       }
     };
+    var setMode = function (photoMode) {
+      photoFig.hidden = !photoMode;
+      media.hidden = photoMode;
+      if (photoMode) dialog.removeAttribute("aria-labelledby");
+      else { dialog.setAttribute("aria-labelledby", "lightbox-title"); dialog.removeAttribute("aria-label"); }
+    };
     document.addEventListener("click", function (e) {
-      var item = e.target.closest && e.target.closest("[data-lightbox-item]");
+      if (!e.target.closest) return;
+      var opener = e.target.closest("[data-photo-open]");
+      if (opener) {
+        var set = $('script[data-photo-set="' + opener.dataset.photoOpen + '"]');
+        if (!set) return;
+        photos = JSON.parse(set.textContent);
+        setMode(true);
+        show(Number(opener.dataset.photoIndex) || 0);
+        dialog.showModal();
+        return;
+      }
+      var item = e.target.closest("[data-lightbox-item]");
       if (!item) return;
+      photos = null;
+      setMode(false);
       var group = item.closest("[data-lightbox-group]");
       items = group ? $$("[data-lightbox-item]", group) : [item];
       show(items.indexOf(item));
@@ -495,8 +529,29 @@
     });
   }
 
+  /* Copy-to-clipboard values (Grow A Classroom paybill/account) --------- */
+  function initCopy() {
+    $$("[data-copy]").forEach(function (button) {
+      var timer;
+      button.addEventListener("click", function () {
+        if (!navigator.clipboard) return; // blocked: the value stays visible to type
+        navigator.clipboard.writeText(button.dataset.copy).then(function () {
+          var set = function (copied) {
+            $("[data-copy-icon]", button).hidden = copied;
+            $("[data-copied-icon]", button).hidden = !copied;
+            $("[data-copy-label]", button).textContent = copied ? "Copied" : "Copy";
+          };
+          set(true);
+          clearTimeout(timer);
+          timer = setTimeout(function () { set(false); }, 1800);
+        }, function () {});
+      });
+    });
+  }
+
   var ready = function () {
     initExpanders();
+    initCopy();
     initMaps();
     initHeader();
     initStatement(); // before reveal: may swap in the static version
