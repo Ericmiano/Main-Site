@@ -88,7 +88,7 @@ export function MemberStats({ sticky = false }: { sticky?: boolean }) {
 
   const items: { label: string; value: number; icon: Icon }[] = [
     { label: "Registered members", value: stats.totals.members, icon: IconUsers },
-    { label: "In good standing", value: stats.totals.inGoodStanding, icon: IconUserCheck },
+    { label: "Active members", value: stats.totals.inGoodStanding, icon: IconUserCheck },
     ...stats.byCategory.map((c) => ({
       label: `${capitalise(c.category)} members`,
       value: c.members,
