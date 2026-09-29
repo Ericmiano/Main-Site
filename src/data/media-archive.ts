@@ -250,8 +250,7 @@ const aakWorkshopPhotos = photosIn("finance-accelerator-aak-workshop-2026", [
   "Workshop participants gather for a group photo",
 ]);
 
-// The photo folder is labelled 05.06.2025, but the slides on screen read
-// 5 June 2026 and "AAK Workshop (First Session)".
+// 5 June 2026 (confirmed by AAK; the photo folder was mislabelled 2025).
 const financeAcceleratorAakWorkshop: MediaAlbum = {
   slug: "finance-accelerator-aak-workshop-2026",
   title: "Finance Accelerator: AAK workshop",
