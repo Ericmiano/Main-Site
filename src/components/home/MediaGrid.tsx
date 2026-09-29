@@ -5,6 +5,7 @@ import { media } from "@/data/site";
 import { Reveal } from "@/components/site/Reveal";
 import { SectionRule } from "@/components/site/SectionRule";
 import { Lightbox } from "@/components/site/Lightbox";
+import { thumbnailFor } from "@/lib/thumbnail";
 import { cn } from "@/lib/utils";
 import { useAutoRail } from "@/hooks/use-auto-rail";
 
@@ -107,6 +108,7 @@ export function MediaGrid() {
         }}
         onNavigate={navigate}
         title={activeItem?.title ?? "Media"}
+        origin={() => (activeItem ? thumbnailFor(activeItem.image) : null)}
       >
         {activeItem ? (
           <>

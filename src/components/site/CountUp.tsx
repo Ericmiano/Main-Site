@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { prefersReducedMotion, whenMotionReady } from "@/lib/gsap";
 
 interface CountUpProps {
   /** Final value to count up to. */
@@ -23,56 +24,58 @@ export function CountUp({
 }: CountUpProps) {
   const ref = useRef<HTMLSpanElement | null>(null);
   // Start at the real value, not 0 — SSR output and no-JS clients must see
-  // the true figure, not a placeholder zero. The reveal animation (below)
-  // briefly counts back up to this same value once it scrolls into view.
+  // the true figure, not a placeholder zero. The count-up (below) briefly
+  // counts back up to this same value.
   const [display, setDisplay] = useState(value);
-  const started = useRef(false);
 
   useEffect(() => {
     const node = ref.current;
-    if (!node) return;
+    if (!node || prefersReducedMotion()) return;
+    let alive = true;
+    let stop: (() => void) | undefined;
 
-    const run = () => {
-      if (started.current) return;
-      started.current = true;
-
-      if (
-        typeof window === "undefined" ||
-        window.matchMedia("(prefers-reduced-motion: reduce)").matches
-      ) {
-        setDisplay(value);
-        return;
-      }
-
+    // On screen at load: count straight away with a tiny rAF loop, so GSAP
+    // isn't pulled into the page's startup just for this.
+    const rect = node.getBoundingClientRect();
+    if (rect.top < window.innerHeight && rect.bottom > 0) {
       const start = performance.now();
+      let frame = 0;
       const tick = (now: number) => {
-        const elapsed = now - start;
-        const progress = Math.min(elapsed / duration, 1);
+        const progress = Math.min((now - start) / duration, 1);
         setDisplay(Math.round(value * easeOutExpo(progress)));
-        if (progress < 1) requestAnimationFrame(tick);
+        if (progress < 1) frame = requestAnimationFrame(tick);
       };
-      requestAnimationFrame(tick);
-    };
-
-    if (typeof IntersectionObserver === "undefined") {
-      run();
-      return;
+      frame = requestAnimationFrame(tick);
+      return () => cancelAnimationFrame(frame);
     }
+
+    // Further down: GSAP counts it up as it scrolls into view, on the same
+    // expo-out curve as the site's other entrances.
     const observer = new IntersectionObserver(
       (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            run();
-            observer.disconnect();
-          }
-        }
+        if (!entries.some((entry) => entry.isIntersecting)) return;
+        observer.disconnect();
+        void whenMotionReady().then(({ gsap }) => {
+          if (!alive) return;
+          const count = { n: 0 };
+          const tween = gsap.to(count, {
+            n: value,
+            duration: duration / 1000,
+            ease: "expo.out",
+            onUpdate: () => setDisplay(Math.round(count.n)),
+          });
+          stop = () => tween.kill();
+        });
       },
       { threshold: 0.3 },
     );
     observer.observe(node);
-    const rect = node.getBoundingClientRect();
-    if (rect.top < window.innerHeight && rect.bottom > 0) run();
-    return () => observer.disconnect();
+    return () => {
+      alive = false;
+      observer.disconnect();
+      stop?.();
+      setDisplay(value);
+    };
   }, [value, duration]);
 
   return (

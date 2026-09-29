@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { Reveal } from "@/components/site/Reveal";
 import { cn } from "@/lib/utils";
+import { useGsap } from "@/hooks/use-gsap";
 
 const FROM = ["We", "shape", "the", "places", "where", "life", "happens."];
 const TO = ["Across", "every", "discipline", "of", "the", "built", "environment."];
@@ -60,9 +61,30 @@ function Scene({ className }: { className: string }) {
 
 function StatementMorph() {
   const track = useRef<HTMLElement>(null);
+  const gsapDriving = useRef(false);
 
-  // Scroll progress through the track, 0 when its top meets the viewport's
-  // top and 1 when its bottom meets the viewport's bottom.
+  // Once GSAP is in, it drives --p instead: the same scroll-linked morph,
+  // with a short scrub so the words glide rather than tracking every jolt
+  // of a phone's scroll.
+  useGsap(track, ({ gsap }, el) => {
+    gsapDriving.current = true;
+    gsap.fromTo(
+      el,
+      { "--p": 0 },
+      {
+        "--p": 1,
+        ease: "none",
+        scrollTrigger: { trigger: el, start: "top top", end: "bottom bottom", scrub: 0.8 },
+      },
+    );
+    return () => {
+      gsapDriving.current = false;
+    };
+  });
+
+  // Until then (and if GSAP is reverted): scroll progress through the track,
+  // 0 when its top meets the viewport's top and 1 when its bottom meets the
+  // viewport's bottom.
   useEffect(() => {
     const node = track.current;
     if (!node) return;
@@ -70,6 +92,7 @@ function StatementMorph() {
     let last = -1;
     const update = () => {
       frame = null;
+      if (gsapDriving.current) return;
       const rect = node.getBoundingClientRect();
       const span = rect.height - window.innerHeight;
       const p = span > 0 ? Math.min(1, Math.max(0, -rect.top / span)) : 0;

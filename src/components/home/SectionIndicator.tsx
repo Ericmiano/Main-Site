@@ -116,7 +116,7 @@ export function SectionIndicator() {
         className="flex items-center gap-3 bg-ink-deep/90 px-4 py-3 text-background shadow-xl backdrop-blur-md transition-colors hover:bg-ink-deep"
       >
         <span className="meta-label text-[oklch(0.75_0.13_38.5)]">{cur.index}</span>
-        <span className="meta-label text-background/45">
+        <span className="meta-label text-background/60">
           / {String(sections.length).padStart(2, "0")}
         </span>
         <span className="text-sm font-medium">{cur.label}</span>

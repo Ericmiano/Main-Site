@@ -15,6 +15,7 @@ import { PageBreadcrumb } from "@/components/site/PageBreadcrumb";
 import { CountUp } from "@/components/site/CountUp";
 import { YouTubeEmbed } from "@/components/site/YouTubeEmbed";
 import { Lightbox } from "@/components/site/Lightbox";
+import { thumbnailFor } from "@/lib/thumbnail";
 import {
   gacDonation,
   gacOverview,
@@ -467,6 +468,7 @@ function GrowAClassroom() {
           )
         }
         title={current?.alt ?? "Photo"}
+        origin={() => (current ? thumbnailFor(gacW800(current.src), current.src) : null)}
       >
         {current && viewer ? (
           <figure>

@@ -12,6 +12,7 @@ import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { Reveal } from "@/components/site/Reveal";
 import { Lightbox } from "@/components/site/Lightbox";
+import { thumbnailFor } from "@/lib/thumbnail";
 import { PageBreadcrumb } from "@/components/site/PageBreadcrumb";
 import { getMediaAlbum, mediaAlbums, type MediaAlbum } from "@/data/media-archive";
 
@@ -175,7 +176,10 @@ function AlbumPage() {
               </figure>
             ) : null}
 
-            <ul className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3 lg:grid-cols-4">
+            <ul
+              data-stagger
+              className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3 lg:grid-cols-4"
+            >
               {photos.map((photo, i) => (
                 <li key={photo.src}>
                   <button
@@ -248,6 +252,7 @@ function AlbumPage() {
           )
         }
         title={active?.alt ?? album.title}
+        origin={() => (active ? thumbnailFor(active.thumb, active.src) : null)}
       >
         {active ? (
           <figure>

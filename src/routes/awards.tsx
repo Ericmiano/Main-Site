@@ -143,10 +143,10 @@ function AwardsPage() {
               eyebrow="Latest Awards of Excellence · 2024"
               title={<span id="winners-title">Winning projects</span>}
             />
-            <ul className="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <ul data-stagger className="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {winnersFirst.map((winner, i) => (
                 <li key={`${winner.project}-${winner.category}-${winner.result}`}>
-                  <Reveal delay={(i % 3) * 60} className="h-full">
+                  <div className="h-full">
                     <a
                       href={winner.pdfHref}
                       target="_blank"
@@ -176,7 +176,7 @@ function AwardsPage() {
                         </div>
                       </div>
                     </a>
-                  </Reveal>
+                  </div>
                 </li>
               ))}
             </ul>
@@ -195,10 +195,10 @@ function AwardsPage() {
               }
               description="The AAK Awards of Excellence is the region's most prestigious honours programme, recognising outstanding achievement by professionals across all eight chapters of the association."
             />
-            <ul className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-3">
+            <ul data-stagger className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-3">
               {whyEnter.map((item, i) => (
                 <li key={item.title}>
-                  <Reveal delay={i * 80} className="h-full">
+                  <div className="h-full">
                     <div className="h-full rounded-2xl border border-border p-6">
                       <h3 className="font-display text-lg font-semibold text-foreground">
                         {item.title}
@@ -207,7 +207,7 @@ function AwardsPage() {
                         {item.body}
                       </p>
                     </div>
-                  </Reveal>
+                  </div>
                 </li>
               ))}
             </ul>
@@ -224,10 +224,10 @@ function AwardsPage() {
               title={<span id="categories-title">What's judged</span>}
               description="Open to members of the AAK, the Rwanda Institute of Architects, the Uganda Society of Architects and the Architectural Association of Tanzania."
             />
-            <ul className="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <ul data-stagger className="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {categories.map((category, i) => (
                 <li key={category.name}>
-                  <Reveal delay={(i % 3) * 60} className="h-full">
+                  <div className="h-full">
                     <div className="h-full rounded-xl border border-border bg-card p-5">
                       <span className="font-display text-sm font-semibold text-foreground">
                         {category.name}
@@ -236,7 +236,7 @@ function AwardsPage() {
                         {category.description}
                       </p>
                     </div>
-                  </Reveal>
+                  </div>
                 </li>
               ))}
             </ul>
@@ -249,17 +249,17 @@ function AwardsPage() {
               eyebrow="How entries are judged"
               title={<span id="evaluation-title">Evaluation criteria</span>}
             />
-            <ul className="mt-14 space-y-3">
+            <ul data-stagger className="mt-14 space-y-3">
               {evaluationCriteria.map((item, i) => (
                 <li key={item.text}>
-                  <Reveal delay={i * 60}>
+                  <div>
                     <div className="flex items-center gap-5 rounded-xl border border-border p-5">
                       <span className="font-display text-2xl font-semibold tabular-nums text-primary">
                         {item.weight}
                       </span>
                       <p className="text-sm leading-relaxed text-foreground">{item.text}</p>
                     </div>
-                  </Reveal>
+                  </div>
                 </li>
               ))}
             </ul>
@@ -272,17 +272,17 @@ function AwardsPage() {
         >
           <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
             <SectionHeading eyebrow="Panel" title={<span id="jury-title">Jury members</span>} />
-            <ul className="mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <ul data-stagger className="mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {jury.map((member, i) => (
                 <li key={member.name}>
-                  <Reveal delay={i * 70}>
+                  <div>
                     <div className="rounded-xl bg-card p-5">
                       <p className="font-display text-sm font-semibold text-foreground">
                         {member.name}
                       </p>
                       <p className="mt-1 text-xs text-muted-foreground">{member.org}</p>
                     </div>
-                  </Reveal>
+                  </div>
                 </li>
               ))}
             </ul>

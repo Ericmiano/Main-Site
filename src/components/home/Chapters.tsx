@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { IconArrowUpRight as ArrowUpRight } from "@tabler/icons-react";
 import { chapters } from "@/data/site";
 import { Reveal } from "@/components/site/Reveal";
 import { SectionRule } from "@/components/site/SectionRule";
+import { gsapIfLoaded, prefersReducedMotion } from "@/lib/gsap";
 import { cn } from "@/lib/utils";
 
 const pad = (n: number) => String(n).padStart(2, "0");
@@ -13,6 +14,64 @@ const pad = (n: number) => String(n).padStart(2, "0");
 function ChapterIndex() {
   const [active, setActive] = useState(0);
   const current = chapters[active] ?? chapters[0]!;
+  const photos = useRef<HTMLDivElement>(null);
+  const caption = useRef<HTMLDivElement>(null);
+  // The "03 / 08" counter counts to each new chapter rather than jumping.
+  const [shownNumber, setShownNumber] = useState(1);
+  const counter = useRef({ n: 1 });
+  const firstRun = useRef(true);
+
+  // With GSAP loaded: the new photo wipes in across the old one, the number
+  // counts, the caption slides up. Otherwise the CSS crossfade does the job.
+  useEffect(() => {
+    if (firstRun.current) {
+      firstRun.current = false;
+      return;
+    }
+    const kit = prefersReducedMotion() ? null : gsapIfLoaded();
+    if (!kit) {
+      counter.current.n = active + 1;
+      setShownNumber(active + 1);
+      return;
+    }
+    const { gsap } = kit;
+    const img = photos.current?.querySelectorAll("img")[active];
+    const tweens: gsap.core.Tween[] = [
+      gsap.to(counter.current, {
+        n: active + 1,
+        duration: 0.5,
+        ease: "power2.out",
+        onUpdate: () => setShownNumber(Math.round(counter.current.n)),
+      }),
+    ];
+    if (img) {
+      tweens.push(
+        gsap.fromTo(
+          img,
+          { clipPath: "inset(0% 0% 0% 100%)", opacity: 1, zIndex: 1 },
+          {
+            clipPath: "inset(0% 0% 0% 0%)",
+            duration: 0.9,
+            ease: "expo.inOut",
+            clearProps: "clipPath,opacity,zIndex",
+          },
+        ),
+      );
+    }
+    if (caption.current) {
+      tweens.push(
+        gsap.fromTo(
+          caption.current.children,
+          { y: 16, autoAlpha: 0 },
+          { y: 0, autoAlpha: 1, duration: 0.5, stagger: 0.05, ease: "expo.out" },
+        ),
+      );
+    }
+    // Sweeping down the list: finish each wipe rather than leave it half-done.
+    return () => {
+      for (const tween of tweens) tween.progress(1).kill();
+    };
+  }, [active]);
 
   return (
     <div className="hidden lg:grid lg:grid-cols-[1fr_1.1fr] lg:gap-16">
@@ -54,7 +113,7 @@ function ChapterIndex() {
         ))}
       </ol>
 
-      <div className="relative self-stretch overflow-hidden rounded-2xl bg-secondary">
+      <div ref={photos} className="relative self-stretch overflow-hidden rounded-2xl bg-secondary">
         {chapters.map((chapter, i) => (
           <img
             key={chapter.slug}
@@ -67,9 +126,12 @@ function ChapterIndex() {
             )}
           />
         ))}
-        <div className="absolute inset-x-0 bottom-0 bg-linear-to-t from-ink-deep/85 to-transparent p-8 pt-24">
+        <div
+          ref={caption}
+          className="absolute inset-x-0 bottom-0 z-[2] bg-linear-to-t from-ink-deep/85 to-transparent p-8 pt-24"
+        >
           <p className="meta-label text-background/70">
-            {pad(active + 1)} / {pad(chapters.length)}
+            {pad(shownNumber)} / {pad(chapters.length)}
           </p>
           <p className="mt-2 font-display text-2xl font-semibold text-background">{current.name}</p>
           <p className="mt-2 max-w-md text-sm leading-relaxed text-background/80">

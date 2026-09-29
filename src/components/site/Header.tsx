@@ -428,7 +428,10 @@ export function Header() {
                             <span
                               className={cn(
                                 "block text-xs",
-                                initiative.tone === "green" ? "text-sustain" : "text-primary/80",
+                                // Light tints: the brand red/green fail contrast on the dark panel.
+                                initiative.tone === "green"
+                                  ? "text-[oklch(0.74_0.09_152)]"
+                                  : "text-[oklch(0.75_0.13_38.5)]",
                               )}
                             >
                               {initiative.eyebrow}

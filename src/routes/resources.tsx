@@ -149,7 +149,7 @@ function ResourcesPage() {
             >
               Browse by category
             </h2>
-            <ul className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <ul data-stagger className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {categories.map((category, i) => {
                 const cardClassName =
                   "group flex h-full flex-col rounded-2xl bg-card p-6 transition-colors hover:bg-card/70";
@@ -169,7 +169,7 @@ function ResourcesPage() {
                 );
                 return (
                   <li key={category.title}>
-                    <Reveal delay={(i % 3) * 60} className="h-full">
+                    <div className="h-full">
                       {category.to ? (
                         <Link to={category.to} className={cardClassName}>
                           {cardBody}
@@ -184,7 +184,7 @@ function ResourcesPage() {
                           {cardBody}
                         </a>
                       )}
-                    </Reveal>
+                    </div>
                   </li>
                 );
               })}
@@ -203,10 +203,10 @@ function ResourcesPage() {
             >
               Latest downloads
             </h2>
-            <ul className="mt-8 border-t border-border">
+            <ul data-stagger className="mt-8 border-t border-border">
               {publications.map((doc, i) => (
                 <li key={doc.title}>
-                  <Reveal delay={i * 60}>
+                  <div>
                     <a
                       href={doc.href}
                       target="_blank"
@@ -223,7 +223,7 @@ function ResourcesPage() {
                         {doc.meta}
                       </span>
                     </a>
-                  </Reveal>
+                  </div>
                 </li>
               ))}
             </ul>
