@@ -1,4 +1,4 @@
-import { gacSchools } from "@/data/grow-a-classroom";
+import { gacSchools, gacW800 } from "@/data/grow-a-classroom";
 import { fileUrl } from "@/lib/files";
 
 /**
@@ -113,7 +113,10 @@ const toIso = (date: string | undefined) => {
 };
 
 const gacAlbums: MediaAlbum[] = gacSchools.map((school) => {
-  const photos = school.allPhotos ?? school.highlights;
+  const photos = (school.allPhotos ?? school.highlights).map((p) => ({
+    ...p,
+    thumb: gacW800(p.src),
+  }));
   const iso = toIso(school.date);
   return {
     slug: `grow-a-classroom-${school.id}`,
@@ -123,7 +126,7 @@ const gacAlbums: MediaAlbum[] = gacSchools.map((school) => {
     ...(iso ? { isoDate: iso } : {}),
     location: school.county,
     summary: `${school.kind} in ${school.county}, part of AAK's Grow A Classroom programme.`,
-    cover: school.highlights[0] ?? photos[0]!,
+    cover: photos.find((p) => p.src === school.highlights[0]?.src) ?? photos[0]!,
     photos,
     ...(school.video ? { video: school.video } : {}),
     links: [

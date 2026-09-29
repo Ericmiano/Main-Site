@@ -106,19 +106,39 @@ export function MotionLayer() {
       }
     };
 
-    void loadGsap().then((kit) => {
+    // Everything here animates content below the fold, so GSAP (~50KB and a
+    // few hundred ms of work on a mid-range phone) waits for the reader's
+    // first scroll or keypress instead of competing with the page's startup.
+    const TRIGGERS = ["scroll", "wheel", "touchstart", "keydown"] as const;
+    let idle: number | undefined;
+    // No interaction yet: start anyway once the page has settled.
+    const fallback = window.setTimeout(() => {
+      if ("requestIdleCallback" in window) idle = window.requestIdleCallback(start);
+      else start();
+    }, 6000);
+    const start = () => {
+      for (const type of TRIGGERS) window.removeEventListener(type, start);
+      window.clearTimeout(fallback);
+      if (idle !== undefined) window.cancelIdleCallback?.(idle);
       if (!alive) return;
-      enhance(kit);
-      // Route changes and lazily rendered sections add new headings.
-      observer = new MutationObserver(() => {
-        window.clearTimeout(timer);
-        timer = window.setTimeout(() => alive && enhance(kit), 120);
+      void loadGsap().then((kit) => {
+        if (!alive) return;
+        enhance(kit);
+        // Route changes and lazily rendered sections add new headings.
+        observer = new MutationObserver(() => {
+          window.clearTimeout(timer);
+          timer = window.setTimeout(() => alive && enhance(kit), 120);
+        });
+        observer.observe(document.body, { childList: true, subtree: true });
       });
-      observer.observe(document.body, { childList: true, subtree: true });
-    });
+    };
+    for (const type of TRIGGERS) window.addEventListener(type, start, { passive: true });
 
     return () => {
       alive = false;
+      for (const type of TRIGGERS) window.removeEventListener(type, start);
+      window.clearTimeout(fallback);
+      if (idle !== undefined) window.cancelIdleCallback?.(idle);
       observer?.disconnect();
       window.clearTimeout(timer);
       for (const undo of cleanups.values()) undo();

@@ -1,6 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { IconArrowUpRight as ArrowUpRight } from "@tabler/icons-react";
 
+import { YouTubeEmbed } from "@/components/site/YouTubeEmbed";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { Reveal } from "@/components/site/Reveal";
@@ -19,15 +20,7 @@ function VideoEmbed({ video, className }: { video: InitiativeVideo; className?: 
       </video>
     );
   }
-  return (
-    <iframe
-      src={video.src}
-      title={video.title}
-      className={className}
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-      allowFullScreen
-    />
-  );
+  return <YouTubeEmbed src={video.src} title={video.title} className={className} />;
 }
 
 function PhotoGrid({ photos }: { photos: InitiativeGalleryImage[] }) {

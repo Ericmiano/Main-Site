@@ -22,46 +22,42 @@ export function Reveal({
   wipe = false,
 }: RevealProps) {
   const ref = useRef<HTMLElement | null>(null);
-  const [shown, setShown] = useState(false);
+  // "static": rendered visible, as the server sends it, so content shows on
+  // first paint without waiting for JavaScript. Only elements that start
+  // below the fold are hidden ("armed") after hydration and faded in when
+  // they scroll into view; anything already on screen just stays put.
+  const [phase, setPhase] = useState<"static" | "armed" | "shown">("static");
 
   useEffect(() => {
     const node = ref.current;
-    if (!node) return;
-    if (typeof IntersectionObserver === "undefined") {
-      setShown(true);
-      return;
-    }
+    if (!node || typeof IntersectionObserver === "undefined") return;
+    if (node.getBoundingClientRect().top < window.innerHeight) return;
+
+    setPhase("armed");
     const observer = new IntersectionObserver(
       (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            setShown(true);
-            observer.disconnect();
-          }
+        if (entries.some((entry) => entry.isIntersecting)) {
+          setPhase("shown");
+          observer.disconnect();
         }
       },
       { threshold: 0.01, rootMargin: "0px 0px 80px 0px" },
     );
     observer.observe(node);
-    // Elements already in the viewport at mount (e.g. above the fold, or a fast
-    // programmatic scroll the observer's first callback hasn't landed for yet)
-    // shouldn't stay invisible — check synchronously as a fallback.
-    const rect = node.getBoundingClientRect();
-    if (rect.top < window.innerHeight && rect.bottom > 0) {
-      setShown(true);
-      observer.disconnect();
-    }
     return () => observer.disconnect();
   }, []);
+
+  const animated = phase !== "static";
+  const shown = phase === "shown";
 
   return (
     <Tag
       ref={ref}
-      style={{ transitionDelay: `${delay}ms` }}
+      style={animated ? { transitionDelay: `${delay}ms` } : undefined}
       className={cn(
-        "reveal",
+        animated && "reveal",
         shown && "reveal-in",
-        ruleDraw && "rule-draw",
+        animated && ruleDraw && "rule-draw",
         ruleDraw && shown && "rule-draw-in",
         className,
       )}
@@ -69,7 +65,7 @@ export function Reveal({
       {wipe ? (
         // The clip lives on an inner wrapper: a fully clipped observed element
         // never counts as intersecting, so the wipe would never start.
-        <div className={cn("wipe h-full", shown && "wipe-in")}>{children}</div>
+        <div className={cn("h-full", animated && "wipe", shown && "wipe-in")}>{children}</div>
       ) : (
         children
       )}

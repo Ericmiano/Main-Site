@@ -13,6 +13,7 @@ import { Reveal } from "@/components/site/Reveal";
 import { SectionRule } from "@/components/site/SectionRule";
 import { PageBreadcrumb } from "@/components/site/PageBreadcrumb";
 import { CountUp } from "@/components/site/CountUp";
+import { YouTubeEmbed } from "@/components/site/YouTubeEmbed";
 import { Lightbox } from "@/components/site/Lightbox";
 import {
   gacDonation,
@@ -21,6 +22,7 @@ import {
   gacStrategy,
   gacTagline,
   gacTargets,
+  gacW800,
   gacVideo,
   type GacPhoto,
   type GacSchool,
@@ -191,7 +193,7 @@ function SchoolStory({
                       aria-label={`Open photo: ${p.alt}`}
                     >
                       <img
-                        src={p.src}
+                        src={gacW800(p.src)}
                         alt={p.alt}
                         loading="lazy"
                         className={cn(
@@ -209,7 +211,12 @@ function SchoolStory({
           {school.video ? (
             <Reveal className="mt-3">
               <figure className="overflow-hidden bg-ink-deep">
-                <video controls preload="none" poster={lead?.src} className="aspect-video w-full">
+                <video
+                  controls
+                  preload="none"
+                  poster={lead ? gacW800(lead.src) : undefined}
+                  className="aspect-video w-full"
+                >
                   <source src={school.video.src} type="video/mp4" />
                 </video>
                 <figcaption className="meta-label px-4 py-3 text-background/70">
@@ -265,6 +272,8 @@ function GrowAClassroom() {
         <section className="relative isolate flex min-h-[86svh] items-end overflow-hidden bg-ink-deep">
           <img
             src={HERO.src}
+            srcSet={`${gacW800(HERO.src)} 800w, ${HERO.src} 1600w`}
+            sizes="100vw"
             alt={HERO.alt}
             fetchPriority="high"
             className="photo-grade absolute inset-0 -z-10 h-full w-full object-cover hero-zoom"
@@ -329,14 +338,7 @@ function GrowAClassroom() {
             </Reveal>
             <Reveal delay={100} className="self-center">
               <div className="aspect-video overflow-hidden bg-ink-deep shadow-2xl">
-                <iframe
-                  src={gacVideo.src}
-                  title={gacVideo.title}
-                  loading="lazy"
-                  className="h-full w-full"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowFullScreen
-                />
+                <YouTubeEmbed src={gacVideo.src} title={gacVideo.title} className="h-full w-full" />
               </div>
             </Reveal>
           </div>

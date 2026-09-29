@@ -5,6 +5,10 @@ export interface GacPhoto {
   alt: string;
 }
 
+/** The 800px-wide copy of a photo (public/gac/<school>/w800/), for grids and
+ * phone-sized heroes; the full 1600px file is kept for the lightbox. */
+export const gacW800 = (src: string) => src.replace(/\/([^/]+)$/, "/w800/$1");
+
 export interface GacSchool {
   /** Anchor id, matching aak.or.ke's own jump links. */
   id: string;

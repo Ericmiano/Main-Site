@@ -164,7 +164,7 @@ function AlbumPage() {
                 <video
                   controls
                   preload="none"
-                  poster={album.cover.src}
+                  poster={album.cover.thumb ?? album.cover.src}
                   className="aspect-video w-full"
                 >
                   <source src={album.video.src} type="video/mp4" />
