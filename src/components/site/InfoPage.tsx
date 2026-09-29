@@ -5,9 +5,10 @@ import { Footer } from "@/components/site/Footer";
 import { PageBreadcrumb } from "@/components/site/PageBreadcrumb";
 import { cn } from "@/lib/utils";
 
-/** Legal pages stay marked as drafts (and out of search results) until AAK
- * approves the wording. Flip to true once approved. */
-export const LEGAL_PAGES_APPROVED = false;
+/** Legal pages (privacy, terms, cookies) show a draft notice and stay out of
+ * search results and the sitemap while false. AAK approved the wording on
+ * 29 September 2026. */
+export const LEGAL_PAGES_APPROVED = true;
 
 export const infoPageMeta = (title: string, description: string, path: string, draft: boolean) => {
   const fullTitle = `${title} | Architectural Association of Kenya`;
