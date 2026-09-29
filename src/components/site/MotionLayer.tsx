@@ -85,10 +85,14 @@ function startEnhancing({ gsap, ScrollTrigger, SplitText }: GsapKit) {
       const split = SplitText.create(heading, {
         type: "lines",
         mask: "lines",
+        // Masks get "split-line-mask": styles.css gives them room below the
+        // line so descenders (g, y, p) aren't cut by the mask's clip.
+        linesClass: "split-line",
         autoSplit: true, // re-split when fonts load or the width changes
         onSplit: (self) =>
           gsap.from(self.lines, {
-            yPercent: 110,
+            // Far enough to clear the mask's descender room as well.
+            yPercent: 135,
             duration: 1.1,
             ease: "expo.out",
             stagger: 0.09,

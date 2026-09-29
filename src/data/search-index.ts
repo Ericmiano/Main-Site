@@ -108,7 +108,7 @@ const pages: SearchEntry[] = [
   {
     title: "Students & Affiliates",
     description:
-      "AAK supports student organisations across the architectural industry: the Architecture Students Association, CRESA and PLASA.",
+      "AAK's six student affiliates: built-environment student associations at the Technical University of Kenya, JKUAT, the University of Nairobi and Kenyatta University.",
     category: "Page",
     href: "/students",
   },

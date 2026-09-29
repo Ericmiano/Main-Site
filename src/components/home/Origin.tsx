@@ -16,7 +16,7 @@ export function Origin() {
         <Reveal>
           <SectionRule index="01" label="Origin" />
           <h2 id="origin-title" className="type-section mt-8 max-w-3xl text-foreground">
-            The people who shape Kenya.
+            Uniting experts across the built and natural environment.
           </h2>
         </Reveal>
 
