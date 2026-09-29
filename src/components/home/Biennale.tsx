@@ -2,13 +2,10 @@ import { IconArrowRight as ArrowRight } from "@tabler/icons-react";
 import { Link } from "@tanstack/react-router";
 import { Reveal } from "@/components/site/Reveal";
 import { SectionRule } from "@/components/site/SectionRule";
-import { useScrollParallax } from "@/hooks/use-scroll-parallax";
 
 const BIENNALE_URL = "https://www.biennale.aak.or.ke/";
 
 export function Biennale() {
-  const parallax = useScrollParallax<HTMLDivElement>(40);
-
   return (
     <section
       aria-labelledby="biennale-title"
@@ -20,18 +17,16 @@ export function Biennale() {
 
       {/* Full-bleed exhibition plate: the event's own photograph carries the
           title, dates and theme, so the section reads as a separate event. */}
-      <div
-        ref={parallax.ref}
-        className="relative isolate mt-10 flex min-h-[80svh] items-end overflow-hidden lg:mt-14 lg:min-h-[88vh]"
-      >
+      <div className="relative isolate mt-10 flex min-h-[80svh] items-end overflow-hidden lg:mt-14 lg:min-h-[88vh]">
         <img
           src="/biennale/featured.webp"
           alt="Exhibitors and AAK members at the Nairobi Biennale of Architecture & Art 2026"
           loading="lazy"
           width={1920}
           height={1280}
-          className="photo-grade absolute inset-0 -z-10 h-[115%] w-full object-cover will-change-transform"
-          style={{ transform: `translateY(${parallax.offset - 40}px)` }}
+          // Scroll-scrubbed drift (MotionLayer); starts where it ends up at rest.
+          data-parallax="40"
+          className="photo-grade absolute inset-0 -z-10 h-[115%] w-full -translate-y-10 object-cover will-change-transform"
         />
         <div
           aria-hidden="true"

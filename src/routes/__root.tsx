@@ -1,4 +1,5 @@
 import { InfoDialogHost } from "@/components/info/InfoDialogHost";
+import { MotionLayer } from "@/components/site/MotionLayer";
 import { NotFound } from "@/components/site/NotFound";
 import {
   Outlet,
@@ -129,6 +130,7 @@ function RootComponent() {
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
       <InfoDialogHost />
+      <MotionLayer />
     </>
   );
 }
