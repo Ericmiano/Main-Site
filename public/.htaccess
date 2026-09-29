@@ -25,6 +25,10 @@ DirectorySlash Off
   RewriteRule ^(architects|quantity-surveyors|town-planners|engineers|landscape-architects|environmental-design-consultants|interior-designers)-chapter/?$ /chapters/$1 [R=301,L]
   RewriteRule ^construction-project-management-chapter/?$ /chapters/construction-project-managers [R=301,L]
 
+  # Downloads live in Cloudflare R2, not on this host (see src/lib/files.ts).
+  # 302 for now: the address becomes files.aak.or.ke once DNS is on Cloudflare.
+  RewriteRule ^documents/(.+)$ https://aak-files.aak-kenya.workers.dev/documents/$1 [R=302,L,NE]
+
   # Clean page URLs: /about or /about/ -> /about/index.html.
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{DOCUMENT_ROOT}/$1/index.html -f

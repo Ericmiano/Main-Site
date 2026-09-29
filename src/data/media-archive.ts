@@ -1,4 +1,5 @@
 import { gacSchools } from "@/data/grow-a-classroom";
+import { fileUrl } from "@/lib/files";
 
 /**
  * The media archive (/media): photographs from past AAK events, one album
@@ -83,7 +84,7 @@ const waldorfVisit: MediaAlbum = {
   links: [
     {
       label: "Read the project brief (PDF)",
-      href: "/documents/NAIROBI-WALDORF-SCHOOL-PROJECT.pdf",
+      href: fileUrl("/documents/NAIROBI-WALDORF-SCHOOL-PROJECT.pdf"),
     },
     { label: "Awards of Excellence", href: "/awards" },
   ],

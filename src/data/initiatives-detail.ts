@@ -1,3 +1,5 @@
+import { fileUrl } from "@/lib/files";
+
 /** Detailed initiative content for /initiatives/$slug — sourced from aak.or.ke. */
 
 export interface InitiativeStat {
@@ -94,7 +96,7 @@ export const initiativeDetails: InitiativeDetail[] = [
     documents: [
       {
         title: "Mulika Mjengo Initiative",
-        href: "/documents/MULIKA-MJENGO-INITIATIVE.pdf",
+        href: fileUrl("/documents/MULIKA-MJENGO-INITIATIVE.pdf"),
       },
     ],
     contacts: [
@@ -136,7 +138,7 @@ export const initiativeDetails: InitiativeDetail[] = [
     documents: [
       {
         title: "Je Una Mjengo Campaign Report",
-        href: "/documents/Je-Una-Mjengo-Campaign.pdf",
+        href: fileUrl("/documents/Je-Una-Mjengo-Campaign.pdf"),
       },
     ],
     videos: [
@@ -147,15 +149,15 @@ export const initiativeDetails: InitiativeDetail[] = [
       },
     ],
     audio: [
-      { label: "Bahari FM", src: "/documents/Bahari-FM.mp3" },
-      { label: "Kameme FM — 11th April", src: "/documents/AAK-Kameme-FM-11th-April.mp3" },
+      { label: "Bahari FM", src: fileUrl("/documents/Bahari-FM.mp3") },
+      { label: "Kameme FM — 11th April", src: fileUrl("/documents/AAK-Kameme-FM-11th-April.mp3") },
       {
         label: "Radio Citizen — Collapsing Buildings",
-        src: "/documents/Radio-Citizen-on-Collapsing-Buildings.mp3",
+        src: fileUrl("/documents/Radio-Citizen-on-Collapsing-Buildings.mp3"),
       },
-      { label: "Musyi FM", src: "/documents/Musyi-FM-AAK.mp3" },
-      { label: "Mulembe FM — News Story", src: "/documents/Mulembe-FM-News-story.mp3" },
-      { label: "Egesa FM", src: "/documents/Egesa-FM.mp3" },
+      { label: "Musyi FM", src: fileUrl("/documents/Musyi-FM-AAK.mp3") },
+      { label: "Mulembe FM — News Story", src: fileUrl("/documents/Mulembe-FM-News-story.mp3") },
+      { label: "Egesa FM", src: fileUrl("/documents/Egesa-FM.mp3") },
     ],
     tone: "primary",
   },
@@ -374,7 +376,7 @@ export const initiativeDetails: InitiativeDetail[] = [
     documents: [
       {
         title: "Safari Green Building Index — Official Rating Guide",
-        href: "/documents/Safari-Green-Building-Index-Rating_2019.pdf",
+        href: fileUrl("/documents/Safari-Green-Building-Index-Rating_2019.pdf"),
       },
     ],
     tone: "green",
@@ -413,7 +415,7 @@ export const initiativeDetails: InitiativeDetail[] = [
     documents: [
       {
         title: "Healthy Homes Guidelines and Checklist (2024)",
-        href: "/documents/Healthy-Homes-Guidelines-and-Checklist-2024.pdf",
+        href: fileUrl("/documents/Healthy-Homes-Guidelines-and-Checklist-2024.pdf"),
       },
     ],
     tone: "green",
@@ -439,7 +441,7 @@ export const initiativeDetails: InitiativeDetail[] = [
     documents: [
       {
         title: "AAK × UN-Habitat Urban Thinkers Campus",
-        href: "/documents/AAK-UN-Habitat-Urban-Thinkers-Campus.pdf",
+        href: fileUrl("/documents/AAK-UN-Habitat-Urban-Thinkers-Campus.pdf"),
       },
     ],
     tone: "primary",

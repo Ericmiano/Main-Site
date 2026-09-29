@@ -1,3 +1,5 @@
+import { fileUrl } from "@/lib/files";
+
 export type EventStatus = "ongoing" | "upcoming";
 
 export interface EventAgendaItem {
@@ -434,7 +436,7 @@ export const media: MediaItem[] = [
     caption:
       "Members and guests beneath the school's timber-pole pavilion on 24 July 2026. The pavilion won Best Africa (Re)presentation at the 2024 Awards of Excellence.",
     image: "/img/waldorf-visit-2026/group-under-pavilion.webp",
-    href: "/documents/NAIROBI-WALDORF-SCHOOL-PROJECT.pdf",
+    href: fileUrl("/documents/NAIROBI-WALDORF-SCHOOL-PROJECT.pdf"),
     hrefLabel: "Read the project brief (PDF)",
     span: "wide",
   },
@@ -453,7 +455,7 @@ export const media: MediaItem[] = [
     caption:
       "The pavilion's roof rests on a forest of timber poles among the site's trees. Winner, Best Africa (Re)presentation, 2024 Awards of Excellence.",
     image: "/img/waldorf-visit-2026/pavilion-exterior.webp",
-    href: "/documents/NAIROBI-WALDORF-SCHOOL-PROJECT.pdf",
+    href: fileUrl("/documents/NAIROBI-WALDORF-SCHOOL-PROJECT.pdf"),
     hrefLabel: "Read the project brief (PDF)",
     span: "regular",
   },
@@ -509,17 +511,17 @@ export const publications: Publication[] = [
   {
     title: "Memorandum on the Finance Bill 2025",
     meta: "Policy submission · PDF",
-    href: "/documents/AAK-Memorandum-on-Finance-Bill-2025.pdf",
+    href: fileUrl("/documents/AAK-Memorandum-on-Finance-Bill-2025.pdf"),
   },
   {
     title: "AAK AGM Report 2025",
     meta: "Governance · PDF",
-    href: "/documents/AAK-AGM-Report-2025_compressed.pdf",
+    href: fileUrl("/documents/AAK-AGM-Report-2025_compressed.pdf"),
   },
   {
     title: "BuildPress Magazine 2025",
     meta: "Magazine · PDF",
-    href: "/documents/AAK_BuildPress2025_Kisumu.pdf",
+    href: fileUrl("/documents/AAK_BuildPress2025_Kisumu.pdf"),
   },
 ];
 
@@ -890,112 +892,112 @@ export const awardWinners2024: AwardWinner[] = [
     category: "Best Student Project",
     result: "Winner",
     image: "/img/screenshot-2026-06-08-164835.webp",
-    pdfHref: "/documents/THE-AGORA-PROJECT.pdf",
+    pdfHref: fileUrl("/documents/THE-AGORA-PROJECT.pdf"),
   },
   {
     project: "Kigandani Industrial Hub",
     category: "Best Student Project",
     result: "1st Runner-up",
     image: "/img/screenshot-2026-06-08-164317.webp",
-    pdfHref: "/documents/KIGANDANI-INDUSTRIAL-HUB-PROJECT.pdf",
+    pdfHref: fileUrl("/documents/KIGANDANI-INDUSTRIAL-HUB-PROJECT.pdf"),
   },
   {
     project: "Mombasa Ferry Terminal",
     category: "Best Student Project",
     result: "2nd Runner-up",
     image: "/img/screenshot-2026-06-08-163554.webp",
-    pdfHref: "/documents/MOMBASA-FERRY-TERMINAL-PROJECT.pdf",
+    pdfHref: fileUrl("/documents/MOMBASA-FERRY-TERMINAL-PROJECT.pdf"),
   },
   {
     project: "Mzizi ECD Centre",
     category: "Best Student Project",
     result: "Honorable Mention",
     image: "/img/screenshot-2026-05-07-091425.webp",
-    pdfHref: "/documents/MZIZI-ECD-CENTRE-PROJECT.pdf",
+    pdfHref: fileUrl("/documents/MZIZI-ECD-CENTRE-PROJECT.pdf"),
   },
   {
     project: "Kenya Advanced Institute of Science and Technology",
     category: "Best Institutional Project",
     result: "Honorable Mention",
     image: "/img/screenshot-2026-05-06-170210.webp",
-    pdfHref: "/documents/KENYA-ADVANCED-INSTITUTE-OF-SCIENCE-OF-TECHNOLOGY-PROJECT.pdf",
+    pdfHref: fileUrl("/documents/KENYA-ADVANCED-INSTITUTE-OF-SCIENCE-OF-TECHNOLOGY-PROJECT.pdf"),
   },
   {
     project: "Lodwar Referral Hospital",
     category: "Best Institutional Project",
     result: "Honorable Mention",
     image: "/img/screenshot-2026-06-08-132017-e1780914111723.webp",
-    pdfHref: "/documents/LODWAR-REFERRAL-HOSPITAL-PROJECT.pdf",
+    pdfHref: fileUrl("/documents/LODWAR-REFERRAL-HOSPITAL-PROJECT.pdf"),
   },
   {
     project: "Wajir County Referral Hospital",
     category: "Best Institutional Project",
     result: "Honorable Mention",
     image: "/img/screenshot-2026-05-06-152302.webp",
-    pdfHref: "/documents/WAJIR-REFERRAL-HOSPITAL.pdf",
+    pdfHref: fileUrl("/documents/WAJIR-REFERRAL-HOSPITAL.pdf"),
   },
   {
     project: "Skanem",
     category: "Best Commercial Project",
     result: "Honorable Mention",
     image: "/img/screenshot-2026-06-08-161321.webp",
-    pdfHref: "/documents/SKANEM-PROJECT.pdf",
+    pdfHref: fileUrl("/documents/SKANEM-PROJECT.pdf"),
   },
   {
     project: "Global Trade Center",
     category: "Best Commercial Project",
     result: "Honorable Mention",
     image: "/img/screenshot-2026-05-06-142005.webp",
-    pdfHref: "/documents/GLOBAL-TRADE-CENTRE-PROJECT.pdf",
+    pdfHref: fileUrl("/documents/GLOBAL-TRADE-CENTRE-PROJECT.pdf"),
   },
   {
     project: "The Bidi Bidi Music and Arts Centre",
     category: "Best Empowerment and Social Equity Through Design",
     result: "Winner",
     image: "/img/screenshot-2026-05-06-131531.webp",
-    pdfHref: "/documents/THE-BIDI-BIDI-PERFORMING-ARTS-CENTRE-PROJECT.pdf",
+    pdfHref: fileUrl("/documents/THE-BIDI-BIDI-PERFORMING-ARTS-CENTRE-PROJECT.pdf"),
   },
   {
     project: "Ufi at Kahawa Soweto Settlement",
     category: "Best Empowerment and Social Equity Through Design",
     result: "Runner-up",
     image: "/img/screenshot-2026-06-08-153946.webp",
-    pdfHref: "/documents/URBAN-FABRIC-INITIATIVE-PROJECT.pdf",
+    pdfHref: fileUrl("/documents/URBAN-FABRIC-INITIATIVE-PROJECT.pdf"),
   },
   {
     project: "Standard Chartered Bank HQ",
     category: "Best Interior Environment",
     result: "Winner",
     image: "/img/screenshot-2026-06-08-152537.webp",
-    pdfHref: "/documents/STANDARD-CHATERED-BANK-HQ-PROJECT.pdf",
+    pdfHref: fileUrl("/documents/STANDARD-CHATERED-BANK-HQ-PROJECT.pdf"),
   },
   {
     project: "Lady of Victoria Monastery",
     category: "Best Religious / Monumental",
     result: "Winner",
     image: "/img/screenshot-2026-06-08-150532.webp",
-    pdfHref: "/documents/OUR-LADY-VICTORIA-MONASTERY-PROJECT.pdf",
+    pdfHref: fileUrl("/documents/OUR-LADY-VICTORIA-MONASTERY-PROJECT.pdf"),
   },
   {
     project: "Nairobi Waldorf School",
     category: "Best Africa (Re)presentation",
     result: "Winner",
     image: "/img/waldorf-visit-2026/award-pavilion.webp",
-    pdfHref: "/documents/NAIROBI-WALDORF-SCHOOL-PROJECT.pdf",
+    pdfHref: fileUrl("/documents/NAIROBI-WALDORF-SCHOOL-PROJECT.pdf"),
   },
   {
     project: "Lodwar Referral Hospital",
     category: "Best Africa (Re)presentation",
     result: "Juror's Honourable Mention",
     image: "/img/screenshot-2026-06-08-132017-e1780914111723.webp",
-    pdfHref: "/documents/LODWAR-REFERRAL-HOSPITAL-PROJECT.pdf",
+    pdfHref: fileUrl("/documents/LODWAR-REFERRAL-HOSPITAL-PROJECT.pdf"),
   },
   {
     project: "The Bidi Bidi Music and Arts Centre",
     category: "Best Africa (Re)presentation",
     result: "Juror's Choice Honorable Mention",
     image: "/img/screenshot-2026-05-06-131531.webp",
-    pdfHref: "/documents/THE-BIDI-BIDI-PERFORMING-ARTS-CENTRE-PROJECT.pdf",
+    pdfHref: fileUrl("/documents/THE-BIDI-BIDI-PERFORMING-ARTS-CENTRE-PROJECT.pdf"),
   },
 ];
 

@@ -12,6 +12,7 @@ import { Reveal } from "@/components/site/Reveal";
 import { Countdown } from "@/components/site/Countdown";
 import { PageBreadcrumb } from "@/components/site/PageBreadcrumb";
 import { cn } from "@/lib/utils";
+import { fileUrl } from "@/lib/files";
 import { getEventDisplayStatus, getSortedEvents, type SiteEvent } from "@/data/site";
 
 const SITE_URL = "https://aak.or.ke";
@@ -97,7 +98,7 @@ function EventsIndex() {
               </p>
               <div className="mt-8 flex flex-wrap items-center gap-x-7 gap-y-4">
                 <a
-                  href="/documents/2026-AAK-Calendar-of-Events.pdf"
+                  href={fileUrl("/documents/2026-AAK-Calendar-of-Events.pdf")}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group btn-primary"
