@@ -220,6 +220,72 @@ const kgbsFinanceAccelerator: MediaAlbum = {
   photos: kgbsPhotos,
 };
 
+const aakWorkshopPhotos = photosIn("finance-accelerator-aak-workshop-2026", [
+  "The meeting room set up ahead of the workshop",
+  "Signing in at registration",
+  "A speaker opens the workshop in front of the AAK banner",
+  "A speaker introduces the Kenya Decarbonization Finance Accelerator",
+  "Participants in conversation at a round table",
+  "A presentation on unlocking green finance for built-environment professionals",
+  "A speaker makes a point from the podium",
+  "A presentation on design practice, cost data and the green finance case",
+  "A speaker presents in front of the AAK banner",
+  "A speaker works through a costed example on screen",
+  "A speaker presents the funding accelerator programme",
+  "Conversation during the tea break",
+  "A speaker addresses the room",
+  "Participants share a moment at their table",
+  "A presentation to the room",
+  "The room during a presentation",
+  "A presentation on connecting financiers, developers and professionals",
+  "A speaker makes a point to the room",
+  "A speaker presents in front of the AAK banner",
+  "A presentation with photographs of school classrooms",
+  "A speaker presents the components of a programme",
+  "A session of reflections from participants",
+  "Group discussion at a round table",
+  "Participants work together at a table",
+  "Group work during the afternoon session",
+  "Participants at their laptops",
+  "Workshop participants gather for a group photo",
+]);
+
+// The photo folder is labelled 05.06.2025, but the slides on screen read
+// 5 June 2026 and "AAK Workshop (First Session)".
+const financeAcceleratorAakWorkshop: MediaAlbum = {
+  slug: "finance-accelerator-aak-workshop-2026",
+  title: "Finance Accelerator: AAK workshop",
+  category: "Workshop",
+  date: "5 June 2026",
+  isoDate: "2026-06-05",
+  location: "Fairview Hotel, Nairobi",
+  summary:
+    "The first AAK workshop session of the Kenya Decarbonization Finance Accelerator, on unlocking green finance for built-environment professionals: design practice, cost data and the green finance case, with group work and participants’ reflections.",
+  cover: aakWorkshopPhotos[aakWorkshopPhotos.length - 1]!,
+  photos: aakWorkshopPhotos,
+};
+
+const esrmPhotos = photosIn("nairobi-esrm-policy-2026", [
+  "The panel, with the draft policy on screen",
+  "A speaker addresses the forum beside the panel",
+  "The audience in the hall",
+  "The audience follows the proceedings",
+  "A full hall during the forum",
+]);
+
+const nairobiEsrmPolicy: MediaAlbum = {
+  slug: "nairobi-esrm-policy-2026",
+  title: "Nairobi City County Environmental and Social Risk Management Policy",
+  category: "Policy",
+  date: "21 April 2026",
+  isoDate: "2026-04-21",
+  location: "Nairobi",
+  summary:
+    "A forum on the draft Nairobi City County Environmental and Social Risk Management Policy, 2026: the draft on screen, a panel and a full hall.",
+  cover: esrmPhotos[0]!,
+  photos: esrmPhotos,
+};
+
 const MONTHS = [
   "January",
   "February",
@@ -272,6 +338,8 @@ export const mediaAlbums: MediaAlbum[] = [
   architectsToolkit,
   financeAcceleratorKickoff,
   kgbsFinanceAccelerator,
+  financeAcceleratorAakWorkshop,
+  nairobiEsrmPolicy,
   ...gacAlbums,
 ]
   .map((album, i) => ({ album, i }))

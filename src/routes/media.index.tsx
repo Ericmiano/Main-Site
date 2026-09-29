@@ -149,7 +149,9 @@ function MediaIndex() {
                   )}
                 >
                   {category}
-                  <span className="opacity-60">{countFor(category)}</span>
+                  <span className={filter === category ? "opacity-70" : undefined}>
+                    {countFor(category)}
+                  </span>
                 </button>
               ))}
             </div>
