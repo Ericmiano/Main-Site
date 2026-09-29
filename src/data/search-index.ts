@@ -108,7 +108,7 @@ const pages: SearchEntry[] = [
   {
     title: "Students & Affiliates",
     description:
-      "AAK's six student affiliates: built-environment student associations at the Technical University of Kenya, JKUAT, the University of Nairobi and Kenyatta University.",
+      "AAK's seven student affiliates, including ASA, CRESA and PLASA: built-environment student associations at the Technical University of Kenya, JKUAT, the University of Nairobi and Kenyatta University.",
     category: "Page",
     href: "/students",
   },

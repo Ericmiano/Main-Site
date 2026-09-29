@@ -9,7 +9,7 @@ import { PageBreadcrumb } from "@/components/site/PageBreadcrumb";
 const SITE_URL = "https://aak.or.ke";
 const TITLE = "Student Affiliates | Architectural Association of Kenya";
 const DESCRIPTION =
-  "AAK's six student affiliates: built-environment student associations at the Technical University of Kenya, JKUAT, the University of Nairobi and Kenyatta University.";
+  "AAK's seven student affiliates, including ASA, CRESA and PLASA: built-environment student associations at the Technical University of Kenya, JKUAT, the University of Nairobi and Kenyatta University.";
 
 export const Route = createFileRoute("/students")({
   head: () => ({
@@ -27,8 +27,26 @@ export const Route = createFileRoute("/students")({
   component: StudentsPage,
 });
 
-// AAK's recognised student affiliates, as confirmed by the secretariat.
-const affiliates: { abbr?: string; name: string; university: string }[] = [
+// AAK's student affiliates: the original three (descriptions from aak.or.ke),
+// with universities and four further associations confirmed by the secretariat.
+const affiliates: { abbr?: string; name: string; university?: string; body?: string }[] = [
+  {
+    abbr: "ASA",
+    name: "Architectural Students Association",
+    university: "Kenyatta University",
+    body: "Represents students in architecture programmes, connecting them to AAK's Architects Chapter and its professional network from the start of their studies.",
+  },
+  {
+    abbr: "CRESA",
+    name: "Construction and Real Estate Students Association",
+    university: "University of Nairobi",
+    body: "Nurtures and exposes students of real estate and construction management (RECM) to their profession and the construction industry through internships, career talks, industrial visits, social welfare activities and community development.",
+  },
+  {
+    abbr: "PLASA",
+    name: "Planning Students Association",
+    body: "Represents students in planning programmes, linking them to AAK's Town Planners Chapter and the wider profession.",
+  },
   {
     name: "Construction Students Association",
     university: "Technical University of Kenya",
@@ -39,19 +57,9 @@ const affiliates: { abbr?: string; name: string; university: string }[] = [
     university: "Jomo Kenyatta University of Agriculture and Technology (JKUAT)",
   },
   {
-    abbr: "CRESA",
-    name: "Construction and Real Estate Students Association",
-    university: "University of Nairobi",
-  },
-  {
     abbr: "AECAS",
     name: "Association of Engineering Construction and Architecture Students",
     university: "Technical University of Kenya",
-  },
-  {
-    abbr: "ASA",
-    name: "Architectural Students Association",
-    university: "Kenyatta University",
   },
   {
     abbr: "ASATUK",
@@ -79,7 +87,7 @@ function StudentsPage() {
               </h1>
               <p className="mt-5 text-base leading-relaxed text-muted-foreground">
                 AAK supports student organisations for those studying the built environment,
-                recognising six affiliates across four universities.
+                recognising seven affiliates.
               </p>
             </Reveal>
           </div>
@@ -94,12 +102,17 @@ function StudentsPage() {
               {affiliates.map((affiliate) => (
                 <li key={affiliate.name}>
                   <div className="flex h-full flex-col rounded-2xl border border-border p-7">
-                    <span className="meta-label flex items-center gap-2 text-muted-foreground">
-                      <GraduationCap className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
-                      {affiliate.university}
-                    </span>
+                    {affiliate.university ? (
+                      <span className="meta-label mb-5 flex items-center gap-2 text-muted-foreground">
+                        <GraduationCap
+                          className="h-4 w-4 shrink-0 text-primary"
+                          aria-hidden="true"
+                        />
+                        {affiliate.university}
+                      </span>
+                    ) : null}
                     {affiliate.abbr ? (
-                      <span className="mt-5 font-display text-3xl font-semibold tracking-tight text-primary">
+                      <span className="font-display text-3xl font-semibold tracking-tight text-primary">
                         {affiliate.abbr}
                       </span>
                     ) : null}
@@ -107,11 +120,16 @@ function StudentsPage() {
                       className={
                         affiliate.abbr
                           ? "mt-3 font-display text-lg font-semibold leading-snug text-foreground"
-                          : "mt-5 font-display text-2xl font-semibold leading-snug text-foreground"
+                          : "font-display text-2xl font-semibold leading-snug text-foreground"
                       }
                     >
                       {affiliate.name}
                     </h3>
+                    {affiliate.body ? (
+                      <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                        {affiliate.body}
+                      </p>
+                    ) : null}
                   </div>
                 </li>
               ))}
