@@ -98,7 +98,12 @@ export function Header() {
     const update = () => {
       frame = null;
       const max = document.documentElement.scrollHeight - window.innerHeight;
-      setScrolled(window.scrollY > 80);
+      // Compacting shortens the header by ~52px, which moves the page (and,
+      // via scroll anchoring or a short page's clamped scroll, scrollY) by
+      // about as much. A single threshold let that flip it straight back,
+      // over and over: the header "shook". Shrink past 96px, grow back only
+      // under 24px; the 72px gap is wider than the header's change.
+      setScrolled((compact) => (compact ? window.scrollY > 24 : window.scrollY > 96));
       // Written straight to the element so scrolling doesn't re-render the header.
       progressRef.current?.style.setProperty(
         "transform",
