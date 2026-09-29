@@ -46,6 +46,8 @@ import { Route as EventsIndexRouteImport } from './routes/events.index'
 import { Route as EventsSlugRouteImport } from './routes/events.$slug'
 import { Route as InitiativesSlugRouteImport } from './routes/initiatives.$slug'
 import { Route as InitiativesGrowAClassroomRouteImport } from './routes/initiatives.grow-a-classroom'
+import { Route as MediaIndexRouteImport } from './routes/media.index'
+import { Route as MediaSlugRouteImport } from './routes/media.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -235,6 +237,16 @@ const InitiativesGrowAClassroomRoute =
     path: '/initiatives/grow-a-classroom',
     getParentRoute: () => rootRouteImport,
   } as any)
+const MediaIndexRoute = MediaIndexRouteImport.update({
+  id: '/media/',
+  path: '/media/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MediaSlugRoute = MediaSlugRouteImport.update({
+  id: '/media/$slug',
+  path: '/media/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -273,7 +285,9 @@ export interface FileRoutesByFullPath {
   '/events/$slug': typeof EventsSlugRoute
   '/initiatives/$slug': typeof InitiativesSlugRoute
   '/initiatives/grow-a-classroom': typeof InitiativesGrowAClassroomRoute
+  '/media/$slug': typeof MediaSlugRoute
   '/events/': typeof EventsIndexRoute
+  '/media/': typeof MediaIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -312,7 +326,9 @@ export interface FileRoutesByTo {
   '/events/$slug': typeof EventsSlugRoute
   '/initiatives/$slug': typeof InitiativesSlugRoute
   '/initiatives/grow-a-classroom': typeof InitiativesGrowAClassroomRoute
+  '/media/$slug': typeof MediaSlugRoute
   '/events': typeof EventsIndexRoute
+  '/media': typeof MediaIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -352,7 +368,9 @@ export interface FileRoutesById {
   '/events/$slug': typeof EventsSlugRoute
   '/initiatives/$slug': typeof InitiativesSlugRoute
   '/initiatives/grow-a-classroom': typeof InitiativesGrowAClassroomRoute
+  '/media/$slug': typeof MediaSlugRoute
   '/events/': typeof EventsIndexRoute
+  '/media/': typeof MediaIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -393,7 +411,9 @@ export interface FileRouteTypes {
     | '/events/$slug'
     | '/initiatives/$slug'
     | '/initiatives/grow-a-classroom'
+    | '/media/$slug'
     | '/events/'
+    | '/media/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -432,7 +452,9 @@ export interface FileRouteTypes {
     | '/events/$slug'
     | '/initiatives/$slug'
     | '/initiatives/grow-a-classroom'
+    | '/media/$slug'
     | '/events'
+    | '/media'
   id:
     | '__root__'
     | '/'
@@ -471,7 +493,9 @@ export interface FileRouteTypes {
     | '/events/$slug'
     | '/initiatives/$slug'
     | '/initiatives/grow-a-classroom'
+    | '/media/$slug'
     | '/events/'
+    | '/media/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -511,7 +535,9 @@ export interface RootRouteChildren {
   EventsSlugRoute: typeof EventsSlugRoute
   InitiativesSlugRoute: typeof InitiativesSlugRoute
   InitiativesGrowAClassroomRoute: typeof InitiativesGrowAClassroomRoute
+  MediaSlugRoute: typeof MediaSlugRoute
   EventsIndexRoute: typeof EventsIndexRoute
+  MediaIndexRoute: typeof MediaIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -775,6 +801,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof InitiativesGrowAClassroomRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/media/': {
+      id: '/media/'
+      path: '/media'
+      fullPath: '/media/'
+      preLoaderRoute: typeof MediaIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/media/$slug': {
+      id: '/media/$slug'
+      path: '/media/$slug'
+      fullPath: '/media/$slug'
+      preLoaderRoute: typeof MediaSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -815,7 +855,9 @@ const rootRouteChildren: RootRouteChildren = {
   EventsSlugRoute: EventsSlugRoute,
   InitiativesSlugRoute: InitiativesSlugRoute,
   InitiativesGrowAClassroomRoute: InitiativesGrowAClassroomRoute,
+  MediaSlugRoute: MediaSlugRoute,
   EventsIndexRoute: EventsIndexRoute,
+  MediaIndexRoute: MediaIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

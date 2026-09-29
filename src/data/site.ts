@@ -614,7 +614,7 @@ export const navMenu: NavMenuEntry[] = [
       // Arbitration: on hold while the page is being finished. Re-add once ready.
       // { label: "Arbitration", href: "/arbitration" },
       { label: "Awards & honours", href: "/awards" },
-      { label: "Media & archive", href: "/#media" },
+      { label: "Media & archive", href: "/media" },
     ],
   },
   {

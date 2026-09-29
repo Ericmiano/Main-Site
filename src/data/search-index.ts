@@ -1,6 +1,7 @@
 import { chapters, events, initiatives, publications } from "@/data/site";
 import { initiativeDetails } from "@/data/initiatives-detail";
 import { reportArchivePages } from "@/data/report-archives";
+import { mediaAlbums } from "@/data/media-archive";
 
 export interface SearchEntry {
   title: string;
@@ -32,6 +33,13 @@ const pages: SearchEntry[] = [
       "AAK's calendar of association-wide events: the Annual Convention, the Nairobi Biennale of Architecture & Art, the Sports & Wellness Day and the Urban Thinkers Campus.",
     category: "Page",
     href: "/events",
+  },
+  {
+    title: "Media archive",
+    description:
+      "Photographs from past AAK events: site visits, Grow A Classroom schools and more, one album per event.",
+    category: "Page",
+    href: "/media",
   },
   {
     title: "Membership",
@@ -136,6 +144,13 @@ const initiativeEntries: SearchEntry[] = initiatives.map((initiative) => ({
     : { href: `/initiatives/${initiative.slug}` }),
 }));
 
+const albumEntries: SearchEntry[] = mediaAlbums.map((album) => ({
+  title: `${album.title} (photos)`,
+  description: [album.category, album.date, album.location].filter(Boolean).join(" · "),
+  category: "Page",
+  href: `/media/${album.slug}`,
+}));
+
 const eventEntries: SearchEntry[] = events.map((event) => ({
   title: event.title,
   description: event.summary,
@@ -178,6 +193,7 @@ export const searchIndex: SearchEntry[] = [
   ...chapterEntries,
   ...initiativeEntries,
   ...eventEntries,
+  ...albumEntries,
   ...publicationEntries,
   ...initiativeDocumentEntries,
   ...reportArchiveEntries,
