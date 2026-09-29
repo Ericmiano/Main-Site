@@ -1,4 +1,4 @@
-import { useEffect, useState, type ComponentType } from "react";
+import { useEffect, useRef, useState, type ComponentType } from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { IconX as X } from "@tabler/icons-react";
 import { infoDocByPath, infoDocs, type InfoDocKey } from "@/components/info/docs";
@@ -15,6 +15,10 @@ export function InfoDialogHost() {
   const [open, setOpen] = useState(false);
   const [key, setKey] = useState<InfoDocKey | null>(null);
   const [Body, setBody] = useState<ComponentType | null>(null);
+  // Set when a link in the pop-up leads elsewhere on the site: the pop-up
+  // closes and the page changes, so focus shouldn't jump back to the link
+  // that opened it (that would scroll the new page to the footer).
+  const leaving = useRef(false);
 
   useEffect(() => {
     const onClick = (event: MouseEvent) => {
@@ -27,7 +31,16 @@ export function InfoDialogHost() {
       const url = new URL(link.href, window.location.href);
       if (url.origin !== window.location.origin) return;
       const next = infoDocByPath(url.pathname);
-      if (!next) return;
+      if (!next) {
+        // Any other page on the site, linked from inside the pop-up (e.g.
+        // "the events page" in an FAQ answer): close it and let the router
+        // navigate, rather than leave it covering the new page.
+        if (link.closest("[data-info-dialog]")) {
+          leaving.current = true;
+          setOpen(false);
+        }
+        return;
+      }
       // Capture phase, so this runs before the router's own link handler,
       // which then sees defaultPrevented and leaves the page alone.
       event.preventDefault();
@@ -56,7 +69,15 @@ export function InfoDialogHost() {
     <DialogPrimitive.Root open={open} onOpenChange={setOpen}>
       <DialogPrimitive.Portal>
         <DialogPrimitive.Overlay className="fixed inset-0 z-[60] bg-foreground/60 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
-        <DialogPrimitive.Content className="fixed top-1/2 left-1/2 z-[60] flex max-h-[88svh] w-[min(48rem,calc(100vw-2rem))] -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-2xl bg-background shadow-2xl outline-none duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95">
+        <DialogPrimitive.Content
+          data-info-dialog
+          onCloseAutoFocus={(event) => {
+            if (!leaving.current) return;
+            leaving.current = false;
+            event.preventDefault();
+          }}
+          className="fixed top-1/2 left-1/2 z-[60] flex max-h-[88svh] w-[min(48rem,calc(100vw-2rem))] -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-2xl bg-background shadow-2xl outline-none duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95"
+        >
           {doc ? (
             <>
               <header className="border-b border-border px-6 pt-6 pb-5 pr-16 sm:px-8 sm:pt-8">
