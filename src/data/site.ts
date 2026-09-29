@@ -423,69 +423,63 @@ export interface MediaItem {
   span: "wide" | "tall" | "regular";
 }
 
+// Photos from the AAK visit to the Nairobi Waldorf School, 24 July 2026:
+// the school's pavilion won Best Africa (Re)presentation at the 2024
+// Awards of Excellence.
 export const media: MediaItem[] = [
   {
-    id: "agora",
-    title: "The Agora: Best Student Project",
-    category: "Awards",
+    id: "waldorf-group",
+    title: "Nairobi Waldorf School visit",
+    category: "Site visit",
     caption:
-      "A civic gathering space organised around a stepped public court. Awarded Best Student Project at the Awards of Excellence.",
-    image: "/img/screenshot-2026-06-08-164835.webp",
-    href: "/documents/THE-AGORA-PROJECT.pdf",
+      "Members and guests beneath the school's timber-pole pavilion on 24 July 2026. The pavilion won Best Africa (Re)presentation at the 2024 Awards of Excellence.",
+    image: "/img/waldorf-visit-2026/group-under-pavilion.webp",
+    href: "/documents/NAIROBI-WALDORF-SCHOOL-PROJECT.pdf",
     hrefLabel: "Read the project brief (PDF)",
     span: "wide",
   },
   {
-    id: "kigandani",
-    title: "Kigandani Industrial Hub",
-    category: "Student project",
+    id: "waldorf-talks",
+    title: "Talks in the school hall",
+    category: "Site visit",
+    caption: "The visit opened with talks in the school's timber-trussed hall.",
+    image: "/img/waldorf-visit-2026/talks-in-the-hall.webp",
+    span: "regular",
+  },
+  {
+    id: "waldorf-pavilion",
+    title: "The award-winning pavilion",
+    category: "Site visit",
     caption:
-      "A light-industrial cluster planned around shared loading yards and a stormwater spine, submitted to the student category.",
-    image: "/img/screenshot-2026-06-08-164317.webp",
-    href: "/documents/KIGANDANI-INDUSTRIAL-HUB-PROJECT.pdf",
+      "The pavilion's roof rests on a forest of timber poles among the site's trees. Winner, Best Africa (Re)presentation, 2024 Awards of Excellence.",
+    image: "/img/waldorf-visit-2026/pavilion-exterior.webp",
+    href: "/documents/NAIROBI-WALDORF-SCHOOL-PROJECT.pdf",
     hrefLabel: "Read the project brief (PDF)",
     span: "regular",
   },
   {
-    id: "ferry",
-    title: "Mombasa Ferry Terminal",
-    category: "Student project",
-    caption:
-      "A terminal proposal handling pedestrian and vehicle ferry traffic on a single tidal frontage, with shaded queuing halls.",
-    image: "/img/screenshot-2026-06-08-163554.webp",
-    href: "/documents/MOMBASA-FERRY-TERMINAL-PROJECT.pdf",
-    hrefLabel: "Read the project brief (PDF)",
+    id: "waldorf-classrooms",
+    title: "Touring the classrooms",
+    category: "Site visit",
+    caption: "Walking the campus between the school's timber classroom buildings.",
+    image: "/img/waldorf-visit-2026/touring-the-classrooms.webp",
     span: "regular",
   },
   {
-    id: "kenyatta-institute",
-    title: "Kenya Advanced Institute of Science and Technology",
-    category: "Institutional",
+    id: "waldorf-classroom-interior",
+    title: "Inside a classroom",
+    category: "Site visit",
     caption:
-      "Laboratory and teaching blocks arranged around a shaded research quadrangle, with servicing routed below the deck.",
-    image: "/img/screenshot-2026-05-06-170210.webp",
-    href: "/documents/KENYA-ADVANCED-INSTITUTE-OF-SCIENCE-OF-TECHNOLOGY-PROJECT.pdf",
-    hrefLabel: "Read the project brief (PDF)",
-    span: "tall",
-  },
-  {
-    id: "build-tour",
-    title: "Build Tour, on site",
-    category: "Events",
-    caption:
-      "Members on a live Nairobi site during the Build Tour, walking the structural frame with the resident engineer.",
-    image: "/img/aak-build-tour-66-1200x800-600x400-1.webp",
+      "A classroom interior: timber walls, a band of clerestory glazing and woven pendant lights.",
+    image: "/img/waldorf-visit-2026/classroom-interior.webp",
     span: "regular",
   },
   {
-    id: "mzizi",
-    title: "Mzizi ECD Centre",
-    category: "Grow A Classroom",
-    caption:
-      "An early-childhood centre built with local artisans under member supervision, part of the Grow A Classroom programme.",
-    image: "/img/screenshot-2026-05-07-091425.webp",
-    href: "/documents/MZIZI-ECD-CENTRE-PROJECT.pdf",
-    hrefLabel: "Read the project brief (PDF)",
+    id: "waldorf-play",
+    title: "Play among the trees",
+    category: "Site visit",
+    caption: "The school's timber play structures, set among the trees.",
+    image: "/img/waldorf-visit-2026/play-area.webp",
     span: "regular",
   },
 ];
@@ -986,7 +980,7 @@ export const awardWinners2024: AwardWinner[] = [
     project: "Nairobi Waldorf School",
     category: "Best Africa (Re)presentation",
     result: "Winner",
-    image: "/img/screenshot-2026-06-08-133208.webp",
+    image: "/img/waldorf-visit-2026/award-pavilion.webp",
     pdfHref: "/documents/NAIROBI-WALDORF-SCHOOL-PROJECT.pdf",
   },
   {
