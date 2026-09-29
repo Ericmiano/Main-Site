@@ -25,13 +25,21 @@ export interface MediaAlbum {
   date?: string;
   /** For sorting (newest first); undated albums go last. */
   isoDate?: string;
-  location: string;
+  /** Venue or place; omit when it isn't confirmed. */
+  location?: string;
   summary: string;
   cover: MediaPhoto;
   photos: MediaPhoto[];
   video?: { src: string; title: string };
   links?: { label: string; href: string }[];
 }
+
+/** An album's photos from public/media/<dir>/NN.webp (+ thumbs/), in order. */
+const photosIn = (dir: string, alts: string[]): MediaPhoto[] =>
+  alts.map((alt, i) => {
+    const n = String(i + 1).padStart(2, "0");
+    return { src: `/media/${dir}/${n}.webp`, thumb: `/media/${dir}/thumbs/${n}.webp`, alt };
+  });
 
 const waldorfDir = "/media/waldorf-visit-2026";
 const waldorfPhotos: MediaPhoto[] = [
@@ -90,6 +98,128 @@ const waldorfVisit: MediaAlbum = {
   ],
 };
 
+// Workshops. Titles, dates and venues are taken from the event photos'
+// folders, slides and signage.
+const toolkitPhotos = photosIn("architects-toolkit-2026", [
+  "A speaker opens the session at the podium, in front of the AAK banner",
+  "A speaker at the podium",
+  "A speaker addresses the room from the podium",
+  "Participants listening at their tables",
+  "Participants follow the discussion",
+  "A participant listens during the talks",
+  "A speaker takes the microphone beside the podium",
+  "A speaker at the podium in front of the AAK banner",
+  "A speaker presents from the podium",
+  "A participant listens from her table",
+  "A participant takes notes",
+  "A question from the floor",
+  "A participant speaks from his table",
+  "A participant makes a point during the discussion",
+  "A question from the floor",
+  "A participant asks a question",
+  "A participant responds from the floor",
+  "Speakers and participants gather for a group photo",
+  "A group photo in front of the event slide, “The Architect’s Toolkit”",
+]);
+
+const architectsToolkit: MediaAlbum = {
+  slug: "architects-toolkit-2026",
+  title: "The Architect’s Toolkit",
+  category: "Workshop",
+  date: "5 August 2026",
+  isoDate: "2026-08-05",
+  summary:
+    "A hybrid event by the AAK Architects Chapter, “The Architect’s Toolkit: Navigating Economic Challenges & Regulatory Hurdles in Kenya”: talks from the podium, questions from the floor and a group photo to close.",
+  cover: toolkitPhotos[toolkitPhotos.length - 1]!,
+  photos: toolkitPhotos,
+  links: [{ label: "The Architects Chapter", href: "/chapters/architects" }],
+};
+
+const kickoffPhotos = photosIn("finance-accelerator-kickoff-2026", [
+  "Signing in at the registration desk",
+  "The GBPN banner at the venue entrance, beside an AAK banner",
+  "The room ahead of the opening, with the workshop title on screen",
+  "A speaker opens the workshop in front of the Kenya Buildings Decarbonization Financing Accelerator banner",
+  "Participants at round tables during the opening session",
+  "A speaker presents in front of the Kenya Decarbonization Finance Accelerator slide",
+  "A presentation to the full room",
+  "Participants follow a presentation",
+  "A presentation on green building standards and certification as a finance enabler",
+  "A speaker presents from the podium",
+  "Participants in discussion at their tables",
+  "A presenter at the podium beside the GBPN slide",
+  "A question from the floor",
+  "The room during an afternoon session",
+  "A speaker presents a slide on building a financing ecosystem",
+  "A participant makes a point during the discussion",
+  "A speaker presents from the podium",
+  "A group working session at a round table",
+  "Participants work through an exercise in small groups",
+  "Group work, with a countdown timer on the screen",
+  "The AAK banner at the refreshment area",
+  "A speaker takes questions from the podium",
+  "A speaker addresses the room",
+  "A presentation of a gift at the close",
+  "Workshop participants gather in the hotel garden for a group photo",
+  "A seated group photo in the garden",
+  "Participants gather for a group photo at the end of the day",
+]);
+
+const financeAcceleratorKickoff: MediaAlbum = {
+  slug: "finance-accelerator-kickoff-2026",
+  title: "Finance Accelerator coalition kick-off",
+  category: "Workshop",
+  date: "7 August 2026",
+  isoDate: "2026-08-07",
+  location: "Fairview Hotel, Nairobi",
+  summary:
+    "The coalition kick-off workshop of the Kenya Decarbonization Finance Accelerator, with the Global Buildings Performance Network (GBPN) and the State Department for Public Works: presentations, questions from the floor and group work, with AAK among the partners.",
+  cover: kickoffPhotos[kickoffPhotos.length - 3]!,
+  photos: kickoffPhotos,
+};
+
+const kgbsPhotos = photosIn("kgbs-finance-accelerator-2026", [
+  "The event sign at the Novotel: Kenya Green Building Society (KGBS) x Global Buildings Performance Network (GBPN)",
+  "A Kenya Green Building Society banner at the venue",
+  "Participants at their tables",
+  "Participants settle in at their tables",
+  "A speaker opens the session beside the Kenya Green Building Society banner",
+  "A presentation to the room",
+  "A speaker presents from the podium",
+  "A discussion at the front of the room",
+  "A speaker makes a point during her presentation",
+  "A speaker presents at the podium",
+  "A speaker in front of the Kenya Buildings Decarbonization Financing Accelerator banner",
+  "The room during a presentation",
+  "A speaker addresses the room from the front",
+  "Participants at round tables",
+  "A participant takes notes",
+  "A discussion at the tables",
+  "A question from the floor",
+  "A participant speaks during the discussion",
+  "Participants work together at a laptop",
+  "A participant makes a point",
+  "A participant speaks from his table",
+  "A speaker presents in front of the GBPN banner",
+  "Workshop participants gather in the garden for a group photo",
+  "A conversation in the garden during the break",
+  "Participants talk in the garden",
+  "A small group photo in the garden",
+]);
+
+const kgbsFinanceAccelerator: MediaAlbum = {
+  slug: "kgbs-finance-accelerator-2026",
+  title: "KGBS partner workshop on the Finance Accelerator",
+  category: "Workshop",
+  date: "21 August 2026",
+  isoDate: "2026-08-21",
+  location: "Novotel, Nairobi",
+  summary:
+    "The Kenya Green Building Society’s second partner workshop on the Finance Accelerator Programme, held with the Global Buildings Performance Network (GBPN): presentations, discussion and group work.",
+  cover: kgbsPhotos[kgbsPhotos.length - 4]!,
+  photos: kgbsPhotos,
+};
+
 const MONTHS = [
   "January",
   "February",
@@ -137,7 +267,13 @@ const gacAlbums: MediaAlbum[] = gacSchools.map((school) => {
 });
 
 /** Newest first; undated albums after dated ones, in source order. */
-export const mediaAlbums: MediaAlbum[] = [waldorfVisit, ...gacAlbums]
+export const mediaAlbums: MediaAlbum[] = [
+  waldorfVisit,
+  architectsToolkit,
+  financeAcceleratorKickoff,
+  kgbsFinanceAccelerator,
+  ...gacAlbums,
+]
   .map((album, i) => ({ album, i }))
   .sort((a, b) => {
     const x = a.album.isoDate,

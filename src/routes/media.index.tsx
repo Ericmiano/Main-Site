@@ -25,7 +25,7 @@ const countFor = (category: string) =>
 const SITE_URL = "https://aak.or.ke";
 const TITLE = "Media archive | Architectural Association of Kenya";
 const DESCRIPTION =
-  "Photographs from past AAK events: site visits, Grow A Classroom schools and more, one album per event.";
+  "Photographs from past AAK events: site visits, workshops, Grow A Classroom schools and more, one album per event.";
 
 export const Route = createFileRoute("/media/")({
   head: () => ({
@@ -202,10 +202,12 @@ function MediaIndex() {
                               <time dateTime={album.isoDate}>{album.date}</time>
                             </span>
                           ) : null}
-                          <span className="flex items-center gap-2">
-                            <MapPin className="h-4 w-4 text-primary" aria-hidden="true" />
-                            {album.location}
-                          </span>
+                          {album.location ? (
+                            <span className="flex items-center gap-2">
+                              <MapPin className="h-4 w-4 text-primary" aria-hidden="true" />
+                              {album.location}
+                            </span>
+                          ) : null}
                         </div>
                         <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-foreground">
                           View album

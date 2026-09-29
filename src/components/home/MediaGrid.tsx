@@ -92,7 +92,8 @@ export function MediaGrid() {
 
         <div className="mt-12 flex flex-col gap-4 border-t border-background/15 pt-8 sm:flex-row sm:items-center sm:justify-between">
           <p className="max-w-xl text-sm leading-relaxed text-background/70">
-            Full albums from past events, from site visits to Grow A Classroom schools.
+            Full albums from past events, from site visits and workshops to Grow A Classroom
+            schools.
           </p>
           <Link to="/media" className="group btn-primary self-start sm:self-auto">
             See the full media archive

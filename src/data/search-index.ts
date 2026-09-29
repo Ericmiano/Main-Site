@@ -37,7 +37,7 @@ const pages: SearchEntry[] = [
   {
     title: "Media archive",
     description:
-      "Photographs from past AAK events: site visits, Grow A Classroom schools and more, one album per event.",
+      "Photographs from past AAK events: site visits, workshops, Grow A Classroom schools and more, one album per event.",
     category: "Page",
     href: "/media",
   },

@@ -70,7 +70,7 @@ function structuredData(album: MediaAlbum) {
         name: album.title,
         description: album.summary,
         ...(album.isoDate ? { dateCreated: album.isoDate } : {}),
-        contentLocation: { "@type": "Place", name: album.location },
+        ...(album.location ? { contentLocation: { "@type": "Place", name: album.location } } : {}),
         image: album.photos.map((photo) => `${SITE_URL}${photo.src}`),
         publisher: { "@id": `${SITE_URL}/#organization` },
       },
@@ -120,10 +120,12 @@ function AlbumPage() {
                     <time dateTime={album.isoDate}>{album.date}</time>
                   </span>
                 ) : null}
-                <span className="flex items-center gap-2">
-                  <MapPin className="h-4 w-4 text-primary" aria-hidden="true" />
-                  {album.location}
-                </span>
+                {album.location ? (
+                  <span className="flex items-center gap-2">
+                    <MapPin className="h-4 w-4 text-primary" aria-hidden="true" />
+                    {album.location}
+                  </span>
+                ) : null}
               </div>
               <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground">
                 {album.summary}
