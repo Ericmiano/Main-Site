@@ -521,6 +521,11 @@
 .group:hover .marquee-slow {
   animation-play-state: paused;
 }
+/* Keyboard users on a partner link: hold the strip still too. */
+.group:focus-within .marquee,
+.group:focus-within .marquee-slow {
+  animation-play-state: paused;
+}
 
 @media (prefers-reduced-motion: reduce) {
   html {

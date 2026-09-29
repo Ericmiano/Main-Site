@@ -490,15 +490,33 @@ export const media: MediaItem[] = [
 export interface Partner {
   name: string;
   abbreviation: string;
+  /** The organisation's official website. */
+  href: string;
 }
 
 export const partners: Partner[] = [
-  { name: "Africa Union of Architects", abbreviation: "AUA" },
-  { name: "East Africa Institute of Architects", abbreviation: "EAIA" },
-  { name: "Engineers Board of Kenya", abbreviation: "EBK" },
-  { name: "International Federation of Landscape Architects", abbreviation: "IFLA" },
-  { name: "International Society of City and Regional Planners", abbreviation: "ISOCARP" },
-  { name: "International Union of Architects", abbreviation: "UIA" },
+  { name: "Africa Union of Architects", abbreviation: "AUA", href: "https://www.aua.archi/" },
+  {
+    name: "East Africa Institute of Architects",
+    abbreviation: "EAIA",
+    href: "https://eai-architects.org/",
+  },
+  { name: "Engineers Board of Kenya", abbreviation: "EBK", href: "https://ebk.go.ke/" },
+  {
+    name: "International Federation of Landscape Architects",
+    abbreviation: "IFLA",
+    href: "https://www.iflaworld.com/",
+  },
+  {
+    name: "International Society of City and Regional Planners",
+    abbreviation: "ISOCARP",
+    href: "https://isocarp.org/",
+  },
+  {
+    name: "International Union of Architects",
+    abbreviation: "UIA",
+    href: "https://www.uia-architectes.org/en/",
+  },
 ];
 
 export interface Publication {

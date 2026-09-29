@@ -60,6 +60,24 @@ export function Partners() {
     };
     el.addEventListener("pointerenter", onEnter);
     el.addEventListener("pointerleave", onLeave);
+    // Hold still while a keyboard user is on one of the links.
+    const onFocusIn = () => {
+      speed?.kill();
+      speed = gsap.timeline().to(loop, { timeScale: 0, duration: 0.4 });
+    };
+    const onFocusOut = () => surge(1, 1, 0.8);
+    el.addEventListener("focusin", onFocusIn);
+    el.addEventListener("focusout", onFocusOut);
+    // A drag ends in a click on whatever link is under the pointer; swallow
+    // it so dragging the strip never opens a partner's site by accident.
+    let dragged = false;
+    const onClick = (event: MouseEvent) => {
+      if (!dragged) return;
+      dragged = false;
+      event.preventDefault();
+      event.stopPropagation();
+    };
+    el.addEventListener("click", onClick, true);
 
     // One copy of the partner list is half the track: dragging that far
     // moves the loop through one full cycle.
@@ -69,7 +87,13 @@ export function Partners() {
       type: "touch,pointer",
       lockAxis: true,
       dragMinimum: 3,
-      onPress: () => speed?.kill(),
+      onPress: () => {
+        dragged = false;
+        speed?.kill();
+      },
+      onDragStart: () => {
+        dragged = true;
+      },
       onChangeX: (self) => {
         const cycle = list.scrollWidth / 2;
         loop.progress(wrap(loop.progress() - self.deltaX / cycle));
@@ -87,6 +111,9 @@ export function Partners() {
       drag.kill();
       el.removeEventListener("pointerenter", onEnter);
       el.removeEventListener("pointerleave", onLeave);
+      el.removeEventListener("focusin", onFocusIn);
+      el.removeEventListener("focusout", onFocusOut);
+      el.removeEventListener("click", onClick, true);
       list.style.animation = "";
     };
   });
@@ -107,18 +134,33 @@ export function Partners() {
         className="group relative mt-8 cursor-grab touch-pan-y overflow-hidden select-none active:cursor-grabbing [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]"
       >
         <ul className="marquee flex w-max items-center gap-16">
-          {track.map((partner, i) => (
-            <li
-              key={`${partner.abbreviation}-${i}`}
-              className="flex shrink-0 items-center gap-2.5 text-muted-foreground"
-              aria-hidden={i >= partners.length ? "true" : undefined}
-            >
-              <span className="font-display text-lg font-bold tracking-tight text-foreground/70">
-                {partner.abbreviation}
-              </span>
-              <span className="hidden text-sm sm:inline">{partner.name}</span>
-            </li>
-          ))}
+          {track.map((partner, i) => {
+            // The second copy only exists to make the loop seamless: hidden
+            // from screen readers and skipped by the keyboard.
+            const copy = i >= partners.length;
+            return (
+              <li
+                key={`${partner.abbreviation}-${i}`}
+                className="shrink-0"
+                aria-hidden={copy ? "true" : undefined}
+              >
+                <a
+                  href={partner.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  draggable={false}
+                  tabIndex={copy ? -1 : undefined}
+                  aria-label={`${partner.name} (opens in a new tab)`}
+                  className="group/partner flex cursor-pointer items-center gap-2.5 text-muted-foreground transition-colors hover:text-foreground focus-visible:text-foreground"
+                >
+                  <span className="font-display text-lg font-bold tracking-tight text-foreground/70 transition-colors group-hover/partner:text-primary group-focus-visible/partner:text-primary">
+                    {partner.abbreviation}
+                  </span>
+                  <span className="hidden text-sm sm:inline">{partner.name}</span>
+                </a>
+              </li>
+            );
+          })}
         </ul>
       </div>
     </section>
