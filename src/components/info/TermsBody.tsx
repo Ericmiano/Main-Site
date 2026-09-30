@@ -51,9 +51,9 @@ export default function TermsBody() {
 
       <h2>Store orders</h2>
       <p>
-        Items in the <Link to="/store">store</Link> are ordered by messaging the secretariat on
-        WhatsApp. Prices shown on the website are a guide; the final price, availability, payment
-        and collection or delivery are confirmed with you directly when you order.
+        Items in the <Link to="/store">store</Link> are ordered by calling the secretariat. shown on
+        the website are a guide; the final price, availability, payment and collection or delivery
+        are confirmed with you directly when you order.
       </p>
 
       <h2>Donations</h2>

@@ -156,9 +156,9 @@ const groups: { title: string; items: { q: string; a: ReactNode }[] }[] = [
         q: "How do I order from the AAK store?",
         a: (
           <p>
-            Choose an item on the <Link to="/store">store page</Link> and use its WhatsApp link to
-            message the secretariat on 0721 691 337. Availability, the final price and payment are
-            confirmed with you there.
+            Choose an item on the <Link to="/store">store page</Link> and call or message the
+            secretariat on 0721 691 337, 020 242 0808 or 020 242 0586. Availability, the final price
+            and payment are confirmed with you there.
           </p>
         ),
       },

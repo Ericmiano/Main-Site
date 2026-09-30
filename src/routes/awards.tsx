@@ -272,7 +272,7 @@ function AwardsPage() {
           className="border-t border-border bg-secondary/40 py-16 lg:py-24"
         >
           <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
-            <SectionHeading eyebrow="Panel" title={<span id="jury-title">Jury members</span>} />
+            <SectionHeading eyebrow="Panel" title={<span id="jury-title">Jury members </span>} />
             <ul data-stagger className="mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {jury.map((member, i) => (
                 <li key={member.name}>
