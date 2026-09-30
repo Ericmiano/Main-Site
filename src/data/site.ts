@@ -760,6 +760,11 @@ export const secretariat: SecretariatMember[] = [
     photo: "/secretariat-photos/sheila-okongo.jpg",
   },
   {
+    name: "John Gitari",
+    title: "Finance Manager",
+    photo: "/secretariat-photos/john-gitari.jpg",
+  },
+  {
     name: "John Githui",
     title: "Finance Officer",
     photo: "/secretariat-photos/john-githui.jpg",
@@ -785,9 +790,24 @@ export const secretariat: SecretariatMember[] = [
     photo: "/secretariat-photos/boyani-momanyi.jpg",
   },
   {
+    name: "Fiona Apanga",
+    title: "Office Administrator",
+    photo: "/secretariat-photos/fiona-apanga.jpg",
+  },
+  {
     name: "Erick Omollo",
     title: "Office Assistant",
     photo: "/secretariat-photos/erick-omollo.jpg",
+  },
+  {
+    name: "Eric Miano",
+    title: "IT Intern",
+    photo: "/secretariat-photos/eric-miano.jpg",
+  },
+  {
+    name: "Evelyne Odette",
+    title: "Intern",
+    photo: "/secretariat-photos/evelyne-odette.jpg",
   },
 ];
 
