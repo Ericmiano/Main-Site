@@ -770,6 +770,10 @@ export const secretariat: SecretariatMember[] = [
     photo: "/secretariat-photos/alex-otieno.jpg",
   },
   {
+    name: "Catherine Kiruku",
+    title: "Business Development Manager",
+  },
+  {
     name: "Rodah Boyani",
     title: "Membership Services & Communication Ag. Manager",
     photo: "/secretariat-photos/rodah-boyani.jpg",
@@ -785,12 +789,8 @@ export const secretariat: SecretariatMember[] = [
     photo: "/secretariat-photos/evelyne-odette.jpg",
   },
   {
-    name: "John Mugo",
-    title: "Finance & Admin Manager",
-  },
-  {
     name: "John Gitari",
-    title: "Finance Manager",
+    title: "Finance & Admin Manager",
     photo: "/secretariat-photos/john-gitari.jpg",
   },
   {

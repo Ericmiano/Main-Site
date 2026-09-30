@@ -86,36 +86,41 @@ function structuredData() {
 
 const FELLOWS_PAGE_SIZE = 15;
 
+/** Portrait cards: a head-and-shoulders photo (public/secretariat-photos,
+ * 4:5, face centred) above the name and role. Two across on phones. */
 function PeopleGrid({ people }: { people: typeof secretariat }) {
   return (
-    <ul className="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-      {people.map((member, i) => (
+    <ul data-stagger className="mt-14 grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4">
+      {people.map((member) => (
         <li key={member.name}>
-          <Reveal delay={(i % 4) * 60} className="h-full">
-            <div className="flex h-full flex-col items-start gap-4 rounded-2xl border border-border bg-background p-6">
-              {member.photo ? (
-                <img
-                  src={member.photo}
-                  alt=""
-                  loading="lazy"
-                  className="h-14 w-14 shrink-0 rounded-xl object-cover"
-                />
-              ) : (
-                <span
-                  aria-hidden="true"
-                  className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-primary font-display text-lg font-semibold text-primary-foreground"
-                >
-                  {initials(member.name)}
-                </span>
-              )}
-              <div>
-                <h3 className="font-display text-base font-semibold leading-snug text-foreground">
-                  {member.name}
-                </h3>
-                <p className="mt-1 text-sm text-muted-foreground">{member.title}</p>
-              </div>
+          <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-background">
+            {member.photo ? (
+              <img
+                src={member.photo}
+                alt=""
+                loading="lazy"
+                decoding="async"
+                width={600}
+                height={750}
+                className="aspect-4/5 w-full bg-secondary object-cover"
+              />
+            ) : (
+              <span
+                aria-hidden="true"
+                className="flex aspect-4/5 w-full items-center justify-center bg-primary font-display text-4xl font-semibold text-primary-foreground sm:text-5xl"
+              >
+                {initials(member.name)}
+              </span>
+            )}
+            <div className="flex-1 p-4 sm:p-5">
+              <h3 className="font-display text-sm font-semibold leading-snug text-foreground sm:text-base">
+                {member.name}
+              </h3>
+              <p className="mt-1 text-xs leading-snug text-muted-foreground sm:text-sm">
+                {member.title}
+              </p>
             </div>
-          </Reveal>
+          </div>
         </li>
       ))}
     </ul>
