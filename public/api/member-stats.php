@@ -11,7 +11,18 @@
  *   <?php return ['url' => 'https://members.aak.or.ke/...', 'token' => '...'];
  */
 
+// Never print PHP warnings into the response: they can reveal server paths.
+ini_set('display_errors', '0');
+
 header('Content-Type: application/json');
+header('X-Content-Type-Options: nosniff');
+
+if (!in_array($_SERVER['REQUEST_METHOD'] ?? 'GET', ['GET', 'HEAD'], true)) {
+    header('Allow: GET, HEAD');
+    http_response_code(405);
+    echo json_encode(['available' => false]);
+    exit;
+}
 
 const CACHE_SECONDS = 300;
 
@@ -48,8 +59,14 @@ $feedUrl = $config['url'] ?? null;
 $token = $config['token'] ?? null;
 
 if ($feedUrl) {
-    $cacheFile = sys_get_temp_dir() . '/aak-member-stats-' . md5($feedUrl) . '.json';
+    // Cache beside the private config, outside public_html. The shared temp
+    // folder on shared hosting can be writable by other accounts, which could
+    // plant fake figures; anything read back is re-validated regardless.
+    $cacheFile = dirname($configFile) . '/.aak-member-stats-cache.json';
     $cached = is_file($cacheFile) ? json_decode((string) file_get_contents($cacheFile), true) : null;
+    if (!valid($cached)) {
+        $cached = null;
+    }
 
     if ($cached && time() - filemtime($cacheFile) < CACHE_SECONDS) {
         respond(200, ['available' => true, 'source' => 'live'] + $cached, 60);

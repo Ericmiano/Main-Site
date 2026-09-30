@@ -11,6 +11,7 @@ import { SectionHeading } from "@/components/site/SectionHeading";
 import { PageBreadcrumb } from "@/components/site/PageBreadcrumb";
 import { InitiativeLink } from "@/components/site/InitiativeLink";
 import { initiatives } from "@/data/site";
+import { jsonLd } from "@/lib/json-ld";
 
 const SITE_URL = "https://aak.or.ke";
 const TITLE = "Corporate Social Responsibility | Architectural Association of Kenya";
@@ -82,7 +83,7 @@ function CsrPage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData()) }}
+        dangerouslySetInnerHTML={{ __html: jsonLd(structuredData()) }}
       />
       <Header />
       <main>

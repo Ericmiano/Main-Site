@@ -29,6 +29,7 @@ import {
   type GacSchool,
 } from "@/data/grow-a-classroom";
 import { cn } from "@/lib/utils";
+import { jsonLd } from "@/lib/json-ld";
 
 const SITE_URL = "https://aak.or.ke";
 const TITLE = "Grow A Classroom | Architectural Association of Kenya";
@@ -241,7 +242,7 @@ function GrowAClassroom() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
+          __html: jsonLd({
             "@context": "https://schema.org",
             "@graph": [
               {

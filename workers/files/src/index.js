@@ -34,6 +34,9 @@ export default {
     headers.set("cache-control", CACHE);
     headers.set("accept-ranges", "bytes");
     headers.set("access-control-allow-origin", "*");
+    // Browsers must treat each file as its stored type, never sniff it into
+    // something else (e.g. a PDF or clip rendered as HTML).
+    headers.set("x-content-type-options", "nosniff");
 
     // Precondition matched (If-None-Match etc.): no body came back.
     if (!("body" in object)) return new Response(null, { status: 304, headers });

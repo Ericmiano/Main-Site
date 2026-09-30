@@ -15,6 +15,7 @@ import { Lightbox } from "@/components/site/Lightbox";
 import { thumbnailFor } from "@/lib/thumbnail";
 import { PageBreadcrumb } from "@/components/site/PageBreadcrumb";
 import { getMediaAlbum, mediaAlbums, type MediaAlbum } from "@/data/media-archive";
+import { jsonLd } from "@/lib/json-ld";
 
 const SITE_URL = "https://aak.or.ke";
 
@@ -94,7 +95,7 @@ function AlbumPage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData(album)) }}
+        dangerouslySetInnerHTML={{ __html: jsonLd(structuredData(album)) }}
       />
       <Header />
       <main>

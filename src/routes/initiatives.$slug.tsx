@@ -11,6 +11,7 @@ import {
   type InitiativeGalleryImage,
   type InitiativeVideo,
 } from "@/data/initiatives-detail";
+import { jsonLd } from "@/lib/json-ld";
 
 function VideoEmbed({ video, className }: { video: InitiativeVideo; className?: string }) {
   if (video.kind === "file") {
@@ -85,7 +86,7 @@ function InitiativeDetail() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
+          __html: jsonLd({
             "@context": "https://schema.org",
             "@graph": [
               {

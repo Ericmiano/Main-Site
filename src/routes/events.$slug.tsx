@@ -12,6 +12,7 @@ import { Countdown } from "@/components/site/Countdown";
 import { AddToCalendar } from "@/components/site/AddToCalendar";
 import { PageBreadcrumb } from "@/components/site/PageBreadcrumb";
 import { getEvent, getEventDisplayStatus, type SiteEvent } from "@/data/site";
+import { jsonLd } from "@/lib/json-ld";
 
 const SITE_URL = "https://aak.or.ke";
 
@@ -127,7 +128,7 @@ function EventDetail() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData(event)) }}
+        dangerouslySetInnerHTML={{ __html: jsonLd(structuredData(event)) }}
       />
       <Header />
       <main>

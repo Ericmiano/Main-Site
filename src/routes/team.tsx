@@ -9,6 +9,7 @@ import { SectionHeading } from "@/components/site/SectionHeading";
 import { PageBreadcrumb } from "@/components/site/PageBreadcrumb";
 import { chapterBranches, chapterCouncils, type CouncilRole } from "@/data/chapter-councils";
 import { chapterChairs, chapters, collegeOfFellows, secretariat } from "@/data/site";
+import { jsonLd } from "@/lib/json-ld";
 
 const SITE_URL = "https://aak.or.ke";
 const TITLE = "AAK Leadership | Architectural Association of Kenya";
@@ -152,7 +153,7 @@ function TeamPage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData()) }}
+        dangerouslySetInnerHTML={{ __html: jsonLd(structuredData()) }}
       />
       <Header />
       <main>

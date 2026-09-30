@@ -7,6 +7,7 @@ import { Reveal } from "@/components/site/Reveal";
 import { PageBreadcrumb } from "@/components/site/PageBreadcrumb";
 import { getChapter } from "@/data/site";
 import { chapterCouncils, chapterBranches } from "@/data/chapter-councils";
+import { jsonLd } from "@/lib/json-ld";
 
 const SITE_URL = "https://aak.or.ke";
 
@@ -50,7 +51,7 @@ function ChapterDetail() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
+          __html: jsonLd({
             "@context": "https://schema.org",
             "@graph": [
               {

@@ -6,6 +6,7 @@ import { Footer } from "@/components/site/Footer";
 import { Reveal } from "@/components/site/Reveal";
 import { PageBreadcrumb } from "@/components/site/PageBreadcrumb";
 import { publications } from "@/data/site";
+import { jsonLd } from "@/lib/json-ld";
 
 const SITE_URL = "https://aak.or.ke";
 const TITLE = "Resource Centre | Architectural Association of Kenya";
@@ -124,7 +125,7 @@ function ResourcesPage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData()) }}
+        dangerouslySetInnerHTML={{ __html: jsonLd(structuredData()) }}
       />
       <Header />
       <main>

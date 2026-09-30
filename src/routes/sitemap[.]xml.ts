@@ -1,10 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { chapters, events } from "@/data/site";
+import { chapters, events, initiatives } from "@/data/site";
 import { mediaAlbums } from "@/data/media-archive";
 import { initiativeDetails } from "@/data/initiatives-detail";
 import { LEGAL_PAGES_APPROVED } from "@/components/site/InfoPage";
 
 const SITE_URL = "https://aak.or.ke";
+
+/** Link-out events that still have a page here, because the site links to it. */
+const EVENT_PAGES_LINKED_HERE = new Set(["nairobi-biennale-2026"]);
 
 interface SitemapUrl {
   loc: string;
@@ -49,11 +52,15 @@ function buildUrls(): SitemapUrl[] {
           priority: "0.3",
         }))
       : []),
-    ...events.map((event): SitemapUrl => ({
-      loc: `${SITE_URL}/events/${event.slug}`,
-      changefreq: "weekly",
-      priority: "0.7",
-    })),
+    // Events that link out to their own website have no page in the static
+    // export unless something here links to them (the Biennale section does).
+    ...events
+      .filter((event) => !event.externalSiteHref || EVENT_PAGES_LINKED_HERE.has(event.slug))
+      .map((event): SitemapUrl => ({
+        loc: `${SITE_URL}/events/${event.slug}`,
+        changefreq: "weekly",
+        priority: "0.7",
+      })),
     ...mediaAlbums.map((album): SitemapUrl => ({
       loc: `${SITE_URL}/media/${album.slug}`,
       changefreq: "yearly",
@@ -66,11 +73,18 @@ function buildUrls(): SitemapUrl[] {
       changefreq: "monthly",
       priority: "0.6",
     })),
-    ...initiativeDetails.map((initiative): SitemapUrl => ({
-      loc: `${SITE_URL}/initiatives/${initiative.slug}`,
-      changefreq: "monthly",
-      priority: "0.6",
-    })),
+    // Likewise initiatives whose cards open another website (Safari Green
+    // Building Index); Grow A Classroom has a page of its own here.
+    ...initiativeDetails
+      .filter((detail) => {
+        const card = initiatives.find((i) => i.slug === detail.slug);
+        return !card?.externalUrl || detail.slug === "grow-a-classroom";
+      })
+      .map((initiative): SitemapUrl => ({
+        loc: `${SITE_URL}/initiatives/${initiative.slug}`,
+        changefreq: "monthly",
+        priority: "0.6",
+      })),
   ];
 }
 

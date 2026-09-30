@@ -151,11 +151,14 @@ const albumEntries: SearchEntry[] = mediaAlbums.map((album) => ({
   href: `/media/${album.slug}`,
 }));
 
+// Events with their own website open it, as their cards on /events do.
 const eventEntries: SearchEntry[] = events.map((event) => ({
   title: event.title,
   description: event.summary,
   category: "Event",
-  href: `/events/${event.slug}`,
+  ...(event.externalSiteHref
+    ? { href: event.externalSiteHref, external: true }
+    : { href: `/events/${event.slug}` }),
 }));
 
 const publicationEntries: SearchEntry[] = publications.map((doc) => ({

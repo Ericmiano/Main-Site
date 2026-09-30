@@ -8,6 +8,7 @@ import { SectionHeading } from "@/components/site/SectionHeading";
 import { CountUp } from "@/components/site/CountUp";
 import { PageBreadcrumb } from "@/components/site/PageBreadcrumb";
 import { chapters, regionalBranches } from "@/data/site";
+import { jsonLd } from "@/lib/json-ld";
 
 const SITE_URL = "https://aak.or.ke";
 const TITLE = "About Us | Architectural Association of Kenya";
@@ -98,7 +99,7 @@ function AboutPage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData()) }}
+        dangerouslySetInnerHTML={{ __html: jsonLd(structuredData()) }}
       />
       <Header />
       <main>

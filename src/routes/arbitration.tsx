@@ -9,6 +9,7 @@ import { PageBreadcrumb } from "@/components/site/PageBreadcrumb";
 import { arbitrationSteps } from "@/data/site";
 import { arbitrators } from "@/data/arbitrators";
 import { ArbitratorDirectory } from "@/components/site/ArbitratorDirectory";
+import { jsonLd } from "@/lib/json-ld";
 
 const SITE_URL = "https://aak.or.ke";
 const TITLE = "Arbitration | Architectural Association of Kenya";
@@ -86,7 +87,7 @@ function ArbitrationPage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData()) }}
+        dangerouslySetInnerHTML={{ __html: jsonLd(structuredData()) }}
       />
       <Header />
       <main>

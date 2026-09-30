@@ -7,6 +7,7 @@ import { Reveal } from "@/components/site/Reveal";
 import { SectionHeading } from "@/components/site/SectionHeading";
 import { PageBreadcrumb } from "@/components/site/PageBreadcrumb";
 import { awardCategories as categories, awardWinners2024 as winners2024 } from "@/data/site";
+import { jsonLd } from "@/lib/json-ld";
 
 // Winners, then runners-up, then honourable mentions, keeping the source
 // order within each result.
@@ -110,7 +111,7 @@ function AwardsPage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData()) }}
+        dangerouslySetInnerHTML={{ __html: jsonLd(structuredData()) }}
       />
       <Header />
       <main>

@@ -14,6 +14,7 @@ import { PageBreadcrumb } from "@/components/site/PageBreadcrumb";
 import { cn } from "@/lib/utils";
 import { fileUrl } from "@/lib/files";
 import { getEventDisplayStatus, getSortedEvents, type SiteEvent } from "@/data/site";
+import { jsonLd } from "@/lib/json-ld";
 
 const SITE_URL = "https://aak.or.ke";
 const TITLE = "Events | Architectural Association of Kenya";
@@ -77,7 +78,7 @@ function EventsIndex() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData(events)) }}
+        dangerouslySetInnerHTML={{ __html: jsonLd(structuredData(events)) }}
       />
       <Header />
       <main>

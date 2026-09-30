@@ -17,6 +17,7 @@ import { SectionIndicator } from "@/components/home/SectionIndicator";
 import { FeaturedFirm } from "@/components/home/FeaturedFirm";
 import { MemberStats } from "@/components/site/MemberStats";
 import { getSortedEvents } from "@/data/site";
+import { jsonLd } from "@/lib/json-ld";
 
 const SITE_URL = "https://aak.or.ke";
 const TITLE = "AAK | Architectural Association of Kenya";
@@ -85,7 +86,7 @@ function Index() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData()) }}
+        dangerouslySetInnerHTML={{ __html: jsonLd(structuredData()) }}
       />
       <Header />
       <main>
