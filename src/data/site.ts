@@ -772,6 +772,7 @@ export const secretariat: SecretariatMember[] = [
   {
     name: "Catherine Kiruku",
     title: "Business Development Manager",
+    photo: "/secretariat-photos/catherine-kiruku.jpg",
   },
   {
     name: "Rodah Boyani",
