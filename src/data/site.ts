@@ -755,21 +755,6 @@ export const secretariat: SecretariatMember[] = [
     photo: "/secretariat-photos/nashon-tambo.jpg",
   },
   {
-    name: "Sheila Okongo",
-    title: "Membership Officer",
-    photo: "/secretariat-photos/sheila-okongo.jpg",
-  },
-  {
-    name: "John Gitari",
-    title: "Finance Manager",
-    photo: "/secretariat-photos/john-gitari.jpg",
-  },
-  {
-    name: "John Githui",
-    title: "Finance Officer",
-    photo: "/secretariat-photos/john-githui.jpg",
-  },
-  {
     name: "Michelle Ouma",
     title: "Research and Advocacy Manager",
     photo: "/secretariat-photos/michelle-ouma.jpg",
@@ -785,9 +770,33 @@ export const secretariat: SecretariatMember[] = [
     photo: "/secretariat-photos/alex-otieno.jpg",
   },
   {
-    name: "Boyani Momanyi",
-    title: "Communication Officer",
-    photo: "/secretariat-photos/boyani-momanyi.jpg",
+    name: "Rodah Boyani",
+    title: "Membership Services & Communication Ag. Manager",
+    photo: "/secretariat-photos/rodah-boyani.jpg",
+  },
+  {
+    name: "Sheila Okongo",
+    title: "Membership Officer",
+    photo: "/secretariat-photos/sheila-okongo.jpg",
+  },
+  {
+    name: "Evelyne Odette",
+    title: "Communication Intern",
+    photo: "/secretariat-photos/evelyne-odette.jpg",
+  },
+  {
+    name: "John Mugo",
+    title: "Finance & Admin Manager",
+  },
+  {
+    name: "John Gitari",
+    title: "Finance Manager",
+    photo: "/secretariat-photos/john-gitari.jpg",
+  },
+  {
+    name: "John Githui",
+    title: "Finance Officer",
+    photo: "/secretariat-photos/john-githui.jpg",
   },
   {
     name: "Fiona Apanga",
@@ -803,11 +812,6 @@ export const secretariat: SecretariatMember[] = [
     name: "Eric Miano",
     title: "IT Intern",
     photo: "/secretariat-photos/eric-miano.jpg",
-  },
-  {
-    name: "Evelyne Odette",
-    title: "Intern",
-    photo: "/secretariat-photos/evelyne-odette.jpg",
   },
 ];
 
