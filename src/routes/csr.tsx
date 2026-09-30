@@ -12,6 +12,10 @@ import { PageBreadcrumb } from "@/components/site/PageBreadcrumb";
 import { InitiativeLink } from "@/components/site/InitiativeLink";
 import { initiatives } from "@/data/site";
 import { jsonLd } from "@/lib/json-ld";
+import { CopyValue } from "@/components/site/CopyValue";
+
+/** M-Pesa details for donations to the David Mutiso Bursary Fund. */
+const BURSARY_DONATION = { paybill: "4139945", account: "BURSARY" };
 
 const SITE_URL = "https://aak.or.ke";
 const TITLE = "Corporate Social Responsibility | Architectural Association of Kenya";
@@ -145,16 +149,13 @@ function CsrPage() {
                   Support the bursary fund
                 </h3>
                 <p className="mt-2 max-w-xl text-sm leading-relaxed text-foreground/75">
-                  Donations to the David Mutiso Bursary Fund are made through the AAK store.
+                  Donate to the David Mutiso Bursary Fund by M-Pesa.
                 </p>
               </div>
-              <Link
-                to="/store"
-                className="group mt-6 inline-flex shrink-0 items-center gap-2 text-sm font-semibold text-foreground sm:mt-0"
-              >
-                Visit the store
-                <ArrowUpRight className="h-4 w-4 text-primary" />
-              </Link>
+              <div className="mt-6 flex shrink-0 flex-wrap gap-x-10 gap-y-4 text-foreground sm:mt-0">
+                <CopyValue label="Paybill" value={BURSARY_DONATION.paybill} />
+                <CopyValue label="Account" value={BURSARY_DONATION.account} />
+              </div>
             </Reveal>
           </div>
         </section>
