@@ -109,19 +109,23 @@ function structuredData() {
 
 const FELLOWS_PAGE_SIZE = 15;
 
-/** The card's portrait as a button that opens the member's full-length photo. */
+/** The card's portrait as a button that opens a larger photo: the member's
+ * full-length one when there is one, otherwise the portrait itself (never
+ * shown above its own size). */
 function FullPhoto({
   member,
+  src,
   children,
 }: {
   member: (typeof secretariat)[number];
+  src: string;
   children: ReactNode;
 }) {
   return (
     <DialogPrimitive.Root>
       <DialogPrimitive.Trigger
         className="group relative block w-full overflow-hidden focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-foreground"
-        aria-label={`View full photo of ${member.name}`}
+        aria-label={`View larger photo of ${member.name}`}
       >
         {children}
         <span
@@ -135,7 +139,7 @@ function FullPhoto({
         <DialogPrimitive.Overlay className="fixed inset-0 z-[60] bg-foreground/70 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
         <DialogPrimitive.Content className="fixed top-1/2 left-1/2 z-[60] flex max-h-[94svh] w-max max-w-[calc(100vw-1.5rem)] -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-2xl bg-background shadow-2xl outline-none duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95">
           <img
-            src={member.photoFull}
+            src={src}
             alt={member.name}
             decoding="async"
             className="block max-h-[calc(94svh-5.5rem)] w-auto max-w-full min-h-0 object-contain"
@@ -168,8 +172,8 @@ function PeopleGrid({ people }: { people: typeof secretariat }) {
       {people.map((member) => (
         <li key={member.name}>
           <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-background">
-            {member.photo && member.photoFull ? (
-              <FullPhoto member={member}>
+            {member.photo ? (
+              <FullPhoto member={member} src={member.photoFull ?? member.photo}>
                 <img
                   src={member.photo}
                   alt=""
@@ -180,16 +184,6 @@ function PeopleGrid({ people }: { people: typeof secretariat }) {
                   className="aspect-4/5 w-full bg-secondary object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                 />
               </FullPhoto>
-            ) : member.photo ? (
-              <img
-                src={member.photo}
-                alt=""
-                loading="lazy"
-                decoding="async"
-                width={600}
-                height={750}
-                className="aspect-4/5 w-full bg-secondary object-cover"
-              />
             ) : (
               <span
                 aria-hidden="true"
