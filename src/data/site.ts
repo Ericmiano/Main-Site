@@ -605,7 +605,7 @@ const MEMBER_PORTAL = "https://members.aak.or.ke";
 /** AAK's sister platforms, listed under Key Initiatives on aak.or.ke. */
 export const aakPlatforms: NavLink[] = [
   { label: "AAK Sacco", href: "https://sacco.aak.or.ke/", external: true },
-  { label: "BuildHub", href: "https://buildhub.aak.or.ke/", external: true },
+  { label: "Urban Thinkers Campus", href: "/initiatives/urban-thinkers-campus" },
   { label: "AAK Annual Convention", href: "https://convention.aak.or.ke/", external: true },
   { label: "Nairobi Biennale", href: "https://www.biennale.aak.or.ke/", external: true },
 ];
