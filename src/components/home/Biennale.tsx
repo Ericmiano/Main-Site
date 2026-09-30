@@ -19,7 +19,7 @@ export function Biennale() {
           title, dates and theme, so the section reads as a separate event. */}
       <div className="relative isolate mt-10 flex min-h-[80svh] items-end overflow-hidden lg:mt-14 lg:min-h-[88vh]">
         <img
-          src="/biennale/featured.webp"
+          src="/img/biennale/featured.webp"
           alt="Exhibitors and AAK members at the Nairobi Biennale of Architecture & Art 2026"
           loading="lazy"
           width={1920}

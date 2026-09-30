@@ -1,14 +1,24 @@
 # AAK website: static export for Apache / cPanel.
 
-Options -Indexes
-DirectoryIndex index.html index.php
-ErrorDocument 404 /404.html
-
-# Serve /about from /about/index.html without the /about -> /about/ redirect.
-DirectorySlash Off
+# Other sites on this hosting account (biennale., convention., schools.,
+# sacco.aak.or.ke) may have their folders inside public_html, where this
+# file's rules would otherwise reach them. Everything here is limited to this
+# site's own host names (and local test servers), so they stay untouched.
+<If "%{HTTP_HOST} =~ /^((www|new)\.)?aak\.or\.ke$|^(localhost|127\.0\.0\.1)(:\d+)?$/i">
+  Options -Indexes
+  DirectoryIndex index.html index.php
+  ErrorDocument 404 /404.html
+  # Serve /about from /about/index.html without the /about -> /about/ redirect.
+  DirectorySlash Off
+</If>
 
 <IfModule mod_rewrite.c>
   RewriteEngine On
+
+  # Requests for the other sites on this account pass through untouched.
+  RewriteCond %{HTTP_HOST} !^((www|new)\.)?aak\.or\.ke$ [NC]
+  RewriteCond %{HTTP_HOST} !^(localhost|127\.0\.0\.1)(:\d+)?$ [NC]
+  RewriteRule ^ - [L]
 
   # Security rules below are limited to this site's own host names. On cPanel,
   # subdomains (members., sacco., buildhub., convention., biennale.) often live
@@ -90,13 +100,12 @@ DirectorySlash Off
     Header always set Strict-Transport-Security "max-age=31536000" "expr=%{HTTPS} == 'on'"
   </If>
 
-  # Fingerprinted build files (/assets/*) never change: cache for a year.
-  SetEnvIf Request_URI "^/assets/" AAK_IMMUTABLE
-  Header set Cache-Control "public, max-age=31536000, immutable" env=AAK_IMMUTABLE
-  <FilesMatch "\.(webp|jpe?g|png|svg|ico|woff2?)$">
-    Header set Cache-Control "public, max-age=2592000"
-  </FilesMatch>
-  <FilesMatch "\.(html)$">
-    Header set Cache-Control "public, max-age=0, must-revalidate"
-  </FilesMatch>
+  # Caching, for this site only: the Biennale site has an /assets/ folder
+  # too, and must not have its files cached for a year.
+  <If "%{HTTP_HOST} =~ /^((www|new)\.)?aak\.or\.ke$|^(localhost|127\.0\.0\.1)(:\d+)?$/i">
+    # Fingerprinted build files (/assets/*) never change: cache for a year.
+    Header set Cache-Control "public, max-age=31536000, immutable" "expr=%{REQUEST_URI} =~ m#^/assets/#"
+    Header set Cache-Control "public, max-age=2592000" "expr=%{REQUEST_FILENAME} =~ /\.(webp|jpe?g|png|svg|ico|woff2?)$/"
+    Header set Cache-Control "public, max-age=0, must-revalidate" "expr=%{REQUEST_FILENAME} =~ /\.html$/"
+  </If>
 </IfModule>
