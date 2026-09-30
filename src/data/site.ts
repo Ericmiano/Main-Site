@@ -630,6 +630,7 @@ export const navMenu: NavMenuEntry[] = [
       { label: "Programmes", href: "/programs" },
       { label: "Corporate social responsibility", href: "/csr" },
       { label: "AAK Leadership", href: "/team" },
+      { label: "Nominations to boards", href: "/nominations" },
       { label: "Contact us", href: "/contact" },
     ],
   },

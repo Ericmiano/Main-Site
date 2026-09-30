@@ -3,29 +3,22 @@ import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { IconArrowUpRight as ArrowUpRight, IconX as X } from "@tabler/icons-react";
 
 import { socialLinks } from "@/data/site";
+import { facebookFeedUrl, YOUTUBE_LATEST_EMBED } from "@/lib/social-feeds";
 import { cn } from "@/lib/utils";
 
-// Live feeds. Only Facebook (page plugin) and YouTube (the channel's uploads
-// playlist) offer embeddable, always-current feeds without an API account;
-// the other platforms are linked instead.
+// Feed addresses live in @/lib/social-feeds (shared with the homepage).
 const FEEDS = {
   facebook: {
     label: "Facebook",
     title: "AAK's latest Facebook posts",
-    // The plugin lays itself out at the width in its address (180-500px), so
-    // it's given the panel's measured width rather than a fixed 500.
-    src: (width: number) =>
-      "https://www.facebook.com/plugins/page.php?href=" +
-      encodeURIComponent("https://www.facebook.com/ArchKE/") +
-      `&tabs=timeline&width=${width}&height=640&small_header=true&adapt_container_width=true&hide_cover=false&show_facepile=false`,
+    src: (width: number) => facebookFeedUrl(width, 640),
     height: 640,
     note: "Loads from Facebook, which may set cookies.",
   },
   youtube: {
     label: "YouTube",
     title: "AAK's latest YouTube videos",
-    // Channel UC7T3qQvpUIQ7E2CUhd2XYOw; "UU" + the same id is its uploads list.
-    src: () => "https://www.youtube-nocookie.com/embed/videoseries?list=UU7T3qQvpUIQ7E2CUhd2XYOw",
+    src: () => YOUTUBE_LATEST_EMBED,
     height: 0, // 16:9, set by aspect ratio
     note: "Loads from YouTube (privacy-enhanced mode).",
   },

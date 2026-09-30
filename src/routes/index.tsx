@@ -12,6 +12,7 @@ import { Statement } from "@/components/home/Statement";
 import { Chapters } from "@/components/home/Chapters";
 import { Partners } from "@/components/home/Partners";
 import { MediaGrid } from "@/components/home/MediaGrid";
+import { LatestPosts } from "@/components/home/LatestPosts";
 import { Membership } from "@/components/home/Membership";
 import { SectionIndicator } from "@/components/home/SectionIndicator";
 import { FeaturedFirm } from "@/components/home/FeaturedFirm";
@@ -101,6 +102,7 @@ function Index() {
         <Chapters />
         <Partners />
         <MediaGrid />
+        <LatestPosts />
         <FeaturedFirm />
         <Membership />
       </main>

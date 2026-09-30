@@ -28,6 +28,7 @@ import { Route as GeneralDownloadsRouteImport } from './routes/general-downloads
 import { Route as LiaisonCommitteesReportsRouteImport } from './routes/liaison-committees-reports'
 import { Route as MembershipRouteImport } from './routes/membership'
 import { Route as MulikaMjengoReportRouteImport } from './routes/mulika-mjengo-report'
+import { Route as NominationsRouteImport } from './routes/nominations'
 import { Route as OpinionEditorialsRouteImport } from './routes/opinion-editorials'
 import { Route as PressStatementsRouteImport } from './routes/press-statements'
 import { Route as PrivacyRouteImport } from './routes/privacy'
@@ -143,6 +144,11 @@ const MembershipRoute = MembershipRouteImport.update({
 const MulikaMjengoReportRoute = MulikaMjengoReportRouteImport.update({
   id: '/mulika-mjengo-report',
   path: '/mulika-mjengo-report',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NominationsRoute = NominationsRouteImport.update({
+  id: '/nominations',
+  path: '/nominations',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OpinionEditorialsRoute = OpinionEditorialsRouteImport.update({
@@ -268,6 +274,7 @@ export interface FileRoutesByFullPath {
   '/liaison-committees-reports': typeof LiaisonCommitteesReportsRoute
   '/membership': typeof MembershipRoute
   '/mulika-mjengo-report': typeof MulikaMjengoReportRoute
+  '/nominations': typeof NominationsRoute
   '/opinion-editorials': typeof OpinionEditorialsRoute
   '/press-statements': typeof PressStatementsRoute
   '/privacy': typeof PrivacyRoute
@@ -309,6 +316,7 @@ export interface FileRoutesByTo {
   '/liaison-committees-reports': typeof LiaisonCommitteesReportsRoute
   '/membership': typeof MembershipRoute
   '/mulika-mjengo-report': typeof MulikaMjengoReportRoute
+  '/nominations': typeof NominationsRoute
   '/opinion-editorials': typeof OpinionEditorialsRoute
   '/press-statements': typeof PressStatementsRoute
   '/privacy': typeof PrivacyRoute
@@ -351,6 +359,7 @@ export interface FileRoutesById {
   '/liaison-committees-reports': typeof LiaisonCommitteesReportsRoute
   '/membership': typeof MembershipRoute
   '/mulika-mjengo-report': typeof MulikaMjengoReportRoute
+  '/nominations': typeof NominationsRoute
   '/opinion-editorials': typeof OpinionEditorialsRoute
   '/press-statements': typeof PressStatementsRoute
   '/privacy': typeof PrivacyRoute
@@ -394,6 +403,7 @@ export interface FileRouteTypes {
     | '/liaison-committees-reports'
     | '/membership'
     | '/mulika-mjengo-report'
+    | '/nominations'
     | '/opinion-editorials'
     | '/press-statements'
     | '/privacy'
@@ -435,6 +445,7 @@ export interface FileRouteTypes {
     | '/liaison-committees-reports'
     | '/membership'
     | '/mulika-mjengo-report'
+    | '/nominations'
     | '/opinion-editorials'
     | '/press-statements'
     | '/privacy'
@@ -476,6 +487,7 @@ export interface FileRouteTypes {
     | '/liaison-committees-reports'
     | '/membership'
     | '/mulika-mjengo-report'
+    | '/nominations'
     | '/opinion-editorials'
     | '/press-statements'
     | '/privacy'
@@ -518,6 +530,7 @@ export interface RootRouteChildren {
   LiaisonCommitteesReportsRoute: typeof LiaisonCommitteesReportsRoute
   MembershipRoute: typeof MembershipRoute
   MulikaMjengoReportRoute: typeof MulikaMjengoReportRoute
+  NominationsRoute: typeof NominationsRoute
   OpinionEditorialsRoute: typeof OpinionEditorialsRoute
   PressStatementsRoute: typeof PressStatementsRoute
   PrivacyRoute: typeof PrivacyRoute
@@ -673,6 +686,13 @@ declare module '@tanstack/react-router' {
       path: '/mulika-mjengo-report'
       fullPath: '/mulika-mjengo-report'
       preLoaderRoute: typeof MulikaMjengoReportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/nominations': {
+      id: '/nominations'
+      path: '/nominations'
+      fullPath: '/nominations'
+      preLoaderRoute: typeof NominationsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/opinion-editorials': {
@@ -838,6 +858,7 @@ const rootRouteChildren: RootRouteChildren = {
   LiaisonCommitteesReportsRoute: LiaisonCommitteesReportsRoute,
   MembershipRoute: MembershipRoute,
   MulikaMjengoReportRoute: MulikaMjengoReportRoute,
+  NominationsRoute: NominationsRoute,
   OpinionEditorialsRoute: OpinionEditorialsRoute,
   PressStatementsRoute: PressStatementsRoute,
   PrivacyRoute: PrivacyRoute,

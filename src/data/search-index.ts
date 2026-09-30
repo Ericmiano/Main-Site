@@ -55,6 +55,13 @@ const pages: SearchEntry[] = [
     category: "Page",
     href: "/team",
   },
+  {
+    title: "Nominations to Boards",
+    description:
+      "Members nominated by AAK to boards, councils and committees at county, national, regional and international level.",
+    category: "Page",
+    href: "/nominations",
+  },
   // Arbitration: on hold while the page is being finished. Re-add once ready.
   // {
   //   title: "Arbitration",

@@ -22,6 +22,7 @@ function buildUrls(): SitemapUrl[] {
     { loc: `${SITE_URL}/programs`, changefreq: "monthly", priority: "0.6" },
     { loc: `${SITE_URL}/csr`, changefreq: "monthly", priority: "0.6" },
     { loc: `${SITE_URL}/team`, changefreq: "monthly", priority: "0.6" },
+    { loc: `${SITE_URL}/nominations`, changefreq: "monthly", priority: "0.5" },
     { loc: `${SITE_URL}/membership`, changefreq: "monthly", priority: "0.8" },
     { loc: `${SITE_URL}/contact`, changefreq: "monthly", priority: "0.6" },
     { loc: `${SITE_URL}/students`, changefreq: "monthly", priority: "0.5" },
