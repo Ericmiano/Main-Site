@@ -14,6 +14,11 @@ DirectorySlash Off
   # subdomains (members., sacco., buildhub., convention., biennale.) often live
   # in folders under public_html, and must not inherit this site's rules.
 
+  # One address: www.aak.or.ke -> https://aak.or.ke (the canonical URL every
+  # page declares). Needs www's DNS pointed at this server.
+  RewriteCond %{HTTP_HOST} ^www\.aak\.or\.ke$ [NC]
+  RewriteRule ^ https://aak.or.ke%{REQUEST_URI} [R=301,L,NE]
+
   # HTTPS only (local test servers excepted).
   RewriteCond %{HTTP_HOST} ^((www|new)\.)?aak\.or\.ke$ [NC]
   RewriteCond %{HTTPS} !=on
