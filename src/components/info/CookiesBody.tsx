@@ -24,6 +24,10 @@ export default function CookiesBody() {
           <strong>Google Maps</strong> on the <Link to="/contact">contact page</Link> loads only
           when you select &ldquo;Show map&rdquo;. Google may then set cookies.
         </li>
+        <li>
+          <strong>Facebook</strong> posts in the &ldquo;Latest posts&rdquo; panel (in the footer)
+          load only when you open it. Facebook may then set cookies.
+        </li>
       </ul>
 
       <h2>Other AAK websites</h2>

@@ -602,6 +602,16 @@ export type NavMenuEntry =
 
 const MEMBER_PORTAL = "https://members.aak.or.ke";
 
+/** AAK's social accounts, in the footer's order. */
+export const socialLinks = [
+  { label: "X (Twitter)", href: "https://x.com/Arch_KE" },
+  { label: "LinkedIn", href: "https://ke.linkedin.com/company/architectural-association-of-kenya" },
+  { label: "Facebook", href: "https://www.facebook.com/ArchKE/" },
+  { label: "Instagram", href: "https://www.instagram.com/arch_ke/" },
+  { label: "YouTube", href: "https://www.youtube.com/@architecturalassociationof854" },
+  { label: "TikTok", href: "https://www.tiktok.com/@aak_kenya" },
+];
+
 /** AAK's sister platforms, listed under Key Initiatives on aak.or.ke. */
 export const aakPlatforms: NavLink[] = [
   { label: "AAK Sacco", href: "https://sacco.aak.or.ke/", external: true },

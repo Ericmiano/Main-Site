@@ -1,6 +1,8 @@
 import { Link } from "@tanstack/react-router";
 import { chapters } from "@/data/site";
-import logoMark from "@/assets/aak-logo-mark.webp";
+import logoWhite from "@/assets/aak-logo-white.webp";
+import { SocialFeed } from "@/components/site/SocialFeed";
+import { socialLinks } from "@/data/site";
 
 const associationLinks = [
   { label: "About Us", to: "/about" as const },
@@ -45,16 +47,14 @@ export function Footer() {
       <div className="mx-auto max-w-[1400px] px-6 py-20 lg:px-12">
         <div className="grid gap-14 lg:grid-cols-[1.3fr_0.8fr_0.8fr_0.8fr_0.8fr]">
           <div>
-            <div className="flex items-center gap-3">
-              <img
-                src={logoMark}
-                alt=""
-                className="h-10 w-10 object-contain"
-                width={40}
-                height={40}
-              />
-              <p className="font-display text-2xl font-bold tracking-[0.16em]">AAK</p>
-            </div>
+            <img
+              src={logoWhite}
+              alt="Architectural Association of Kenya: promoting excellence in the built environment"
+              className="h-auto w-44 sm:w-52"
+              width={440}
+              height={317}
+              loading="lazy"
+            />
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-background/60">
               The Architectural Association of Kenya has united professionals across the built and
               natural environment since 1967.
@@ -148,67 +148,20 @@ export function Footer() {
           <div>
             <h3 className="meta-label text-background/50">Follow</h3>
             <ul className="mt-5 space-y-3 text-sm text-background/85">
-              <li>
-                <a
-                  className="link-underline transition-colors hover:text-background"
-                  href="https://x.com/Arch_KE"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  X (Twitter)
-                </a>
-              </li>
-              <li>
-                <a
-                  className="link-underline transition-colors hover:text-background"
-                  href="https://ke.linkedin.com/company/architectural-association-of-kenya"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  LinkedIn
-                </a>
-              </li>
-              <li>
-                <a
-                  className="link-underline transition-colors hover:text-background"
-                  href="https://www.facebook.com/ArchKE/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Facebook
-                </a>
-              </li>
-              <li>
-                <a
-                  className="link-underline transition-colors hover:text-background"
-                  href="https://www.instagram.com/arch_ke/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Instagram
-                </a>
-              </li>
-              <li>
-                <a
-                  className="link-underline transition-colors hover:text-background"
-                  href="https://www.youtube.com/@architecturalassociationof854"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  YouTube
-                </a>
-              </li>
-              <li>
-                <a
-                  className="link-underline transition-colors hover:text-background"
-                  href="https://www.tiktok.com/@aak_kenya"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  TikTok
-                </a>
-              </li>
+              {socialLinks.map((link) => (
+                <li key={link.href}>
+                  <a
+                    className="link-underline transition-colors hover:text-background"
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
             </ul>
+            <SocialFeed className="mt-6" />
           </div>
         </div>
 
