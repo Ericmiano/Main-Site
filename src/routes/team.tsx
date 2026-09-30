@@ -1,6 +1,12 @@
 import { useMemo, useState, type ReactNode } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { IconAward as Award, IconChevronDown as ChevronDown } from "@tabler/icons-react";
+import * as DialogPrimitive from "@radix-ui/react-dialog";
+import {
+  IconArrowsMaximize as Maximize,
+  IconAward as Award,
+  IconChevronDown as ChevronDown,
+  IconX as X,
+} from "@tabler/icons-react";
 
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
@@ -29,7 +35,24 @@ const EXECUTIVE_TITLES = [
 const executive = EXECUTIVE_TITLES.flatMap((title) =>
   secretariat.filter((member) => member.title === title),
 );
-const staff = secretariat.filter((member) => !EXECUTIVE_TITLES.includes(member.title));
+const STAFF_TITLE_ORDER = [
+  "Chief Executive Officer",
+  "Finance & Admin Manager",
+  "Finance Officer",
+  "Research and Advocacy Manager",
+  "Business Development Manager",
+  "Office Administrator",
+  "Membership Services & Communication Ag. Manager",
+  "Advocacy Officer",
+  "Research Officer",
+  "Membership Officer",
+  "Office Assistant",
+  "Communication Intern",
+  "IT Intern",
+];
+const staff = secretariat
+  .filter((member) => !EXECUTIVE_TITLES.includes(member.title))
+  .sort((a, b) => STAFF_TITLE_ORDER.indexOf(a.title) - STAFF_TITLE_ORDER.indexOf(b.title));
 
 // The three regional branches' councils (2026 AGM Report rosters).
 const branches = chapterBranches["landscape-architects"] ?? [];
@@ -86,6 +109,57 @@ function structuredData() {
 
 const FELLOWS_PAGE_SIZE = 15;
 
+/** The card's portrait as a button that opens the member's full-length photo. */
+function FullPhoto({
+  member,
+  children,
+}: {
+  member: (typeof secretariat)[number];
+  children: ReactNode;
+}) {
+  return (
+    <DialogPrimitive.Root>
+      <DialogPrimitive.Trigger
+        className="group relative block w-full overflow-hidden focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-foreground"
+        aria-label={`View full photo of ${member.name}`}
+      >
+        {children}
+        <span
+          aria-hidden="true"
+          className="absolute right-2 bottom-2 inline-flex h-8 w-8 items-center justify-center rounded-full bg-background/85 text-foreground shadow-sm backdrop-blur-sm transition-colors group-hover:bg-background"
+        >
+          <Maximize className="h-4 w-4" />
+        </span>
+      </DialogPrimitive.Trigger>
+      <DialogPrimitive.Portal>
+        <DialogPrimitive.Overlay className="fixed inset-0 z-[60] bg-foreground/70 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
+        <DialogPrimitive.Content className="fixed top-1/2 left-1/2 z-[60] flex max-h-[94svh] w-max max-w-[calc(100vw-1.5rem)] -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-2xl bg-background shadow-2xl outline-none duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95">
+          <img
+            src={member.photoFull}
+            alt={member.name}
+            decoding="async"
+            className="block max-h-[calc(94svh-5.5rem)] w-auto max-w-full min-h-0 object-contain"
+          />
+          <div className="border-t border-border px-5 py-4 pr-16">
+            <DialogPrimitive.Title className="font-display text-base font-semibold text-foreground">
+              {member.name}
+            </DialogPrimitive.Title>
+            <DialogPrimitive.Description className="mt-0.5 text-sm text-muted-foreground">
+              {member.title}
+            </DialogPrimitive.Description>
+          </div>
+          <DialogPrimitive.Close
+            className="absolute right-3 bottom-3.5 inline-flex h-10 w-10 items-center justify-center rounded-full text-foreground transition-colors hover:bg-secondary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
+            aria-label="Close"
+          >
+            <X className="h-5 w-5" aria-hidden="true" />
+          </DialogPrimitive.Close>
+        </DialogPrimitive.Content>
+      </DialogPrimitive.Portal>
+    </DialogPrimitive.Root>
+  );
+}
+
 /** Portrait cards: a head-and-shoulders photo (public/secretariat-photos,
  * 4:5, face centred) above the name and role. Two across on phones. */
 function PeopleGrid({ people }: { people: typeof secretariat }) {
@@ -94,7 +168,19 @@ function PeopleGrid({ people }: { people: typeof secretariat }) {
       {people.map((member) => (
         <li key={member.name}>
           <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-background">
-            {member.photo ? (
+            {member.photo && member.photoFull ? (
+              <FullPhoto member={member}>
+                <img
+                  src={member.photo}
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                  width={600}
+                  height={750}
+                  className="aspect-4/5 w-full bg-secondary object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                />
+              </FullPhoto>
+            ) : member.photo ? (
               <img
                 src={member.photo}
                 alt=""

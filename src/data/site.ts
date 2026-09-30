@@ -727,6 +727,8 @@ export interface SecretariatMember {
   title: string;
   /** Only set when a photo could be confidently matched to this specific person — see note above. */
   photo?: string;
+  /** Optional full-length photo, opened from the card on /team. */
+  photoFull?: string;
 }
 
 export const secretariat: SecretariatMember[] = [
@@ -814,6 +816,7 @@ export const secretariat: SecretariatMember[] = [
     name: "Fiona Apanga",
     title: "Office Administrator",
     photo: "/secretariat-photos/fiona-apanga.jpg",
+    photoFull: "/secretariat-photos/fiona-apanga-full.jpg",
   },
   {
     name: "Erick Omollo",
