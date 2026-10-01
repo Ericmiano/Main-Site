@@ -44,29 +44,66 @@ export function instagramEmbedHeight(width: number) {
 /** X posts shown on the homepage, newest first. X's timeline widget no longer
  * loads for logged-out visitors but single-post embeds do, so these are picked
  * by hand: add a post's id (the number at the end of its x.com link) here. The
- * text is shown until X's embed loads, and instead of it if X is blocked. */
+ * text and images (copies in public/img/x) are shown until X's embed loads,
+ * and instead of it if the visitor's browser blocks X. */
+export interface XPostImage {
+  src: string;
+  width: number;
+  height: number;
+  alt: string;
+}
 export interface XPost {
   id: string;
   date: string;
   text: string;
+  images: XPostImage[];
 }
 export const X_POSTS: XPost[] = [
   {
     id: "2105571147932987466",
     date: "1 October 2026",
     text: "As an official pilot project of the 30th UIA World Congress of Architects 2029 Beijing, this open international competition targets young architects worldwide: a 200 m² urban public pavilion on the Yongding River waterfront in Beijing.",
+    images: [
+      {
+        src: "/img/x/2105571147932987466-1.webp",
+        width: 800,
+        height: 800,
+        alt: "Poster for the Yong Ding Chang'an Pavilion competition for young architects, entries due 16 November 2026",
+      },
+    ],
   },
   {
     id: "2105305352887513285",
     date: "30 September 2026",
     text: "Yesterday, AAK, led by Vice President Arch. Brenda Nyawara, participated in a stakeholder forum convened by the Nairobi City County Assembly's Lands, Housing and Planning Committee, highlighting key concerns affecting planning and development control.",
+    images: [
+      {
+        src: "/img/x/2105305352887513285-1.webp",
+        width: 800,
+        height: 533,
+        alt: "AAK Vice President Arch. Brenda Nyawara speaking to the press at the Nairobi City County Assembly forum",
+      },
+      {
+        src: "/img/x/2105305352887513285-2.webp",
+        width: 800,
+        height: 621,
+        alt: "Arch. Brenda Nyawara addressing the Assembly's Lands, Housing and Planning Committee",
+      },
+    ],
   },
   {
     id: "2104843015181209601",
     date: "29 September 2026",
     text: "The AAK Architects Chapter invites you to be part of its delegation to the East Africa Institute of Architects (EAIA) AGM & Architecture Congress in Kigali, Rwanda. Join our organised road trip for cross-border learning and networking.",
+    images: [
+      {
+        src: "/img/x/2104843015181209601-1.webp",
+        width: 800,
+        height: 800,
+        alt: "Poster for the AAK Architects Chapter road trip to the EAIA AGM & Architecture Congress in Kigali, 6 to 10 October 2026",
+      },
+    ],
   },
-
 ];
 
 export const xPostUrl = (id: string) => `https://x.com/Arch_KE/status/${id}`;
