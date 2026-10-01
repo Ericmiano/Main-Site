@@ -1,0 +1,53 @@
+# CodeRabbit review settings (https://docs.coderabbit.ai/reference/configuration)
+language: en-GB
+reviews:
+  profile: assertive
+  request_changes_workflow: false
+  high_level_summary: true
+  poem: false
+  auto_review:
+    enabled: true
+    drafts: false
+    # Also review the one-off full-codebase audit PR, which targets audit-base.
+    base_branches:
+      - "audit-base"
+  # Code only: media, documents, fonts, generated files and large data dumps are skipped.
+  path_filters:
+    - "!public/media/**"
+    - "!public/gac/**"
+    - "!public/img/**"
+    - "!public/secretariat-photos/**"
+    - "!public/arbitrator-photos/**"
+    - "!public/fonts/**"
+    - "!media-archive/**"
+    - "!documents/**"
+    - "!src/assets/**"
+    - "!.agents/**"
+    - "!**/*.{pdf,png,jpg,jpeg,webp,avif,gif,svg,ico,mp4,woff,woff2}"
+    - "!package-lock.json"
+    - "!src/routeTree.gen.ts"
+    - "!src/data/nominations.ts"
+    - "!src/data/member-register-snapshot.ts"
+    - "!public/api/member-register-snapshot.json"
+  path_instructions:
+    - path: "**"
+      instructions: |
+        Public website of the Architectural Association of Kenya. TanStack Start (React 19,
+        Vite, Tailwind v4). It ships as a static export (`npm run build:cpanel`) served by
+        Apache on shared cPanel hosting; there is no Node server in production. Downloads
+        come from a Cloudflare R2 bucket through the Worker in workers/files. Prioritise
+        security, accessibility (WCAG 2.1 AA), correctness and performance over style.
+    - path: "src/data/**"
+      instructions: |
+        Content sourced from aak.or.ke and AAK documents. Flag data-shape or logic issues,
+        not wording, names or figures.
+    - path: "public/.htaccess"
+      instructions: |
+        Apache config for a shared server that also hosts other AAK subdomain sites; every
+        rule is deliberately scoped to the aak.or.ke host. Check the CSP and security headers.
+    - path: "public/api/member-stats.php"
+      instructions: |
+        The only PHP allowed by .htaccess. Reads a membership-system feed and caches it.
+        Review input handling, error exposure and cache safety.
+chat:
+  auto_reply: true
