@@ -25,10 +25,11 @@ export default function CookiesBody() {
           when you select &ldquo;Show map&rdquo;. Google may then set cookies.
         </li>
         <li>
-          <strong>Facebook</strong> posts load in the &ldquo;Latest from AAK&rdquo; section of the
-          homepage as you scroll to it, and in the &ldquo;Latest posts&rdquo; panel in the footer
-          when you open it. Facebook may then set cookies. AAK&rsquo;s latest YouTube video loads
-          there too, in YouTube&rsquo;s privacy-enhanced mode.
+          <strong>Instagram</strong> posts load in the &ldquo;Latest from AAK&rdquo; section of the
+          homepage as you scroll to it, alongside AAK&rsquo;s latest YouTube video (in
+          YouTube&rsquo;s privacy-enhanced mode). <strong>Facebook</strong> posts load in the
+          &ldquo;Latest posts&rdquo; panel in the footer when you open it. Instagram and Facebook
+          may then set cookies.
         </li>
       </ul>
 
