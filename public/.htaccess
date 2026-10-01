@@ -96,7 +96,7 @@
     # posts", on request), and the downloads host (radio clips).
     # Inline scripts are allowed because the framework writes page state
     # inline, and that differs on every page.
-    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://i.ytimg.com; font-src 'self'; connect-src 'self'; media-src 'self' https://aak-files.aak-kenya.workers.dev; frame-src https://www.youtube-nocookie.com https://www.google.com https://www.facebook.com https://www.instagram.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'"
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://platform.x.com https://platform.twitter.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://i.ytimg.com https://pbs.twimg.com https://syndication.x.com https://syndication.twitter.com; font-src 'self'; connect-src 'self' https://syndication.twitter.com https://cdn.syndication.twimg.com; media-src 'self' https://aak-files.aak-kenya.workers.dev; frame-src https://www.youtube-nocookie.com https://www.google.com https://www.facebook.com https://www.instagram.com https://platform.twitter.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'"
     # Browsers remember to use HTTPS. Subdomains aren't included on purpose.
     Header always set Strict-Transport-Security "max-age=31536000" "expr=%{HTTPS} == 'on'"
   </If>

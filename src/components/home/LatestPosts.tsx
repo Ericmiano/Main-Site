@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { IconArrowUpRight as ArrowUpRight } from "@tabler/icons-react";
 
+import { XPosts } from "@/components/home/XPosts";
 import { SectionRule } from "@/components/site/SectionRule";
 import { socialLinks } from "@/data/site";
 import {
@@ -10,8 +11,8 @@ import {
 } from "@/lib/social-feeds";
 
 /**
- * "Latest from AAK": the newest YouTube video, AAK's latest Instagram posts and
- * links to its other accounts. The embeds load shortly before the section
+ * "Latest from AAK": the newest YouTube video, AAK's latest Instagram posts,
+ * chosen X posts and links to its other accounts. The embeds load shortly before the section
  * scrolls into view, not with the page.
  */
 export function LatestPosts() {
@@ -46,6 +47,7 @@ export function LatestPosts() {
   }, []);
 
   const instagram = socialLinks.find((l) => l.label === "Instagram");
+  const x = socialLinks.find((l) => l.label.startsWith("X"));
   const youtube = socialLinks.find((l) => l.label === "YouTube");
 
   return (
@@ -101,9 +103,9 @@ export function LatestPosts() {
 
             <div className="rounded-2xl border border-border p-6 sm:p-7">
               <p className="meta-label text-muted-foreground">Also on</p>
-              <ul className="mt-4 grid grid-cols-2 gap-3">
+              <ul className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
                 {socialLinks
-                  .filter((l) => l.label !== "YouTube" && l.label !== "Instagram")
+                  .filter((l) => l !== youtube && l !== instagram && l !== x)
                   .map((link) => (
                     <li key={link.href}>
                       <a
@@ -158,6 +160,8 @@ export function LatestPosts() {
             </figcaption>
           </figure>
         </div>
+
+        <XPosts load={load} href={x?.href} />
       </div>
     </section>
   );
