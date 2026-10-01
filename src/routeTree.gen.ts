@@ -42,6 +42,7 @@ import { Route as StudentsRouteImport } from './routes/students'
 import { Route as TeamRouteImport } from './routes/team'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as ApiMemberStatsRouteImport } from './routes/api.member-stats'
+import { Route as ApiPortalEventsRouteImport } from './routes/api.portal-events'
 import { Route as ChaptersSlugRouteImport } from './routes/chapters.$slug'
 import { Route as EventsIndexRouteImport } from './routes/events.index'
 import { Route as EventsSlugRouteImport } from './routes/events.$slug'
@@ -217,6 +218,11 @@ const ApiMemberStatsRoute = ApiMemberStatsRouteImport.update({
   path: '/api/member-stats',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPortalEventsRoute = ApiPortalEventsRouteImport.update({
+  id: '/api/portal-events',
+  path: '/api/portal-events',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ChaptersSlugRoute = ChaptersSlugRouteImport.update({
   id: '/chapters/$slug',
   path: '/chapters/$slug',
@@ -288,6 +294,7 @@ export interface FileRoutesByFullPath {
   '/team': typeof TeamRoute
   '/terms': typeof TermsRoute
   '/api/member-stats': typeof ApiMemberStatsRoute
+  '/api/portal-events': typeof ApiPortalEventsRoute
   '/chapters/$slug': typeof ChaptersSlugRoute
   '/events/$slug': typeof EventsSlugRoute
   '/initiatives/$slug': typeof InitiativesSlugRoute
@@ -330,6 +337,7 @@ export interface FileRoutesByTo {
   '/team': typeof TeamRoute
   '/terms': typeof TermsRoute
   '/api/member-stats': typeof ApiMemberStatsRoute
+  '/api/portal-events': typeof ApiPortalEventsRoute
   '/chapters/$slug': typeof ChaptersSlugRoute
   '/events/$slug': typeof EventsSlugRoute
   '/initiatives/$slug': typeof InitiativesSlugRoute
@@ -373,6 +381,7 @@ export interface FileRoutesById {
   '/team': typeof TeamRoute
   '/terms': typeof TermsRoute
   '/api/member-stats': typeof ApiMemberStatsRoute
+  '/api/portal-events': typeof ApiPortalEventsRoute
   '/chapters/$slug': typeof ChaptersSlugRoute
   '/events/$slug': typeof EventsSlugRoute
   '/initiatives/$slug': typeof InitiativesSlugRoute
@@ -417,6 +426,7 @@ export interface FileRouteTypes {
     | '/team'
     | '/terms'
     | '/api/member-stats'
+    | '/api/portal-events'
     | '/chapters/$slug'
     | '/events/$slug'
     | '/initiatives/$slug'
@@ -459,6 +469,7 @@ export interface FileRouteTypes {
     | '/team'
     | '/terms'
     | '/api/member-stats'
+    | '/api/portal-events'
     | '/chapters/$slug'
     | '/events/$slug'
     | '/initiatives/$slug'
@@ -501,6 +512,7 @@ export interface FileRouteTypes {
     | '/team'
     | '/terms'
     | '/api/member-stats'
+    | '/api/portal-events'
     | '/chapters/$slug'
     | '/events/$slug'
     | '/initiatives/$slug'
@@ -544,6 +556,7 @@ export interface RootRouteChildren {
   TeamRoute: typeof TeamRoute
   TermsRoute: typeof TermsRoute
   ApiMemberStatsRoute: typeof ApiMemberStatsRoute
+  ApiPortalEventsRoute: typeof ApiPortalEventsRoute
   ChaptersSlugRoute: typeof ChaptersSlugRoute
   EventsSlugRoute: typeof EventsSlugRoute
   InitiativesSlugRoute: typeof InitiativesSlugRoute
@@ -786,6 +799,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiMemberStatsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/portal-events': {
+      id: '/api/portal-events'
+      path: '/api/portal-events'
+      fullPath: '/api/portal-events'
+      preLoaderRoute: typeof ApiPortalEventsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/chapters/$slug': {
       id: '/chapters/$slug'
       path: '/chapters/$slug'
@@ -872,6 +892,7 @@ const rootRouteChildren: RootRouteChildren = {
   TeamRoute: TeamRoute,
   TermsRoute: TermsRoute,
   ApiMemberStatsRoute: ApiMemberStatsRoute,
+  ApiPortalEventsRoute: ApiPortalEventsRoute,
   ChaptersSlugRoute: ChaptersSlugRoute,
   EventsSlugRoute: EventsSlugRoute,
   InitiativesSlugRoute: InitiativesSlugRoute,

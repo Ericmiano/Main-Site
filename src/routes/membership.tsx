@@ -11,7 +11,7 @@ import {
 } from "@tabler/icons-react";
 
 import { Header } from "@/components/site/Header";
-import { membershipFees as fees } from "@/data/site";
+import { membershipFees as fees, portalLinks } from "@/data/site";
 import { MemberStats } from "@/components/site/MemberStats";
 import { Footer } from "@/components/site/Footer";
 import { Reveal } from "@/components/site/Reveal";
@@ -49,12 +49,12 @@ const steps = [
   {
     step: "02",
     title: "Register",
-    body: "Create your application at the member portal, members.aak.or.ke/register, and submit your professional and academic details.",
+    body: "Create your application on the member portal at members.aak.or.ke and submit your professional and academic details.",
   },
   {
     step: "03",
     title: "Log in",
-    body: "Once approved, sign in at members.aak.or.ke/login to manage your subscription, CPD record and chapter activity.",
+    body: "Once approved, sign in at members.aak.or.ke/signin to manage your subscription, CPD record and chapter activity.",
   },
   {
     step: "04",
@@ -146,15 +146,25 @@ function MembershipPage() {
                 Practise with the standing of a recognised professional body.
               </h1>
               <p className="mt-5 text-base leading-relaxed text-muted-foreground">{DESCRIPTION}</p>
-              <a
-                href="https://members.aak.or.ke/register"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group btn-primary mt-8"
-              >
-                Start your application
-                <ArrowUpRight className="h-4 w-4" />
-              </a>
+              <div className="mt-8 flex flex-wrap items-center gap-x-7 gap-y-4">
+                <a
+                  href={portalLinks.apply}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group btn-primary"
+                >
+                  Start your application
+                  <ArrowUpRight className="h-4 w-4" />
+                </a>
+                <a
+                  href={portalLinks.pay}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="link-quiet text-foreground"
+                >
+                  Pay or renew your membership
+                </a>
+              </div>
             </Reveal>
           </div>
         </section>

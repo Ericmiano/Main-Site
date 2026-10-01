@@ -1,5 +1,23 @@
 import { fileUrl } from "@/lib/files";
 
+const MEMBER_PORTAL = "https://members.aak.or.ke";
+
+/** The members portal's public pages, as published by its provider (Africa
+ * Cloud Space, Oct 2026), who have undertaken not to change them without
+ * notice. Link to the portal through these. */
+export const portalLinks = {
+  home: `${MEMBER_PORTAL}/`,
+  signIn: `${MEMBER_PORTAL}/signin`,
+  apply: `${MEMBER_PORTAL}/application/registerv3`,
+  pay: `${MEMBER_PORTAL}/public/pay?for=MEMBERSHIP`,
+  validate: `${MEMBER_PORTAL}/validate`,
+  directory: `${MEMBER_PORTAL}/directory`,
+  jobs: `${MEMBER_PORTAL}/jobs`,
+  events: `${MEMBER_PORTAL}/publicevents`,
+  /** Embeddable list of the portal's current public events. */
+  eventsEmbed: `${MEMBER_PORTAL}/publicevents/embeddable`,
+} as const;
+
 export type EventStatus = "ongoing" | "upcoming";
 
 export interface EventAgendaItem {
@@ -77,7 +95,7 @@ export const events: SiteEvent[] = [
     ],
     image: "/img/0q9a0926-1200x800.webp",
     imageAlt: "Delegates in session at a previous AAK annual convention",
-    registerHref: "https://members.aak.or.ke/publicevents",
+    registerHref: portalLinks.events,
     registerLabel: "Register (from KES 18,000)",
     cta: "Register now",
     externalSiteHref: "https://convention.aak.or.ke/",
@@ -600,8 +618,6 @@ export interface NavMenuGroup {
 export type NavMenuEntry =
   ({ type: "link" } & NavLink) | ({ type: "group" } & NavMenuGroup) | { type: "initiatives" };
 
-const MEMBER_PORTAL = "https://members.aak.or.ke";
-
 /** AAK's social accounts, in the footer's order. */
 export const socialLinks = [
   { label: "X (Twitter)", href: "https://x.com/Arch_KE" },
@@ -656,17 +672,17 @@ export const navMenu: NavMenuEntry[] = [
       { label: "Membership, tiers & fees", href: "/membership" },
       {
         label: "New membership registration",
-        href: `${MEMBER_PORTAL}/application/registerv3`,
+        href: portalLinks.apply,
         external: true,
       },
       {
         label: "Renew your membership",
-        href: `${MEMBER_PORTAL}/public/pay?for=MEMBERSHIP`,
+        href: portalLinks.pay,
         external: true,
       },
-      { label: "Members directory", href: `${MEMBER_PORTAL}/directory`, external: true },
-      { label: "Validate a certificate", href: `${MEMBER_PORTAL}/validate`, external: true },
-      { label: "Job portal", href: `${MEMBER_PORTAL}/jobs/`, external: true },
+      { label: "Members directory", href: portalLinks.directory, external: true },
+      { label: "Validate a certificate", href: portalLinks.validate, external: true },
+      { label: "Job portal", href: portalLinks.jobs, external: true },
       { label: "AAK Sacco", href: "https://sacco.aak.or.ke/", external: true },
       { label: "Student affiliates", href: "/students" },
     ],
@@ -675,14 +691,14 @@ export const navMenu: NavMenuEntry[] = [
 ];
 
 export const utilityLinks: NavLink[] = [
-  { label: "Register", href: `${MEMBER_PORTAL}/application/registerv3`, external: true },
-  { label: "Renew membership", href: `${MEMBER_PORTAL}/public/pay?for=MEMBERSHIP`, external: true },
-  { label: "Job portal", href: `${MEMBER_PORTAL}/jobs/`, external: true },
-  { label: "Validate a certificate", href: `${MEMBER_PORTAL}/validate`, external: true },
+  { label: "Register", href: portalLinks.apply, external: true },
+  { label: "Renew membership", href: portalLinks.pay, external: true },
+  { label: "Job portal", href: portalLinks.jobs, external: true },
+  { label: "Validate a certificate", href: portalLinks.validate, external: true },
 ];
 
 /** Sign-in page of the members portal, used by the header's log-in button. */
-export const memberPortalUrl = `${MEMBER_PORTAL}/signin`;
+export const memberPortalUrl = portalLinks.signIn;
 
 /* Team & governance --------------------------------------------------
  * Sourced from aak.or.ke/about-us/.

@@ -1,25 +1,26 @@
 import { IconArrowRight as ArrowRight } from "@tabler/icons-react";
 import { Reveal } from "@/components/site/Reveal";
 import { SectionRule } from "@/components/site/SectionRule";
+import { portalLinks } from "@/data/site";
 import { ChapterPicker } from "./ChapterPicker";
 
 const paths = [
   {
     title: "Become a member",
     body: "Join the chapter that matches your discipline and access CPD, advocacy and professional networks.",
-    href: "https://members.aak.or.ke/register",
+    href: portalLinks.apply,
     cta: "Start application",
   },
   {
     title: "Validate a certificate",
     body: "Confirm that a practitioner's AAK membership certificate is genuine and current.",
-    href: "https://members.aak.or.ke/validate",
+    href: portalLinks.validate,
     cta: "Check a certificate",
   },
   {
     title: "Find a professional",
     body: "Search the member directory for architects, surveyors, planners and engineers near you.",
-    href: "https://members.aak.or.ke/directory",
+    href: portalLinks.directory,
     cta: "Open the directory",
   },
 ];

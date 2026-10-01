@@ -7,7 +7,7 @@ import { Reveal } from "@/components/site/Reveal";
 import { SectionHeading } from "@/components/site/SectionHeading";
 import { CountUp } from "@/components/site/CountUp";
 import { PageBreadcrumb } from "@/components/site/PageBreadcrumb";
-import { chapters, regionalBranches } from "@/data/site";
+import { chapters, portalLinks, regionalBranches } from "@/data/site";
 import { jsonLd } from "@/lib/json-ld";
 
 const SITE_URL = "https://aak.or.ke";
@@ -279,7 +279,7 @@ function AboutPage() {
               Membership gives you standing, CPD access and a voice across all eight chapters.
             </p>
             <a
-              href="https://members.aak.or.ke/application/registerv3/"
+              href={portalLinks.apply}
               target="_blank"
               rel="noopener noreferrer"
               className="group btn-primary mt-7"

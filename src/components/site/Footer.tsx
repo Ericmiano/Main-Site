@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { chapters } from "@/data/site";
 import logoWhite from "@/assets/aak-logo-white.webp";
 import { SocialFeed } from "@/components/site/SocialFeed";
-import { socialLinks } from "@/data/site";
+import { portalLinks, socialLinks } from "@/data/site";
 
 const associationLinks = [
   { label: "About Us", to: "/about" as const },
@@ -38,8 +38,10 @@ const policyLinks = [
 ];
 
 const externalQuickLinks = [
-  { label: "Members Directory", href: "https://members.aak.or.ke/directory" },
-  { label: "Validate Certificate", href: "https://members.aak.or.ke/validate" },
+  { label: "Members Directory", href: portalLinks.directory },
+  { label: "Validate Certificate", href: portalLinks.validate },
+  { label: "Pay Membership", href: portalLinks.pay },
+  { label: "Job Portal", href: portalLinks.jobs },
 ];
 
 export function Footer() {

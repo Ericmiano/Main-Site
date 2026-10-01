@@ -11,9 +11,10 @@ import { Footer } from "@/components/site/Footer";
 import { Reveal } from "@/components/site/Reveal";
 import { Countdown } from "@/components/site/Countdown";
 import { PageBreadcrumb } from "@/components/site/PageBreadcrumb";
+import { PortalEvents } from "@/components/site/PortalEvents";
 import { cn } from "@/lib/utils";
 import { fileUrl } from "@/lib/files";
-import { getEventDisplayStatus, getSortedEvents, type SiteEvent } from "@/data/site";
+import { getEventDisplayStatus, getSortedEvents, portalLinks, type SiteEvent } from "@/data/site";
 import { jsonLd } from "@/lib/json-ld";
 
 const SITE_URL = "https://aak.or.ke";
@@ -108,7 +109,7 @@ function EventsIndex() {
                   2026 calendar of events (PDF)
                 </a>
                 <a
-                  href="https://members.aak.or.ke/publicevents"
+                  href={portalLinks.events}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="link-quiet text-foreground"
@@ -119,6 +120,8 @@ function EventsIndex() {
             </Reveal>
           </div>
         </section>
+
+        <PortalEvents />
 
         <section aria-labelledby="events-list-title" className="py-16 lg:py-24">
           <div className="mx-auto max-w-[1400px] px-6 lg:px-12">

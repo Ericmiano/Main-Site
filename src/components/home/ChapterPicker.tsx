@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { IconArrowRight as ArrowRight } from "@tabler/icons-react";
 import { Link } from "@tanstack/react-router";
-import { chapters, membershipFees } from "@/data/site";
+import { chapters, membershipFees, portalLinks } from "@/data/site";
 import { cn } from "@/lib/utils";
 
-const REGISTER_URL = "https://members.aak.or.ke/register";
+const REGISTER_URL = portalLinks.apply;
 
 // Only categories whose names say who they're for; "qualified" deliberately
 // shows both options rather than guessing between them.

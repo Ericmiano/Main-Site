@@ -6,7 +6,7 @@ import { Footer } from "@/components/site/Footer";
 import { Reveal } from "@/components/site/Reveal";
 import { SectionHeading } from "@/components/site/SectionHeading";
 import { PageBreadcrumb } from "@/components/site/PageBreadcrumb";
-import { arbitrationSteps } from "@/data/site";
+import { arbitrationSteps, portalLinks } from "@/data/site";
 import { arbitrators } from "@/data/arbitrators";
 import { ArbitratorDirectory } from "@/components/site/ArbitratorDirectory";
 import { jsonLd } from "@/lib/json-ld";
@@ -149,7 +149,7 @@ function ArbitrationPage() {
 
             <Reveal delay={300} className="mt-10">
               <a
-                href="https://members.aak.or.ke/"
+                href={portalLinks.home}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group btn-primary"

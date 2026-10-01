@@ -7,11 +7,12 @@ import {
   IconUsers,
 } from "@tabler/icons-react";
 import { registerSnapshot } from "@/data/member-register-snapshot";
+import { portalLinks } from "@/data/site";
 import type { MemberStats as Stats, MemberStatsSource } from "@/lib/member-stats";
 import { cn } from "@/lib/utils";
 
 const REFRESH_MS = 5 * 60_000;
-const DIRECTORY_URL = "https://members.aak.or.ke/directory";
+const DIRECTORY_URL = portalLinks.directory;
 
 type Icon = ComponentType<{ className?: string; stroke?: number; "aria-hidden"?: boolean }>;
 type Data = Stats & { source?: MemberStatsSource };

@@ -7,8 +7,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { gacDonation } from "@/data/grow-a-classroom";
-
-const PORTAL = "https://members.aak.or.ke";
+import { portalLinks } from "@/data/site";
 
 const Ext = ({ href, children }: { href: string; children: ReactNode }) => (
   <a href={href} target="_blank" rel="noopener noreferrer">
@@ -24,10 +23,10 @@ const groups: { title: string; items: { q: string; a: ReactNode }[] }[] = [
         q: "How do I become a member?",
         a: (
           <p>
-            Apply online through the{" "}
-            <Ext href={`${PORTAL}/application/registerv3`}>AAK members portal</Ext>, choosing the
-            chapter that matches your discipline. The <Link to="/membership">membership page</Link>{" "}
-            explains the steps, the membership tiers and their fees.
+            Apply online through the <Ext href={portalLinks.apply}>AAK members portal</Ext>,
+            choosing the chapter that matches your discipline. The{" "}
+            <Link to="/membership">membership page</Link> explains the steps, the membership tiers
+            and their fees.
           </p>
         ),
       },
@@ -48,8 +47,8 @@ const groups: { title: string; items: { q: string; a: ReactNode }[] }[] = [
         a: (
           <p>
             Renew and pay your subscription on the{" "}
-            <Ext href={`${PORTAL}/public/pay?for=MEMBERSHIP`}>members portal payment page</Ext>.
-            Fees are listed on the <Link to="/membership">membership page</Link>.
+            <Ext href={portalLinks.pay}>members portal payment page</Ext>. Fees are listed on the{" "}
+            <Link to="/membership">membership page</Link>.
           </p>
         ),
       },
@@ -58,7 +57,7 @@ const groups: { title: string; items: { q: string; a: ReactNode }[] }[] = [
         a: (
           <p>
             Yes. Students join as student affiliates through the{" "}
-            <Ext href={`${PORTAL}/application/registerv3`}>members portal</Ext>. See{" "}
+            <Ext href={portalLinks.apply}>members portal</Ext>. See{" "}
             <Link to="/students">student affiliates</Link> for details.
           </p>
         ),
@@ -72,7 +71,7 @@ const groups: { title: string; items: { q: string; a: ReactNode }[] }[] = [
         q: "How can I check that a practitioner’s AAK certificate is genuine?",
         a: (
           <p>
-            Use the <Ext href={`${PORTAL}/validate`}>certificate validation service</Ext> on the
+            Use the <Ext href={portalLinks.validate}>certificate validation service</Ext> on the
             members portal. Anyone can use it; you don&rsquo;t need to be a member.
           </p>
         ),
@@ -81,7 +80,7 @@ const groups: { title: string; items: { q: string; a: ReactNode }[] }[] = [
         q: "How do I find a registered professional or firm?",
         a: (
           <p>
-            Search the <Ext href={`${PORTAL}/directory`}>members directory</Ext> by name, member
+            Search the <Ext href={portalLinks.directory}>members directory</Ext> by name, member
             number or chapter. It lists members in good standing, and has a separate directory of
             member firms. Results are limited to 50 per search, so narrow your search with the
             filters if you don&rsquo;t see who you&rsquo;re looking for.
@@ -108,7 +107,7 @@ const groups: { title: string; items: { q: string; a: ReactNode }[] }[] = [
         a: (
           <p>
             Each event&rsquo;s page shows how to register. Registration for most AAK events is on
-            the <Ext href={`${PORTAL}/publicevents`}>members portal events page</Ext>.
+            the <Ext href={portalLinks.events}>members portal events page</Ext>.
           </p>
         ),
       },
