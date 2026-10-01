@@ -1,0 +1,112 @@
+# AAK website: static export for Apache / cPanel.
+
+# Other sites on this hosting account (biennale., convention., schools.,
+# sacco.aak.or.ke) may have their folders inside public_html, where this
+# file's rules would otherwise reach them. Everything here is limited to this
+# site's own host names (and local test servers), so they stay untouched.
+<If "%{HTTP_HOST} =~ /^((www|new)\.)?aak\.or\.ke$|^(localhost|127\.0\.0\.1)(:\d+)?$/i">
+  Options -Indexes
+  DirectoryIndex index.html index.php
+  ErrorDocument 404 /404.html
+  # Serve /about from /about/index.html without the /about -> /about/ redirect.
+  DirectorySlash Off
+</If>
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Requests for the other sites on this account pass through untouched.
+  RewriteCond %{HTTP_HOST} !^((www|new)\.)?aak\.or\.ke$ [NC]
+  RewriteCond %{HTTP_HOST} !^(localhost|127\.0\.0\.1)(:\d+)?$ [NC]
+  RewriteRule ^ - [L]
+
+  # Security rules below are limited to this site's own host names. On cPanel,
+  # subdomains (members., sacco., buildhub., convention., biennale.) often live
+  # in folders under public_html, and must not inherit this site's rules.
+
+  # One address: www.aak.or.ke -> https://aak.or.ke (the canonical URL every
+  # page declares). Needs www's DNS pointed at this server.
+  RewriteCond %{HTTP_HOST} ^www\.aak\.or\.ke$ [NC]
+  RewriteRule ^ https://aak.or.ke%{REQUEST_URI} [R=301,L,NE]
+
+  # HTTPS only (local test servers excepted).
+  RewriteCond %{HTTP_HOST} ^((www|new)\.)?aak\.or\.ke$ [NC]
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !=https
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L,NE]
+
+  # Hidden files and folders (.git, .env, editor backups...) are never served;
+  # .well-known stays reachable for SSL certificate checks.
+  RewriteCond %{HTTP_HOST} ^((www|new)\.)?aak\.or\.ke$|^(localhost|127\.0\.0\.1)(:\d+)?$ [NC]
+  RewriteRule (^|/)\.(?!well-known/) - [F,L]
+
+  # No PHP runs here except the member register endpoint: old WordPress
+  # scripts left on the server (wp-login.php, plugins, uploads) stay inert.
+  RewriteCond %{HTTP_HOST} ^((www|new)\.)?aak\.or\.ke$|^(localhost|127\.0\.0\.1)(:\d+)?$ [NC]
+  RewriteCond %{REQUEST_URI} \.(php[0-9]?|phtml|phar)$ [NC]
+  RewriteCond %{REQUEST_URI} !^/api/member-stats\.php$
+  RewriteRule ^ - [F,L]
+
+  # Member register endpoint (see api/member-stats.php).
+  RewriteRule ^api/member-stats/?$ api/member-stats.php [L]
+
+  # Old WordPress addresses -> their new pages, so existing links and search
+  # results keep working. WordPress files under /wp-content/uploads/ are left
+  # in place on the server and served as-is.
+  RewriteRule ^about-us/?$ /about [R=301,L]
+  RewriteRule ^fees-subscriptions/?$ /membership [R=301,L]
+  RewriteRule ^benefits/?$ /membership [R=301,L]
+  RewriteRule ^contact-us/?$ /contact [R=301,L]
+  RewriteRule ^aak-awards-honours/?$ /awards [R=301,L]
+  RewriteRule ^(mulika-mjengo|grow-a-classroom|healthy-homes-guidelines|je-una-mjengo|urban-thinkers-campus)/?$ /initiatives/$1 [R=301,L]
+  # The Safari Green Building Index has its own website now.
+  RewriteRule ^safari-green-building-index/?$ https://safarigreenbuilding.org/ [R=301,L]
+  RewriteRule ^(architects|quantity-surveyors|town-planners|engineers|landscape-architects|environmental-design-consultants|interior-designers)-chapter/?$ /chapters/$1 [R=301,L]
+  RewriteRule ^construction-project-management-chapter/?$ /chapters/construction-project-managers [R=301,L]
+
+  # Downloads live in Cloudflare R2, not on this host (see src/lib/files.ts).
+  # 302 for now: the address becomes files.aak.or.ke once DNS is on Cloudflare.
+  RewriteRule ^documents/(.+)$ https://aak-files.aak-kenya.workers.dev/documents/$1 [R=302,L,NE]
+
+  # Clean page URLs: /about or /about/ -> /about/index.html.
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{DOCUMENT_ROOT}/$1/index.html -f
+  RewriteRule ^(.+?)/?$ $1/index.html [L]
+</IfModule>
+
+# AddOutputFilterByType needs mod_filter as well as mod_deflate in Apache 2.4;
+# without the guard a host missing either would 500 every request.
+<IfModule mod_deflate.c>
+  <IfModule mod_filter.c>
+    # Current Apache mime.types serve .js as text/javascript; older ones use
+    # application/javascript. List both or the JS bundles go out uncompressed.
+    AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript application/x-javascript application/json application/manifest+json image/svg+xml application/xml text/xml text/plain
+  </IfModule>
+</IfModule>
+
+<IfModule mod_headers.c>
+  # Security headers, for this site's own host names only (see above).
+  <If "%{HTTP_HOST} =~ /^((www|new)\.)?aak\.or\.ke$|^(localhost|127\.0\.0\.1)(:\d+)?$/i">
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()"
+    # What pages may load: this site, YouTube (player + thumbnails), Google
+    # Maps (on request, contact page), Facebook's page plugin (footer "Latest
+    # posts", on request), and the downloads host (radio clips).
+    # Inline scripts are allowed because the framework writes page state
+    # inline, and that differs on every page.
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://i.ytimg.com; font-src 'self'; connect-src 'self'; media-src 'self' https://aak-files.aak-kenya.workers.dev; frame-src https://www.youtube-nocookie.com https://www.google.com https://www.facebook.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'"
+    # Browsers remember to use HTTPS. Subdomains aren't included on purpose.
+    Header always set Strict-Transport-Security "max-age=31536000" "expr=%{HTTPS} == 'on'"
+  </If>
+
+  # Caching, for this site only: the Biennale site has an /assets/ folder
+  # too, and must not have its files cached for a year.
+  <If "%{HTTP_HOST} =~ /^((www|new)\.)?aak\.or\.ke$|^(localhost|127\.0\.0\.1)(:\d+)?$/i">
+    # Fingerprinted build files (/assets/*) never change: cache for a year.
+    Header set Cache-Control "public, max-age=31536000, immutable" "expr=%{REQUEST_URI} =~ m#^/assets/#"
+    Header set Cache-Control "public, max-age=2592000" "expr=%{REQUEST_FILENAME} =~ /\.(webp|jpe?g|png|svg|ico|woff2?)$/"
+    Header set Cache-Control "public, max-age=0, must-revalidate" "expr=%{REQUEST_FILENAME} =~ /\.html$/"
+  </If>
+</IfModule>

@@ -1,0 +1,26 @@
+# Architectural Association of Kenya (AAK)
+
+> Established in 1967, AAK is Kenya's leading professional association for the built and natural environment — architects, quantity surveyors, town planners, engineers, landscape architects, environmental design consultants, construction project managers and interior designers, organised into eight chapters and three regional branches.
+
+AAK is registered under Kenya's Societies Act. This site (aak.or.ke) is its public marketing and information site — for membership, certificate validation and the member directory, see members.aak.or.ke.
+
+## Pages
+
+- [Home](https://aak.or.ke/): overview, current events, chapters, initiatives, media and publications
+- [About](https://aak.or.ke/about): mission, vision, core values, objectives, and the association's eight-chapter / three-branch structure
+- [Events](https://aak.or.ke/events): the association's calendar of ongoing and upcoming events
+- [Team](https://aak.or.ke/team): the Governing Council, chapter chairpersons, regional branch leadership and College of Fellows
+- [Arbitration](https://aak.or.ke/arbitration): construction-dispute arbitration under the Joint Building Council and the Arbitration Act, 1995
+
+## Key facts
+
+- Founded: 1967
+- Structure: 8 professional chapters (Architects, Quantity Surveyors, Town Planners, Engineers, Landscape Architects, Environmental Design Consultants, Construction Project Managers, Interior Designers) plus 3 regional branches (Coast, Western Region, South Rift)
+- Governing Council term: 2025/2027
+- Public safety initiative: Mulika Mjengo (report unsafe buildings)
+- Sustainability initiative: Safari Green Building Index
+- CSR initiative: Grow A Classroom
+
+## Notes for AI agents
+
+Content on this site is kept factual and sourced from aak.or.ke. Event dates and leadership names should be re-verified against the live site before being repeated as current, since terms and calendars change year to year.
