@@ -1,5 +1,5 @@
 """
-Certificate codes for an AAK event, and the register the website checks them against.
+Certificate records for an AAK event, and the register the website checks them against.
 
     python scripts/certificates/make-register.py \
         --attendees "attendees.xlsx" --out "C:/.../Certificates/convention-2026" \
@@ -10,7 +10,9 @@ Certificate codes for an AAK event, and the register the website checks them aga
 The attendee sheet needs a name column (full_name, or set --name-column);
 email and organization are used when present. With --serial-column, only rows
 that have a serial number get a certificate, and the serial is carried into
-the register so the website can also verify by serial plus surname. Writes, into --out (keep it OUTSIDE this repository, which is
+the register: the website verifies a certificate by its serial plus the
+holder's surname. Each recipient also gets a private code (AAK-<prefix>-XXXX-
+XXXX) as their unique identifier in AAK's records; it isn't shown publicly. Writes, into --out (keep it OUTSIDE this repository, which is
 public):
 
   master.csv        Private. Every code issued, with email and organisation,
@@ -19,15 +21,15 @@ public):
                     the cPanel server (outside public_html). Code, name and
                     certificate details only: no contact details.
   mail-merge.csv    Private. For producing and sending the certificates: name,
-                    serial, email, private code, verification link and QR
-                    image file per recipient.
-  qr/<code>.png     QR code linking to that certificate's verification page.
+                    serial, email and private code per recipient.
+  qr/<code>.png     Only with --qr: a QR code per certificate (kept for later
+                    use; the website currently verifies by serial and surname).
 
 Re-run with an updated attendee sheet to add late attendees: existing codes
 never change (people are matched by serial, then email, then name). To withdraw a certificate, set its status to "revoked" in
 master.csv and re-run (or edit register.csv on the server directly).
 
-Needs: pip install openpyxl segno
+Needs: pip install openpyxl (and segno, for --qr)
 """
 
 import argparse
@@ -39,7 +41,6 @@ import sys
 from pathlib import Path
 
 import openpyxl
-import segno
 
 SITE = "https://aak.or.ke"
 # No 0/O, 1/I/L or U, so codes can't be misread or mistyped.
@@ -109,6 +110,7 @@ def main() -> None:
     ap.add_argument("--cpd-points", default="")
     ap.add_argument("--name-column", default="full_name")
     ap.add_argument("--serial-column", help="Column of printed serial numbers; rows without one are skipped")
+    ap.add_argument("--qr", action="store_true", help="Also make a QR code image per certificate")
     ap.add_argument("--issued", default=datetime.date.today().strftime("%-d %B %Y") if sys.platform != "win32" else datetime.date.today().strftime("%#d %B %Y"))
     args = ap.parse_args()
 
@@ -118,7 +120,7 @@ def main() -> None:
     out = args.out.resolve()
     if out == repo or repo in out.parents:
         sys.exit("--out must be outside the website repository: it holds attendees' personal data.")
-    (out / "qr").mkdir(parents=True, exist_ok=True)
+    out.mkdir(parents=True, exist_ok=True)
 
     master_path = out / "master.csv"
     master: list[dict] = []
@@ -179,15 +181,21 @@ def main() -> None:
 
     with (out / "mail-merge.csv").open("w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
-        writer.writerow(["name", "serial", "email", "code", "verify_url", "qr_file"])
+        writer.writerow(["name", "serial", "email", "code"] + (["qr_file"] if args.qr else []))
         for m in master:
             if m["status"] == "revoked":
                 continue
-            url = f"{SITE}/certificate-verification?code={m['code']}"
-            qr_file = out / "qr" / f"{m['code']}.png"
-            if not qr_file.exists():
-                segno.make(url, error="m").save(qr_file, scale=10, border=2, dark="#1a1a1a")
-            writer.writerow([m["name"], m.get("serial", ""), m.get("email", ""), m["code"], url, str(qr_file)])
+            row = [m["name"], m.get("serial", ""), m.get("email", ""), m["code"]]
+            if args.qr:
+                import segno
+
+                (out / "qr").mkdir(exist_ok=True)
+                qr_file = out / "qr" / f"{m['code']}.png"
+                if not qr_file.exists():
+                    url = f"{SITE}/certificate-verification?code={m['code']}"
+                    segno.make(url, error="m").save(qr_file, scale=10, border=2, dark="#1a1a1a")
+                row.append(str(qr_file))
+            writer.writerow(row)
 
     print(f"{added} new code(s); {len(master)} certificate(s) in the register. Files in {out}")
     for w in warnings:

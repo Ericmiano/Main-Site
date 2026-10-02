@@ -1,23 +1,20 @@
 <?php
 /**
- * Certificate verification (served at /api/certificate?code=... via .htaccess).
+ * Certificate verification (served at /api/certificate via .htaccess).
  *
  * Looks up one certificate in the registers kept OUTSIDE public_html, so the
  * list itself can never be downloaded or browsed:
  *   /home/<account>/aak-certificates/*.csv
  * Columns: code,serial,name,certificate,event,dates,venue,cpd_points,issued,status
- * (status "revoked" withdraws a certificate). The registers are made by
+ * (status "revoked" withdraws a certificate; "code" is AAK's private record
+ * identifier and is never sent out). The registers are made by
  * scripts/certificates/make-register.py and hold no contact details.
  *
- * Two ways to ask:
- *   ?code=AAK-CV26-XXXX-XXXX    the certificate's private code (its QR code)
+ * Ask with the printed serial and a name on the certificate (e.g. surname):
  *   ?serial=AAK/CONV26/DL/0000&name=Surname
- *                               the printed serial plus a name on the
- *                               certificate (e.g. the surname). Serials run in
- *                               sequence, so the name is required: without it
- *                               anyone could list every holder by counting.
- *                               A wrong pair reads "not found", never revealing
- *                               that the serial exists.
+ * Serials run in sequence, so the name is required: without it anyone could
+ * list every holder by counting. A wrong pair reads "not found", never
+ * revealing that the serial exists.
  */
 
 // Never print PHP warnings into the response: they can reveal server paths.
@@ -41,12 +38,12 @@ if (!in_array($_SERVER['REQUEST_METHOD'] ?? 'GET', ['GET', 'HEAD'], true)) {
 }
 
 const MAX_LOOKUPS = 30;      // per visitor ...
-const WINDOW_SECONDS = 600;  // ... per 10 minutes, so codes can't be guessed by brute force
+const WINDOW_SECONDS = 600;  // ... per 10 minutes, against guessing
 
-// Codes are compared without dashes, spaces or case: "aak-c26 7kq3m9xd" = "AAK-C26-7KQ3-M9XD".
-function canonical(string $code): string
+// Serials are compared without slashes, spaces or case: "aak conv26 dl 0001" = "AAK/CONV26/DL/0001".
+function canonical(string $value): string
 {
-    return preg_replace('/[^A-Z0-9]/', '', strtoupper($code));
+    return preg_replace('/[^A-Z0-9]/', '', strtoupper($value));
 }
 
 // Names are compared word by word, ignoring case, accents and punctuation
@@ -59,17 +56,11 @@ function nameWords(string $name): array
     return array_values(array_filter(explode(' ', $plain), fn ($w) => strlen($w) >= 2));
 }
 
-$code = canonical((string) ($_GET['code'] ?? ''));
 $serial = canonical((string) ($_GET['serial'] ?? ''));
 $givenName = nameWords((string) ($_GET['name'] ?? ''));
-if ($code !== '') {
-    $mode = 'code';
-} elseif ($serial !== '' && $givenName) {
-    $mode = 'serial';
-} else {
-    respond(400, ['status' => 'invalid']);
-}
-if (strlen($code) > 40 || strlen($serial) > 40 || count($givenName) > 8) {
+// At least one real name (3+ letters), so "a" or "an" can't stand in for one.
+if ($serial === '' || strlen($serial) > 40 || !$givenName || count($givenName) > 8
+    || !array_filter($givenName, fn ($w) => strlen($w) >= 3)) {
     respond(400, ['status' => 'invalid']);
 }
 
@@ -111,25 +102,15 @@ foreach (glob($dir . '/*.csv') ?: [] as $file) {
             continue;
         }
         $record = array_combine($header, array_map('trim', $row));
-        if ($mode === 'code') {
-            if (canonical($record['code'] ?? '') !== $code) {
-                continue;
-            }
-        } else {
-            // Every word typed must be one of the holder's names, and at least
-            // one of them a real name (3+ letters), so "a" or "an" can't pass.
-            $holder = nameWords($record['name'] ?? '');
-            if (canonical($record['serial'] ?? '') !== $serial
-                || array_diff($givenName, $holder)
-                || !array_filter($givenName, fn ($w) => strlen($w) >= 3)) {
-                continue;
-            }
+        // Every word typed must be one of the holder's names.
+        if (canonical($record['serial'] ?? '') !== $serial
+            || array_diff($givenName, nameWords($record['name'] ?? ''))) {
+            continue;
         }
         fclose($handle);
         $revoked = strtolower($record['status'] ?? '') === 'revoked';
         respond(200, [
             'status' => $revoked ? 'revoked' : 'valid',
-            'code' => $record['code'],
             'serial' => $record['serial'] ?? '',
             'name' => $record['name'] ?? '',
             'certificate' => $record['certificate'] ?? '',

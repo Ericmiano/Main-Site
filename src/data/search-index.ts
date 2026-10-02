@@ -65,7 +65,7 @@ const pages: SearchEntry[] = [
   {
     title: "Certificate verification",
     description:
-      "Check that a certificate from an AAK event, such as the Annual Convention, is genuine, using the code or QR code printed on it.",
+      "Check that a certificate from an AAK event, such as the Annual Convention, is genuine, using its serial number and the holder's surname.",
     category: "Page",
     href: "/certificate-verification",
   },
