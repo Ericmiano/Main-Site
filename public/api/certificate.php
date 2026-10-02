@@ -11,7 +11,7 @@
  *
  * Two ways to ask:
  *   ?code=AAK-CV26-XXXX-XXXX    the certificate's private code (its QR code)
- *   ?serial=AAK/CONV26/DL/0001&name=Gitonga
+ *   ?serial=AAK/CONV26/DL/0000&name=Surname
  *                               the printed serial plus a name on the
  *                               certificate (e.g. the surname). Serials run in
  *                               sequence, so the name is required: without it
