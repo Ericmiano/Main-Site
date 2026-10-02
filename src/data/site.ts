@@ -662,6 +662,7 @@ export const navMenu: NavMenuEntry[] = [
       // { label: "Arbitration", href: "/arbitration" },
       { label: "Awards & honours", href: "/awards" },
       { label: "Media & archive", href: "/media" },
+      { label: "Certificate verification", href: "/certificate-verification" },
     ],
   },
   {

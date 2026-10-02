@@ -1,0 +1,184 @@
+"""
+Certificate codes for an AAK event, and the register the website checks them against.
+
+    python scripts/certificates/make-register.py \
+        --attendees "attendees.xlsx" --out "C:/.../Certificates/convention-2026" \
+        --prefix CV26 --event "AAK Annual Convention 2026" \
+        --dates "16 - 19 September 2026" \
+        --venue "Diamonds Leisure Beach & Golf Resort, Diani"
+
+The attendee sheet needs a full_name column; email and organization are used
+when present. Writes, into --out (keep it OUTSIDE this repository, which is
+public):
+
+  master.csv        Private. Every code issued, with email and organisation,
+                    so re-running keeps everyone's code. Never upload it.
+  register.csv      Upload to /home/<account>/aak-certificates/<event>.csv on
+                    the cPanel server (outside public_html). Code, name and
+                    certificate details only: no contact details.
+  mail-merge.csv    For producing the certificates: name, code, verification
+                    link and QR image file per attendee.
+  qr/<code>.png     QR code linking to that certificate's verification page.
+
+Re-run with an updated attendee sheet to add late attendees: existing codes
+never change. To withdraw a certificate, set its status to "revoked" in
+master.csv and re-run (or edit register.csv on the server directly).
+
+Needs: pip install openpyxl segno
+"""
+
+import argparse
+import csv
+import datetime
+import re
+import secrets
+import sys
+from pathlib import Path
+
+import openpyxl
+import segno
+
+SITE = "https://aak.or.ke"
+# No 0/O, 1/I/L or U, so codes can't be misread or mistyped.
+ALPHABET = "23456789ABCDEFGHJKMNPQRSTVWXYZ"
+MASTER_FIELDS = ["code", "name", "name_as_supplied", "email", "organization", "status"]
+REGISTER_FIELDS = ["code", "name", "certificate", "event", "dates", "venue", "cpd_points", "issued", "status"]
+KEEP_UPPER = {"QS", "II", "III", "IV", "MBS", "OGW", "HSC", "EBS", "CBS"}
+TITLES = {"arch": "Arch.", "qs": "QS", "eng": "Eng.", "dr": "Dr.", "prof": "Prof.", "plan": "Plan."}
+
+
+def new_code(prefix: str, taken: set[str]) -> str:
+    while True:
+        body = "".join(secrets.choice(ALPHABET) for _ in range(8))
+        code = f"AAK-{prefix}-{body[:4]}-{body[4:]}"
+        if code not in taken:
+            return code
+
+
+def tidy_name(raw: str) -> str:
+    """Collapse spaces; title-case names typed all in capitals or all in lower case."""
+    name = re.sub(r"\s+", " ", raw).strip()
+    if not (name.isupper() or name.islower()):
+        return name
+    words = []
+    for word in name.split(" "):
+        bare = word.rstrip(".").lower()
+        if bare in TITLES:
+            words.append(TITLES[bare])
+        elif word.strip(",").upper() in KEEP_UPPER:
+            words.append(word.upper())
+        elif word.strip(",").upper() == "PHD":
+            words.append(word.upper().replace("PHD", "PhD"))
+        else:
+            # Capitalise the first letter and any after "-", "." or "(" (Wa-Mathai,
+            # M.Arch., (Dr)); letters after an apostrophe stay lower case, as in
+            # Ndung'u and Mong'are.
+            words.append(re.sub(r"(^|[-.(])([a-z])", lambda m: m.group(1) + m.group(2).upper(), word.lower()))
+    return " ".join(words)
+
+
+def read_attendees(path: Path) -> list[dict]:
+    sheet = openpyxl.load_workbook(path, read_only=True, data_only=True).worksheets[0]
+    rows = sheet.iter_rows(values_only=True)
+    header = [str(h or "").strip().lower() for h in next(rows)]
+    if "full_name" not in header:
+        sys.exit("The attendee sheet needs a full_name column.")
+    people = []
+    for row in rows:
+        record = {h: ("" if v is None else str(v).strip()) for h, v in zip(header, row)}
+        if record.get("full_name"):
+            people.append(record)
+    return people
+
+
+def main() -> None:
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--attendees", required=True, type=Path)
+    ap.add_argument("--out", required=True, type=Path)
+    ap.add_argument("--prefix", required=True, help="Short event code inside each certificate code, e.g. CV26")
+    ap.add_argument("--event", required=True)
+    ap.add_argument("--dates", required=True)
+    ap.add_argument("--venue", default="")
+    ap.add_argument("--certificate", default="Certificate of Attendance")
+    ap.add_argument("--cpd-points", default="")
+    ap.add_argument("--issued", default=datetime.date.today().strftime("%-d %B %Y") if sys.platform != "win32" else datetime.date.today().strftime("%#d %B %Y"))
+    args = ap.parse_args()
+
+    if not re.fullmatch(r"[A-Z0-9]{2,8}", args.prefix):
+        sys.exit("--prefix must be 2-8 capital letters or digits.")
+    repo = Path(__file__).resolve().parents[2]
+    out = args.out.resolve()
+    if out == repo or repo in out.parents:
+        sys.exit("--out must be outside the website repository: it holds attendees' personal data.")
+    (out / "qr").mkdir(parents=True, exist_ok=True)
+
+    master_path = out / "master.csv"
+    master: list[dict] = []
+    if master_path.exists():
+        with master_path.open(newline="", encoding="utf-8-sig") as f:
+            master = list(csv.DictReader(f))
+    by_email = {m["email"].lower(): m for m in master if m.get("email")}
+    by_name = {m["name_as_supplied"].lower(): m for m in master}
+    taken = {m["code"] for m in master}
+
+    added, warnings = 0, []
+    for person in read_attendees(args.attendees):
+        supplied = person["full_name"]
+        email = person.get("email", "").lower()
+        existing = by_email.get(email) if email else None
+        existing = existing or by_name.get(supplied.lower())
+        if existing:
+            continue
+        code = new_code(args.prefix, taken)
+        taken.add(code)
+        entry = {
+            "code": code,
+            "name": tidy_name(supplied),
+            "name_as_supplied": supplied,
+            "email": person.get("email", ""),
+            "organization": person.get("organization", ""),
+            "status": "valid",
+        }
+        master.append(entry)
+        by_name[supplied.lower()] = entry
+        if email:
+            by_email[email] = entry
+        else:
+            warnings.append(f"No email for {supplied}: matched by name on re-runs.")
+        added += 1
+
+    master.sort(key=lambda m: m["name"].lower())
+    with master_path.open("w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, MASTER_FIELDS)
+        writer.writeheader()
+        writer.writerows({k: m.get(k, "") for k in MASTER_FIELDS} for m in master)
+
+    with (out / "register.csv").open("w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, REGISTER_FIELDS)
+        writer.writeheader()
+        for m in master:
+            writer.writerow({
+                "code": m["code"], "name": m["name"], "certificate": args.certificate,
+                "event": args.event, "dates": args.dates, "venue": args.venue,
+                "cpd_points": args.cpd_points, "issued": args.issued, "status": m["status"] or "valid",
+            })
+
+    with (out / "mail-merge.csv").open("w", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f)
+        writer.writerow(["name", "code", "verify_url", "qr_file"])
+        for m in master:
+            if m["status"] == "revoked":
+                continue
+            url = f"{SITE}/certificate-verification?code={m['code']}"
+            qr_file = out / "qr" / f"{m['code']}.png"
+            if not qr_file.exists():
+                segno.make(url, error="m").save(qr_file, scale=10, border=2, dark="#1a1a1a")
+            writer.writerow([m["name"], m["code"], url, str(qr_file)])
+
+    print(f"{added} new code(s); {len(master)} certificate(s) in the register. Files in {out}")
+    for w in warnings:
+        print("  note:", w)
+
+
+if __name__ == "__main__":
+    main()

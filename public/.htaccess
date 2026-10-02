@@ -40,11 +40,11 @@
   RewriteCond %{HTTP_HOST} ^((www|new)\.)?aak\.or\.ke$|^(localhost|127\.0\.0\.1)(:\d+)?$ [NC]
   RewriteRule (^|/)\.(?!well-known/) - [F,L]
 
-  # No PHP runs here except the two API endpoints below: old WordPress
+  # No PHP runs here except the API endpoints below: old WordPress
   # scripts left on the server (wp-login.php, plugins, uploads) stay inert.
   RewriteCond %{HTTP_HOST} ^((www|new)\.)?aak\.or\.ke$|^(localhost|127\.0\.0\.1)(:\d+)?$ [NC]
   RewriteCond %{REQUEST_URI} \.(php[0-9]?|phtml|phar)$ [NC]
-  RewriteCond %{REQUEST_URI} !^/api/(member-stats|portal-events)\.php$
+  RewriteCond %{REQUEST_URI} !^/api/(member-stats|portal-events|certificate)\.php$
   RewriteRule ^ - [F,L]
 
   # Member register endpoint (see api/member-stats.php).
@@ -52,6 +52,9 @@
 
   # Count of the members portal's public events (see api/portal-events.php).
   RewriteRule ^api/portal-events/?$ api/portal-events.php [L]
+
+  # Event certificate lookups (see api/certificate.php).
+  RewriteRule ^api/certificate/?$ api/certificate.php [L]
 
   # Old WordPress addresses -> their new pages, so existing links and search
   # results keep working. WordPress files under /wp-content/uploads/ are left

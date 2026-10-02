@@ -21,6 +21,7 @@ const resourceLinks = [
   // { label: "Arbitration", to: "/arbitration" as const },
   { label: "Awards & Honours", to: "/awards" as const },
   { label: "Media archive", to: "/media" as const },
+  { label: "Verify a certificate", to: "/certificate-verification" as const },
   { label: "Student affiliates", to: "/students" as const },
   { label: "Store", to: "/store" as const },
 ];

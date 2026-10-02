@@ -19,6 +19,7 @@ import { Route as AwardsRouteImport } from './routes/awards'
 import { Route as BillsRouteImport } from './routes/bills'
 import { Route as BuildingRegulationsRouteImport } from './routes/building-regulations'
 import { Route as BuildpressMagazineRouteImport } from './routes/buildpress-magazine'
+import { Route as CertificateVerificationRouteImport } from './routes/certificate-verification'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CookiesRouteImport } from './routes/cookies'
 import { Route as CpdRapporteurReportsRouteImport } from './routes/cpd-rapporteur-reports'
@@ -41,6 +42,7 @@ import { Route as StoreRouteImport } from './routes/store'
 import { Route as StudentsRouteImport } from './routes/students'
 import { Route as TeamRouteImport } from './routes/team'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as ApiCertificateRouteImport } from './routes/api.certificate'
 import { Route as ApiMemberStatsRouteImport } from './routes/api.member-stats'
 import { Route as ApiPortalEventsRouteImport } from './routes/api.portal-events'
 import { Route as ChaptersSlugRouteImport } from './routes/chapters.$slug'
@@ -99,6 +101,11 @@ const BuildingRegulationsRoute = BuildingRegulationsRouteImport.update({
 const BuildpressMagazineRoute = BuildpressMagazineRouteImport.update({
   id: '/buildpress-magazine',
   path: '/buildpress-magazine',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CertificateVerificationRoute = CertificateVerificationRouteImport.update({
+  id: '/certificate-verification',
+  path: '/certificate-verification',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -213,6 +220,11 @@ const TermsRoute = TermsRouteImport.update({
   path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiCertificateRoute = ApiCertificateRouteImport.update({
+  id: '/api/certificate',
+  path: '/api/certificate',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiMemberStatsRoute = ApiMemberStatsRouteImport.update({
   id: '/api/member-stats',
   path: '/api/member-stats',
@@ -271,6 +283,7 @@ export interface FileRoutesByFullPath {
   '/bills': typeof BillsRoute
   '/building-regulations': typeof BuildingRegulationsRoute
   '/buildpress-magazine': typeof BuildpressMagazineRoute
+  '/certificate-verification': typeof CertificateVerificationRoute
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
   '/cpd-rapporteur-reports': typeof CpdRapporteurReportsRoute
@@ -293,6 +306,7 @@ export interface FileRoutesByFullPath {
   '/students': typeof StudentsRoute
   '/team': typeof TeamRoute
   '/terms': typeof TermsRoute
+  '/api/certificate': typeof ApiCertificateRoute
   '/api/member-stats': typeof ApiMemberStatsRoute
   '/api/portal-events': typeof ApiPortalEventsRoute
   '/chapters/$slug': typeof ChaptersSlugRoute
@@ -314,6 +328,7 @@ export interface FileRoutesByTo {
   '/bills': typeof BillsRoute
   '/building-regulations': typeof BuildingRegulationsRoute
   '/buildpress-magazine': typeof BuildpressMagazineRoute
+  '/certificate-verification': typeof CertificateVerificationRoute
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
   '/cpd-rapporteur-reports': typeof CpdRapporteurReportsRoute
@@ -336,6 +351,7 @@ export interface FileRoutesByTo {
   '/students': typeof StudentsRoute
   '/team': typeof TeamRoute
   '/terms': typeof TermsRoute
+  '/api/certificate': typeof ApiCertificateRoute
   '/api/member-stats': typeof ApiMemberStatsRoute
   '/api/portal-events': typeof ApiPortalEventsRoute
   '/chapters/$slug': typeof ChaptersSlugRoute
@@ -358,6 +374,7 @@ export interface FileRoutesById {
   '/bills': typeof BillsRoute
   '/building-regulations': typeof BuildingRegulationsRoute
   '/buildpress-magazine': typeof BuildpressMagazineRoute
+  '/certificate-verification': typeof CertificateVerificationRoute
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
   '/cpd-rapporteur-reports': typeof CpdRapporteurReportsRoute
@@ -380,6 +397,7 @@ export interface FileRoutesById {
   '/students': typeof StudentsRoute
   '/team': typeof TeamRoute
   '/terms': typeof TermsRoute
+  '/api/certificate': typeof ApiCertificateRoute
   '/api/member-stats': typeof ApiMemberStatsRoute
   '/api/portal-events': typeof ApiPortalEventsRoute
   '/chapters/$slug': typeof ChaptersSlugRoute
@@ -403,6 +421,7 @@ export interface FileRouteTypes {
     | '/bills'
     | '/building-regulations'
     | '/buildpress-magazine'
+    | '/certificate-verification'
     | '/contact'
     | '/cookies'
     | '/cpd-rapporteur-reports'
@@ -425,6 +444,7 @@ export interface FileRouteTypes {
     | '/students'
     | '/team'
     | '/terms'
+    | '/api/certificate'
     | '/api/member-stats'
     | '/api/portal-events'
     | '/chapters/$slug'
@@ -446,6 +466,7 @@ export interface FileRouteTypes {
     | '/bills'
     | '/building-regulations'
     | '/buildpress-magazine'
+    | '/certificate-verification'
     | '/contact'
     | '/cookies'
     | '/cpd-rapporteur-reports'
@@ -468,6 +489,7 @@ export interface FileRouteTypes {
     | '/students'
     | '/team'
     | '/terms'
+    | '/api/certificate'
     | '/api/member-stats'
     | '/api/portal-events'
     | '/chapters/$slug'
@@ -489,6 +511,7 @@ export interface FileRouteTypes {
     | '/bills'
     | '/building-regulations'
     | '/buildpress-magazine'
+    | '/certificate-verification'
     | '/contact'
     | '/cookies'
     | '/cpd-rapporteur-reports'
@@ -511,6 +534,7 @@ export interface FileRouteTypes {
     | '/students'
     | '/team'
     | '/terms'
+    | '/api/certificate'
     | '/api/member-stats'
     | '/api/portal-events'
     | '/chapters/$slug'
@@ -533,6 +557,7 @@ export interface RootRouteChildren {
   BillsRoute: typeof BillsRoute
   BuildingRegulationsRoute: typeof BuildingRegulationsRoute
   BuildpressMagazineRoute: typeof BuildpressMagazineRoute
+  CertificateVerificationRoute: typeof CertificateVerificationRoute
   ContactRoute: typeof ContactRoute
   CookiesRoute: typeof CookiesRoute
   CpdRapporteurReportsRoute: typeof CpdRapporteurReportsRoute
@@ -555,6 +580,7 @@ export interface RootRouteChildren {
   StudentsRoute: typeof StudentsRoute
   TeamRoute: typeof TeamRoute
   TermsRoute: typeof TermsRoute
+  ApiCertificateRoute: typeof ApiCertificateRoute
   ApiMemberStatsRoute: typeof ApiMemberStatsRoute
   ApiPortalEventsRoute: typeof ApiPortalEventsRoute
   ChaptersSlugRoute: typeof ChaptersSlugRoute
@@ -636,6 +662,13 @@ declare module '@tanstack/react-router' {
       path: '/buildpress-magazine'
       fullPath: '/buildpress-magazine'
       preLoaderRoute: typeof BuildpressMagazineRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/certificate-verification': {
+      id: '/certificate-verification'
+      path: '/certificate-verification'
+      fullPath: '/certificate-verification'
+      preLoaderRoute: typeof CertificateVerificationRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -792,6 +825,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/certificate': {
+      id: '/api/certificate'
+      path: '/api/certificate'
+      fullPath: '/api/certificate'
+      preLoaderRoute: typeof ApiCertificateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/member-stats': {
       id: '/api/member-stats'
       path: '/api/member-stats'
@@ -869,6 +909,7 @@ const rootRouteChildren: RootRouteChildren = {
   BillsRoute: BillsRoute,
   BuildingRegulationsRoute: BuildingRegulationsRoute,
   BuildpressMagazineRoute: BuildpressMagazineRoute,
+  CertificateVerificationRoute: CertificateVerificationRoute,
   ContactRoute: ContactRoute,
   CookiesRoute: CookiesRoute,
   CpdRapporteurReportsRoute: CpdRapporteurReportsRoute,
@@ -891,6 +932,7 @@ const rootRouteChildren: RootRouteChildren = {
   StudentsRoute: StudentsRoute,
   TeamRoute: TeamRoute,
   TermsRoute: TermsRoute,
+  ApiCertificateRoute: ApiCertificateRoute,
   ApiMemberStatsRoute: ApiMemberStatsRoute,
   ApiPortalEventsRoute: ApiPortalEventsRoute,
   ChaptersSlugRoute: ChaptersSlugRoute,

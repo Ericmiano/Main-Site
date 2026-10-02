@@ -62,6 +62,13 @@ const pages: SearchEntry[] = [
     category: "Page",
     href: "/nominations",
   },
+  {
+    title: "Certificate verification",
+    description:
+      "Check that a certificate from an AAK event, such as the Annual Convention, is genuine, using the code or QR code printed on it.",
+    category: "Page",
+    href: "/certificate-verification",
+  },
   // Arbitration: on hold while the page is being finished. Re-add once ready.
   // {
   //   title: "Arbitration",

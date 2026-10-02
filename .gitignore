@@ -25,6 +25,13 @@ dist-ssr
 !.vscode/extensions.json
 .idea
 
+# Certificate registers and attendee lists hold personal data: never commit them
+# (scripts/certificates/make-register.py writes them outside this repository).
+aak-certificates/
+*register*.csv
+master.csv
+mail-merge.csv
+
 # Personal/local Claude Code settings and skill-package links
 .claude/
 .DS_Store
