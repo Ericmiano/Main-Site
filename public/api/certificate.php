@@ -2,12 +2,22 @@
 /**
  * Certificate verification (served at /api/certificate?code=... via .htaccess).
  *
- * Looks up one certificate code in the registers kept OUTSIDE public_html, so
- * the list itself can never be downloaded or browsed:
+ * Looks up one certificate in the registers kept OUTSIDE public_html, so the
+ * list itself can never be downloaded or browsed:
  *   /home/<account>/aak-certificates/*.csv
- * Columns: code,name,certificate,event,dates,venue,cpd_points,issued,status
+ * Columns: code,serial,name,certificate,event,dates,venue,cpd_points,issued,status
  * (status "revoked" withdraws a certificate). The registers are made by
  * scripts/certificates/make-register.py and hold no contact details.
+ *
+ * Two ways to ask:
+ *   ?code=AAK-CV26-XXXX-XXXX    the certificate's private code (its QR code)
+ *   ?serial=AAK/CONV26/DL/0001&name=Gitonga
+ *                               the printed serial plus a name on the
+ *                               certificate (e.g. the surname). Serials run in
+ *                               sequence, so the name is required: without it
+ *                               anyone could list every holder by counting.
+ *                               A wrong pair reads "not found", never revealing
+ *                               that the serial exists.
  */
 
 // Never print PHP warnings into the response: they can reveal server paths.
@@ -39,8 +49,27 @@ function canonical(string $code): string
     return preg_replace('/[^A-Z0-9]/', '', strtoupper($code));
 }
 
+// Names are compared word by word, ignoring case, accents and punctuation
+// (so Mulang'a, Mulang’a and MULANGA all match).
+function nameWords(string $name): array
+{
+    $name = str_replace(["'", "\u{2019}", "\u{2018}"], '', $name);
+    $ascii = @iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $name);
+    $plain = strtolower(preg_replace('/[^A-Za-z]+/', ' ', $ascii !== false ? $ascii : $name));
+    return array_values(array_filter(explode(' ', $plain), fn ($w) => strlen($w) >= 2));
+}
+
 $code = canonical((string) ($_GET['code'] ?? ''));
-if ($code === '' || strlen($code) > 40) {
+$serial = canonical((string) ($_GET['serial'] ?? ''));
+$givenName = nameWords((string) ($_GET['name'] ?? ''));
+if ($code !== '') {
+    $mode = 'code';
+} elseif ($serial !== '' && $givenName) {
+    $mode = 'serial';
+} else {
+    respond(400, ['status' => 'invalid']);
+}
+if (strlen($code) > 40 || strlen($serial) > 40 || count($givenName) > 8) {
     respond(400, ['status' => 'invalid']);
 }
 
@@ -82,14 +111,26 @@ foreach (glob($dir . '/*.csv') ?: [] as $file) {
             continue;
         }
         $record = array_combine($header, array_map('trim', $row));
-        if (canonical($record['code'] ?? '') !== $code) {
-            continue;
+        if ($mode === 'code') {
+            if (canonical($record['code'] ?? '') !== $code) {
+                continue;
+            }
+        } else {
+            // Every word typed must be one of the holder's names, and at least
+            // one of them a real name (3+ letters), so "a" or "an" can't pass.
+            $holder = nameWords($record['name'] ?? '');
+            if (canonical($record['serial'] ?? '') !== $serial
+                || array_diff($givenName, $holder)
+                || !array_filter($givenName, fn ($w) => strlen($w) >= 3)) {
+                continue;
+            }
         }
         fclose($handle);
         $revoked = strtolower($record['status'] ?? '') === 'revoked';
         respond(200, [
             'status' => $revoked ? 'revoked' : 'valid',
             'code' => $record['code'],
+            'serial' => $record['serial'] ?? '',
             'name' => $record['name'] ?? '',
             'certificate' => $record['certificate'] ?? '',
             'event' => $record['event'] ?? '',

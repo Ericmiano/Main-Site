@@ -7,8 +7,10 @@ Certificate codes for an AAK event, and the register the website checks them aga
         --dates "16 - 19 September 2026" \
         --venue "Diamonds Leisure Beach & Golf Resort, Diani"
 
-The attendee sheet needs a full_name column; email and organization are used
-when present. Writes, into --out (keep it OUTSIDE this repository, which is
+The attendee sheet needs a name column (full_name, or set --name-column);
+email and organization are used when present. With --serial-column, only rows
+that have a serial number get a certificate, and the serial is carried into
+the register so the website can also verify by serial plus surname. Writes, into --out (keep it OUTSIDE this repository, which is
 public):
 
   master.csv        Private. Every code issued, with email and organisation,
@@ -16,12 +18,13 @@ public):
   register.csv      Upload to /home/<account>/aak-certificates/<event>.csv on
                     the cPanel server (outside public_html). Code, name and
                     certificate details only: no contact details.
-  mail-merge.csv    For producing the certificates: name, code, verification
-                    link and QR image file per attendee.
+  mail-merge.csv    Private. For producing and sending the certificates: name,
+                    serial, email, private code, verification link and QR
+                    image file per recipient.
   qr/<code>.png     QR code linking to that certificate's verification page.
 
 Re-run with an updated attendee sheet to add late attendees: existing codes
-never change. To withdraw a certificate, set its status to "revoked" in
+never change (people are matched by serial, then email, then name). To withdraw a certificate, set its status to "revoked" in
 master.csv and re-run (or edit register.csv on the server directly).
 
 Needs: pip install openpyxl segno
@@ -41,8 +44,8 @@ import segno
 SITE = "https://aak.or.ke"
 # No 0/O, 1/I/L or U, so codes can't be misread or mistyped.
 ALPHABET = "23456789ABCDEFGHJKMNPQRSTVWXYZ"
-MASTER_FIELDS = ["code", "name", "name_as_supplied", "email", "organization", "status"]
-REGISTER_FIELDS = ["code", "name", "certificate", "event", "dates", "venue", "cpd_points", "issued", "status"]
+MASTER_FIELDS = ["code", "serial", "name", "name_as_supplied", "email", "organization", "status"]
+REGISTER_FIELDS = ["code", "serial", "name", "certificate", "event", "dates", "venue", "cpd_points", "issued", "status"]
 KEEP_UPPER = {"QS", "II", "III", "IV", "MBS", "OGW", "HSC", "EBS", "CBS"}
 TITLES = {"arch": "Arch.", "qs": "QS", "eng": "Eng.", "dr": "Dr.", "prof": "Prof.", "plan": "Plan."}
 
@@ -77,16 +80,19 @@ def tidy_name(raw: str) -> str:
     return " ".join(words)
 
 
-def read_attendees(path: Path) -> list[dict]:
+def read_attendees(path: Path, name_col: str, serial_col: str | None) -> list[dict]:
     sheet = openpyxl.load_workbook(path, read_only=True, data_only=True).worksheets[0]
     rows = sheet.iter_rows(values_only=True)
     header = [str(h or "").strip().lower() for h in next(rows)]
-    if "full_name" not in header:
-        sys.exit("The attendee sheet needs a full_name column.")
+    for col in [name_col, serial_col]:
+        if col and col.lower() not in header:
+            sys.exit(f"The attendee sheet has no '{col}' column.")
     people = []
     for row in rows:
         record = {h: ("" if v is None else str(v).strip()) for h, v in zip(header, row)}
-        if record.get("full_name"):
+        record["full_name"] = record.get(name_col.lower(), "")
+        record["serial"] = record.get(serial_col.lower(), "") if serial_col else ""
+        if record["full_name"] and (record["serial"] or not serial_col):
             people.append(record)
     return people
 
@@ -101,6 +107,8 @@ def main() -> None:
     ap.add_argument("--venue", default="")
     ap.add_argument("--certificate", default="Certificate of Attendance")
     ap.add_argument("--cpd-points", default="")
+    ap.add_argument("--name-column", default="full_name")
+    ap.add_argument("--serial-column", help="Column of printed serial numbers; rows without one are skipped")
     ap.add_argument("--issued", default=datetime.date.today().strftime("%-d %B %Y") if sys.platform != "win32" else datetime.date.today().strftime("%#d %B %Y"))
     args = ap.parse_args()
 
@@ -117,15 +125,18 @@ def main() -> None:
     if master_path.exists():
         with master_path.open(newline="", encoding="utf-8-sig") as f:
             master = list(csv.DictReader(f))
+    by_serial = {m["serial"].upper(): m for m in master if m.get("serial")}
     by_email = {m["email"].lower(): m for m in master if m.get("email")}
     by_name = {m["name_as_supplied"].lower(): m for m in master}
     taken = {m["code"] for m in master}
 
     added, warnings = 0, []
-    for person in read_attendees(args.attendees):
+    for person in read_attendees(args.attendees, args.name_column, args.serial_column):
         supplied = person["full_name"]
+        serial = person["serial"].upper()
         email = person.get("email", "").lower()
-        existing = by_email.get(email) if email else None
+        existing = by_serial.get(serial) if serial else None
+        existing = existing or (by_email.get(email) if email else None)
         existing = existing or by_name.get(supplied.lower())
         if existing:
             continue
@@ -133,6 +144,7 @@ def main() -> None:
         taken.add(code)
         entry = {
             "code": code,
+            "serial": serial,
             "name": tidy_name(supplied),
             "name_as_supplied": supplied,
             "email": person.get("email", ""),
@@ -141,13 +153,15 @@ def main() -> None:
         }
         master.append(entry)
         by_name[supplied.lower()] = entry
+        if serial:
+            by_serial[serial] = entry
         if email:
             by_email[email] = entry
-        else:
+        elif not serial:
             warnings.append(f"No email for {supplied}: matched by name on re-runs.")
         added += 1
 
-    master.sort(key=lambda m: m["name"].lower())
+    master.sort(key=lambda m: (m.get("serial") or "~", m["name"].lower()))
     with master_path.open("w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, MASTER_FIELDS)
         writer.writeheader()
@@ -158,14 +172,14 @@ def main() -> None:
         writer.writeheader()
         for m in master:
             writer.writerow({
-                "code": m["code"], "name": m["name"], "certificate": args.certificate,
+                "code": m["code"], "serial": m.get("serial", ""), "name": m["name"], "certificate": args.certificate,
                 "event": args.event, "dates": args.dates, "venue": args.venue,
                 "cpd_points": args.cpd_points, "issued": args.issued, "status": m["status"] or "valid",
             })
 
     with (out / "mail-merge.csv").open("w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
-        writer.writerow(["name", "code", "verify_url", "qr_file"])
+        writer.writerow(["name", "serial", "email", "code", "verify_url", "qr_file"])
         for m in master:
             if m["status"] == "revoked":
                 continue
@@ -173,7 +187,7 @@ def main() -> None:
             qr_file = out / "qr" / f"{m['code']}.png"
             if not qr_file.exists():
                 segno.make(url, error="m").save(qr_file, scale=10, border=2, dark="#1a1a1a")
-            writer.writerow([m["name"], m["code"], url, str(qr_file)])
+            writer.writerow([m["name"], m.get("serial", ""), m.get("email", ""), m["code"], url, str(qr_file)])
 
     print(f"{added} new code(s); {len(master)} certificate(s) in the register. Files in {out}")
     for w in warnings:
