@@ -2,7 +2,6 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import {
   IconAlertTriangle as AlertTriangle,
-  IconArrowUpRight as ArrowUpRight,
   IconCircleCheck as CircleCheck,
   IconCircleX as CircleX,
   IconHash as Hash,
@@ -58,41 +57,7 @@ interface Query {
 
 type Result =
   | { state: "idle" | "checking" | "not_found" | "invalid" | "rate_limited" | "unavailable" }
-  | { state: "valid" | "revoked"; certificate: Certificate; query: Query };
-
-const MONTHS = [
-  "january",
-  "february",
-  "march",
-  "april",
-  "may",
-  "june",
-  "july",
-  "august",
-  "september",
-  "october",
-  "november",
-  "december",
-];
-
-const verifyLink = (query: Query) =>
-  `${PAGE_URL}?${new URLSearchParams({ serial: query.serial, name: query.name }).toString()}`;
-
-/** LinkedIn's "Add licence or certification" form, filled in from the certificate. */
-function linkedInUrl(cert: Certificate, query: Query) {
-  const [, monthName, year] = cert.issued.toLowerCase().match(/([a-z]+)\s+(\d{4})/) ?? [];
-  const month = monthName ? MONTHS.indexOf(monthName) + 1 : 0;
-  const params = new URLSearchParams({
-    startTask: "CERTIFICATION_NAME",
-    name: `${cert.certificate}: ${cert.event}`,
-    organizationName: "Architectural Association of Kenya",
-    certUrl: verifyLink(query),
-    certId: cert.serial,
-    ...(year ? { issueYear: year } : {}),
-    ...(month > 0 ? { issueMonth: String(month) } : {}),
-  });
-  return `https://www.linkedin.com/profile/add?${params.toString()}`;
-}
+  | { state: "valid" | "revoked"; certificate: Certificate };
 
 function CertificateVerificationPage() {
   const [serial, setSerial] = useState("");
@@ -113,7 +78,7 @@ function CertificateVerificationPage() {
         ({ status?: string } & Partial<Certificate>) | null;
       const status = data?.status;
       if ((status === "valid" || status === "revoked") && data) {
-        setResult({ state: status, certificate: data as Certificate, query });
+        setResult({ state: status, certificate: data as Certificate });
       } else if (status === "not_found" || status === "invalid" || status === "rate_limited") {
         setResult({ state: status });
       } else {
@@ -361,22 +326,6 @@ function ResultPanel({ result }: { result: Result }) {
           {cert.issued ? <Detail label="Issued" value={cert.issued} /> : null}
           <Detail label="Serial number" value={cert.serial} mono />
         </dl>
-        {valid ? (
-          <footer className="border-t border-border px-6 py-5 sm:px-8">
-            <a
-              href={linkedInUrl(cert, result.query)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-sm font-semibold text-foreground hover:text-primary"
-            >
-              Add this certificate to LinkedIn
-              <ArrowUpRight className="h-4 w-4 text-primary" aria-hidden="true" />
-            </a>
-            <p className="mt-1 text-xs text-muted-foreground">
-              For the certificate holder: adds it to your profile with this verification link.
-            </p>
-          </footer>
-        ) : null}
       </article>
     );
   }
