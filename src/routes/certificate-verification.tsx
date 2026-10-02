@@ -176,9 +176,10 @@ function CertificateVerificationPage() {
                 Verify a certificate
               </h1>
               <p className="mt-5 text-base leading-relaxed text-muted-foreground">
-                Every certificate AAK issues for its events carries a serial number. Enter it with
-                the holder&rsquo;s surname to confirm the certificate is genuine and see the details
-                AAK holds for it.
+                Every certificate AAK issues for its events carries a serial number. Whether you
+                hold the certificate or have been shown it by someone else, enter the serial number
+                with the holder&rsquo;s surname to confirm it is genuine and see the details AAK
+                holds for it.
               </p>
             </Reveal>
           </div>
@@ -260,11 +261,16 @@ function CertificateVerificationPage() {
               </div>
               <div>
                 <h2 className="font-display text-lg font-semibold text-foreground">
-                  For employers
+                  Checking someone else&rsquo;s certificate
                 </h2>
                 <p className="mt-3">
+                  Anyone who has been shown an AAK certificate can check it here: an employer, a
+                  client, an institution or any other party. You don&rsquo;t need an account or the
+                  holder&rsquo;s permission.
+                </p>
+                <p className="mt-3">
                   A genuine certificate shows here with the holder&rsquo;s full name and the event
-                  they attended. Check these match the certificate you were given. If anything
+                  they attended. Check these match the certificate you were shown. If anything
                   differs, or the certificate isn&rsquo;t found, contact{" "}
                   <a href={`mailto:${ENQUIRIES}`} className="link-quiet text-foreground">
                     {ENQUIRIES}
