@@ -21,7 +21,7 @@ const resourceLinks = [
   // { label: "Arbitration", to: "/arbitration" as const },
   { label: "Awards & Honours", to: "/awards" as const },
   { label: "Media archive", to: "/media" as const },
-  { label: "Verify a certificate", to: "/certificate-verification" as const },
+  { label: "Certificate verification", to: "/certificate-verification" as const },
   { label: "Student affiliates", to: "/students" as const },
   { label: "Store", to: "/store" as const },
 ];
@@ -40,7 +40,6 @@ const policyLinks = [
 
 const externalQuickLinks = [
   { label: "Members Directory", href: portalLinks.directory },
-  { label: "Validate Certificate", href: portalLinks.validate },
   { label: "Pay Membership", href: portalLinks.pay },
   { label: "Job Portal", href: portalLinks.jobs },
 ];

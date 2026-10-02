@@ -11,7 +11,7 @@
  * scripts/certificates/make-register.py and hold no contact details.
  *
  * Ask with the printed serial and a name on the certificate (e.g. surname):
- *   ?serial=AAK/CONV26/DL/0000&name=Surname
+ *   ?serial=AAK/XXXX/XX/0000&name=Surname
  * Serials run in sequence, so the name is required: without it anyone could
  * list every holder by counting. A wrong pair reads "not found", never
  * revealing that the serial exists.
@@ -40,7 +40,7 @@ if (!in_array($_SERVER['REQUEST_METHOD'] ?? 'GET', ['GET', 'HEAD'], true)) {
 const MAX_LOOKUPS = 30;      // per visitor ...
 const WINDOW_SECONDS = 600;  // ... per 10 minutes, against guessing
 
-// Serials are compared without slashes, spaces or case: "aak conv26 dl 0001" = "AAK/CONV26/DL/0001".
+// Serials are compared without slashes, spaces or case: "aak xxxx xx 0000" = "AAK/XXXX/XX/0000".
 function canonical(string $value): string
 {
     return preg_replace('/[^A-Z0-9]/', '', strtoupper($value));

@@ -2,9 +2,11 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import {
   IconAlertTriangle as AlertTriangle,
+  IconArrowUpRight as ArrowUpRight,
   IconCircleCheck as CircleCheck,
   IconCircleX as CircleX,
   IconHash as Hash,
+  IconIdBadge2 as IdBadge,
   IconRosetteDiscountCheck as Rosette,
 } from "@tabler/icons-react";
 
@@ -12,6 +14,7 @@ import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { Reveal } from "@/components/site/Reveal";
 import { PageBreadcrumb } from "@/components/site/PageBreadcrumb";
+import { portalLinks } from "@/data/site";
 import { jsonLd } from "@/lib/json-ld";
 
 const SITE_URL = "https://aak.or.ke";
@@ -146,6 +149,15 @@ function CertificateVerificationPage() {
                 with the holder&rsquo;s surname to confirm it is genuine and see the details AAK
                 holds for it.
               </p>
+              <a
+                href={portalLinks.validate}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-foreground hover:text-primary"
+              >
+                Checking an AAK membership instead? Verify membership on the member portal
+                <ArrowUpRight className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
+              </a>
             </Reveal>
           </div>
         </section>
@@ -167,7 +179,7 @@ function CertificateVerificationPage() {
                       name="serial"
                       value={serial}
                       onChange={(e) => setSerial(e.target.value)}
-                      placeholder="e.g. AAK/CONV26/DL/0001"
+                      placeholder="e.g. AAK/XXXX/XX/0000"
                       autoComplete="off"
                       autoCapitalize="characters"
                       spellCheck={false}
@@ -210,14 +222,46 @@ function CertificateVerificationPage() {
             </div>
 
             <aside className="space-y-8 text-sm leading-relaxed text-muted-foreground lg:border-l lg:border-border lg:pl-10">
+              <div className="rounded-2xl border border-border bg-secondary/60 p-6 text-foreground/80">
+                <h2 className="flex items-center gap-2 font-display text-lg font-semibold text-foreground">
+                  <IdBadge className="h-5 w-5 text-primary" aria-hidden="true" />
+                  Membership verification
+                </h2>
+                <p className="mt-3">
+                  To confirm that someone is a registered AAK member, or that their membership
+                  certificate is valid and current, use the verification service on the AAK member
+                  portal.
+                </p>
+                <a
+                  href={portalLinks.validate}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group btn-primary mt-5 justify-center"
+                >
+                  Verify membership
+                  <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+                </a>
+                <p className="mt-4">
+                  Or search the{" "}
+                  <a
+                    href={portalLinks.directory}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="link-quiet text-foreground"
+                  >
+                    member directory
+                  </a>
+                  .
+                </p>
+              </div>
               <div>
                 <h2 className="flex items-center gap-2 font-display text-lg font-semibold text-foreground">
                   <Hash className="h-5 w-5 text-primary" aria-hidden="true" />
                   Where to find the serial number
                 </h2>
                 <p className="mt-3">
-                  It&rsquo;s printed on the certificate, in the form AAK/CONV26/DL/0001. Enter it
-                  with the holder&rsquo;s surname as it appears on the certificate. Capitals and
+                  It&rsquo;s printed on the certificate, in the form AAK/XXXX/XX/0000. Enter it with
+                  the holder&rsquo;s surname as it appears on the certificate. Capitals and
                   punctuation don&rsquo;t matter.
                 </p>
                 <p className="mt-3">
@@ -239,24 +283,6 @@ function CertificateVerificationPage() {
                   differs, or the certificate isn&rsquo;t found, contact{" "}
                   <a href={`mailto:${ENQUIRIES}`} className="link-quiet text-foreground">
                     {ENQUIRIES}
-                  </a>
-                  .
-                </p>
-              </div>
-              <div>
-                <h2 className="font-display text-lg font-semibold text-foreground">
-                  Membership certificates
-                </h2>
-                <p className="mt-3">
-                  This page checks event certificates. To check an AAK membership certificate, use
-                  the{" "}
-                  <a
-                    href="https://members.aak.or.ke/validate"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="link-quiet text-foreground"
-                  >
-                    member portal&rsquo;s validation service
                   </a>
                   .
                 </p>
@@ -335,7 +361,7 @@ function ResultPanel({ result }: { result: Result }) {
       title: "No certificate found with these details",
       body: (
         <>
-          Check the serial number (e.g. AAK/CONV26/DL/0001) and the surname against the certificate
+          Check the serial number (e.g. AAK/XXXX/XX/0000) and the surname against the certificate
           and try again. If it still isn&rsquo;t found, the certificate may not be genuine. Contact{" "}
           <a href={`mailto:${ENQUIRIES}`} className="link-quiet text-foreground">
             {ENQUIRIES}
