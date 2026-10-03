@@ -16,7 +16,7 @@ import { jsonLd } from "@/lib/json-ld";
 function VideoEmbed({ video, className }: { video: InitiativeVideo; className?: string }) {
   if (video.kind === "file") {
     return (
-      <video controls preload="metadata" className={className}>
+      <video controls preload="none" poster={video.poster} className={className}>
         <source src={video.src} type="video/mp4" />
       </video>
     );

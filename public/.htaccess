@@ -113,6 +113,7 @@
     # Fingerprinted build files (/assets/*) never change: cache for a year.
     Header set Cache-Control "public, max-age=31536000, immutable" "expr=%{REQUEST_URI} =~ m#^/assets/#"
     Header set Cache-Control "public, max-age=2592000" "expr=%{REQUEST_FILENAME} =~ /\.(webp|jpe?g|png|svg|ico|woff2?)$/"
-    Header set Cache-Control "public, max-age=0, must-revalidate" "expr=%{REQUEST_FILENAME} =~ /\.html$/"
+    # Keep navigations fast on repeat visits while allowing frequent site updates.
+    Header set Cache-Control "public, max-age=300, stale-while-revalidate=600" "expr=%{REQUEST_FILENAME} =~ /\.html$/"
   </If>
 </IfModule>

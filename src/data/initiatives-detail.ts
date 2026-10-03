@@ -29,6 +29,8 @@ export type InitiativeVideo =
       /** Self-hosted video, served from /public — keep well under Cloudflare's 25MiB per-file limit. */
       src: string;
       title: string;
+      /** Small local preview shown without fetching the video until playback. */
+      poster?: string;
     };
 
 /** A single dated site visit / event under an initiative — its own titled
@@ -197,6 +199,7 @@ export const initiativeDetails: InitiativeDetail[] = [
           kind: "file",
           src: "/grow-a-classroom-mabokoni/day-1-landscape.mp4",
           title: "Mabokoni Primary School site visit",
+          poster: "/gac/mabokoni/w800/img-1839.webp",
         },
         gallery: [
           {
