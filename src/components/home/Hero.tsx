@@ -4,7 +4,7 @@ import hero640 from "@/assets/hero-swiss-chancery-640.webp";
 import hero960 from "@/assets/hero-swiss-chancery-960.webp";
 import hero1280 from "@/assets/hero-swiss-chancery-1280.webp";
 import { Countdown } from "@/components/site/Countdown";
-import { chapters, getEventDisplayStatus, getSortedEvents } from "@/data/site";
+import { chapters, getEventDisplayStatus, getSortedEvents, heroEventSlug } from "@/data/site";
 
 /** "Architects, Quantity Surveyors … and Interior Designers" */
 const chapterList = (() => {
@@ -15,10 +15,22 @@ const chapterList = (() => {
 /**
  * Statement hero, after RIBA's: the positioning line in AAK red on a light
  * band, then a full-bleed photograph carrying an angled red card for the
- * lead story (the next event).
+ * lead story: the pinned event (heroEventSlug) while it's ahead, else the
+ * next event.
  */
+
+/** "3rd December" */
+function dayMonth(iso: string) {
+  const date = new Date(iso);
+  const day = date.getUTCDate();
+  const suffix =
+    day % 100 >= 11 && day % 100 <= 13 ? "th" : (["th", "st", "nd", "rd"][day % 10] ?? "th");
+  return `${day}${suffix} ${date.toLocaleDateString("en-GB", { month: "long", timeZone: "UTC" })}`;
+}
 export function Hero() {
-  const next = getSortedEvents().find((event) => getEventDisplayStatus(event) !== "past");
+  const upcoming = getSortedEvents().filter((event) => getEventDisplayStatus(event) !== "past");
+  const pinned = upcoming.find((event) => event.slug === heroEventSlug);
+  const next = pinned ?? upcoming[0];
 
   return (
     <section aria-labelledby="hero-title" className="bg-background">
@@ -83,12 +95,12 @@ export function Hero() {
               aria-hidden="true"
             />
             <span className="meta-label block text-primary-foreground/85">
-              {getEventDisplayStatus(next) === "ongoing" ? "Happening now" : "Next up"} &middot;{" "}
-              {new Date(next.isoDate).toLocaleDateString("en-GB", {
-                day: "numeric",
-                month: "long",
-                timeZone: "UTC",
-              })}
+              {getEventDisplayStatus(next) === "ongoing"
+                ? "Happening now"
+                : pinned
+                  ? pinned.kicker
+                  : "Next up"}{" "}
+              &middot; {dayMonth(next.isoDate)}
             </span>
             <span className="mt-2 block font-display text-2xl font-semibold leading-tight text-balance sm:text-3xl">
               {next.title}

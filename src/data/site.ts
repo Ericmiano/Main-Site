@@ -155,7 +155,7 @@ export const events: SiteEvent[] = [
   },
   {
     slug: "status-of-built-environment-2026",
-    title: "Status of the Built Environment Report: Release & President's Dinner",
+    title: "Release of the Status of the Built Environment Report & President's Dinner",
     kicker: "Save the date",
     date: "3 December 2026",
     isoDate: "2026-12-03",
@@ -178,6 +178,10 @@ export const events: SiteEvent[] = [
     cta: "View details",
   },
 ];
+
+/** The event pinned to the homepage hero card while it's still ahead; once it
+ * has passed (or with no slug set) the card falls back to the next event. */
+export const heroEventSlug: string | null = "status-of-built-environment-2026";
 
 /** The event's real status right now — "upcoming"/"ongoing" in the data goes stale once the date passes. */
 export function getEventDisplayStatus(
