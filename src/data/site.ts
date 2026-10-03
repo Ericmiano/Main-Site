@@ -130,30 +130,6 @@ export const events: SiteEvent[] = [
     externalSiteHref: "https://www.biennale.aak.or.ke/",
   },
   {
-    slug: "sports-wellness-day-2026",
-    title: "AAK Sports & Wellness Day",
-    kicker: "World Mental Health Awareness",
-    date: "10 October 2026",
-    isoDate: "2026-10-10",
-    location: "Kenya · venue to be announced",
-    venue: "Venue to be announced",
-    status: "upcoming",
-    summary:
-      "A members' sports and wellness day marking World Mental Health Awareness, on AAK's official 2026 calendar of events.",
-    body: [
-      "Part of AAK's official 2026 calendar, this fixture pairs a members' sports day with World Mental Health Awareness activities. Details on venue and how to join are published on AAK's events calendar closer to the date.",
-    ],
-    facts: [
-      { label: "Date", value: "10 October 2026" },
-      { label: "Theme", value: "World Mental Health Awareness" },
-    ],
-    image: "/img/1h5a2307-1200x800.webp",
-    imageAlt: "AAK members at a professional gathering",
-    registerTo: { to: "/events" },
-    registerLabel: "View the AAK events calendar",
-    cta: "View details",
-  },
-  {
     slug: "urban-thinkers-campus-2026",
     title: "Urban Thinkers Campus: Town Planners Charrette",
     kicker: "Town Planners Chapter",
@@ -180,19 +156,19 @@ export const events: SiteEvent[] = [
   {
     slug: "status-of-built-environment-2026",
     title: "Status of the Built Environment Report: Release & President's Dinner",
-    kicker: "Annual report",
-    date: "9 December 2026",
-    isoDate: "2026-12-09",
+    kicker: "Save the date",
+    date: "3 December 2026",
+    isoDate: "2026-12-03",
     location: "Nairobi, Kenya",
     venue: "Venue to be announced",
     status: "upcoming",
     summary:
-      "AAK releases its annual Status of the Built Environment Report at the President's Dinner, closing out the 2026 calendar.",
+      "Save the date: AAK releases its annual Status of the Built Environment Report at the President's Dinner on 3 December 2026.",
     body: [
-      "The Status of the Built Environment Report is AAK's annual analysis of trends, challenges and professional opportunities shaping Kenya's construction and urban development sector. The 2026 edition is released at the President's Dinner, on AAK's official calendar of events.",
+      "The Status of the Built Environment Report is AAK's annual analysis of trends, challenges and professional opportunities shaping Kenya's construction and urban development sector. The 2026 edition is released at the President's Dinner on 3 December 2026. Venue and invitation details will follow.",
     ],
     facts: [
-      { label: "Date", value: "9 December 2026" },
+      { label: "Date", value: "3 December 2026" },
       { label: "Includes", value: "Status of the Built Environment Report launch" },
     ],
     image: "/img/0q9a0926-1200x800.webp",

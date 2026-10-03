@@ -30,7 +30,7 @@ const pages: SearchEntry[] = [
   {
     title: "Events",
     description:
-      "AAK's calendar of association-wide events: the Annual Convention, the Nairobi Biennale of Architecture & Art, the Sports & Wellness Day and the Urban Thinkers Campus.",
+      "AAK's calendar of association-wide events: the Annual Convention, the Nairobi Biennale of Architecture & Art, the Urban Thinkers Campus and the release of the Status of the Built Environment Report at the President's Dinner.",
     category: "Page",
     href: "/events",
   },

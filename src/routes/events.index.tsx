@@ -20,7 +20,7 @@ import { jsonLd } from "@/lib/json-ld";
 const SITE_URL = "https://aak.or.ke";
 const TITLE = "Events | Architectural Association of Kenya";
 const DESCRIPTION =
-  "AAK's calendar of association-wide events: the Annual Convention, the Nairobi Biennale of Architecture & Art, the Sports & Wellness Day and the Urban Thinkers Campus.";
+  "AAK's calendar of association-wide events: the Annual Convention, the Nairobi Biennale of Architecture & Art, the Urban Thinkers Campus and the release of the Status of the Built Environment Report at the President's Dinner.";
 
 export const Route = createFileRoute("/events/")({
   head: () => ({
