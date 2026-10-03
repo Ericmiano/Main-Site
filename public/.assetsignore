@@ -1,0 +1,3 @@
+# Cloudflare Workers assets: never publish server scripts as files (they only
+# run on the cPanel host). Ignored by the cPanel build, where .htaccess applies.
+*.php
