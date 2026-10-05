@@ -44,6 +44,7 @@ import { Route as TeamRouteImport } from './routes/team'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as ApiCertificateRouteImport } from './routes/api.certificate'
 import { Route as ApiMemberStatsRouteImport } from './routes/api.member-stats'
+import { Route as ApiNewsRouteImport } from './routes/api.news'
 import { Route as ApiPortalEventsRouteImport } from './routes/api.portal-events'
 import { Route as ChaptersSlugRouteImport } from './routes/chapters.$slug'
 import { Route as EventsIndexRouteImport } from './routes/events.index'
@@ -52,6 +53,8 @@ import { Route as InitiativesSlugRouteImport } from './routes/initiatives.$slug'
 import { Route as InitiativesGrowAClassroomRouteImport } from './routes/initiatives.grow-a-classroom'
 import { Route as MediaIndexRouteImport } from './routes/media.index'
 import { Route as MediaSlugRouteImport } from './routes/media.$slug'
+import { Route as NewsIndexRouteImport } from './routes/news.index'
+import { Route as NewsSlugRouteImport } from './routes/news.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -230,6 +233,11 @@ const ApiMemberStatsRoute = ApiMemberStatsRouteImport.update({
   path: '/api/member-stats',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiNewsRoute = ApiNewsRouteImport.update({
+  id: '/api/news',
+  path: '/api/news',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPortalEventsRoute = ApiPortalEventsRouteImport.update({
   id: '/api/portal-events',
   path: '/api/portal-events',
@@ -271,6 +279,16 @@ const MediaSlugRoute = MediaSlugRouteImport.update({
   path: '/media/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const NewsIndexRoute = NewsIndexRouteImport.update({
+  id: '/news/',
+  path: '/news/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NewsSlugRoute = NewsSlugRouteImport.update({
+  id: '/news/$slug',
+  path: '/news/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -308,14 +326,17 @@ export interface FileRoutesByFullPath {
   '/terms': typeof TermsRoute
   '/api/certificate': typeof ApiCertificateRoute
   '/api/member-stats': typeof ApiMemberStatsRoute
+  '/api/news': typeof ApiNewsRoute
   '/api/portal-events': typeof ApiPortalEventsRoute
   '/chapters/$slug': typeof ChaptersSlugRoute
   '/events/$slug': typeof EventsSlugRoute
   '/initiatives/$slug': typeof InitiativesSlugRoute
   '/initiatives/grow-a-classroom': typeof InitiativesGrowAClassroomRoute
   '/media/$slug': typeof MediaSlugRoute
+  '/news/$slug': typeof NewsSlugRoute
   '/events/': typeof EventsIndexRoute
   '/media/': typeof MediaIndexRoute
+  '/news/': typeof NewsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -353,14 +374,17 @@ export interface FileRoutesByTo {
   '/terms': typeof TermsRoute
   '/api/certificate': typeof ApiCertificateRoute
   '/api/member-stats': typeof ApiMemberStatsRoute
+  '/api/news': typeof ApiNewsRoute
   '/api/portal-events': typeof ApiPortalEventsRoute
   '/chapters/$slug': typeof ChaptersSlugRoute
   '/events/$slug': typeof EventsSlugRoute
   '/initiatives/$slug': typeof InitiativesSlugRoute
   '/initiatives/grow-a-classroom': typeof InitiativesGrowAClassroomRoute
   '/media/$slug': typeof MediaSlugRoute
+  '/news/$slug': typeof NewsSlugRoute
   '/events': typeof EventsIndexRoute
   '/media': typeof MediaIndexRoute
+  '/news': typeof NewsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -399,14 +423,17 @@ export interface FileRoutesById {
   '/terms': typeof TermsRoute
   '/api/certificate': typeof ApiCertificateRoute
   '/api/member-stats': typeof ApiMemberStatsRoute
+  '/api/news': typeof ApiNewsRoute
   '/api/portal-events': typeof ApiPortalEventsRoute
   '/chapters/$slug': typeof ChaptersSlugRoute
   '/events/$slug': typeof EventsSlugRoute
   '/initiatives/$slug': typeof InitiativesSlugRoute
   '/initiatives/grow-a-classroom': typeof InitiativesGrowAClassroomRoute
   '/media/$slug': typeof MediaSlugRoute
+  '/news/$slug': typeof NewsSlugRoute
   '/events/': typeof EventsIndexRoute
   '/media/': typeof MediaIndexRoute
+  '/news/': typeof NewsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -446,14 +473,17 @@ export interface FileRouteTypes {
     | '/terms'
     | '/api/certificate'
     | '/api/member-stats'
+    | '/api/news'
     | '/api/portal-events'
     | '/chapters/$slug'
     | '/events/$slug'
     | '/initiatives/$slug'
     | '/initiatives/grow-a-classroom'
     | '/media/$slug'
+    | '/news/$slug'
     | '/events/'
     | '/media/'
+    | '/news/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -491,14 +521,17 @@ export interface FileRouteTypes {
     | '/terms'
     | '/api/certificate'
     | '/api/member-stats'
+    | '/api/news'
     | '/api/portal-events'
     | '/chapters/$slug'
     | '/events/$slug'
     | '/initiatives/$slug'
     | '/initiatives/grow-a-classroom'
     | '/media/$slug'
+    | '/news/$slug'
     | '/events'
     | '/media'
+    | '/news'
   id:
     | '__root__'
     | '/'
@@ -536,14 +569,17 @@ export interface FileRouteTypes {
     | '/terms'
     | '/api/certificate'
     | '/api/member-stats'
+    | '/api/news'
     | '/api/portal-events'
     | '/chapters/$slug'
     | '/events/$slug'
     | '/initiatives/$slug'
     | '/initiatives/grow-a-classroom'
     | '/media/$slug'
+    | '/news/$slug'
     | '/events/'
     | '/media/'
+    | '/news/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -582,14 +618,17 @@ export interface RootRouteChildren {
   TermsRoute: typeof TermsRoute
   ApiCertificateRoute: typeof ApiCertificateRoute
   ApiMemberStatsRoute: typeof ApiMemberStatsRoute
+  ApiNewsRoute: typeof ApiNewsRoute
   ApiPortalEventsRoute: typeof ApiPortalEventsRoute
   ChaptersSlugRoute: typeof ChaptersSlugRoute
   EventsSlugRoute: typeof EventsSlugRoute
   InitiativesSlugRoute: typeof InitiativesSlugRoute
   InitiativesGrowAClassroomRoute: typeof InitiativesGrowAClassroomRoute
   MediaSlugRoute: typeof MediaSlugRoute
+  NewsSlugRoute: typeof NewsSlugRoute
   EventsIndexRoute: typeof EventsIndexRoute
   MediaIndexRoute: typeof MediaIndexRoute
+  NewsIndexRoute: typeof NewsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -839,6 +878,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiMemberStatsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/news': {
+      id: '/api/news'
+      path: '/api/news'
+      fullPath: '/api/news'
+      preLoaderRoute: typeof ApiNewsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/portal-events': {
       id: '/api/portal-events'
       path: '/api/portal-events'
@@ -895,6 +941,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MediaSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/news/': {
+      id: '/news/'
+      path: '/news'
+      fullPath: '/news/'
+      preLoaderRoute: typeof NewsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/news/$slug': {
+      id: '/news/$slug'
+      path: '/news/$slug'
+      fullPath: '/news/$slug'
+      preLoaderRoute: typeof NewsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -934,14 +994,17 @@ const rootRouteChildren: RootRouteChildren = {
   TermsRoute: TermsRoute,
   ApiCertificateRoute: ApiCertificateRoute,
   ApiMemberStatsRoute: ApiMemberStatsRoute,
+  ApiNewsRoute: ApiNewsRoute,
   ApiPortalEventsRoute: ApiPortalEventsRoute,
   ChaptersSlugRoute: ChaptersSlugRoute,
   EventsSlugRoute: EventsSlugRoute,
   InitiativesSlugRoute: InitiativesSlugRoute,
   InitiativesGrowAClassroomRoute: InitiativesGrowAClassroomRoute,
   MediaSlugRoute: MediaSlugRoute,
+  NewsSlugRoute: NewsSlugRoute,
   EventsIndexRoute: EventsIndexRoute,
   MediaIndexRoute: MediaIndexRoute,
+  NewsIndexRoute: NewsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

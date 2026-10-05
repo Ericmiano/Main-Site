@@ -342,6 +342,161 @@
     text-decoration-color: currentColor;
   }
 
+  /* News & insights articles: whatever the WordPress editor produces
+     (headings, lists, quotes, images, tables, videos) in the site's type. */
+  .article-prose {
+    color: color-mix(in oklab, var(--foreground) 86%, transparent);
+    font-size: 1.0625rem;
+    line-height: 1.8;
+    overflow-wrap: break-word;
+  }
+  @media (min-width: 640px) {
+    .article-prose {
+      font-size: 1.125rem;
+    }
+  }
+  .article-prose > * + * {
+    margin-top: 1.25em;
+  }
+  .article-prose h2,
+  .article-prose h3,
+  .article-prose h4 {
+    margin-top: 2.2em;
+    font-family: var(--font-display);
+    font-weight: 600;
+    line-height: 1.25;
+    color: var(--foreground);
+  }
+  .article-prose h2 {
+    font-size: 1.6em;
+  }
+  .article-prose h3 {
+    font-size: 1.3em;
+  }
+  .article-prose h4 {
+    font-size: 1.1em;
+  }
+  .article-prose h2 + *,
+  .article-prose h3 + *,
+  .article-prose h4 + * {
+    margin-top: 0.75em;
+  }
+  .article-prose > :first-child {
+    margin-top: 0;
+  }
+  .article-prose ul,
+  .article-prose ol {
+    padding-left: 1.4em;
+  }
+  .article-prose ul {
+    list-style: disc;
+  }
+  .article-prose ol {
+    list-style: decimal;
+  }
+  .article-prose li + li {
+    margin-top: 0.4em;
+  }
+  .article-prose li::marker {
+    color: var(--primary);
+  }
+  .article-prose strong,
+  .article-prose b {
+    color: var(--foreground);
+    font-weight: 600;
+  }
+  .article-prose a {
+    color: var(--foreground);
+    font-weight: 500;
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+    text-decoration-color: color-mix(in oklab, var(--primary) 60%, transparent);
+  }
+  .article-prose a:hover {
+    text-decoration-color: var(--primary);
+  }
+  .article-prose blockquote {
+    margin-block: 2em;
+    border-left: 3px solid var(--primary);
+    padding-left: 1.25em;
+    font-family: var(--font-display);
+    font-size: 1.25em;
+    line-height: 1.5;
+    color: var(--foreground);
+  }
+  .article-prose blockquote cite {
+    display: block;
+    margin-top: 0.6em;
+    font-family: inherit;
+    font-size: 0.7em;
+    font-style: normal;
+    color: var(--muted-foreground);
+  }
+  .article-prose img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    border-radius: 1rem;
+  }
+  .article-prose figure {
+    margin-block: 2em;
+  }
+  .article-prose figcaption {
+    margin-top: 0.75em;
+    font-size: 0.85em;
+    line-height: 1.5;
+    color: var(--muted-foreground);
+  }
+  .article-prose iframe {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    height: auto;
+    border: 0;
+    border-radius: 1rem;
+    background: var(--ink-deep);
+  }
+  .article-prose hr {
+    margin-block: 2.5em;
+    border: 0;
+    border-top: 1px solid var(--border);
+  }
+  .article-prose table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    border-collapse: collapse;
+    font-size: 0.9em;
+  }
+  .article-prose th,
+  .article-prose td {
+    border-bottom: 1px solid var(--border);
+    padding: 0.6em 0.8em;
+    text-align: left;
+    vertical-align: top;
+  }
+  .article-prose th {
+    color: var(--foreground);
+    font-weight: 600;
+  }
+  .article-prose code {
+    border-radius: 0.3em;
+    background: var(--secondary);
+    padding: 0.1em 0.35em;
+    font-size: 0.9em;
+  }
+  .article-prose pre {
+    overflow-x: auto;
+    border-radius: 0.75rem;
+    background: var(--secondary);
+    padding: 1em 1.25em;
+    font-size: 0.85em;
+  }
+  .article-prose pre code {
+    background: none;
+    padding: 0;
+  }
+
   /* Shared keyboard focus for both. */
   .btn-primary:focus-visible,
   .link-quiet:focus-visible {

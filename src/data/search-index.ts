@@ -56,6 +56,13 @@ const pages: SearchEntry[] = [
     href: "/team",
   },
   {
+    title: "News & insights",
+    description:
+      "Blogs, articles and opinion from the Architectural Association of Kenya and its members on Kenya's built and natural environment.",
+    category: "Page",
+    href: "/news",
+  },
+  {
     title: "Nominations to Boards",
     description:
       "Members nominated by AAK to boards, councils and committees at county, national, regional and international level.",

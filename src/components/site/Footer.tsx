@@ -15,6 +15,7 @@ const associationLinks = [
 ];
 
 const resourceLinks = [
+  { label: "News & insights", to: "/news" as const },
   { label: "Events", to: "/events" as const },
   { label: "Resource Centre", to: "/resources" as const },
   // Arbitration: on hold while the page is being finished. Re-add once ready.

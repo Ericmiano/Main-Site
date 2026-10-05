@@ -26,10 +26,11 @@ export default defineConfig({
             // through the renderer and write them back corrupted. Arbitration
             // is on hold, so it isn't exported either.
             filter: ({ path }: { path: string }) =>
-              path === "/sitemap.xml" ||
-              (!/\.[a-z0-9]+$/i.test(path) && path !== "/arbitration"),
+              path === "/sitemap.xml" || (!/\.[a-z0-9]+$/i.test(path) && path !== "/arbitration"),
           },
-          pages: [{ path: "/sitemap.xml" }],
+          // The shared page every /news/<slug> article is served from
+          // (public/api/news-page.php); articles live in WordPress, not the build.
+          pages: [{ path: "/sitemap.xml" }, { path: "/news/__article__" }],
         }
       : {}),
   },

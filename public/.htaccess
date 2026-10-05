@@ -44,7 +44,7 @@
   # scripts left on the server (wp-login.php, plugins, uploads) stay inert.
   RewriteCond %{HTTP_HOST} ^((www|new)\.)?aak\.or\.ke$|^(localhost|127\.0\.0\.1)(:\d+)?$ [NC]
   RewriteCond %{REQUEST_URI} \.(php[0-9]?|phtml|phar)$ [NC]
-  RewriteCond %{REQUEST_URI} !^/api/(member-stats|portal-events|certificate)\.php$
+  RewriteCond %{REQUEST_URI} !^/api/(member-stats|portal-events|certificate|news|news-page|news-sitemap)\.php$
   RewriteRule ^ - [F,L]
 
   # Member register endpoint (see api/member-stats.php).
@@ -55,6 +55,14 @@
 
   # Event certificate lookups (see api/certificate.php).
   RewriteRule ^api/certificate/?$ api/certificate.php [L]
+
+  # News & insights, written in the WordPress back office (see api/news-lib.php):
+  # the feed, each article page (/news/<slug>) and the articles' sitemap. The
+  # shared article template itself isn't a page.
+  RewriteRule ^api/news/?$ api/news.php [L]
+  RewriteRule ^news/__article__ - [R=404,L]
+  RewriteRule ^news/([a-z0-9-]+)/?$ api/news-page.php?slug=$1 [L]
+  RewriteRule ^news-sitemap\.xml$ api/news-sitemap.php [L]
 
   # Old WordPress addresses -> their new pages, so existing links and search
   # results keep working. WordPress files under /wp-content/uploads/ are left
@@ -97,12 +105,13 @@
     Header always set X-Frame-Options "SAMEORIGIN"
     Header always set Referrer-Policy "strict-origin-when-cross-origin"
     Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()"
-    # What pages may load: this site, YouTube (player + thumbnails), Google
+    # What pages may load: this site, YouTube (player + thumbnails), images in
+    # News & insights articles (from the WordPress back office), Google
     # Maps (on request, contact page), Facebook's page plugin (footer "Latest
     # posts", on request), and the downloads host (radio clips).
     # Inline scripts are allowed because the framework writes page state
     # inline, and that differs on every page.
-    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://platform.x.com https://platform.twitter.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://i.ytimg.com https://pbs.twimg.com https://syndication.x.com https://syndication.twitter.com; font-src 'self'; connect-src 'self' https://syndication.twitter.com https://cdn.syndication.twimg.com; media-src 'self' https://aak-files.aak-kenya.workers.dev; frame-src https://www.youtube-nocookie.com https://www.google.com https://www.facebook.com https://www.instagram.com https://platform.twitter.com https://members.aak.or.ke; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'"
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://platform.x.com https://platform.twitter.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://cms.aak.or.ke https://i.ytimg.com https://pbs.twimg.com https://syndication.x.com https://syndication.twitter.com; font-src 'self'; connect-src 'self' https://syndication.twitter.com https://cdn.syndication.twimg.com; media-src 'self' https://aak-files.aak-kenya.workers.dev; frame-src https://www.youtube-nocookie.com https://www.google.com https://www.facebook.com https://www.instagram.com https://platform.twitter.com https://members.aak.or.ke; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'"
     # Browsers remember to use HTTPS. Subdomains aren't included on purpose.
     Header always set Strict-Transport-Security "max-age=31536000" "expr=%{HTTPS} == 'on'"
   </If>

@@ -35,3 +35,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://aak.or.ke/sitemap.xml
+Sitemap: https://aak.or.ke/news-sitemap.xml
