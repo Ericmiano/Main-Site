@@ -395,6 +395,208 @@ function aak_cert_write_register(string $slug, array $records): void
     }
 }
 
+/* ---------------------------------------------------------------------------
+ * Quick add: paste "AAK/CONV26/DL/0268 - Mutinda Mutuku", one per line.
+ */
+
+/** "AAK/CONV26/DL/0001" -> "AAA/AAAA99/AA/9999": serials in one list share a shape. */
+function aak_cert_serial_shape(string $serial): string
+{
+    return preg_replace(['/[A-Z]/', '/[0-9]/'], ['A', '9'], strtoupper($serial));
+}
+
+/** A token that can be a serial: no spaces, at least one digit. */
+function aak_cert_looks_like_serial(string $s): bool
+{
+    return (bool) preg_match('#^[A-Za-z0-9][A-Za-z0-9/._-]*[0-9][A-Za-z0-9/._-]*$#', $s);
+}
+
+/**
+ * Lines of "serial - name" (or "name - serial", with -, –, —, a comma or a
+ * tab between them) to [serial, name] pairs, plus a problem per bad line.
+ */
+function aak_cert_parse_lines(string $text): array
+{
+    $pairs = [];
+    $problems = [];
+    foreach (preg_split('/\R/u', $text) as $i => $line) {
+        $line = trim(preg_replace('/\s+/u', ' ', $line));
+        if ($line === '') {
+            continue;
+        }
+        $parts = preg_split('/\s*[\t,]\s*|\s+[-–—]\s+|\s*[–—]\s*/u', $line, 2);
+        if (count($parts) !== 2) {
+            $problems[] = sprintf('Line %d (“%s”): put a dash between the serial number and the name.', $i + 1, $line);
+            continue;
+        }
+        [$a, $b] = array_map('trim', $parts);
+        if (aak_cert_looks_like_serial($a) && !aak_cert_looks_like_serial($b)) {
+            [$serial, $name] = [$a, $b];
+        } elseif (aak_cert_looks_like_serial($b) && !aak_cert_looks_like_serial($a)) {
+            [$serial, $name] = [$b, $a];
+        } else {
+            $problems[] = sprintf('Line %d (“%s”): couldn’t tell which part is the serial number.', $i + 1, $line);
+            continue;
+        }
+        $pairs[] = ['line' => $i + 1, 'serial' => strtoupper($serial), 'name' => $name];
+    }
+    if (!$pairs && !$problems) {
+        $problems[] = 'Paste at least one line, e.g. AAK/CONV26/DL/0268 - Mutinda Mutuku.';
+    }
+    return [$pairs, $problems];
+}
+
+/**
+ * Add pasted certificates to a published list. All or nothing: any problem
+ * and nothing is written. Returns [added, alreadyListed].
+ */
+function aak_cert_quick_add(string $slug, string $text): array
+{
+    $rows = aak_cert_read_register($slug);
+    if (!$rows) {
+        throw new RuntimeException('Choose a published list to add to.');
+    }
+    [$pairs, $problems] = aak_cert_parse_lines($text);
+
+    $bySerial = [];
+    $taken = [];
+    $shapes = [];
+    foreach ($rows as $r) {
+        $bySerial[preg_replace('/[^A-Z0-9]/', '', strtoupper($r['serial']))] = $r;
+        $taken[$r['code']] = true;
+        $shape = aak_cert_serial_shape($r['serial']);
+        $shapes[$shape] = ($shapes[$shape] ?? 0) + 1;
+    }
+    arsort($shapes);
+    $mainShape = (string) array_key_first($shapes);
+    $example = '';
+    foreach ($rows as $r) {
+        if (aak_cert_serial_shape($r['serial']) === $mainShape) {
+            $example = $r['serial'];
+            break;
+        }
+    }
+
+    $added = [];
+    $already = [];
+    $seen = [];
+    foreach ($pairs as $p) {
+        $key = preg_replace('/[^A-Z0-9]/', '', $p['serial']);
+        if (isset($seen[$key])) {
+            $problems[] = sprintf('Line %d: serial %s is pasted twice.', $p['line'], $p['serial']);
+            continue;
+        }
+        $seen[$key] = true;
+        if (isset($bySerial[$key])) {
+            $existing = $bySerial[$key];
+            if (strcasecmp(trim($existing['name']), $p['name']) === 0) {
+                $already[] = $p['serial'];
+            } else {
+                $problems[] = sprintf('Line %d: %s already belongs to %s in this list.', $p['line'], $existing['serial'], $existing['name']);
+            }
+            continue;
+        }
+        if (count($rows) > 1 && aak_cert_serial_shape($p['serial']) !== $mainShape) {
+            $problems[] = sprintf('Line %d: %s doesn’t look like this list’s serial numbers (e.g. %s). Check for a missing or extra character.', $p['line'], $p['serial'], $example);
+            continue;
+        }
+        $added[] = $p;
+    }
+    if ($problems) {
+        throw new AakCertProblems($problems);
+    }
+    if (!$added) {
+        return [[], $already];
+    }
+
+    // New certificates take the list's event details (the most common value of each).
+    $details = [];
+    foreach (['certificate', 'event', 'dates', 'venue', 'cpd_points', 'issued'] as $f) {
+        $counts = array_count_values(array_map(fn ($r) => (string) $r[$f], $rows));
+        arsort($counts);
+        $details[$f] = (string) array_key_first($counts);
+    }
+    $prefix = '';
+    foreach ($rows as $r) {
+        if (preg_match('/^AAK-([A-Z0-9]+)-/', $r['code'], $m)) {
+            $prefix = $m[1];
+            break;
+        }
+    }
+    $prefix = $prefix ?: (strtoupper(substr(preg_replace('/[^a-z0-9]/', '', $slug), 0, 4)) ?: 'CERT');
+    foreach ($added as $p) {
+        $code = aak_cert_new_code($prefix, $taken);
+        $taken[$code] = true;
+        $rows[] = ['code' => $code, 'serial' => $p['serial'], 'name' => $p['name']] + $details + ['status' => 'valid'];
+    }
+    usort($rows, fn ($x, $y) => strnatcasecmp($x['serial'], $y['serial']));
+    aak_cert_write_register($slug, $rows);
+    aak_cert_log(sprintf(
+        'Quick-added %d to %s: %s',
+        count($added),
+        $slug,
+        implode('; ', array_map(fn ($p) => $p['serial'] . ' ' . $p['name'], $added))
+    ));
+    return [$added, $already];
+}
+
+/** Several problems at once, shown as a list. */
+class AakCertProblems extends RuntimeException
+{
+    public array $problems;
+
+    public function __construct(array $problems)
+    {
+        parent::__construct(implode(' ', $problems));
+        $this->problems = $problems;
+    }
+}
+
+function aak_cert_quick_add_form(array $lists, string $selected = ''): void
+{
+    $saved = get_transient('aak_cert_quick_' . get_current_user_id()) ?: [];
+    if ($saved) {
+        delete_transient('aak_cert_quick_' . get_current_user_id());
+    }
+    echo '<h2 id="quick-add">Quick add</h2>';
+    echo '<p>Add people to a published list without a spreadsheet: paste one per line, serial number and name, e.g. <code>AAK/CONV26/DL/0268 - Mutinda Mutuku</code>. They take the list’s event details and can be verified straight away.</p>';
+    foreach (($saved['problems'] ?? []) as $problem) {
+        aak_cert_notice(esc_html($problem), 'error');
+    }
+    if (!empty($saved['problems'])) {
+        aak_cert_notice('Nothing was added. Fix the lines above and press Add again.', 'warning');
+    }
+    echo '<form method="post">';
+    wp_nonce_field('aak_cert_quickadd');
+    echo '<input type="hidden" name="aak_cert_action" value="quickadd" />';
+    echo '<table class="form-table" role="presentation"><tbody>';
+    if ($selected !== '') {
+        printf('<input type="hidden" name="list" value="%s" />', esc_attr($selected));
+    } else {
+        echo '<tr><th scope="row"><label for="aak-quick-list">Add to</label></th><td><select id="aak-quick-list" name="list" required>';
+        echo '<option value="">Choose a list…</option>';
+        $chosen = (string) ($saved['list'] ?? '');
+        foreach ($lists as $l) {
+            printf(
+                '<option value="%s"%s>%s (%s, %d certificates)</option>',
+                esc_attr($l['slug']),
+                selected($chosen, $l['slug'], false),
+                esc_html($l['slug']),
+                esc_html($l['event']),
+                $l['count']
+            );
+        }
+        echo '</select></td></tr>';
+    }
+    printf(
+        '<tr><th scope="row"><label for="aak-quick-lines">Certificates</label></th><td><textarea id="aak-quick-lines" name="lines" rows="6" class="large-text code" placeholder="AAK/CONV26/DL/0268 - Mutinda Mutuku&#10;AAK/CONV26/DL/0173 - Cassius Kusienya" required>%s</textarea></td></tr>',
+        esc_textarea((string) ($saved['lines'] ?? ''))
+    );
+    echo '</tbody></table>';
+    submit_button('Add', 'primary', 'submit', true, $lists ? [] : ['disabled' => 'disabled']);
+    echo '</form>';
+}
+
 function aak_cert_log(string $action): void
 {
     $log = get_option('aak_cert_log', []);
@@ -500,6 +702,30 @@ add_action('admin_init', function () {
             exit;
         }
 
+        if ($action === 'quickadd') {
+            $slug = aak_cert_slug((string) wp_unslash($_POST['list'] ?? ''));
+            $lines = (string) wp_unslash($_POST['lines'] ?? '');
+            $back = ($_POST['_wp_http_referer'] ?? '') && strpos((string) $_POST['_wp_http_referer'], 'view=register') !== false
+                ? aak_cert_url(['view' => 'register', 'list' => $slug])
+                : aak_cert_url();
+            try {
+                [$added, $already] = aak_cert_quick_add($slug, $lines);
+            } catch (AakCertProblems $e) {
+                set_transient('aak_cert_quick_' . get_current_user_id(), ['problems' => $e->problems, 'lines' => $lines, 'list' => $slug], 600);
+                wp_safe_redirect($back . '#quick-add');
+                exit;
+            }
+            $message = $added
+                ? sprintf('Added %d to %s, verifiable now: %s.', count($added), $slug, implode('; ', array_map(fn ($p) => $p['serial'] . ' ' . $p['name'], $added)))
+                : 'Nothing new to add.';
+            if ($already) {
+                $message .= ' Already in the list: ' . implode(', ', $already) . '.';
+            }
+            set_transient('aak_cert_message_' . get_current_user_id(), $message, 60);
+            wp_safe_redirect(aak_cert_url(['view' => 'register', 'list' => $slug]));
+            exit;
+        }
+
         if ($action === 'cancel') {
             delete_transient($previewKey);
             wp_safe_redirect(aak_cert_url());
@@ -594,6 +820,11 @@ function aak_cert_screen(): void
     if (isset($messages[$done])) {
         aak_cert_notice($messages[$done]);
     }
+    $message = get_transient('aak_cert_message_' . get_current_user_id());
+    if ($message) {
+        delete_transient('aak_cert_message_' . get_current_user_id());
+        aak_cert_notice(esc_html($message));
+    }
 
     if ($view === 'preview') {
         aak_cert_preview_screen();
@@ -611,6 +842,11 @@ function aak_cert_home_screen(): void
     $ready = aak_cert_ensure_dir() !== null;
     if (!$ready) {
         aak_cert_notice('The certificates folder <code>' . esc_html($dir) . '</code> doesn’t exist or can’t be written to. An administrator can set the right folder at the bottom of this page.', 'error');
+    }
+
+    $lists = $ready ? aak_cert_registers() : [];
+    if ($lists) {
+        aak_cert_quick_add_form($lists);
     }
 
     echo '<h2>Upload a certificate list</h2>';
@@ -765,6 +1001,9 @@ function aak_cert_register_screen(string $slug): void
         echo '<p>This list is empty or doesn’t exist.</p>';
         return;
     }
+    aak_cert_quick_add_form(aak_cert_registers(), $slug);
+
+    echo '<h2>Certificates in this list</h2>';
     $search = sanitize_text_field(wp_unslash($_GET['s'] ?? ''));
     printf(
         '<form method="get"><input type="hidden" name="page" value="aak-certificates" /><input type="hidden" name="view" value="register" /><input type="hidden" name="list" value="%s" /><p class="search-box" style="float:none"><label class="screen-reader-text" for="aak-cert-search">Search</label><input type="search" id="aak-cert-search" name="s" value="%s" placeholder="Serial or name" /> <input type="submit" class="button" value="Search" /></p></form>',

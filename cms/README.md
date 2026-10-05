@@ -86,5 +86,21 @@ quotes and images and it will look right.
 4. To withdraw one: open the list, find the person, press **Revoke**. Uploading
    the list again keeps revocations, unless the sheet has a Status column.
 
+**Adding a few people without a spreadsheet:** use **Quick add** at the top of
+*Certificates* (or on a list's own page). Choose the list, then paste one per
+line:
+
+```
+AAK/CONV26/DL/0268 - Mutinda Mutuku
+AAK/CONV26/DL/0173 - Cassius Kusienya
+```
+
+- **Event details:** new people take them from the rest of the list.
+- **When they can be verified:** straight away.
+- **If any line has a problem, nothing is added:** a serial already used by
+  someone else, a serial that doesn't match the list's format (e.g. a missing
+  zero), a duplicate line, or no dash. The lines stay in the box to fix.
+- **People already in the list** are noted and skipped.
+
 Every change is logged on the Certificates page, and each list's previous
 version is kept in `aak-certificates/.history`.
