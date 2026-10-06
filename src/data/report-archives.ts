@@ -324,7 +324,7 @@ export const reportArchivePages: { category: string; to: string; documents: Arch
     { category: "Press Statements", to: "/press-statements", documents: pressStatementsDocuments },
     { category: "Salary Survey", to: "/salary-survey", documents: salarySurveyDocuments },
     {
-      category: "Status of the Built Environment Report",
+      category: "Status of the Built Environment Reports",
       to: "/status-of-the-built-environment",
       documents: statusOfTheBuiltEnvironmentDocuments,
     },

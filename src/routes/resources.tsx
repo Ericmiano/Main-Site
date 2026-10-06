@@ -9,7 +9,7 @@ import { publications } from "@/data/site";
 import { jsonLd } from "@/lib/json-ld";
 
 const SITE_URL = "https://aak.or.ke";
-const TITLE = "Resource Centre | Architectural Association of Kenya";
+const TITLE = "Reports | Architectural Association of Kenya";
 const DESCRIPTION =
   "AAK's reports, downloads and advocacy documents: the Status of the Built Environment Report, AGM reports, BuildPress Magazine, building regulations and policy submissions.";
 
@@ -69,7 +69,7 @@ const categories = [
     href: "https://buildhub.aak.or.ke/",
   },
   {
-    title: "Status of the Built Environment Report",
+    title: "Status of the Built Environment Reports",
     body: "AAK's annual analysis of trends, challenges and professional opportunities in Kenya's construction and urban development sector. Archive runs from 2018 to 2025.",
     to: "/status-of-the-built-environment" as const,
   },
@@ -111,7 +111,7 @@ function structuredData() {
           {
             "@type": "ListItem",
             position: 2,
-            name: "Resource Centre",
+            name: "Reports",
             item: `${SITE_URL}/resources`,
           },
         ],
@@ -131,11 +131,11 @@ function ResourcesPage() {
       <main>
         <section className="border-b border-border bg-secondary/40 py-14 lg:py-20">
           <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
-            <PageBreadcrumb trail={[{ label: "Resource Centre" }]} />
+            <PageBreadcrumb trail={[{ label: "Reports" }]} />
 
             <Reveal className="mt-8 max-w-2xl">
               <h1 className="mt-2 font-display text-4xl font-semibold leading-[1.02] tracking-tight text-balance text-foreground sm:text-5xl lg:text-6xl">
-                Resource Centre
+                Reports
               </h1>
               <p className="mt-5 text-base leading-relaxed text-muted-foreground">{DESCRIPTION}</p>
             </Reveal>

@@ -3,7 +3,7 @@ import { ReportArchivePage } from "@/components/site/ReportArchive";
 import { statusOfTheBuiltEnvironmentDocuments } from "@/data/report-archives";
 
 const SITE_URL = "https://aak.or.ke";
-const TITLE = "Status of the Built Environment Report | Architectural Association of Kenya";
+const TITLE = "Status of the Built Environment Reports | Architectural Association of Kenya";
 const DESCRIPTION =
   "AAK's annual analysis of trends, challenges and professional opportunities in Kenya's construction and urban development sector.";
 
@@ -27,7 +27,7 @@ function StatusOfTheBuiltEnvironmentPage() {
   return (
     <ReportArchivePage
       eyebrow="Reports"
-      title="Status of the Built Environment Report"
+      title="Status of the Built Environment Reports"
       description={DESCRIPTION}
       documents={statusOfTheBuiltEnvironmentDocuments}
     />
