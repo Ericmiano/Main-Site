@@ -6,6 +6,8 @@ import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { Reveal } from "@/components/site/Reveal";
 import { PageBreadcrumb } from "@/components/site/PageBreadcrumb";
+import { InitiativeEmblem } from "@/components/site/InitiativeEmblem";
+import { initiatives } from "@/data/site";
 import {
   getInitiativeDetail,
   type InitiativeGalleryImage,
@@ -79,6 +81,7 @@ export const Route = createFileRoute("/initiatives/$slug")({
 
 function InitiativeDetail() {
   const initiative = Route.useLoaderData();
+  const emblem = initiatives.find((i) => i.slug === initiative.slug)?.emblem;
   const [primaryVideo, ...moreVideos] = initiative.videos ?? [];
 
   return (
@@ -126,6 +129,13 @@ function InitiativeDetail() {
           <section className="py-14 lg:py-20">
             <div className="mx-auto grid max-w-[1400px] gap-14 px-6 lg:grid-cols-[1.1fr_1fr] lg:px-12">
               <Reveal>
+                {emblem ? (
+                  <InitiativeEmblem
+                    src={emblem}
+                    title={initiative.title}
+                    className="mb-6 flex h-20 w-20 p-2.5 sm:h-24 sm:w-24 sm:p-3"
+                  />
+                ) : null}
                 <span
                   className={
                     initiative.tone === "green"

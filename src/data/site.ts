@@ -225,6 +225,8 @@ export interface Initiative {
   externalUrl?: string;
   cta: string;
   image: string;
+  /** The initiative's own logo emblem (transparent; shown on a light tile). */
+  emblem?: string;
   tone: "primary" | "green";
 }
 
@@ -239,6 +241,7 @@ export const initiatives: Initiative[] = [
     href: "https://aak.or.ke/mulika-mjengo/",
     cta: "Report a concern",
     image: "/img/kamulu-mm-10-hp-hp-hp-hp-hp.webp",
+    emblem: "/img/initiatives/mulika-mjengo-emblem.webp",
     tone: "primary",
   },
   {
@@ -251,6 +254,7 @@ export const initiatives: Initiative[] = [
     href: "https://aak.or.ke/je-una-mjengo/",
     cta: "See the campaign",
     image: "/img/radio-citizen-pic.webp",
+    emblem: "/img/initiatives/je-una-mjengo-emblem.webp",
     tone: "primary",
   },
   {
@@ -265,6 +269,7 @@ export const initiatives: Initiative[] = [
     externalUrl: "https://schools.aak.or.ke/",
     cta: "Explore the project",
     image: "/img/grow-a-classroom-2307.webp",
+    emblem: "/img/initiatives/grow-a-classroom-emblem.webp",
     tone: "primary",
   },
   {
@@ -278,6 +283,7 @@ export const initiatives: Initiative[] = [
     externalUrl: "https://safarigreenbuilding.org/",
     cta: "Visit the SGBI website",
     image: "/img/0q9a0926-1200x800.webp",
+    emblem: "/img/initiatives/safari-green-building-index-emblem.webp",
     tone: "green",
   },
   {
@@ -290,6 +296,7 @@ export const initiatives: Initiative[] = [
     href: "https://aak.or.ke/healthy-homes-guidelines/",
     cta: "View the guidelines",
     image: "/img/launch-of-hhgc.webp",
+    emblem: "/img/initiatives/healthy-homes-guidelines-emblem.webp",
     tone: "green",
   },
   {

@@ -11,6 +11,7 @@ import { Footer } from "@/components/site/Footer";
 import { Reveal } from "@/components/site/Reveal";
 import { SectionRule } from "@/components/site/SectionRule";
 import { PageBreadcrumb } from "@/components/site/PageBreadcrumb";
+import { InitiativeEmblem } from "@/components/site/InitiativeEmblem";
 import { CountUp } from "@/components/site/CountUp";
 import { YouTubeEmbed } from "@/components/site/YouTubeEmbed";
 import { CopyValue } from "@/components/site/CopyValue";
@@ -255,7 +256,12 @@ function GrowAClassroom() {
                   ]}
                 />
               </div>
-              <p className="hero-item meta-label mt-10 text-sustain">
+              <InitiativeEmblem
+                src="/img/initiatives/grow-a-classroom-emblem.webp"
+                title="Grow A Classroom"
+                className="hero-item mt-10 flex h-20 w-20 p-2.5 sm:h-24 sm:w-24 sm:p-3"
+              />
+              <p className="hero-item meta-label mt-6 text-sustain">
                 Professional CSR &middot; Advocacy programme
               </p>
               <h1 className="hero-item hero-delay-1 mt-4 font-display text-5xl font-semibold leading-[0.95] tracking-tight text-background sm:text-7xl lg:text-8xl">

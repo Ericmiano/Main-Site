@@ -15,6 +15,7 @@ import {
 } from "@/data/site";
 import { cn } from "@/lib/utils";
 import { InitiativeLink } from "@/components/site/InitiativeLink";
+import { InitiativeEmblem } from "@/components/site/InitiativeEmblem";
 import logoHorizontal from "@/assets/aak-logo-horizontal.webp";
 import {
   Accordion,
@@ -418,14 +419,23 @@ export function Header() {
                           onClick={closeMenuNow}
                           className="group flex items-center gap-3"
                         >
-                          <span className="h-12 w-12 shrink-0 overflow-hidden rounded-full bg-secondary">
-                            <img
-                              src={initiative.image}
-                              alt=""
-                              loading="lazy"
-                              className="h-full w-full object-cover grayscale transition-[filter] duration-300 group-hover:grayscale-0"
+                          {initiative.emblem ? (
+                            <InitiativeEmblem
+                              src={initiative.emblem}
+                              title={initiative.title}
+                              decorative
+                              className="h-12 w-12 transition-transform duration-300 group-hover:scale-105"
                             />
-                          </span>
+                          ) : (
+                            <span className="h-12 w-12 shrink-0 overflow-hidden rounded-full bg-secondary">
+                              <img
+                                src={initiative.image}
+                                alt=""
+                                loading="lazy"
+                                className="h-full w-full object-cover grayscale transition-[filter] duration-300 group-hover:grayscale-0"
+                              />
+                            </span>
+                          )}
                           <span>
                             <span className="block text-sm font-semibold text-background transition-colors group-hover:text-primary">
                               {initiative.title}

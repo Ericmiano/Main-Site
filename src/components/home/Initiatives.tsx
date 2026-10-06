@@ -1,5 +1,6 @@
 import { IconArrowUpRight as ArrowUpRight } from "@tabler/icons-react";
 import { initiatives } from "@/data/site";
+import { InitiativeEmblem } from "@/components/site/InitiativeEmblem";
 import { InitiativeLink } from "@/components/site/InitiativeLink";
 import { Reveal } from "@/components/site/Reveal";
 import { SectionRule } from "@/components/site/SectionRule";
@@ -38,7 +39,15 @@ export function Initiatives() {
         <div className="mt-14 grid gap-10 lg:grid-cols-[1.15fr_1fr] lg:gap-16">
           <Reveal wipe>
             <InitiativeLink initiative={featured} className="group block">
-              <div className="overflow-hidden bg-secondary">
+              <div className="relative overflow-hidden bg-secondary">
+                {featured.emblem ? (
+                  <InitiativeEmblem
+                    src={featured.emblem}
+                    title={featured.title}
+                    decorative
+                    className="absolute bottom-4 left-4 z-10 h-16 w-16 p-2 sm:h-20 sm:w-20 sm:p-2.5"
+                  />
+                ) : null}
                 <img
                   src={featured.image}
                   alt={`${featured.title} initiative`}
@@ -73,7 +82,15 @@ export function Initiatives() {
                     initiative={initiative}
                     className="group grid grid-cols-[5.5rem_1fr] items-center gap-5 py-5 sm:grid-cols-[7rem_1fr]"
                   >
-                    <div className="overflow-hidden bg-secondary">
+                    <div className="relative overflow-hidden bg-secondary">
+                      {initiative.emblem ? (
+                        <InitiativeEmblem
+                          src={initiative.emblem}
+                          title={initiative.title}
+                          decorative
+                          className="absolute bottom-1.5 left-1.5 z-10 h-8 w-8 rounded-lg p-1 sm:h-9 sm:w-9"
+                        />
+                      ) : null}
                       <img
                         src={initiative.image}
                         alt=""
