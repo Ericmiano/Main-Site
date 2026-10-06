@@ -227,6 +227,9 @@ export interface Initiative {
   image: string;
   /** The initiative's own logo emblem (transparent; shown on a light tile). */
   emblem?: string;
+  /** The emblem's colour, for the title on hover: on the homepage's earth
+   * background (light) and the dark menu panel (dark), both WCAG AA. */
+  brand?: { light: string; dark: string };
   tone: "primary" | "green";
 }
 
@@ -242,6 +245,7 @@ export const initiatives: Initiative[] = [
     cta: "Report a concern",
     image: "/img/kamulu-mm-10-hp-hp-hp-hp-hp.webp",
     emblem: "/img/initiatives/mulika-mjengo-emblem.webp",
+    brand: { light: "#a50d0d", dark: "#ef3838" },
     tone: "primary",
   },
   {
@@ -255,6 +259,7 @@ export const initiatives: Initiative[] = [
     cta: "See the campaign",
     image: "/img/radio-citizen-pic.webp",
     emblem: "/img/initiatives/je-una-mjengo-emblem.webp",
+    brand: { light: "#7e5002", dark: "#fcb43c" },
     tone: "primary",
   },
   {
@@ -270,6 +275,7 @@ export const initiatives: Initiative[] = [
     cta: "Explore the project",
     image: "/img/grow-a-classroom-2307.webp",
     emblem: "/img/initiatives/grow-a-classroom-emblem.webp",
+    brand: { light: "#186935", dark: "#22964c" },
     tone: "primary",
   },
   {
@@ -284,6 +290,7 @@ export const initiatives: Initiative[] = [
     cta: "Visit the SGBI website",
     image: "/img/0q9a0926-1200x800.webp",
     emblem: "/img/initiatives/safari-green-building-index-emblem.webp",
+    brand: { light: "#5f5f25", dark: "#9a9a3c" },
     tone: "green",
   },
   {
@@ -297,6 +304,7 @@ export const initiatives: Initiative[] = [
     cta: "View the guidelines",
     image: "/img/launch-of-hhgc.webp",
     emblem: "/img/initiatives/healthy-homes-guidelines-emblem.webp",
+    brand: { light: "#b51616", dark: "#e84444" },
     tone: "green",
   },
   {

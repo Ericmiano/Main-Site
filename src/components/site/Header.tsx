@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useRef, useState, type CSSProperties } from "react";
 import { Link } from "@tanstack/react-router";
 import {
   IconChevronDown as ChevronDown,
@@ -437,7 +437,14 @@ export function Header() {
                             </span>
                           )}
                           <span>
-                            <span className="block text-sm font-semibold text-background transition-colors group-hover:text-primary">
+                            <span
+                              style={
+                                {
+                                  "--brand": initiative.brand?.dark ?? "var(--primary)",
+                                } as CSSProperties
+                              }
+                              className="block text-sm font-semibold text-background transition-colors group-hover:text-[var(--brand)]"
+                            >
                               {initiative.title}
                             </span>
                             <span

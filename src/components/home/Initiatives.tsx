@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import { IconArrowUpRight as ArrowUpRight } from "@tabler/icons-react";
 import { initiatives } from "@/data/site";
 import { InitiativeEmblem } from "@/components/site/InitiativeEmblem";
@@ -61,7 +62,10 @@ export function Initiatives() {
                   {featured.eyebrow} &middot; Kenya
                 </span>
               </div>
-              <h3 className="mt-3 font-display text-3xl font-semibold tracking-tight text-balance text-foreground sm:text-4xl">
+              <h3
+                style={{ "--brand": featured.brand?.light ?? "var(--foreground)" } as CSSProperties}
+                className="mt-3 font-display text-3xl font-semibold tracking-tight text-balance text-foreground transition-colors duration-300 group-hover:text-[var(--brand)] sm:text-4xl"
+              >
                 {featured.title}
               </h3>
               <p className="mt-3 max-w-lg text-sm leading-relaxed text-foreground/70">
@@ -107,7 +111,14 @@ export function Initiatives() {
                           {initiative.eyebrow}
                         </span>
                       </div>
-                      <h3 className="mt-1.5 flex items-center gap-2 font-display text-xl font-semibold leading-snug text-foreground">
+                      <h3
+                        style={
+                          {
+                            "--brand": initiative.brand?.light ?? "var(--foreground)",
+                          } as CSSProperties
+                        }
+                        className="mt-1.5 flex items-center gap-2 font-display text-xl font-semibold leading-snug text-foreground transition-colors duration-300 group-hover:text-[var(--brand)]"
+                      >
                         {initiative.title}
                         <ArrowUpRight
                           aria-hidden="true"
