@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, type CSSProperties } from "react";
 import { partners } from "@/data/site";
 import { useGsap } from "@/hooks/use-gsap";
 
@@ -151,6 +151,13 @@ export function Partners() {
                   draggable={false}
                   tabIndex={copy ? -1 : undefined}
                   aria-label={`${partner.name} (opens in a new tab)`}
+                  // The name takes the logo's colour on hover; black logos use the text colour.
+                  style={
+                    {
+                      "--brand": partner.brand?.light ?? "var(--foreground)",
+                      "--brand-dark": partner.brand?.dark ?? "var(--foreground)",
+                    } as CSSProperties
+                  }
                   className="group/partner flex w-[180px] cursor-pointer flex-col items-center gap-3 text-center"
                 >
                   {/* Each logo at its own balanced size, centred in an even row. Loaded
@@ -167,7 +174,7 @@ export function Partners() {
                       className="max-w-full object-contain opacity-75 grayscale transition-[filter,opacity] duration-300 group-hover/partner:opacity-100 group-hover/partner:grayscale-0 group-focus-visible/partner:opacity-100 group-focus-visible/partner:grayscale-0"
                     />
                   </span>
-                  <span className="text-xs leading-snug text-muted-foreground transition-colors group-hover/partner:text-primary group-focus-visible/partner:text-primary sm:text-sm">
+                  <span className="text-xs leading-snug text-muted-foreground transition-colors group-hover/partner:text-[var(--brand)] group-focus-visible/partner:text-[var(--brand)] sm:text-sm dark:group-hover/partner:text-[var(--brand-dark)] dark:group-focus-visible/partner:text-[var(--brand-dark)]">
                     {partner.name}
                   </span>
                 </a>

@@ -500,6 +500,9 @@ export interface Partner {
   /** Display size in px, balanced by eye: wide wordmarks shorter, round emblems taller. */
   logoWidth: number;
   logoHeight: number;
+  /** The logo's brand colour, for the name on hover: shades that stay readable
+   * (WCAG AA) on the light and dark backgrounds. Omitted for black logos. */
+  brand?: { light: string; dark: string };
   /** The organisation's official website. */
   href: string;
 }
@@ -527,6 +530,7 @@ export const partners: Partner[] = [
     logo: "/img/partners/ebk.webp",
     logoWidth: 71,
     logoHeight: 60,
+    brand: { light: "#945f09", dark: "#f2a830" },
     href: "https://ebk.go.ke/",
   },
   {
@@ -535,6 +539,7 @@ export const partners: Partner[] = [
     logo: "/img/partners/ifla.webp",
     logoWidth: 158,
     logoHeight: 38,
+    brand: { light: "#3a783a", dark: "#4b9a4b" },
     href: "https://www.iflaworld.com/",
   },
   {
@@ -543,6 +548,7 @@ export const partners: Partner[] = [
     logo: "/img/partners/isocarp.webp",
     logoWidth: 148,
     logoHeight: 40,
+    brand: { light: "#13749c", dark: "#2fb0e6" },
     href: "https://isocarp.org/",
   },
   {
@@ -551,6 +557,7 @@ export const partners: Partner[] = [
     logo: "/img/partners/uia.webp",
     logoWidth: 106,
     logoHeight: 48,
+    brand: { light: "#d51319", dark: "#ee3c42" },
     href: "https://www.uia-architectes.org/en/",
   },
 ];
