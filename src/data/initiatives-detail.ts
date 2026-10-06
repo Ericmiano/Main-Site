@@ -102,6 +102,11 @@ export const initiativeDetails: InitiativeDetail[] = [
       },
     ],
     contacts: [
+      {
+        label: "Online reporting form",
+        value: "Report an unsafe building",
+        href: "https://forms.cloud.microsoft/r/h1TCEjvRNz?origin=lprLink",
+      },
       { label: "Email", value: "aak@aak.or.ke", href: "mailto:aak@aak.or.ke" },
       { label: "Phone / WhatsApp", value: "0721 691 337", href: "tel:+254721691337" },
       { label: "Instagram", value: "@arch_ke", href: "https://www.instagram.com/arch_ke" },

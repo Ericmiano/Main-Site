@@ -125,7 +125,7 @@ export function Partners() {
     >
       <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
         <p id="partners-title" className="text-center meta-label text-muted-foreground">
-          Working alongside
+          Our partners
         </p>
       </div>
 
@@ -151,12 +151,19 @@ export function Partners() {
                   draggable={false}
                   tabIndex={copy ? -1 : undefined}
                   aria-label={`${partner.name} (opens in a new tab)`}
-                  className="group/partner flex cursor-pointer items-center gap-2.5 text-muted-foreground transition-colors hover:text-foreground focus-visible:text-foreground"
+                  className="group/partner flex w-[180px] cursor-pointer flex-col items-center gap-3 text-center"
                 >
-                  <span className="font-display text-lg font-bold tracking-tight text-foreground/70 transition-colors group-hover/partner:text-primary group-focus-visible/partner:text-primary">
-                    {partner.abbreviation}
+                  <img
+                    src={partner.logo}
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                    draggable={false}
+                    className="h-[76px] w-[180px] object-contain transition-[filter] duration-300 grayscale group-hover/partner:grayscale-0 group-focus-visible/partner:grayscale-0"
+                  />
+                  <span className="text-xs leading-snug text-muted-foreground transition-colors group-hover/partner:text-primary group-focus-visible/partner:text-primary sm:text-sm">
+                    {partner.name}
                   </span>
-                  <span className="hidden text-sm sm:inline">{partner.name}</span>
                 </a>
               </li>
             );

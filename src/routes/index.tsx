@@ -100,11 +100,11 @@ function Index() {
         <Initiatives />
         <Statement />
         <Chapters />
-        <Partners />
         <MediaGrid />
         <LatestPosts />
         <FeaturedFirm />
         <Membership />
+        <Partners />
       </main>
       <SectionIndicator />
       <Footer />
