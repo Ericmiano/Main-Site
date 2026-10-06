@@ -9,7 +9,7 @@ import { publications } from "@/data/site";
 import { jsonLd } from "@/lib/json-ld";
 
 const SITE_URL = "https://aak.or.ke";
-const TITLE = "Reports | Architectural Association of Kenya";
+const TITLE = "Resource Centre | Architectural Association of Kenya";
 const DESCRIPTION =
   "AAK's reports, downloads and advocacy documents: the Status of the Built Environment Report, AGM reports, BuildPress Magazine, building regulations and policy submissions.";
 
@@ -111,7 +111,7 @@ function structuredData() {
           {
             "@type": "ListItem",
             position: 2,
-            name: "Reports",
+            name: "Resource Centre",
             item: `${SITE_URL}/resources`,
           },
         ],
@@ -131,11 +131,11 @@ function ResourcesPage() {
       <main>
         <section className="border-b border-border bg-secondary/40 py-14 lg:py-20">
           <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
-            <PageBreadcrumb trail={[{ label: "Reports" }]} />
+            <PageBreadcrumb trail={[{ label: "Resource Centre" }]} />
 
             <Reveal className="mt-8 max-w-2xl">
               <h1 className="mt-2 font-display text-4xl font-semibold leading-[1.02] tracking-tight text-balance text-foreground sm:text-5xl lg:text-6xl">
-                Reports
+                Resource Centre
               </h1>
               <p className="mt-5 text-base leading-relaxed text-muted-foreground">{DESCRIPTION}</p>
             </Reveal>
