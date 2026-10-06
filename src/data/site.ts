@@ -488,7 +488,11 @@ export const media: MediaItem[] = [
 export interface Partner {
   name: string;
   abbreviation: string;
+  /** Official logo from the organisation's own website: transparent, trimmed, 2x. */
   logo: string;
+  /** Display size in px, balanced by eye: wide wordmarks shorter, round emblems taller. */
+  logoWidth: number;
+  logoHeight: number;
   /** The organisation's official website. */
   href: string;
 }
@@ -497,37 +501,49 @@ export const partners: Partner[] = [
   {
     name: "Africa Union of Architects",
     abbreviation: "AUA",
-    logo: "/img/partners/aua.png",
+    logo: "/img/partners/aua.webp",
+    logoWidth: 64,
+    logoHeight: 64,
     href: "https://www.aua.archi/",
   },
   {
     name: "East Africa Institute of Architects",
     abbreviation: "EAIA",
-    logo: "/img/partners/eaia.png",
+    logo: "/img/partners/eaia.webp",
+    logoWidth: 62,
+    logoHeight: 64,
     href: "https://eai-architects.org/",
   },
   {
     name: "Engineers Board of Kenya",
     abbreviation: "EBK",
-    logo: "/img/partners/ebk.png",
+    logo: "/img/partners/ebk.webp",
+    logoWidth: 71,
+    logoHeight: 60,
     href: "https://ebk.go.ke/",
   },
   {
     name: "International Federation of Landscape Architects",
     abbreviation: "IFLA",
-    logo: "/img/partners/ifla.png",
+    logo: "/img/partners/ifla.webp",
+    logoWidth: 158,
+    logoHeight: 38,
     href: "https://www.iflaworld.com/",
   },
   {
     name: "International Society of City and Regional Planners",
     abbreviation: "ISOCARP",
-    logo: "/img/partners/isocarp.png",
+    logo: "/img/partners/isocarp.webp",
+    logoWidth: 148,
+    logoHeight: 40,
     href: "https://isocarp.org/",
   },
   {
     name: "International Union of Architects",
     abbreviation: "UIA",
-    logo: "/img/partners/uia.jpg",
+    logo: "/img/partners/uia.webp",
+    logoWidth: 106,
+    logoHeight: 48,
     href: "https://www.uia-architectes.org/en/",
   },
 ];

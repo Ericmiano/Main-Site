@@ -153,14 +153,20 @@ export function Partners() {
                   aria-label={`${partner.name} (opens in a new tab)`}
                   className="group/partner flex w-[180px] cursor-pointer flex-col items-center gap-3 text-center"
                 >
-                  <img
-                    src={partner.logo}
-                    alt=""
-                    loading="lazy"
-                    decoding="async"
-                    draggable={false}
-                    className="h-[76px] w-[180px] object-contain transition-[filter] duration-300 grayscale group-hover/partner:grayscale-0 group-focus-visible/partner:grayscale-0"
-                  />
+                  {/* Each logo at its own balanced size, centred in an even row. Loaded
+                      straight away (they're tiny) so none pops in as the strip moves. */}
+                  <span className="flex h-16 w-full items-center justify-center">
+                    <img
+                      src={partner.logo}
+                      alt=""
+                      width={partner.logoWidth}
+                      height={partner.logoHeight}
+                      decoding="async"
+                      draggable={false}
+                      style={{ width: partner.logoWidth, height: partner.logoHeight }}
+                      className="max-w-full object-contain opacity-75 grayscale transition-[filter,opacity] duration-300 group-hover/partner:opacity-100 group-hover/partner:grayscale-0 group-focus-visible/partner:opacity-100 group-focus-visible/partner:grayscale-0"
+                    />
+                  </span>
                   <span className="text-xs leading-snug text-muted-foreground transition-colors group-hover/partner:text-primary group-focus-visible/partner:text-primary sm:text-sm">
                     {partner.name}
                   </span>
