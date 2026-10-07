@@ -1,5 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { IconArrowUpRight as ArrowUpRight } from "@tabler/icons-react";
+import {
+  IconArrowUpRight as ArrowUpRight,
+  IconPlayerPlayFilled as Play,
+} from "@tabler/icons-react";
 
 import { X_POSTS, xPostUrl, type XPost } from "@/lib/social-feeds";
 
@@ -40,7 +43,7 @@ function Post({ post, load }: { post: XPost; load: boolean }) {
 
   useEffect(() => {
     const node = slot.current;
-    if (!load || !node) return;
+    if (!load || !node || post.video) return;
     let cancelled = false;
     loadWidgets()
       .then((twttr) =>
@@ -59,7 +62,7 @@ function Post({ post, load }: { post: XPost; load: boolean }) {
       cancelled = true;
       node.replaceChildren();
     };
-  }, [load, post.id]);
+  }, [load, post.id, post.video]);
 
   return (
     <li className="min-w-0">
@@ -69,13 +72,13 @@ function Post({ post, load }: { post: XPost; load: boolean }) {
           href={xPostUrl(post.id)}
           target="_blank"
           rel="noopener noreferrer"
-          className="block rounded-2xl border border-border bg-background p-5 transition-colors hover:border-foreground/40"
+          className="group/xpost block rounded-2xl border border-border bg-background p-5 transition-colors hover:border-foreground/40"
         >
           <span className="meta-label text-muted-foreground">@Arch_KE &middot; {post.date}</span>
           <span className="mt-3 block text-sm leading-relaxed text-foreground">{post.text}</span>
           {post.images.length ? (
             <span
-              className={`mt-4 grid gap-1 overflow-hidden rounded-xl ${post.images.length > 1 ? "grid-cols-2" : ""}`}
+              className={`relative mt-4 grid gap-1 overflow-hidden rounded-xl ${post.images.length > 1 ? "grid-cols-2" : ""}`}
             >
               {post.images.map((img) => (
                 <img
@@ -89,10 +92,18 @@ function Post({ post, load }: { post: XPost; load: boolean }) {
                   className={`w-full bg-secondary object-cover ${post.images.length > 1 ? "aspect-3/4" : ""}`}
                 />
               ))}
+              {post.video ? (
+                <span
+                  aria-hidden="true"
+                  className="absolute inset-0 m-auto flex h-14 w-14 items-center justify-center rounded-full bg-black/65 text-white transition-transform group-hover/xpost:scale-110"
+                >
+                  <Play className="h-6 w-6 translate-x-px" />
+                </span>
+              ) : null}
             </span>
           ) : null}
           <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-foreground">
-            View on X
+            {post.video ? "Watch on X" : "View on X"}
             <ArrowUpRight className="h-4 w-4 text-primary" aria-hidden="true" />
           </span>
         </a>
@@ -119,7 +130,7 @@ export function XPosts({ load, href }: { load: boolean; href?: string | undefine
           </a>
         ) : null}
       </figcaption>
-      <ul className="mt-6 grid items-start gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <ul className="mt-6 grid items-start gap-6 md:grid-cols-2 xl:grid-cols-4">
         {X_POSTS.map((post) => (
           <Post key={post.id} post={post} load={load} />
         ))}

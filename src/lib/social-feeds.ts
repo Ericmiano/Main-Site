@@ -57,52 +57,63 @@ export interface XPost {
   date: string;
   text: string;
   images: XPostImage[];
+  /** A video post: X embeds these as a bare player with no text, so the
+   * card below (with the video's still) is shown in its place. */
+  video?: boolean;
 }
 export const X_POSTS: XPost[] = [
   {
-    id: "2105571147932987466",
-    date: "1 October 2026",
-    text: "As an official pilot project of the 30th UIA World Congress of Architects 2029 Beijing, this open international competition targets young architects worldwide: a 200 m² urban public pavilion on the Yongding River waterfront in Beijing.",
+    id: "2107363980444606531",
+    date: "6 October 2026",
+    text: "Join us this Friday for a FREE AAK Members Forum 2026 on transitioning into entrepreneurship or scaling your young practice in the built environment, moderated by Arch. Rosemary Litunya. Blue Violets Plaza, Suite 704, Kamburu Drive; Friday 9 October, 2 to 5 PM. Free for members in good standing, KES 1,500 for non-members.",
     images: [
       {
-        src: "/img/x/2105571147932987466-1.webp",
+        src: "/img/x/2107363980444606531-1.webp",
         width: 800,
-        height: 800,
-        alt: "Poster for the Yong Ding Chang'an Pavilion competition for young architects, entries due 16 November 2026",
+        height: 640,
+        alt: "Poster for the AAK Members Forum 2026, Winning Your First Clients, with speakers Abigael Osidiana, Humphrey Mumita, Arch. Sharon Njiru and Eng. Nashon Tambo, Friday 9 October 2026",
       },
     ],
   },
   {
-    id: "2105305352887513285",
-    date: "30 September 2026",
-    text: "Yesterday, AAK, led by Vice President Arch. Brenda Nyawara, participated in a stakeholder forum convened by the Nairobi City County Assembly's Lands, Housing and Planning Committee, highlighting key concerns affecting planning and development control.",
+    id: "2107072202181095583",
+    date: "5 October 2026",
+    text: "Happy World Habitat Day! Houses are more than buildings; they are where life happens. On World Habitat Day, we re-commit to planning and designing inclusive, resilient and sustainable habitats for all Kenyans.",
     images: [
       {
-        src: "/img/x/2105305352887513285-1.webp",
+        src: "/img/x/2107072202181095583-1.webp",
         width: 800,
-        height: 533,
-        alt: "AAK Vice President Arch. Brenda Nyawara speaking to the press at the Nairobi City County Assembly forum",
-      },
-      {
-        src: "/img/x/2105305352887513285-2.webp",
-        width: 800,
-        height: 621,
-        alt: "Arch. Brenda Nyawara addressing the Assembly's Lands, Housing and Planning Committee",
+        height: 800,
+        alt: "World Habitat Day 2026 poster: Adequate Housing for All, with a green city skyline cut from paper",
       },
     ],
   },
   {
-    id: "2104843015181209601",
-    date: "29 September 2026",
-    text: "The AAK Architects Chapter invites you to be part of its delegation to the East Africa Institute of Architects (EAIA) AGM & Architecture Congress in Kigali, Rwanda. Join our organised road trip for cross-border learning and networking.",
+    id: "2107056417836617755",
+    date: "5 October 2026",
+    text: "Happy World Architecture Day! What does a dignified home mean to you? Today we join architects worldwide in affirming that decent, affordable shelter must be for everyone, not a privilege for a few. Let's design for people, for equity, and for a better tomorrow.",
     images: [
       {
-        src: "/img/x/2104843015181209601-1.webp",
+        src: "/img/x/2107056417836617755-1.webp",
         width: 800,
         height: 800,
-        alt: "Poster for the AAK Architects Chapter road trip to the EAIA AGM & Architecture Congress in Kigali, 6 to 10 October 2026",
+        alt: "World Architecture Day 2026 poster: Housing is a Human Right. Build It., over an aerial photo of a Kenyan housing estate",
       },
     ],
+  },
+  {
+    id: "2107021173922173405",
+    date: "5 October 2026",
+    text: "Happy Customer Service Week from AAK! We appreciate our members, partners, clients, and staff. Thank you for your continued trust and collaboration. We remain committed to serving you with professionalism, integrity and excellence. Jacob Mwangi, Chief Executive Officer, AAK.",
+    images: [
+      {
+        src: "/img/x/2107021173922173405-1.webp",
+        width: 800,
+        height: 800,
+        alt: "Still from a video message by AAK Chief Executive Officer Jacob Mwangi",
+      },
+    ],
+    video: true,
   },
 ];
 
