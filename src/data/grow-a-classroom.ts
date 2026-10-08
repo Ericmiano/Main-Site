@@ -35,8 +35,8 @@ export const gacStrategy = [
     body: "Development of comprehensive school master plans ensuring logical layout, efficient land-use and guided future expansions.",
   },
   {
-    title: "Landscaping",
-    body: "Appropriate landscaping to enhance outdoor learning experiences using wood, ornamental, and fruit trees.",
+    title: "Landscape Planning",
+    body: "Landscape planning to create cooler and productive outdoor environments that enhance play and learning, through the strategic integration of indigenous, ornamental, timber and fruit species.",
   },
   {
     title: "Timber Production",
