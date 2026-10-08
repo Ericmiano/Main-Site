@@ -43,8 +43,8 @@ export const gacStrategy = [
     body: "Planting and growing trees for future sustainable timber harvesting, creating a renewable on-site resource for construction and furniture needs.",
   },
   {
-    title: "Tree planting",
-    body: "Fostering a culture of tree planting to increase national tree cover and sequester carbon.",
+    title: "Restoration and Stewardship",
+    body: "Restoring landscapes through tree planting and nurturing a culture of environmental stewardship, while promoting awareness of the importance of trees and healthy ecosystems.",
   },
   {
     title: "Carbon credits",
