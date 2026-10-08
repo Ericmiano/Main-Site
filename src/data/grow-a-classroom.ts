@@ -31,8 +31,8 @@ export const gacOverview =
 
 export const gacStrategy = [
   {
-    title: "Master plans",
-    body: "Development of comprehensive master plans for schools to ensure logical layout and future expansion.",
+    title: "Master Planning",
+    body: "Development of comprehensive school master plans ensuring logical layout, efficient land-use and guided future expansions.",
   },
   {
     title: "Landscaping",
