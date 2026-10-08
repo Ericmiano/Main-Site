@@ -39,8 +39,8 @@ export const gacStrategy = [
     body: "Appropriate landscaping to enhance outdoor learning experiences using wood, ornamental, and fruit trees.",
   },
   {
-    title: "Timber from the site",
-    body: "Creation of a sustainable material source by using mature wood from onsite trees for classrooms and furniture.",
+    title: "Timber Production",
+    body: "Planting and growing trees for future sustainable timber harvesting, creating a renewable on-site resource for construction and furniture needs.",
   },
   {
     title: "Tree planting",
