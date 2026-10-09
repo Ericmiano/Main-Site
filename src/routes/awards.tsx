@@ -21,7 +21,7 @@ const winnersFirst = [...winners2024].sort((a, b) => rank(a.result) - rank(b.res
 const SITE_URL = "https://aak.or.ke";
 const TITLE = "Awards & Honours | Architectural Association of Kenya";
 const DESCRIPTION =
-  "The AAK-Basco DuraCoat Awards of Excellence in Architecture: categories, jury, evaluation criteria, and the 2024 cycle's winning projects.";
+  "The AAK-Basco DuraCoat Awards of Excellence in Architecture: categories, jury, evaluation criteria, and the 2026 winning projects.";
 
 export const Route = createFileRoute("/awards")({
   head: () => ({
@@ -141,7 +141,7 @@ function AwardsPage() {
         <section aria-labelledby="winners-title" className="py-16 lg:py-24">
           <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
             <SectionHeading
-              eyebrow="Latest Awards of Excellence · 2024"
+              eyebrow="Awards of Excellence 2026"
               title={<span id="winners-title">Winning projects</span>}
             />
             <ul data-stagger className="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">

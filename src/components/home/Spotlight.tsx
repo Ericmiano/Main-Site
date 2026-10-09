@@ -29,7 +29,7 @@ export function Spotlight() {
       <Reveal className="mx-auto max-w-[1400px] px-6 lg:px-12">
         <div className="flex items-end justify-between gap-6 pb-4">
           <p className="meta-label text-muted-foreground">
-            Awards of Excellence &middot; 2024 winners
+            Awards of Excellence 2026 &middot; Winners
           </p>
           <div className="flex gap-2">
             <button

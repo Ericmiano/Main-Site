@@ -40,49 +40,28 @@ export const Route = createFileRoute("/membership")({
   component: MembershipPage,
 });
 
+// One path to membership, from the member portal's own joining instructions
+// (members.aak.or.ke/register) and By-Law BL 4.0.
 const steps = [
   {
     step: "01",
     title: "Check requirements",
-    body: "Membership tiers accommodate students, technicians, graduates and registered professionals across all eight chapters. Confirm which tier fits your qualifications.",
+    body: "Choose the category that fits your qualifications (fees below) and line up two sponsors: Fellow or Corporate members in good standing, from the chapter you're applying to.",
   },
   {
     step: "02",
-    title: "Register",
-    body: "Create your application on the member portal at members.aak.or.ke and submit your professional and academic details.",
+    title: "Apply on the member portal",
+    body: "Create an account at members.aak.or.ke, complete the application and sign the declaration under By-Law BL 4.0. Have your academic certificates and transcripts ready to upload as images or PDFs.",
   },
   {
     step: "03",
-    title: "Log in",
-    body: "Once approved, sign in at members.aak.or.ke/signin to manage your subscription, CPD record and chapter activity.",
-  },
-  {
-    step: "04",
-    title: "Validate",
-    body: "Anyone can confirm a member's certificate is genuine and current at members.aak.or.ke/validate.",
-  },
-];
-
-const applicationProcess = [
-  {
-    step: "01",
-    title: "Complete the application",
-    body: "Complete the official application form and sign the declaration as required under By Law BL 4.0 of the AAK Constitution.",
-  },
-  {
-    step: "02",
-    title: "Get proposed and seconded",
-    body: "All applicants must be proposed and seconded by corporate members of the chapter being applied for.",
-  },
-  {
-    step: "03",
-    title: "Submit to the Secretariat",
-    body: "Submit the application to the Secretariat with the prescribed entrance fee and the first annual subscription.",
+    title: "Pay the fees",
+    body: "Pay the entrance fee and first annual subscription by M-Pesa as part of the application. An application without payment is incomplete.",
   },
   {
     step: "04",
     title: "Chapter and Council approval",
-    body: "Approval is granted through the Chapter Chairman and confirmed by the Governing Council.",
+    body: "Your chapter considers the application and the Governing Council confirms it. Once approved, your membership number arrives by email and you can sign in to manage your subscription and CPD.",
   },
 ];
 
@@ -196,6 +175,18 @@ function MembershipPage() {
                 </li>
               ))}
             </ol>
+            <p className="mt-8 text-sm text-muted-foreground">
+              Already a member? Anyone can check that a member is genuine and in good standing at{" "}
+              <a
+                href={portalLinks.validate}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="link-underline font-medium text-foreground"
+              >
+                members.aak.or.ke/validate
+              </a>
+              .
+            </p>
           </div>
         </section>
 
@@ -279,37 +270,6 @@ function MembershipPage() {
                 </li>
               ))}
             </ul>
-          </div>
-        </section>
-
-        <section
-          aria-labelledby="application-process-title"
-          className="border-t border-border bg-secondary/40 py-16 lg:py-24"
-        >
-          <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
-            <SectionHeading
-              eyebrow="Registration pathway"
-              title={<span id="application-process-title">Application process</span>}
-            />
-            <ol className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {applicationProcess.map((step, i) => (
-                <li key={step.step}>
-                  <Reveal delay={i * 70} className="h-full">
-                    <div className="flex h-full flex-col rounded-2xl border border-border p-6">
-                      <span className="font-display text-3xl font-semibold tabular-nums text-primary">
-                        {step.step}
-                      </span>
-                      <h3 className="mt-4 font-display text-lg font-semibold leading-snug text-foreground">
-                        {step.title}
-                      </h3>
-                      <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                        {step.body}
-                      </p>
-                    </div>
-                  </Reveal>
-                </li>
-              ))}
-            </ol>
           </div>
         </section>
 

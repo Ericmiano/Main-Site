@@ -130,30 +130,6 @@ export const events: SiteEvent[] = [
     externalSiteHref: "https://www.biennale.aak.or.ke/",
   },
   {
-    slug: "urban-thinkers-campus-2026",
-    title: "Urban Thinkers Campus: Town Planners Charrette",
-    kicker: "Town Planners Chapter",
-    date: "26 October 2026",
-    isoDate: "2026-10-26",
-    location: "Kenya · venue to be announced",
-    venue: "Venue to be announced",
-    status: "upcoming",
-    summary:
-      "A design charrette and student mentorship day run by the Town Planners Chapter under AAK's long-running Urban Thinkers Campus programme.",
-    body: [
-      "The Urban Thinkers Campus is AAK's ongoing platform (run with UN-Habitat) for open exchange between urban researchers, professionals and decision-makers on the future of Kenya's cities. The Town Planners Chapter leads this session as a charrette paired with student mentorship.",
-    ],
-    facts: [
-      { label: "Date", value: "26 October 2026" },
-      { label: "Run by", value: "Town Planners Chapter" },
-    ],
-    image: "/img/1h5a2307-1200x800.webp",
-    imageAlt: "Members in discussion at an AAK Town Planners Chapter event",
-    registerTo: { to: "/initiatives/$slug", params: { slug: "urban-thinkers-campus" } },
-    registerLabel: "Learn about Urban Thinkers Campus",
-    cta: "View details",
-  },
-  {
     slug: "status-of-built-environment-2026",
     title: "Release of the Status of the Built Environment Report & President's Dinner",
     kicker: "Save the date",
@@ -312,7 +288,7 @@ export const initiatives: Initiative[] = [
     // and events stay). Wording from buildhub.aak.or.ke's own description.
     id: "buildhub",
     slug: "buildhub",
-    eyebrow: "Permits & approvals",
+    eyebrow: "Building & Planning Approvals",
     title: "AAK BuildHub",
     description:
       "A portal that makes it easier to obtain a building permit or planning approval in Kenya, with step-by-step procedures, approval timelines and fees, county by county.",
@@ -439,7 +415,7 @@ export interface MediaItem {
 }
 
 // Photos from the AAK visit to the Nairobi Waldorf School, 24 July 2026:
-// the school's pavilion won Best Africa (Re)presentation at the 2024
+// the school's pavilion won Best Africa (Re)presentation at the 2026
 // Awards of Excellence.
 export const media: MediaItem[] = [
   {
@@ -447,7 +423,7 @@ export const media: MediaItem[] = [
     title: "Nairobi Waldorf School visit",
     category: "Site visit",
     caption:
-      "Members and guests beneath the school's timber-pole pavilion on 24 July 2026. The pavilion won Best Africa (Re)presentation at the 2024 Awards of Excellence.",
+      "Members and guests beneath the school's timber-pole pavilion on 24 July 2026. The pavilion won Best Africa (Re)presentation at the 2026 Awards of Excellence.",
     image: "/img/waldorf-visit-2026/group-under-pavilion.webp",
     href: fileUrl("/documents/NAIROBI-WALDORF-SCHOOL-PROJECT.pdf"),
     hrefLabel: "Read the project brief (PDF)",
@@ -466,7 +442,7 @@ export const media: MediaItem[] = [
     title: "The award-winning pavilion",
     category: "Site visit",
     caption:
-      "The pavilion's roof rests on a forest of timber poles among the site's trees. Winner, Best Africa (Re)presentation, 2024 Awards of Excellence.",
+      "The pavilion's roof rests on a forest of timber poles among the site's trees. Winner, Best Africa (Re)presentation, 2026 Awards of Excellence.",
     image: "/img/waldorf-visit-2026/pavilion-exterior.webp",
     href: fileUrl("/documents/NAIROBI-WALDORF-SCHOOL-PROJECT.pdf"),
     hrefLabel: "Read the project brief (PDF)",
@@ -993,7 +969,7 @@ export interface AwardWinner {
   pdfHref: string;
 }
 
-/** 2024 cycle results, as published on the /awards page. */
+/** Awards of Excellence 2026 results (the user confirmed the year, 9 Oct 2026). */
 export const awardWinners2024: AwardWinner[] = [
   {
     project: "The Agora",

@@ -136,7 +136,7 @@ const pages: SearchEntry[] = [
   {
     title: "Store",
     description:
-      "AAK merchandise and industry documents: JBC contract books, certificates and the David Mutiso Bursary Fund. Order via WhatsApp.",
+      "AAK merchandise and industry documents: JBC contract books and certificates. Order via WhatsApp.",
     category: "Page",
     href: "/store",
   },

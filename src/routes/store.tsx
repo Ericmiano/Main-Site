@@ -9,7 +9,7 @@ import { PageBreadcrumb } from "@/components/site/PageBreadcrumb";
 const SITE_URL = "https://aak.or.ke";
 const TITLE = "Store | Architectural Association of Kenya";
 const DESCRIPTION =
-  "AAK merchandise and industry documents: JBC contract books, certificates and the David Mutiso Bursary Fund. Order via WhatsApp.";
+  "AAK merchandise and industry documents: JBC contract books and certificates. Order via WhatsApp.";
 
 export const Route = createFileRoute("/store")({
   head: () => ({
@@ -36,7 +36,7 @@ function orderHref(message: string) {
 interface StoreItem {
   name: string;
   price: string;
-  category: "Merchandise" | "Industry documents" | "Fundraising";
+  category: "Merchandise" | "Industry documents";
   image?: string;
   /** Defaults to "Order via WhatsApp" / "Hi, I'd like to order: {name}" when omitted. */
   ctaLabel?: string;
@@ -86,13 +86,6 @@ const items: StoreItem[] = [
     category: "Industry documents",
     image: "/img/standard-method-of-measurement-smm.webp",
   },
-  {
-    name: "David Mutiso Bursary Fund",
-    price: "Donation",
-    category: "Fundraising",
-    ctaLabel: "Donate via WhatsApp",
-    ctaMessage: "Hi, I'd like to donate to the David Mutiso Bursary Fund.",
-  },
 ];
 
 function StorePage() {
@@ -105,12 +98,14 @@ function StorePage() {
             <PageBreadcrumb trail={[{ label: "Store" }]} />
 
             <Reveal className="mt-8 max-w-2xl">
-              <h1 className="mt-2 font-display text-4xl font-semibold leading-[1.02] tracking-tight text-balance text-foreground sm:text-5xl lg:text-6xl">
-                Store
+              <p className="meta-label text-muted-foreground">The AAK Store</p>
+              <h1 className="mt-4 font-display text-4xl font-semibold leading-[1.02] tracking-tight text-balance text-foreground sm:text-5xl lg:text-6xl">
+                The tools of the trade, from the profession&rsquo;s home.
               </h1>
               <p className="mt-5 text-base leading-relaxed text-muted-foreground">
-                Branded merchandise, standard industry documents used across the profession, and the
-                David Mutiso Bursary Fund. Orders are placed via WhatsApp; payment by M-Pesa, Visa,
+                The JBC contract books and certificates that Kenya&rsquo;s building projects run on,
+                straight from AAK, plus branded merchandise to carry the Association with you on
+                site and in the studio. Order in a quick WhatsApp chat and pay by M-Pesa, Visa,
                 Mastercard, PayPal or Stripe.
               </p>
               <a
