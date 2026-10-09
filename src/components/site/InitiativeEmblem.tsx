@@ -19,7 +19,7 @@ export function InitiativeEmblem({
   return (
     <span
       className={cn(
-        "inline-flex shrink-0 items-center justify-center rounded-xl bg-[#f6f3ec] p-1.5 shadow-sm",
+        "inline-flex shrink-0 items-center justify-center rounded-xl bg-white p-1.5 shadow-sm",
         className,
       )}
     >

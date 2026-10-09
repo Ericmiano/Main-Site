@@ -1,11 +1,46 @@
-import { IconArrowRight as ArrowRight } from "@tabler/icons-react";
+import { useRef } from "react";
+import { IconArrowLeft as ArrowLeft, IconArrowRight as ArrowRight } from "@tabler/icons-react";
 import { Link } from "@tanstack/react-router";
 import { Reveal } from "@/components/site/Reveal";
 import { SectionRule } from "@/components/site/SectionRule";
+import { useAutoRail } from "@/hooks/use-auto-rail";
 
 const BIENNALE_URL = "https://www.biennale.aak.or.ke/";
 
+/** Photos from the Biennale's programme (from biennale.aak.or.ke). Add
+ * exhibition-week photos to the front of this list. */
+const PHOTOS: { src: string; alt: string; caption: string }[] = [
+  {
+    src: "/img/biennale/activities/group-photo.webp",
+    alt: "Participants gathered in a library for a Nairobi Biennale programme session",
+    caption: "Programme participants",
+  },
+  {
+    src: "/img/biennale/activities/presentation.webp",
+    alt: "A participant presenting her work on screen at a Biennale session",
+    caption: "Presentations",
+  },
+  {
+    src: "/img/biennale/activities/workshop.webp",
+    alt: "Two participants sketching together at a Biennale design workshop",
+    caption: "Design workshops",
+  },
+  {
+    src: "/img/biennale/activities/talk.webp",
+    alt: "A speaker addressing participants at a Biennale conversation",
+    caption: "Conversations",
+  },
+  {
+    src: "/img/biennale/activities/interview.webp",
+    alt: "A participant interviewed in front of the Nairobi Biennale banner",
+    caption: "Voices of the Biennale",
+  },
+];
+
 export function Biennale() {
+  const rail = useRef<HTMLOListElement>(null);
+  const auto = useAutoRail(rail, 3500, { seamless: true });
+
   return (
     <section
       aria-labelledby="biennale-title"
@@ -75,7 +110,63 @@ export function Biennale() {
       </div>
 
       <div className="mx-auto max-w-[1400px] px-6 pt-14 lg:px-12">
-        <Reveal className="grid gap-8 lg:grid-cols-[1.2fr_1fr] lg:items-end">
+        <div className="flex items-end justify-between gap-6 pb-4">
+          <p className="meta-label text-background/70">Biennale activities</p>
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={auto.prev}
+              aria-label="Previous photos"
+              className="hidden h-10 w-10 items-center justify-center rounded-full border border-background/25 text-background transition-colors hover:bg-background/10 sm:flex"
+            >
+              <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+            </button>
+            <button
+              type="button"
+              onClick={auto.next}
+              aria-label="More photos"
+              className="hidden h-10 w-10 items-center justify-center rounded-full border border-background/25 text-background transition-colors hover:bg-background/10 sm:flex"
+            >
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </button>
+          </div>
+        </div>
+        <ol
+          ref={rail}
+          aria-label="Photos from the Nairobi Biennale"
+          // Scrolls sideways, so it must be reachable by keyboard.
+          tabIndex={0}
+          className="-mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-4 [scrollbar-width:none] lg:mx-0 lg:px-0"
+        >
+          {/* Two copies for the seamless loop; the second is hidden from
+              assistive tech and keyboard focus. */}
+          {[0, 1].map((copy) =>
+            PHOTOS.map((photo) => (
+              <li
+                key={`${copy}-${photo.src}`}
+                className="w-[80%] shrink-0 snap-start sm:w-96"
+                {...(copy ? { "aria-hidden": true, inert: true } : {})}
+              >
+                <figure>
+                  <img
+                    src={photo.src}
+                    alt={photo.alt}
+                    loading="lazy"
+                    decoding="async"
+                    width={1200}
+                    height={800}
+                    className="aspect-3/2 w-full object-cover"
+                  />
+                  <figcaption className="meta-label mt-3 text-background/70">
+                    {photo.caption}
+                  </figcaption>
+                </figure>
+              </li>
+            )),
+          )}
+        </ol>
+
+        <Reveal className="mt-12 grid gap-8 lg:grid-cols-[1.2fr_1fr] lg:items-end">
           <p className="max-w-xl text-base leading-relaxed text-background/70">
             Exhibitions, conversations and public programming exploring Africa&rsquo;s built
             environment.

@@ -73,6 +73,11 @@ export const buildingRegulationsDocuments: ArchiveDocument[] = [
     href: fileUrl("/documents/Study-on-Development-Control-Frameworks-in-Kenya.pdf"),
   },
   {
+    title: "Physical Planning Handbook (Draft)",
+    year: "2002",
+    href: fileUrl("/documents/Physical-Planning-Handbook-Draft-2002.pdf"),
+  },
+  {
     title: "Safety Standards Manual for Schools, Kenya",
     year: "2008",
     href: fileUrl("/documents/2008-Safety-Standards-Manual-for-Schools_Kenya.pdf"),

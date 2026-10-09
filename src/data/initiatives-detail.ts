@@ -386,6 +386,10 @@ export const initiativeDetails: InitiativeDetail[] = [
         title: "Safari Green Building Index — Official Rating Guide",
         href: fileUrl("/documents/Safari-Green-Building-Index-Rating_2019.pdf"),
       },
+      {
+        title: "Safari Green Building Index — Brochure",
+        href: fileUrl("/documents/Safari-Green-Building-Index-Brochure.pdf"),
+      },
     ],
     tone: "green",
   },

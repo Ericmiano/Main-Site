@@ -73,17 +73,17 @@
 :root {
   --radius: 0px;
 
-  /* Paper / ink / AAK red — the three foundational tones. Warm stone/charcoal,
-     not sterile white — reads as architectural paper rather than a SaaS app. */
-  --paper: #f3f0e9;
-  --paper-dim: #e9e4d8;
+  /* Paper / ink / AAK red — the three foundational tones. White paper (the
+     user's call, Oct 2026) with light neutral greys for panels. */
+  --paper: #ffffff;
+  --paper-dim: #f1f1ef;
   --ink: #1b1b1b;
   /* Softer than --ink — for full-bleed dark sections, so stacked dark
      blocks don't read as pure black against the paper ground. */
   --ink-deep: #151515;
   /* A distinct "public impact" surface — the Initiatives section's own
      material, separate from the institutional paper tone elsewhere. */
-  --paper-earth: #ddd7cc;
+  --paper-earth: #f1f1ef;
   --aak-red: oklch(0.5 0.19 24);
   --aak-red-deep: oklch(0.4 0.17 22);
 
@@ -105,8 +105,8 @@
   --sustain-foreground: var(--paper);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: var(--paper);
-  --border: #ddd8cc;
-  --input: #ddd8cc;
+  --border: #e2e2de;
+  --input: #e2e2de;
   --ring: var(--aak-red);
   --chart-1: var(--aak-red);
   --chart-2: var(--sustain);
@@ -119,7 +119,7 @@
   --sidebar-primary-foreground: var(--paper);
   --sidebar-accent: var(--paper-dim);
   --sidebar-accent-foreground: var(--ink);
-  --sidebar-border: #ddd8cc;
+  --sidebar-border: #e2e2de;
   --sidebar-ring: var(--aak-red);
 }
 
