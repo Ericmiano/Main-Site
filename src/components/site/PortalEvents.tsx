@@ -6,25 +6,29 @@ import { portalLinks } from "@/data/site";
 /**
  * The members portal's live events list (its embeddable widget), shown only
  * while the portal has public events: /api/portal-events counts them, and with
- * none (or the count unavailable) nothing renders.
+ * none (or the count unavailable) nothing renders. Until the count arrives the
+ * section holds its place, so the events list below doesn't jump down when it
+ * appears (it only moves up in the rarer case of no events).
  */
 export function PortalEvents() {
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState<number | null>(null);
 
   useEffect(() => {
     let cancelled = false;
     fetch("/api/portal-events")
       .then((res) => (res.ok ? res.json() : null))
       .then((data: { count?: unknown } | null) => {
-        if (!cancelled && typeof data?.count === "number") setCount(data.count);
+        if (!cancelled) setCount(typeof data?.count === "number" ? data.count : 0);
       })
-      .catch(() => {});
+      .catch(() => {
+        if (!cancelled) setCount(0);
+      });
     return () => {
       cancelled = true;
     };
   }, []);
 
-  if (count < 1) return null;
+  if (count !== null && count < 1) return null;
 
   return (
     <section
@@ -59,12 +63,19 @@ export function PortalEvents() {
             <ArrowUpRight className="h-4 w-4 text-primary" aria-hidden="true" />
           </a>
         </div>
-        <iframe
-          src={portalLinks.eventsEmbed}
-          title="Events open for registration on the AAK member portal"
-          loading="lazy"
-          className="mt-10 h-[640px] w-full rounded-2xl border border-border bg-background"
-        />
+        {count === null ? (
+          <div
+            aria-hidden="true"
+            className="mt-10 h-[640px] w-full animate-pulse rounded-2xl border border-border bg-secondary/40"
+          />
+        ) : (
+          <iframe
+            src={portalLinks.eventsEmbed}
+            title="Events open for registration on the AAK member portal"
+            loading="lazy"
+            className="mt-10 h-[640px] w-full rounded-2xl border border-border bg-background"
+          />
+        )}
       </div>
     </section>
   );

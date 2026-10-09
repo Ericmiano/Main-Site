@@ -74,14 +74,14 @@ export const Route = createRootRoute({
       // Fonts are self-hosted (src/fonts.css); preload the two the first screen uses.
       {
         rel: "preload",
-        href: "/fonts/libre-baskerville-700-latin.woff2",
+        href: "/fonts/libre-baskerville-latin.woff2",
         as: "font",
         type: "font/woff2",
         crossOrigin: "anonymous",
       },
       {
         rel: "preload",
-        href: "/fonts/ibm-plex-sans-400-latin.woff2",
+        href: "/fonts/ibm-plex-sans-latin.woff2",
         as: "font",
         type: "font/woff2",
         crossOrigin: "anonymous",
