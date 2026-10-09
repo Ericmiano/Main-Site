@@ -130,8 +130,10 @@ export function MediaGrid() {
               {activeItem.href ? (
                 <a
                   href={activeItem.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  // Albums on this site open in place; documents in a new tab.
+                  {...(activeItem.href.startsWith("/")
+                    ? {}
+                    : { target: "_blank", rel: "noopener noreferrer" })}
                   className="group mt-1 inline-flex items-center gap-2 text-sm font-semibold text-foreground"
                 >
                   {activeItem.hrefLabel ?? "View"}

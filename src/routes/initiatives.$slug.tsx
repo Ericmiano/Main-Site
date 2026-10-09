@@ -246,7 +246,9 @@ function InitiativeDetail() {
 
               {initiative.contacts?.length ? (
                 <div className="mt-10 border-t border-border pt-8">
-                  <h2 className="meta-label text-muted-foreground">Report a concern</h2>
+                  <h2 className="meta-label text-muted-foreground">
+                    {initiative.contactsTitle ?? "Report a concern"}
+                  </h2>
                   <ul className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
                     {initiative.contacts.map((contact) => (
                       <li key={contact.href}>

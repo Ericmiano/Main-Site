@@ -49,6 +49,22 @@ export const billsDocuments: ArchiveDocument[] = [
 ];
 
 export const buildingRegulationsDocuments: ArchiveDocument[] = [
+  // From the National Construction Authority (nca.go.ke/building-code).
+  {
+    title: "National Building Code, 2024 (Legal Notice No. 47)",
+    year: "2024",
+    href: fileUrl("/documents/National-Building-Code-2024.pdf"),
+  },
+  {
+    title: "National Building Code, 2024: Popular Version (NCA)",
+    year: "2024",
+    href: fileUrl("/documents/National-Building-Code-2024-Popular-Version.pdf"),
+  },
+  {
+    title: "Affordable Housing Act, No. 2 of 2024",
+    year: "2024",
+    href: fileUrl("/documents/Affordable-Housing-Act-2024.pdf"),
+  },
   {
     title: "Automation of Development Control in Kenya",
     href: fileUrl(

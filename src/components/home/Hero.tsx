@@ -10,57 +10,83 @@ import { Countdown } from "@/components/site/Countdown";
 import { chapters, getEventDisplayStatus, getSortedEvents, heroEventSlug } from "@/data/site";
 import { cn } from "@/lib/utils";
 
-/** The hero's rotating photographs: AAK's people at work. Files are
- * public/img/hero/<name>-sm.webp (800px) and -lg.webp (up to 1600px). */
-const SLIDES: { name: string; width: number; alt: string; caption: string }[] = [
+/** The hero's rotating photographs: AAK's people at work, built from the
+ * largest originals available as public/img/hero/<name>-<width>.webp. */
+const SLIDES: {
+  name: string;
+  /** Widths built for this photo, smallest first. */
+  widths: number[];
+  /** Aspect ratio (height / width) of the files. */
+  ratio: number;
+  alt: string;
+  caption: string;
+}[] = [
   {
-    name: "members-waldorf",
-    width: 1400,
-    alt: "AAK members and guests beneath the timber-pole pavilion at the Nairobi Waldorf School",
-    caption: "AAK members at the Nairobi Waldorf School, July 2026",
+    name: "convention-2026",
+    widths: [960, 1600, 2400],
+    ratio: 3852 / 6584,
+    alt: "Delegates in a group photo in the main hall at the AAK Annual Convention 2026 in Diani",
+    caption: "AAK Annual Convention 2026 · Diani",
+  },
+  {
+    name: "biennale-week",
+    widths: [960, 1600, 2000],
+    ratio: 2 / 3,
+    alt: "A full audience for a talk in the exhibition hall during Nairobi Biennale 2026",
+    caption: "Nairobi Biennale 2026 · Exhibition week",
   },
   {
     name: "gac-iiani",
-    width: 1600,
+    widths: [960, 1600],
+    ratio: 1066 / 1600,
     alt: "AAK team and school leaders present a masterplan model at Iiani School, Nzambani",
     caption: "Grow A Classroom · Iiani, Makueni",
   },
   {
     name: "healthy-homes-launch",
-    width: 1400,
-    alt: "Guests at the launch of AAK's Healthy Homes Guidelines",
+    widths: [960, 1600, 2400],
+    ratio: 1688 / 3008,
+    alt: "Guests holding copies of AAK's Healthy Homes Guidelines at the launch",
     caption: "Launch of the Healthy Homes Guidelines",
   },
   {
-    name: "biennale-programme",
-    width: 1600,
-    alt: "Participants gathered for a Nairobi Biennale programme session",
-    caption: "Nairobi Biennale programme",
+    name: "members-waldorf",
+    widths: [960, 1600],
+    ratio: 1064 / 1600,
+    alt: "AAK members and guests beneath the timber-pole pavilion at the Nairobi Waldorf School",
+    caption: "AAK members at the Nairobi Waldorf School, July 2026",
   },
   {
     name: "gac-mabokoni",
-    width: 1600,
+    widths: [960, 1600, 2400],
+    ratio: 2 / 3,
     alt: "Pupils, teachers and AAK members at Mabokoni Primary School, Kwale",
     caption: "Grow A Classroom · Mabokoni, Kwale",
   },
 ];
 const SLIDE_MS = 6000;
+const file = (name: string, w: number) => `/img/hero/${name}-${w}.webp`;
 
 /**
- * Crossfading hero photographs. The first loads at once (it's the LCP); the
- * rest after hydration. Auto-advances every 6s unless paused, and never for
- * prefers-reduced-motion. The dots pick a photo; the button pauses.
+ * Crossfading hero photographs. The first loads at once (it's the LCP); each
+ * of the others loads while the one before it is showing, so it's decoded
+ * before it fades in and visitors only download the photos they reach.
+ * Auto-advances every 6s unless paused, and never for prefers-reduced-motion.
+ * The dots pick a photo; the button pauses.
  */
 function HeroPhotos() {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
   const [reduced, setReduced] = useState(false);
-  const [ready, setReady] = useState(false);
+  // Highest slide index allowed to load: the current one and the next.
+  const [loadUpTo, setLoadUpTo] = useState(0);
 
   useEffect(() => {
     setReduced(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
-    setReady(true);
   }, []);
+  useEffect(() => {
+    setLoadUpTo((n) => Math.max(n, Math.min(index + 1, SLIDES.length - 1)));
+  }, [index]);
   useEffect(() => {
     if (paused || reduced) return;
     const timer = window.setInterval(() => setIndex((i) => (i + 1) % SLIDES.length), SLIDE_MS);
@@ -70,28 +96,28 @@ function HeroPhotos() {
   const current = SLIDES[index]!;
   return (
     <>
-      {SLIDES.map((slide, i) =>
-        i === 0 || ready ? (
+      {SLIDES.map((slide, i) => {
+        if (i > loadUpTo && i !== index) return null;
+        const largest = slide.widths[slide.widths.length - 1]!;
+        return (
           <img
             key={slide.name}
-            src={`/img/hero/${slide.name}-lg.webp`}
-            srcSet={`/img/hero/${slide.name}-sm.webp 800w, /img/hero/${slide.name}-lg.webp ${slide.width}w`}
+            src={file(slide.name, slide.widths[1] ?? largest)}
+            srcSet={slide.widths.map((w) => `${file(slide.name, w)} ${w}w`).join(", ")}
             sizes="100vw"
             alt={i === index ? slide.alt : ""}
             aria-hidden={i === index ? undefined : true}
-            width={slide.width}
-            height={Math.round((slide.width * 2) / 3)}
+            width={largest}
+            height={Math.round(largest * slide.ratio)}
             fetchPriority={i === 0 ? "high" : undefined}
-            loading={i === 0 ? "eager" : "lazy"}
             decoding={i === 0 ? undefined : "async"}
             className={cn(
-              "absolute inset-0 h-full w-full object-cover transition-opacity duration-1000",
+              "absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ease-in-out",
               i === index ? "opacity-100" : "opacity-0",
-              i === 0 && "hero-zoom",
             )}
           />
-        ) : null,
-      )}
+        );
+      })}
       <div className="absolute top-3 right-4 z-10 flex items-center gap-3 rounded-sm bg-ink-deep/70 px-2 py-1 text-[0.6875rem] text-background/90 lg:top-auto lg:right-12 lg:bottom-3">
         <span>{current.caption}</span>
         <span className="flex items-center gap-1" role="group" aria-label="Hero photos">

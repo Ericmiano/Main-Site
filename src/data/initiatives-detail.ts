@@ -72,6 +72,8 @@ export interface InitiativeDetail {
   videos?: InitiativeVideo[];
   audio?: InitiativeAudioClip[];
   contacts?: InitiativeContact[];
+  /** Heading over `contacts` (default "Report a concern"). */
+  contactsTitle?: string;
   tone: "primary" | "green";
 }
 
@@ -455,6 +457,39 @@ export const initiativeDetails: InitiativeDetail[] = [
         title: "AAK × UN-Habitat Urban Thinkers Campus",
         href: fileUrl("/documents/AAK-UN-Habitat-Urban-Thinkers-Campus.pdf"),
       },
+    ],
+    tone: "primary",
+  },
+  {
+    // The physical hub's details are from its Google Maps listing ("AAK
+    // BuildHub Co-working Space | Shared Offices"), shared by the user, Oct 2026.
+    slug: "buildhub",
+    eyebrow: "Building & Planning Approvals",
+    title: "AAK BuildHub",
+    summary:
+      "A physical hub for built environment professionals, with co-working space and shared offices on Lang'ata Road, Nairobi, and an online portal that makes it easier to get a building permit or planning approval in Kenya.",
+    body: [
+      "AAK BuildHub is a co-working space with shared offices on the 3rd floor of One Stop Plaza, Lang'ata Road, Nairobi, next to the Shell petrol station: a place for professionals in the built environment to work, meet and collaborate.",
+      "Online, the BuildHub portal at buildhub.aak.or.ke sets out how to obtain a building permit or planning approval in Kenya, county by county: the step-by-step procedures, how long approval takes and the fees charged.",
+      "AAK launched the BuildHub as its first information portal in 2019, as a one-stop shop for the development control process across Kenya's counties. Counties are added as their data comes in.",
+    ],
+    stats: [
+      { label: "Where", value: "3rd Floor, One Stop Plaza, Lang'ata Road, Nairobi" },
+      { label: "Hours", value: "8 am – 5 pm" },
+      { label: "What's there", value: "Co-working space and shared offices" },
+      { label: "Online", value: "Permits and approvals, county by county" },
+    ],
+    image: "/img/aak-build-tour-66-1200x800-600x400-1.webp",
+    imageAlt: "AAK members in hard hats on a build tour",
+    contactsTitle: "Visit or get in touch",
+    contacts: [
+      {
+        label: "Find us",
+        value: "One Stop Plaza, 3rd Floor, Lang'ata Road",
+        href: "https://maps.google.com/?cid=11274952948453356596",
+      },
+      { label: "Call", value: "0718 734 875", href: "tel:+254718734875" },
+      { label: "Online portal", value: "buildhub.aak.or.ke", href: "https://buildhub.aak.or.ke/" },
     ],
     tone: "primary",
   },

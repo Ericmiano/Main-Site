@@ -63,6 +63,8 @@ export interface SiteEvent {
   cta: string;
   /** When set, card "view details" links go straight to this external event site instead of the internal detail page */
   externalSiteHref?: string;
+  /** A /media album of the event's photos, linked from its page. */
+  albumSlug?: string;
 }
 
 /**
@@ -83,22 +85,22 @@ export const events: SiteEvent[] = [
     venue: "Diamonds Leisure Beach & Golf Resort, Diani",
     status: "upcoming",
     summary:
-      "AAK's flagship annual gathering: four days in Diani, with registration open now from KES 18,000.",
+      "AAK's flagship annual gathering: four days in Diani, from community work in Kwale to the closing Gala Dinner.",
     body: [
-      "The AAK Annual Convention brings the association together for technical sessions, chapter business and networking, running 09:00–16:00 daily at Diamonds Leisure Beach & Golf Resort in Diani.",
-      "Registration is open on AAK's public events portal, with tickets starting at KES 18,000. Book ahead, as pricing and available packages are confirmed at checkout.",
+      "The 2026 Convention opened with arrival, golf and a day of community engagement at Mabokoni Primary School, where delegates mentored pupils and planted trees with them.",
+      "The Official Opening on 17 September led into sessions on climate action, sustainability, policy and urban governance, alongside the exhibition, the Governing Council meeting and the Opening Cocktail. Day three turned to people, place, innovation and the future of construction, with the Build Tour of Kwale and the Gala Dinner, and a post-convention build tour followed on the 19th.",
     ],
     facts: [
-      { label: "Dates", value: "16 – 19 September 2026, 09:00 – 16:00" },
+      { label: "Dates", value: "16 – 19 September 2026" },
       { label: "Venue", value: "Diamonds Leisure Beach & Golf Resort, Diani" },
-      { label: "Starts at", value: "KES 18,000" },
     ],
-    image: "/img/0q9a0926-1200x800.webp",
-    imageAlt: "Delegates in session at a previous AAK annual convention",
-    registerHref: portalLinks.events,
-    registerLabel: "Register (from KES 18,000)",
-    cta: "Register now",
+    image: "/media/aak-annual-convention-2026/28.webp",
+    imageAlt: "Delegates in a group photo in the main hall at the AAK Annual Convention 2026",
+    registerHref: "https://convention.aak.or.ke/highlights",
+    registerLabel: "Convention highlights and videos",
+    cta: "See the highlights",
     externalSiteHref: "https://convention.aak.or.ke/",
+    albumSlug: "aak-annual-convention-2026",
   },
   {
     slug: "nairobi-biennale-2026",
@@ -115,19 +117,20 @@ export const events: SiteEvent[] = [
     body: [
       "The Nairobi Biennale of Architecture & Art 2026 brings together architecture, art, design, urbanism, heritage, industry and ideas to explore Africa's built environment and future, through curated exhibitions, conversations, urban experiences, heritage and public programming.",
       "This year's theme, Shifting the Center: From Fragility to Resilience, Reclaiming Africa's Architecture and Future, positions African architecture as its own centre rather than a periphery testing imported models.",
-      "You can take part as a design exhibitor, delegate, commercial exhibitor or vendor. Each route has its own application form, linked from the Biennale site.",
+      "Exhibition week filled the ASK Nairobi Showground with design and commercial exhibits, art and installations, and talks, panels and conversations in the central arena beneath a bamboo tower.",
     ],
     facts: [
       { label: "Dates", value: "7 – 12 September 2026" },
       { label: "Venue", value: "ASK Nairobi Showground, Jamhuri Park" },
       { label: "Theme", value: "Shifting the Center: From Fragility to Resilience" },
     ],
-    image: "/img/biennale-carousel-1.webp",
-    imageAlt: "Nairobi Biennale of Architecture & Art 2026 campaign imagery",
-    registerHref: "https://www.biennale.aak.or.ke/",
-    registerLabel: "Visit the Biennale site",
+    image: "/media/nairobi-biennale-2026/16.webp",
+    imageAlt: "A full audience for a talk in the exhibition hall at the Nairobi Biennale 2026",
+    registerHref: "https://www.biennale.aak.or.ke/virtual-tour.php",
+    registerLabel: "Take the virtual tour",
     cta: "Explore the Biennale",
     externalSiteHref: "https://www.biennale.aak.or.ke/",
+    albumSlug: "nairobi-biennale-2026",
   },
   {
     slug: "status-of-built-environment-2026",
@@ -285,16 +288,15 @@ export const initiatives: Initiative[] = [
   },
   {
     // Replaced Urban Thinkers Campus in the initiatives list (its detail page
-    // and events stay). Wording from buildhub.aak.or.ke's own description.
+    // and events stay). Its page covers the physical hub and the portal.
     id: "buildhub",
     slug: "buildhub",
     eyebrow: "Building & Planning Approvals",
     title: "AAK BuildHub",
     description:
-      "A portal that makes it easier to obtain a building permit or planning approval in Kenya, with step-by-step procedures, approval timelines and fees, county by county.",
-    href: "https://buildhub.aak.or.ke/",
-    externalUrl: "https://buildhub.aak.or.ke/",
-    cta: "Open BuildHub",
+      "A co-working hub with shared offices on Lang'ata Road, Nairobi, and an online portal for building permits and planning approvals, county by county.",
+    href: "/initiatives/buildhub",
+    cta: "Visit BuildHub",
     image: "/img/aak-build-tour-66-1200x800-600x400-1.webp",
     tone: "primary",
   },
@@ -414,63 +416,73 @@ export interface MediaItem {
   span: "wide" | "tall" | "regular";
 }
 
-// Photos from the AAK visit to the Nairobi Waldorf School, 24 July 2026:
-// the school's pavilion won Best Africa (Re)presentation at the 2026
-// Awards of Excellence.
+// Homepage media: the latest events first, each linking to its full album
+// in the media archive (/media/<slug>).
 export const media: MediaItem[] = [
   {
+    id: "convention-2026-group",
+    title: "AAK Annual Convention 2026",
+    category: "Convention",
+    caption:
+      "Delegates in the main hall in Diani, 16–19 September 2026: four days of sessions, exhibitions, community work and the Gala Dinner.",
+    image: "/media/aak-annual-convention-2026/28.webp",
+    href: "/media/aak-annual-convention-2026",
+    hrefLabel: "See all the Convention photos",
+    span: "wide",
+  },
+  {
+    id: "convention-2026-planting",
+    title: "Tree planting at Mabokoni",
+    category: "Convention",
+    caption:
+      "Day one of the Convention: delegates mentored pupils and planted trees with them at Mabokoni Primary School, Kwale.",
+    image: "/media/aak-annual-convention-2026/09.webp",
+    href: "/media/aak-annual-convention-2026",
+    hrefLabel: "See all the Convention photos",
+    span: "regular",
+  },
+  {
+    id: "convention-2026-gala",
+    title: "The Gala Dinner",
+    category: "Convention",
+    caption: "A cultural dance troupe performs at the Convention's closing Gala Dinner.",
+    image: "/media/aak-annual-convention-2026/34.webp",
+    href: "/media/aak-annual-convention-2026",
+    hrefLabel: "See all the Convention photos",
+    span: "regular",
+  },
+  {
+    id: "biennale-2026-talks",
+    title: "Nairobi Biennale 2026",
+    category: "Biennale",
+    caption:
+      "A full audience for a talk in the exhibition hall at the ASK Showground during exhibition week, 7–12 September 2026.",
+    image: "/media/nairobi-biennale-2026/16.webp",
+    href: "/media/nairobi-biennale-2026",
+    hrefLabel: "See all the Biennale photos",
+    span: "regular",
+  },
+  {
+    id: "biennale-2026-then-now",
+    title: "Nairobi Then & Now",
+    category: "Biennale",
+    caption: "The Nairobi Then & Now exhibition, one of the installations of exhibition week.",
+    image: "/media/nairobi-biennale-2026/06.webp",
+    href: "/media/nairobi-biennale-2026",
+    hrefLabel: "See all the Biennale photos",
+    span: "regular",
+  },
+  {
+    // The school's pavilion won Best Africa (Re)presentation at the 2026
+    // Awards of Excellence.
     id: "waldorf-group",
     title: "Nairobi Waldorf School visit",
     category: "Site visit",
     caption:
       "Members and guests beneath the school's timber-pole pavilion on 24 July 2026. The pavilion won Best Africa (Re)presentation at the 2026 Awards of Excellence.",
     image: "/img/waldorf-visit-2026/group-under-pavilion.webp",
-    href: fileUrl("/documents/NAIROBI-WALDORF-SCHOOL-PROJECT.pdf"),
-    hrefLabel: "Read the project brief (PDF)",
-    span: "wide",
-  },
-  {
-    id: "waldorf-talks",
-    title: "Talks in the school hall",
-    category: "Site visit",
-    caption: "The visit opened with talks in the school's timber-trussed hall.",
-    image: "/img/waldorf-visit-2026/talks-in-the-hall.webp",
-    span: "regular",
-  },
-  {
-    id: "waldorf-pavilion",
-    title: "The award-winning pavilion",
-    category: "Site visit",
-    caption:
-      "The pavilion's roof rests on a forest of timber poles among the site's trees. Winner, Best Africa (Re)presentation, 2026 Awards of Excellence.",
-    image: "/img/waldorf-visit-2026/pavilion-exterior.webp",
-    href: fileUrl("/documents/NAIROBI-WALDORF-SCHOOL-PROJECT.pdf"),
-    hrefLabel: "Read the project brief (PDF)",
-    span: "regular",
-  },
-  {
-    id: "waldorf-classrooms",
-    title: "Touring the classrooms",
-    category: "Site visit",
-    caption: "Walking the campus between the school's timber classroom buildings.",
-    image: "/img/waldorf-visit-2026/touring-the-classrooms.webp",
-    span: "regular",
-  },
-  {
-    id: "waldorf-classroom-interior",
-    title: "Inside a classroom",
-    category: "Site visit",
-    caption:
-      "A classroom interior: timber walls, a band of clerestory glazing and woven pendant lights.",
-    image: "/img/waldorf-visit-2026/classroom-interior.webp",
-    span: "regular",
-  },
-  {
-    id: "waldorf-play",
-    title: "Play among the trees",
-    category: "Site visit",
-    caption: "The school's timber play structures, set among the trees.",
-    image: "/img/waldorf-visit-2026/play-area.webp",
+    href: "/media/nairobi-waldorf-school-visit-2026",
+    hrefLabel: "See all the visit photos",
     span: "regular",
   },
 ];

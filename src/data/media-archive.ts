@@ -86,7 +86,7 @@ const waldorfVisit: MediaAlbum = {
   isoDate: "2026-07-24",
   location: "Nairobi",
   summary:
-    "Talks in the school hall and a tour of the campus's timber buildings, ending under the pavilion that won Best Africa (Re)presentation at the 2024 Awards of Excellence.",
+    "Talks in the school hall and a tour of the campus's timber buildings, ending under the pavilion that won Best Africa (Re)presentation at the 2026 Awards of Excellence.",
   cover: waldorfPhotos[28]!,
   photos: waldorfPhotos,
   links: [
@@ -331,8 +331,119 @@ const gacAlbums: MediaAlbum[] = gacSchools.map((school) => {
   };
 });
 
+// Annual Convention 2026 (Diani) and Nairobi Biennale 2026: photos from the
+// events' own sites (convention.aak.or.ke/highlights and the Biennale's
+// virtual tour), in programme order.
+const conventionPhotos = photosIn("aak-annual-convention-2026", [
+  "Delegates gather at the start of Day 1 in Diani",
+  "Delegates on the bus to the community engagement",
+  "An AAK member speaks with pupils under the trees at Mabokoni Primary School",
+  "Pupils listen during the community engagement session",
+  "Pupils, teachers and delegates gathered under a tree at the school",
+  "A pupil receives a certificate from AAK members",
+  "Pupils, teachers and AAK members in a group photo at the school",
+  "Delegates and pupils plant tree seedlings together",
+  "A pupil and an AAK member plant a seedling",
+  "Watering the newly planted seedlings",
+  "The stage set for the Official Opening",
+  "Delegates in the main hall",
+  "A speaker at the podium in front of the Convention 2026 banner",
+  "Delegates on their feet during a session",
+  "A panel discussion on stage",
+  "A delegate asks a question from the floor",
+  "Delegates in the gardens during a break",
+  "Delegates at an exhibitor's stand",
+  "Delegates gather round a paint exhibitor's stand",
+  "Delegates at the Sika Kenya stand",
+  "Delegates tour a tiles and fittings display",
+  "Members of the AAK Governing Council at the Convention",
+  "The Governing Council meeting in session",
+  "Delegates in conversation at the Opening Cocktail",
+  "Guests on stage at the Opening Cocktail",
+  "A speaker presents on Day 3",
+  "Two speakers on stage during a Day 3 session",
+  "Delegates in a group photo in the main hall",
+  "Delegates in high-visibility vests on the Build Tour of Kwale",
+  "Visiting a construction site on the Build Tour",
+  "Delegates at the I Love Diani sign",
+  "The hall set for the closing Gala Dinner",
+  "Guests at the Gala Dinner photo wall",
+  "A cultural dance troupe performs at the Gala Dinner",
+  "Guests at their tables during the Gala Dinner",
+]);
+
+const convention2026: MediaAlbum = {
+  slug: "aak-annual-convention-2026",
+  title: "AAK Annual Convention 2026",
+  category: "Convention",
+  date: "16 – 19 September 2026",
+  isoDate: "2026-09-16",
+  location: "Diani, Kwale",
+  summary:
+    "Four days on the coast: community work and tree planting at Mabokoni Primary School, the official opening and sessions, the exhibition, the Governing Council meeting, the Build Tour of Kwale and the closing Gala Dinner.",
+  cover: conventionPhotos[27]!,
+  photos: conventionPhotos,
+  links: [
+    { label: "Event details", href: "/events/aak-annual-convention-2026" },
+    { label: "Convention highlights and videos", href: "https://convention.aak.or.ke/highlights" },
+  ],
+};
+
+const biennalePhotos = photosIn("nairobi-biennale-2026", [
+  "5 September: the exhibition hall at the ASK Showground before set-up",
+  "5 September: a welder builds exhibition frames",
+  "5 September: pavilions in the Showground gardens",
+  "Exhibitors setting up stands in the hall",
+  "Detail of an architectural model with a pebble-textured facade",
+  "The Nairobi Then & Now exhibition",
+  "Visitors at a timber-frame display",
+  "Visitors at exhibition boards on timber frames",
+  "A model of a circular building complex",
+  "Paintings on show at the exhibition",
+  "A decorated matatu at the Showground",
+  "Visitors arriving at the Showground",
+  "Visitors at the registration desk",
+  "Visitors discuss a project at an exhibition stand",
+  "A talk in the central arena beneath the bamboo tower",
+  "A full audience for a talk in the exhibition hall",
+  "A speaker addresses the audience",
+  "A panel discussion in the central arena",
+  "A participant asks a question from the floor",
+  "An earth-building exhibition stand",
+  "A stand with a clay-tile roofed pavilion",
+  "Artworks on display in the hall",
+  "Photographs hung on a bamboo-pole installation",
+  "The central arena beneath the bamboo tower",
+  "Speakers and guests at the Nairobi Biennale 2026 photo wall",
+  "Speakers in a discussion circle",
+  "A participant speaks during a discussion",
+  "Participants in a group photo in the hall",
+]);
+
+const biennale2026: MediaAlbum = {
+  slug: "nairobi-biennale-2026",
+  title: "Nairobi Biennale of Architecture & Art 2026",
+  category: "Biennale",
+  date: "7 – 12 September 2026",
+  isoDate: "2026-09-07",
+  location: "ASK Nairobi Showground, Jamhuri Park",
+  summary:
+    "Exhibition week of Nairobi's first Architecture Biennale: the hall taking shape, the exhibits and installations, and the talks, panels and conversations in the central arena.",
+  cover: biennalePhotos[15]!,
+  photos: biennalePhotos,
+  links: [
+    { label: "Event details", href: "/events/nairobi-biennale-2026" },
+    {
+      label: "Virtual tour on the Biennale website",
+      href: "https://www.biennale.aak.or.ke/virtual-tour.php",
+    },
+  ],
+};
+
 /** Newest first; undated albums after dated ones, in source order. */
 export const mediaAlbums: MediaAlbum[] = [
+  convention2026,
+  biennale2026,
   waldorfVisit,
   architectsToolkit,
   financeAcceleratorKickoff,

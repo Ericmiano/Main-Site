@@ -7,9 +7,39 @@ import { useAutoRail } from "@/hooks/use-auto-rail";
 
 const BIENNALE_URL = "https://www.biennale.aak.or.ke/";
 
-/** Photos from the Biennale's programme (from biennale.aak.or.ke). Add
- * exhibition-week photos to the front of this list. */
+/** Exhibition week, then the programme that led up to it (photos from
+ * biennale.aak.or.ke; the full set is the /media/nairobi-biennale-2026 album). */
 const PHOTOS: { src: string; alt: string; caption: string }[] = [
+  {
+    src: "/img/biennale/week/talk-audience.webp",
+    alt: "A full audience for a talk in the exhibition hall at the ASK Showground",
+    caption: "Exhibition week · Talks",
+  },
+  {
+    src: "/img/biennale/week/then-and-now.webp",
+    alt: "The Nairobi Then & Now exhibition on a timber frame",
+    caption: "Exhibition week · Nairobi Then & Now",
+  },
+  {
+    src: "/img/biennale/week/photo-wall.webp",
+    alt: "Speakers and guests at the Nairobi Biennale 2026 photo wall",
+    caption: "Exhibition week · Speakers and guests",
+  },
+  {
+    src: "/img/biennale/week/panel.webp",
+    alt: "A panel discussion in the central arena beneath the bamboo tower",
+    caption: "Exhibition week · Panels",
+  },
+  {
+    src: "/img/biennale/week/artworks.webp",
+    alt: "Artworks on display in the exhibition hall",
+    caption: "Exhibition week · Art",
+  },
+  {
+    src: "/img/biennale/week/matatu.webp",
+    alt: "A decorated matatu at the ASK Showground",
+    caption: "Exhibition week · Matatu art",
+  },
   {
     src: "/img/biennale/activities/group-photo.webp",
     alt: "Participants gathered in a library for a Nairobi Biennale programme session",
@@ -111,7 +141,13 @@ export function Biennale() {
 
       <div className="mx-auto max-w-[1400px] px-6 pt-14 lg:px-12">
         <div className="flex items-end justify-between gap-6 pb-4">
-          <p className="meta-label text-background/70">Biennale activities</p>
+          <Link
+            to="/media/$slug"
+            params={{ slug: "nairobi-biennale-2026" }}
+            className="meta-label text-background/70 transition-colors hover:text-background"
+          >
+            Biennale in pictures &rarr;
+          </Link>
           <div className="flex gap-2">
             <button
               type="button"

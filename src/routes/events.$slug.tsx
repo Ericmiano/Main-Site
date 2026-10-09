@@ -184,6 +184,15 @@ function EventDetail() {
 
                 <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
                   <RegisterCta event={event} className="group btn-primary" />
+                  {event.albumSlug ? (
+                    <Link
+                      to="/media/$slug"
+                      params={{ slug: event.albumSlug }}
+                      className="inline-flex items-center gap-2 text-sm font-semibold text-foreground transition-colors hover:text-primary"
+                    >
+                      See the photos
+                    </Link>
+                  ) : null}
                   {status !== "past" ? (
                     <AddToCalendar
                       event={event}
