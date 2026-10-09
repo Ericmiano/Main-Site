@@ -14,6 +14,10 @@ export interface GacSchool {
   id: string;
   name: string;
   county: string;
+  /** Where the school is, for its pin on the map. */
+  location: { lat: number; lng: number };
+  /** Which highlight the map's pop-up card shows (default: the first). */
+  mapPhoto?: number;
   kind: string;
   date?: string;
   outcomes: string[];
@@ -87,6 +91,7 @@ export const gacSchools: GacSchool[] = [
     id: "mabokoni-primary",
     name: "Mabokoni Primary School",
     county: "Kwale County",
+    location: { lat: -4.30999, lng: 39.52003 },
     kind: "Mentorship session",
     date: "16 September 2026",
     outcomes: [],
@@ -102,6 +107,7 @@ export const gacSchools: GacSchool[] = [
     id: "iiani-nzambani",
     name: "Iiani, Nzambani",
     county: "Makueni County",
+    location: { lat: -1.87572, lng: 37.88181 },
     kind: "Past event",
     outcomes: [
       "Trees planted with the school community",
@@ -146,6 +152,8 @@ export const gacSchools: GacSchool[] = [
     id: "butere-primary",
     name: "Butere Primary School",
     county: "Kakamega County",
+    location: { lat: 0.21125, lng: 34.49569 },
+    mapPhoto: 4,
     kind: "Past event",
     outcomes: [
       "Trees planted with the school community",
@@ -188,6 +196,7 @@ export const gacSchools: GacSchool[] = [
     id: "shauri-moyo-primary",
     name: "Shauri Moyo Primary School",
     county: "Kisumu County",
+    location: { lat: -0.09726, lng: 34.772 },
     kind: "Past event",
     outcomes: [
       "1,000 tree seedlings planted",

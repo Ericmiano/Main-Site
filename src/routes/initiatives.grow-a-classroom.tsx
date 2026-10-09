@@ -16,6 +16,7 @@ import { CountUp } from "@/components/site/CountUp";
 import { YouTubeEmbed } from "@/components/site/YouTubeEmbed";
 import { CopyValue } from "@/components/site/CopyValue";
 import { Lightbox } from "@/components/site/Lightbox";
+import { SchoolMap } from "@/components/site/SchoolMap";
 import { thumbnailFor } from "@/lib/thumbnail";
 import {
   gacDonation,
@@ -354,9 +355,13 @@ function GrowAClassroom() {
               </p>
             </Reveal>
 
+            <Reveal className="mt-12 lg:mt-16">
+              <SchoolMap schools={gacSchools} />
+            </Reveal>
+
             <nav
               aria-label="Schools"
-              className="sticky top-16 z-20 -mx-6 mt-10 border-y border-border bg-background/90 px-6 backdrop-blur-md lg:mx-0 lg:px-0"
+              className="sticky top-16 z-20 -mx-6 mt-16 border-y border-border bg-background/90 px-6 backdrop-blur-md lg:mx-0 lg:px-0"
             >
               <ul className="flex gap-6 overflow-x-auto py-3 [scrollbar-width:none]">
                 {gacSchools.map((s, i) => (
