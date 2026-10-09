@@ -161,7 +161,7 @@ function MediaIndex() {
 
             <ul
               ref={list}
-              data-stagger
+
               className="relative grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3"
             >
               {mediaAlbums.map((album, i) => {
@@ -182,8 +182,10 @@ function MediaIndex() {
                           src={album.cover.thumb ?? album.cover.src}
                           alt=""
                           loading={i < 2 ? "eager" : "lazy"}
+                          // Carried into its place in the album's grid.
+                          style={{ viewTransitionName: `album-${album.slug}` }}
                           className={cn(
-                            "aspect-4/3 w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-105",
+                            "aspect-4/3 w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-[1.03]",
                             isLead && "sm:aspect-[16/9] lg:aspect-[21/8]",
                           )}
                         />

@@ -128,7 +128,7 @@ function EventsIndex() {
             <h2 id="events-list-title" className="sr-only">
               All events
             </h2>
-            <ul data-stagger className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {events.map((event, i) => {
                 const status = getEventDisplayStatus(event);
                 const cardClassName =

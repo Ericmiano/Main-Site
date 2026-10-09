@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { MOTION_OK, prefersReducedMotion, whenMotionReady, type GsapKit } from "@/lib/gsap";
 
-const HEADINGS = "main h2.type-section";
+const RULES = "[data-rule-line]";
 const PARALLAX = "[data-parallax]";
-const STAGGER = "[data-stagger]";
+const DRAWINGS = ".arch-drawing";
 
 /** React attaches its fiber to a DOM node once it has hydrated (or rendered) it. */
 const isHydrated = (el: Element) => Object.keys(el).some((key) => key.startsWith("__reactFiber$"));
@@ -11,15 +11,15 @@ const isHydrated = (el: Element) => Object.keys(el).some((key) => key.startsWith
 const belowFold = (el: Element) => el.getBoundingClientRect().top >= window.innerHeight;
 
 /**
- * Site-wide GSAP enhancements, mounted once in the root layout:
+ * Site-wide GSAP enhancements, mounted once in the root layout. All of them
+ * are tied to the scroll position rather than fired on a timer, and text is
+ * never animated: motion is kept for lines and photographs.
  *
- * - Section headings (`h2.type-section`) rise into view line by line from a
- *   mask as they scroll in.
- * - `[data-parallax="40"]` images drift over their container's scroll,
- *   scrubbed to the scroll position.
- * - The children of a `[data-stagger]` list (card grids) come in row by row:
- *   ScrollTrigger.batch groups the cards that enter together and staggers
- *   them, instead of each card fading in on its own.
+ * - Section rules (`[data-rule-line]`, SectionRule) draw across, left to
+ *   right, as their section comes up the screen.
+ * - Architectural line drawings (`.arch-drawing`) draw themselves in step
+ *   with the scroll, through the CSS variable `--draw`.
+ * - `[data-parallax="40"]` images drift gently over their container's scroll.
  *
  * Content is complete without it. Only elements that are still below the
  * fold when GSAP starts are ever hidden, so nothing on screen jumps. GSAP
@@ -50,7 +50,7 @@ export function MotionLayer() {
 }
 
 /** Enhances the page now and as routes change; returns the teardown. */
-function startEnhancing({ gsap, ScrollTrigger, SplitText }: GsapKit) {
+function startEnhancing({ gsap, ScrollTrigger }: GsapKit) {
   let timer: number | undefined;
   const cleanups = new Map<Element, () => void>();
 
@@ -75,36 +75,68 @@ function startEnhancing({ gsap, ScrollTrigger, SplitText }: GsapKit) {
       return true;
     };
 
-    for (const heading of document.querySelectorAll<HTMLElement>(HEADINGS)) {
-      if (!ready(heading)) continue;
-      // On screen already (or above it): animating would make it jump.
-      if (!belowFold(heading)) {
-        cleanups.set(heading, () => {});
+    for (const line of document.querySelectorAll<HTMLElement>(RULES)) {
+      if (!ready(line)) continue;
+      // Already on screen: leave it drawn rather than make it flicker.
+      if (!belowFold(line)) {
+        cleanups.set(line, () => {});
         continue;
       }
-      const split = SplitText.create(heading, {
-        type: "lines",
-        mask: "lines",
-        // Masks get "split-line-mask": styles.css gives them room below the
-        // line so descenders (g, y, p) aren't cut by the mask's clip.
-        linesClass: "split-line",
-        autoSplit: true, // re-split when fonts load or the width changes
-        onSplit: (self) =>
-          gsap.from(self.lines, {
-            // Far enough to clear the mask's descender room as well.
-            yPercent: 135,
-            duration: 1.1,
-            ease: "expo.out",
-            stagger: 0.09,
-            scrollTrigger: { trigger: heading, start: "top 90%", once: true },
-          }),
+      const tween = gsap.fromTo(
+        line,
+        { scaleX: 0 },
+        {
+          scaleX: 1,
+          ease: "none",
+          // clamp(): rules near the foot of the page still finish drawing.
+          scrollTrigger: {
+            trigger: line,
+            start: "clamp(top 96%)",
+            end: "clamp(top 62%)",
+            scrub: 0.4,
+          },
+        },
+      );
+      cleanups.set(line, () => {
+        tween.scrollTrigger?.kill();
+        tween.kill();
+        gsap.set(line, { clearProps: "transform" });
       });
-      cleanups.set(heading, () => split.revert());
+    }
+
+    for (const drawing of document.querySelectorAll<SVGElement>(DRAWINGS)) {
+      if (!ready(drawing)) continue;
+      // Drawings in the first screen draw themselves on load in CSS
+      // (.arch-drawing-intro); only those further down follow the scroll.
+      if (!belowFold(drawing)) {
+        cleanups.set(drawing, () => {});
+        continue;
+      }
+      const progress = { draw: 0 };
+      const apply = () => drawing.style.setProperty("--draw", String(progress.draw));
+      const tween = gsap.to(progress, {
+        draw: 1,
+        ease: "none",
+        onUpdate: apply,
+        scrollTrigger: {
+          trigger: drawing,
+          start: "clamp(top 92%)",
+          end: "clamp(center 45%)",
+          scrub: 0.5,
+        },
+      });
+      apply();
+      cleanups.set(drawing, () => {
+        tween.scrollTrigger?.kill();
+        tween.kill();
+        drawing.style.removeProperty("--draw");
+      });
     }
 
     for (const img of document.querySelectorAll<HTMLElement>(PARALLAX)) {
       if (!ready(img)) continue;
-      const strength = Number(img.dataset["parallax"]) || 24;
+      // Half the authored strength: a drift you sense rather than watch.
+      const strength = (Number(img.dataset["parallax"]) || 24) / 2;
       // The element's static CSS offset (its no-JS resting place) would
       // stack with GSAP's transform, so drop it while the tween drives it.
       img.style.translate = "none";
@@ -129,33 +161,6 @@ function startEnhancing({ gsap, ScrollTrigger, SplitText }: GsapKit) {
       });
     }
 
-    for (const list of document.querySelectorAll<HTMLElement>(STAGGER)) {
-      if (!ready(list)) continue;
-      const items = [...list.children].filter(belowFold) as HTMLElement[];
-      if (!items.length) {
-        cleanups.set(list, () => {});
-        continue;
-      }
-      gsap.set(items, { autoAlpha: 0, y: 32 });
-      const triggers = ScrollTrigger.batch(items, {
-        start: "top 94%",
-        once: true,
-        onEnter: (batch) =>
-          gsap.to(batch, {
-            autoAlpha: 1,
-            y: 0,
-            duration: 0.9,
-            ease: "expo.out",
-            stagger: 0.08,
-            overwrite: true,
-          }),
-      });
-      cleanups.set(list, () => {
-        for (const trigger of triggers) trigger.kill();
-        gsap.set(items, { clearProps: "opacity,visibility,transform" });
-      });
-    }
-
     ScrollTrigger.refresh();
     // Hydration doesn't change the DOM, so the observer won't see it finish.
     if (pending) {
@@ -165,6 +170,18 @@ function startEnhancing({ gsap, ScrollTrigger, SplitText }: GsapKit) {
   };
 
   enhance();
+  // Lazy photos and embeds lengthen the page after the triggers are measured;
+  // re-measure when the page's height changes so late triggers still fire.
+  let lastHeight = document.body.scrollHeight;
+  let refreshTimer: number | undefined;
+  const resize = new ResizeObserver(() => {
+    const height = document.body.scrollHeight;
+    if (Math.abs(height - lastHeight) < 40) return;
+    lastHeight = height;
+    window.clearTimeout(refreshTimer);
+    refreshTimer = window.setTimeout(() => ScrollTrigger.refresh(), 200);
+  });
+  resize.observe(document.body);
   // Route changes and lazily rendered sections add new content.
   const observer = new MutationObserver(() => {
     window.clearTimeout(timer);
@@ -174,7 +191,9 @@ function startEnhancing({ gsap, ScrollTrigger, SplitText }: GsapKit) {
 
   return () => {
     observer.disconnect();
+    resize.disconnect();
     window.clearTimeout(timer);
+    window.clearTimeout(refreshTimer);
     for (const undo of cleanups.values()) undo();
     cleanups.clear();
   };

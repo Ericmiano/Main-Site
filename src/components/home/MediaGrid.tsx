@@ -65,7 +65,7 @@ export function MediaGrid() {
                       alt={item.title}
                       loading="lazy"
                       className={cn(
-                        "aspect-4/3 w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-105",
+                        "aspect-4/3 w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-[1.03]",
                         isLead && "sm:aspect-video",
                       )}
                     />

@@ -197,7 +197,7 @@ export function SchoolMap({ schools }: { schools: GacSchool[] }) {
                 <span
                   aria-hidden="true"
                   className={cn(
-                    "absolute inset-1.5 rounded-full bg-sustain/40 motion-safe:animate-ping",
+                    "absolute inset-1 rounded-full bg-sustain/20 ring-1 ring-sustain/30",
                     isActive && "hidden",
                   )}
                 />

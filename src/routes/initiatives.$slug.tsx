@@ -173,6 +173,8 @@ function InitiativeDetail() {
                       src={initiative.image}
                       alt={initiative.imageAlt}
                       loading="lazy"
+                      // Carried over from the homepage's initiative card.
+                      style={{ viewTransitionName: `initiative-${initiative.slug}` }}
                       className="aspect-4/3 w-full object-cover"
                     />
                   )}

@@ -168,7 +168,7 @@ function FullPhoto({
  * 4:5, face centred) above the name and role. Two across on phones. */
 function PeopleGrid({ people }: { people: typeof secretariat }) {
   return (
-    <ul data-stagger className="mt-14 grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4">
+    <ul className="mt-14 grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4">
       {people.map((member) => (
         <li key={member.name}>
           <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-background">

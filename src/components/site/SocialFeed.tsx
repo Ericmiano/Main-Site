@@ -49,7 +49,7 @@ export function SocialFeed({ className }: { className?: string }) {
           className,
         )}
       >
-        <span className="pulse-dot h-1.5 w-1.5 rounded-full bg-primary" aria-hidden="true" />
+        <span className="h-1.5 w-1.5 rounded-full bg-primary" aria-hidden="true" />
         Latest posts
       </DialogPrimitive.Trigger>
       <DialogPrimitive.Portal>

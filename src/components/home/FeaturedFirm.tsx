@@ -46,7 +46,7 @@ export function FeaturedFirm() {
                       alt={project.name}
                       loading="lazy"
                       className={cn(
-                        "photo-grade w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105",
+                        "photo-grade w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.03]",
                         i === 0 ? "aspect-video" : "aspect-4/3",
                       )}
                     />

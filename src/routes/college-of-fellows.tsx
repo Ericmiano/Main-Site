@@ -11,6 +11,7 @@ import { Reveal } from "@/components/site/Reveal";
 import { SectionHeading } from "@/components/site/SectionHeading";
 import { PageBreadcrumb } from "@/components/site/PageBreadcrumb";
 import { YouTubeEmbed } from "@/components/site/YouTubeEmbed";
+import { ArchitecturalDrawing } from "@/components/site/ArchitecturalDrawing";
 import { collegeOfFellows } from "@/data/site";
 import {
   fellowsIntro,
@@ -116,8 +117,13 @@ function CollegeOfFellowsPage() {
           </div>
         </section>
 
-        <section aria-labelledby="roles-title" className="py-16 lg:py-24">
-          <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
+        <section aria-labelledby="roles-title" className="relative overflow-hidden py-16 lg:py-24">
+          <ArchitecturalDrawing
+            intro
+            variant="section"
+            className="pointer-events-none absolute top-10 right-12 hidden w-[24rem] text-foreground/20 xl:block"
+          />
+          <div className="relative mx-auto max-w-[1400px] px-6 lg:px-12">
             <SectionHeading
               eyebrow="What Fellows do"
               title={<span id="roles-title">Roles of the College</span>}

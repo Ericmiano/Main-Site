@@ -173,13 +173,14 @@
   }
 }
 
-/* Scroll reveal: "ink rise" -------------------------------------------- */
+/* Scroll reveal: only for photo wipes and rule draws (see Reveal.tsx), and
+   kept small: a short settle, not a rise. ---------------------------------- */
 .reveal {
   opacity: 0;
-  transform: translate3d(0, 18px, 0);
+  transform: translate3d(0, 8px, 0);
   transition:
-    opacity 600ms cubic-bezier(0.16, 1, 0.3, 1),
-    transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
+    opacity 450ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 450ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .reveal-in {
@@ -199,14 +200,11 @@
   transform: scaleX(1);
 }
 
-/* Scroll reveal: "wipe" — photographs uncover top-down instead of fading.
-   Pairs with .reveal via Reveal's `wipe` prop. */
+/* Scroll reveal: "wipe" — a photograph is uncovered left to right, like a
+   drawing sheet pulled across a board. Pairs with .reveal via `wipe`. */
 .wipe {
-  clip-path: inset(0 0 100% 0);
-  transition:
-    opacity 600ms cubic-bezier(0.16, 1, 0.3, 1),
-    transform 600ms cubic-bezier(0.16, 1, 0.3, 1),
-    clip-path 1100ms cubic-bezier(0.77, 0, 0.18, 1);
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 900ms cubic-bezier(0.65, 0, 0.35, 1);
 }
 
 .wipe-in {
@@ -512,7 +510,7 @@
 @keyframes hero-rise {
   from {
     opacity: 0;
-    transform: translate3d(0, 22px, 0);
+    transform: translate3d(0, 8px, 0);
   }
   to {
     opacity: 1;
@@ -531,37 +529,25 @@
 
 .hero-item {
   opacity: 0;
-  animation: hero-rise 1000ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: hero-rise 650ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
+/* Uneven on purpose: a regular cadence is what makes staggers feel canned. */
 .hero-delay-1 {
-  animation-delay: 120ms;
+  animation-delay: 70ms;
 }
 .hero-delay-2 {
-  animation-delay: 240ms;
+  animation-delay: 190ms;
 }
 .hero-delay-3 {
-  animation-delay: 360ms;
+  animation-delay: 260ms;
 }
 .hero-delay-4 {
-  animation-delay: 480ms;
+  animation-delay: 410ms;
 }
 
 .hero-zoom {
   animation: hero-scale 2400ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-/* Heading line reveals (MotionLayer): SplitText wraps each line in a mask
-   with overflow: clip, and at the headings' tight leading that cuts off
-   descenders. Extend each mask below its line, and cancel the extra height
-   with a negative margin so the layout doesn't move; flow-root stops that
-   margin escaping the heading and nudging whatever follows it. */
-:has(> .split-line-mask) {
-  display: flow-root;
-}
-.split-line-mask {
-  padding-bottom: 0.25em;
-  margin-bottom: -0.25em;
 }
 
 /* Events timeline: a marker turns red as the scroll-drawn line reaches it
@@ -682,9 +668,64 @@
   animation-play-state: paused;
 }
 
+/* Page transitions (View Transitions API, via the router): a quick
+   crossfade between pages, and an event's photo carried from its card to
+   its page (shared view-transition-name). Browsers without the API just
+   navigate as before. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 220ms;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+::view-transition-group(*) {
+  animation-duration: 420ms;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Architectural line drawings (ArchitecturalDrawing.tsx): fully drawn
+   without JavaScript; MotionLayer scrubs --draw from 0 to 1 on scroll. */
+.arch-drawing path,
+.arch-drawing line,
+.arch-drawing circle,
+.arch-drawing polyline,
+.arch-drawing rect {
+  stroke-dasharray: 1;
+  stroke-dashoffset: calc(1 - var(--draw, 1));
+}
+
+/* First-screen drawings draw themselves once, in uneven waves, as the
+   page opens: no JavaScript, so nothing flickers when GSAP arrives. */
+@keyframes arch-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.arch-drawing-intro :is(path, line, circle, polyline, rect) {
+  animation: arch-draw 1700ms cubic-bezier(0.65, 0, 0.35, 1) 150ms both;
+}
+.arch-drawing-intro :is(path, line, circle, polyline, rect):nth-child(3n + 2) {
+  animation-delay: 380ms;
+}
+.arch-drawing-intro :is(path, line, circle, polyline, rect):nth-child(4n + 3) {
+  animation-delay: 620ms;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  .arch-drawing-intro :is(path, line, circle, polyline, rect) {
+    animation: none;
+  }
+
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
   }
 
   .reveal,

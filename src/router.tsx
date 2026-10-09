@@ -11,6 +11,10 @@ export const getRouter = () => {
     // the reader mid-page. In-page #links still scroll smoothly.
     scrollRestorationBehavior: "instant",
     defaultPreloadStaleTime: 0,
+    // Page changes crossfade, and photos with a shared view-transition-name
+    // (album covers, initiative photos) carry over to the next page. Browsers
+    // without the View Transitions API navigate exactly as before.
+    defaultViewTransition: true,
   });
 
   return router;

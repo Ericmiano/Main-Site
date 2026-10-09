@@ -6,6 +6,7 @@ import { Footer } from "@/components/site/Footer";
 import { Reveal } from "@/components/site/Reveal";
 import { SectionHeading } from "@/components/site/SectionHeading";
 import { PageBreadcrumb } from "@/components/site/PageBreadcrumb";
+import { ArchitecturalDrawing } from "@/components/site/ArchitecturalDrawing";
 import { awardCategories as categories, awardWinners2024 as winners2024 } from "@/data/site";
 import { jsonLd } from "@/lib/json-ld";
 
@@ -115,8 +116,13 @@ function AwardsPage() {
       />
       <Header />
       <main>
-        <section className="border-b border-border bg-secondary/40 py-14 lg:py-20">
-          <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
+        <section className="relative overflow-hidden border-b border-border bg-secondary/40 py-14 lg:py-20">
+          <ArchitecturalDrawing
+            intro
+            variant="section"
+            className="pointer-events-none absolute top-1/2 right-12 hidden w-[26rem] -translate-y-1/2 text-foreground/20 xl:block"
+          />
+          <div className="relative mx-auto max-w-[1400px] px-6 lg:px-12">
             <PageBreadcrumb trail={[{ label: "Awards & Honours" }]} />
 
             <Reveal className="mt-8 max-w-2xl">
@@ -144,7 +150,7 @@ function AwardsPage() {
               eyebrow="Awards of Excellence 2026"
               title={<span id="winners-title">Winning projects</span>}
             />
-            <ul data-stagger className="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <ul className="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {winnersFirst.map((winner, i) => (
                 <li key={`${winner.project}-${winner.category}-${winner.result}`}>
                   <div className="h-full">
@@ -159,7 +165,7 @@ function AwardsPage() {
                           src={winner.image}
                           alt={winner.project}
                           loading="lazy"
-                          className="aspect-4/3 w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
+                          className="aspect-4/3 w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.03]"
                         />
                       </div>
                       <div className="flex flex-1 flex-col justify-between gap-3 p-5">
@@ -196,7 +202,7 @@ function AwardsPage() {
               }
               description="The AAK Awards of Excellence is the region's most prestigious honours programme, recognising outstanding achievement by professionals across all eight chapters of the association."
             />
-            <ul data-stagger className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-3">
+            <ul className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-3">
               {whyEnter.map((item, i) => (
                 <li key={item.title}>
                   <div className="h-full">
@@ -225,7 +231,7 @@ function AwardsPage() {
               title={<span id="categories-title">What's judged</span>}
               description="Open to members of the AAK, the Rwanda Institute of Architects, the Uganda Society of Architects and the Architectural Association of Tanzania."
             />
-            <ul data-stagger className="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <ul className="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {categories.map((category, i) => (
                 <li key={category.name}>
                   <div className="h-full">
@@ -250,7 +256,7 @@ function AwardsPage() {
               eyebrow="How entries are judged"
               title={<span id="evaluation-title">Evaluation criteria</span>}
             />
-            <ul data-stagger className="mt-14 space-y-3">
+            <ul className="mt-14 space-y-3">
               {evaluationCriteria.map((item, i) => (
                 <li key={item.text}>
                   <div>
@@ -273,7 +279,7 @@ function AwardsPage() {
         >
           <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
             <SectionHeading eyebrow="Panel" title={<span id="jury-title">Jury members </span>} />
-            <ul data-stagger className="mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <ul className="mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {jury.map((member, i) => (
                 <li key={member.name}>
                   <div>

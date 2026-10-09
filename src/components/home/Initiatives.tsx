@@ -51,9 +51,10 @@ export function Initiatives() {
                 ) : null}
                 <img
                   src={featured.image}
+                  style={{ viewTransitionName: `initiative-${featured.slug}` }}
                   alt={`${featured.title} initiative`}
                   loading="lazy"
-                  className="photo-grade aspect-4/3 w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
+                  className="photo-grade aspect-4/3 w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.03]"
                 />
               </div>
               <div className="mt-6 flex items-baseline gap-4">
@@ -97,9 +98,10 @@ export function Initiatives() {
                       ) : null}
                       <img
                         src={initiative.image}
+                        style={{ viewTransitionName: `initiative-${initiative.slug}` }}
                         alt=""
                         loading="lazy"
-                        className="photo-grade aspect-4/3 w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                        className="photo-grade aspect-4/3 w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                       />
                     </div>
                     <div className="min-w-0">

@@ -1,9 +1,16 @@
 import { useEffect, useRef, useState, type ElementType, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
+/**
+ * Scroll-in motion, used sparingly: only photographs (`wipe`) and rules
+ * (`ruleDraw`) animate. Plain text and cards stay put; a page where every
+ * block fades up reads as a template. Without either prop, Reveal is just a
+ * wrapper element (kept so layouts that use it don't change).
+ */
 interface RevealProps {
   children: ReactNode;
   className?: string;
+  /** Delay before a wipe or rule draw starts, in ms. */
   delay?: number;
   as?: ElementType;
   /** Also draw this element in via a left-to-right scaleX, e.g. for a
@@ -22,6 +29,7 @@ export function Reveal({
   wipe = false,
 }: RevealProps) {
   const ref = useRef<HTMLElement | null>(null);
+  const moves = wipe || ruleDraw;
   // "static": rendered visible, as the server sends it, so content shows on
   // first paint without waiting for JavaScript. Only elements that start
   // below the fold are hidden ("armed") after hydration and faded in when
@@ -30,7 +38,7 @@ export function Reveal({
 
   useEffect(() => {
     const node = ref.current;
-    if (!node || typeof IntersectionObserver === "undefined") return;
+    if (!moves || !node || typeof IntersectionObserver === "undefined") return;
     if (node.getBoundingClientRect().top < window.innerHeight) return;
 
     setPhase("armed");
@@ -45,7 +53,7 @@ export function Reveal({
     );
     observer.observe(node);
     return () => observer.disconnect();
-  }, []);
+  }, [moves]);
 
   const animated = phase !== "static";
   const shown = phase === "shown";

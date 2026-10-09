@@ -7,6 +7,7 @@ import { Reveal } from "@/components/site/Reveal";
 import { SectionHeading } from "@/components/site/SectionHeading";
 import { CountUp } from "@/components/site/CountUp";
 import { PageBreadcrumb } from "@/components/site/PageBreadcrumb";
+import { ArchitecturalDrawing } from "@/components/site/ArchitecturalDrawing";
 import { chapters, portalLinks, regionalBranches } from "@/data/site";
 import { jsonLd } from "@/lib/json-ld";
 
@@ -103,8 +104,13 @@ function AboutPage() {
       />
       <Header />
       <main>
-        <section className="border-b border-border bg-secondary/40 py-14 lg:py-20">
-          <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
+        <section className="relative overflow-hidden border-b border-border bg-secondary/40 py-14 lg:py-20">
+          <ArchitecturalDrawing
+            intro
+            variant="section"
+            className="pointer-events-none absolute top-1/2 right-12 hidden w-[26rem] -translate-y-1/2 text-foreground/20 xl:block"
+          />
+          <div className="relative mx-auto max-w-[1400px] px-6 lg:px-12">
             <PageBreadcrumb trail={[{ label: "About Us" }]} />
 
             <Reveal className="mt-8 max-w-3xl">

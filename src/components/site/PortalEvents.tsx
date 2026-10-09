@@ -39,7 +39,7 @@ export function PortalEvents() {
         <div className="flex flex-wrap items-end justify-between gap-x-8 gap-y-4">
           <div className="max-w-2xl">
             <p className="meta-label flex items-center gap-2 text-primary">
-              <span className="pulse-dot h-1.5 w-1.5 rounded-full bg-primary" aria-hidden="true" />
+              <span className="h-1.5 w-1.5 rounded-full bg-primary" aria-hidden="true" />
               Registration open
             </p>
             <h2

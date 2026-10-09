@@ -162,7 +162,7 @@ function SchoolStory({
                         alt={p.alt}
                         loading="lazy"
                         className={cn(
-                          "photo-grade h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105",
+                          "photo-grade h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]",
                           i === 0 ? "aspect-video" : "aspect-square",
                         )}
                       />

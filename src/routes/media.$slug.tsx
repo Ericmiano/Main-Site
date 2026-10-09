@@ -179,10 +179,7 @@ function AlbumPage() {
               </figure>
             ) : null}
 
-            <ul
-              data-stagger
-              className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3 lg:grid-cols-4"
-            >
+            <ul className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3 lg:grid-cols-4">
               {photos.map((photo, i) => (
                 <li key={photo.src}>
                   <button
@@ -194,8 +191,14 @@ function AlbumPage() {
                       src={photo.thumb ?? photo.src}
                       alt={photo.alt}
                       loading={i < 8 ? "eager" : "lazy"}
+                      // The cover arrives here from its card on /media.
+                      style={
+                        photo.src === album.cover.src
+                          ? { viewTransitionName: `album-${album.slug}` }
+                          : undefined
+                      }
                       decoding="async"
-                      className="aspect-4/3 w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                      className="aspect-4/3 w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
                     />
                   </button>
                 </li>

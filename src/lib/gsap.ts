@@ -1,12 +1,10 @@
 import type { gsap as GsapCore } from "gsap";
 import type { Flip as FlipType } from "gsap/Flip";
 import type { ScrollTrigger as ScrollTriggerType } from "gsap/ScrollTrigger";
-import type { SplitText as SplitTextType } from "gsap/SplitText";
 
 export interface GsapKit {
   gsap: typeof GsapCore;
   ScrollTrigger: typeof ScrollTriggerType;
-  SplitText: typeof SplitTextType;
 }
 
 /** Media query every GSAP effect runs under (via gsap.matchMedia), so turning
@@ -17,18 +15,14 @@ let kit: Promise<GsapKit> | null = null;
 let loaded: GsapKit | null = null;
 
 /**
- * GSAP + ScrollTrigger + SplitText, loaded on first use rather than in the
+ * GSAP + ScrollTrigger, loaded on first use rather than in the
  * main bundle: every animation here is an enhancement over content that is
  * already visible, so the page never waits for it.
  */
 export function loadGsap(): Promise<GsapKit> {
-  kit ??= Promise.all([
-    import("gsap"),
-    import("gsap/ScrollTrigger"),
-    import("gsap/SplitText"),
-  ]).then(([core, st, split]) => {
-    core.gsap.registerPlugin(st.ScrollTrigger, split.SplitText);
-    loaded = { gsap: core.gsap, ScrollTrigger: st.ScrollTrigger, SplitText: split.SplitText };
+  kit ??= Promise.all([import("gsap"), import("gsap/ScrollTrigger")]).then(([core, st]) => {
+    core.gsap.registerPlugin(st.ScrollTrigger);
+    loaded = { gsap: core.gsap, ScrollTrigger: st.ScrollTrigger };
     return loaded;
   });
   return kit;

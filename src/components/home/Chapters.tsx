@@ -184,7 +184,7 @@ function ChapterGrid() {
                   src={chapter.image}
                   alt={`${chapter.name} chapter of the Architectural Association of Kenya`}
                   loading="lazy"
-                  className="photo-grade aspect-4/3 w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
+                  className="photo-grade aspect-4/3 w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.03]"
                 />
               </div>
               <div className="flex items-center justify-between gap-3 px-6 py-5">

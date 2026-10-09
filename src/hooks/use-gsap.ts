@@ -4,7 +4,7 @@ import { MOTION_OK, prefersReducedMotion, whenMotionReady, type GsapKit } from "
 /**
  * Runs `setup` once GSAP is ready (after the reader's first interaction; see
  * whenMotionReady), inside a gsap.matchMedia scoped to `scope`. Everything it
- * creates (tweens, ScrollTriggers, SplitTexts) is reverted on unmount, when
+ * creates (tweens, ScrollTriggers) is reverted on unmount, when
  * `deps` change, and whenever the visitor turns on "reduce motion". `setup`
  * may return an extra cleanup for anything GSAP doesn't own (listeners).
  *
