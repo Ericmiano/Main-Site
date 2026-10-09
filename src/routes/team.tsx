@@ -380,6 +380,15 @@ function TeamPage() {
                 />
               </button>
             ) : null}
+            <p className="mt-8 text-sm text-muted-foreground">
+              <Link
+                to="/college-of-fellows"
+                className="link-underline font-semibold text-foreground"
+              >
+                Meet the Fellows
+              </Link>
+              : the College&rsquo;s roles and its video series.
+            </p>
           </div>
         </section>
       </main>

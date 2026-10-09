@@ -56,6 +56,13 @@ const pages: SearchEntry[] = [
     href: "/team",
   },
   {
+    title: "College of Fellows",
+    description:
+      "AAK's senior membership category: the roles of the College, the Meet the Fellows video series and the Fellows of 2026.",
+    category: "Page",
+    href: "/college-of-fellows",
+  },
+  {
     title: "News & insights",
     description:
       "Blogs, articles and opinion from the Architectural Association of Kenya and its members on Kenya's built and natural environment.",

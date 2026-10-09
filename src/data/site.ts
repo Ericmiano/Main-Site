@@ -681,6 +681,7 @@ export const navMenu: NavMenuEntry[] = [
     description: "Join, renew and use your membership. Portal services open on members.aak.or.ke.",
     links: [
       { label: "Membership, tiers & fees", href: "/membership" },
+      { label: "College of Fellows", href: "/college-of-fellows" },
       {
         label: "New membership registration",
         href: portalLinks.apply,
@@ -1085,16 +1086,40 @@ export const awardWinners2024: AwardWinner[] = [
   },
 ];
 
-/** Membership categories and fees in KES, as listed on /membership. */
-export const membershipFees: { category: string; entrance: string; annual: string }[] = [
-  { category: "Corporate", entrance: "1,000.00", annual: "7,500.00" },
-  { category: "Licentiate", entrance: "1,000.00", annual: "5,500.00" },
-  { category: "Graduate", entrance: "600.00", annual: "3,750.00" },
-  { category: "Student", entrance: "None", annual: "500.00" },
-  { category: "Firm", entrance: "2,000.00", annual: "15,000.00" },
-  { category: "Technician", entrance: "600.00", annual: "1,500.00" },
-  { category: "Visiting", entrance: "None", annual: "75,000.00" },
-  { category: "Institutional Members", entrance: "5,000.00", annual: "50,000.00" },
+/** Membership categories and fees in KES, as listed on /membership: the
+ * individual grades from the entry level up to the senior category (Fellow),
+ * then visiting professionals, firms and institutions. Fees from aak.or.ke's
+ * Fees & Subscriptions page; that page never listed Fellows. */
+export interface MembershipFee {
+  category: string;
+  entrance: string;
+  annual: string;
+  group: "Individual members" | "Firms and institutions";
+  note?: string;
+  href?: string;
+}
+export const membershipFees: MembershipFee[] = [
+  { category: "Student", entrance: "None", annual: "500.00", group: "Individual members" },
+  { category: "Technician", entrance: "600.00", annual: "1,500.00", group: "Individual members" },
+  { category: "Graduate", entrance: "600.00", annual: "3,750.00", group: "Individual members" },
+  { category: "Licentiate", entrance: "1,000.00", annual: "5,500.00", group: "Individual members" },
+  { category: "Corporate", entrance: "1,000.00", annual: "7,500.00", group: "Individual members" },
+  {
+    category: "Fellow",
+    entrance: "By invitation",
+    annual: "Contact the Secretariat",
+    group: "Individual members",
+    note: "Senior category",
+    href: "/college-of-fellows",
+  },
+  { category: "Visiting", entrance: "None", annual: "75,000.00", group: "Individual members" },
+  { category: "Firm", entrance: "2,000.00", annual: "15,000.00", group: "Firms and institutions" },
+  {
+    category: "Institutional Members",
+    entrance: "5,000.00",
+    annual: "50,000.00",
+    group: "Firms and institutions",
+  },
 ];
 
 /** Member firm featured on the homepage, as showcased on aak.or.ke. Swap the

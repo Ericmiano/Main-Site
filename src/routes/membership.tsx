@@ -1,4 +1,5 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { Fragment } from "react";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   IconArrowUpRight as ArrowUpRight,
   IconCircleCheck as BadgeCheck,
@@ -11,7 +12,9 @@ import {
 } from "@tabler/icons-react";
 
 import { Header } from "@/components/site/Header";
-import { membershipFees as fees, portalLinks } from "@/data/site";
+import { YouTubeEmbed } from "@/components/site/YouTubeEmbed";
+import { collegeOfFellows, membershipFees as fees, portalLinks } from "@/data/site";
+import { fellowsIntro, meetTheFellowsVideos } from "@/data/fellows";
 import { MemberStats } from "@/components/site/MemberStats";
 import { Footer } from "@/components/site/Footer";
 import { Reveal } from "@/components/site/Reveal";
@@ -225,12 +228,44 @@ function MembershipPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {fees.map((row) => (
-                    <tr key={row.category} className="border-b border-border last:border-b-0">
-                      <td className="px-6 py-4 font-semibold text-foreground">{row.category}</td>
-                      <td className="px-6 py-4 text-muted-foreground">{row.entrance}</td>
-                      <td className="px-6 py-4 text-muted-foreground">{row.annual}</td>
-                    </tr>
+                  {fees.map((row, i) => (
+                    <Fragment key={row.category}>
+                      {row.group !== fees[i - 1]?.group ? (
+                        <tr className="border-b border-border bg-secondary/30">
+                          <th
+                            scope="colgroup"
+                            colSpan={3}
+                            className="meta-label px-6 pb-2 pt-5 text-[11px] font-semibold text-muted-foreground"
+                          >
+                            {row.group}
+                          </th>
+                        </tr>
+                      ) : null}
+                      <tr
+                        className={
+                          row.href
+                            ? "border-b border-border bg-primary/5"
+                            : "border-b border-border last:border-b-0"
+                        }
+                      >
+                        <th scope="row" className="px-6 py-4 font-semibold text-foreground">
+                          {row.href ? (
+                            <Link to={row.href} className="link-underline">
+                              {row.category}
+                            </Link>
+                          ) : (
+                            row.category
+                          )}
+                          {row.note ? (
+                            <span className="meta-label ml-3 text-[10px] text-primary">
+                              {row.note}
+                            </span>
+                          ) : null}
+                        </th>
+                        <td className="px-6 py-4 text-muted-foreground">{row.entrance}</td>
+                        <td className="px-6 py-4 text-muted-foreground">{row.annual}</td>
+                      </tr>
+                    </Fragment>
                   ))}
                 </tbody>
               </table>
@@ -238,7 +273,43 @@ function MembershipPage() {
           </div>
         </section>
 
-        <section aria-labelledby="benefits-title" className="py-16 lg:py-24">
+        <section aria-labelledby="fellows-feature-title" className="py-16 lg:py-24">
+          <div className="mx-auto grid max-w-[1400px] gap-10 px-6 lg:grid-cols-[1fr_1.2fr] lg:items-center lg:gap-16 lg:px-12">
+            <Reveal>
+              <p className="meta-label text-primary">The senior membership category</p>
+              <h2
+                id="fellows-feature-title"
+                className="mt-4 font-display text-3xl font-semibold tracking-tight text-foreground sm:text-4xl"
+              >
+                College of Fellows
+              </h2>
+              <p className="mt-5 text-base leading-relaxed text-muted-foreground">{fellowsIntro}</p>
+              <p className="mt-4 text-base leading-relaxed text-muted-foreground">
+                {collegeOfFellows.length} Fellows advise the Governing Council, lead advocacy and
+                mentor students and young professionals. Hear from them in the Meet the Fellows
+                series.
+              </p>
+              <Link to="/college-of-fellows" className="group btn-primary mt-8">
+                Meet the Fellows
+                <ArrowUpRight className="h-4 w-4" />
+              </Link>
+            </Reveal>
+            {meetTheFellowsVideos[0] ? (
+              <Reveal delay={100}>
+                <YouTubeEmbed
+                  src={`https://www.youtube-nocookie.com/embed/${meetTheFellowsVideos[0].id}`}
+                  title={`Meet the Fellows: ${meetTheFellowsVideos[0].name}`}
+                  className="aspect-video w-full overflow-hidden rounded-2xl"
+                />
+              </Reveal>
+            ) : null}
+          </div>
+        </section>
+
+        <section
+          aria-labelledby="benefits-title"
+          className="border-t border-border bg-secondary/40 py-16 lg:py-24"
+        >
           <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
             <SectionHeading
               eyebrow="Benefits"

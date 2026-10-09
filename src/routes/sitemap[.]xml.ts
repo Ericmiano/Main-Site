@@ -26,6 +26,7 @@ function buildUrls(): SitemapUrl[] {
     { loc: `${SITE_URL}/news`, changefreq: "weekly", priority: "0.7" },
     { loc: `${SITE_URL}/certificate-verification`, changefreq: "yearly", priority: "0.4" },
     { loc: `${SITE_URL}/membership`, changefreq: "monthly", priority: "0.8" },
+    { loc: `${SITE_URL}/college-of-fellows`, changefreq: "monthly", priority: "0.6" },
     { loc: `${SITE_URL}/contact`, changefreq: "monthly", priority: "0.6" },
     { loc: `${SITE_URL}/students`, changefreq: "monthly", priority: "0.5" },
     { loc: `${SITE_URL}/store`, changefreq: "monthly", priority: "0.4" },

@@ -20,6 +20,7 @@ import { Route as BillsRouteImport } from './routes/bills'
 import { Route as BuildingRegulationsRouteImport } from './routes/building-regulations'
 import { Route as BuildpressMagazineRouteImport } from './routes/buildpress-magazine'
 import { Route as CertificateVerificationRouteImport } from './routes/certificate-verification'
+import { Route as CollegeOfFellowsRouteImport } from './routes/college-of-fellows'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CookiesRouteImport } from './routes/cookies'
 import { Route as CpdRapporteurReportsRouteImport } from './routes/cpd-rapporteur-reports'
@@ -109,6 +110,11 @@ const BuildpressMagazineRoute = BuildpressMagazineRouteImport.update({
 const CertificateVerificationRoute = CertificateVerificationRouteImport.update({
   id: '/certificate-verification',
   path: '/certificate-verification',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CollegeOfFellowsRoute = CollegeOfFellowsRouteImport.update({
+  id: '/college-of-fellows',
+  path: '/college-of-fellows',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -302,6 +308,7 @@ export interface FileRoutesByFullPath {
   '/building-regulations': typeof BuildingRegulationsRoute
   '/buildpress-magazine': typeof BuildpressMagazineRoute
   '/certificate-verification': typeof CertificateVerificationRoute
+  '/college-of-fellows': typeof CollegeOfFellowsRoute
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
   '/cpd-rapporteur-reports': typeof CpdRapporteurReportsRoute
@@ -350,6 +357,7 @@ export interface FileRoutesByTo {
   '/building-regulations': typeof BuildingRegulationsRoute
   '/buildpress-magazine': typeof BuildpressMagazineRoute
   '/certificate-verification': typeof CertificateVerificationRoute
+  '/college-of-fellows': typeof CollegeOfFellowsRoute
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
   '/cpd-rapporteur-reports': typeof CpdRapporteurReportsRoute
@@ -399,6 +407,7 @@ export interface FileRoutesById {
   '/building-regulations': typeof BuildingRegulationsRoute
   '/buildpress-magazine': typeof BuildpressMagazineRoute
   '/certificate-verification': typeof CertificateVerificationRoute
+  '/college-of-fellows': typeof CollegeOfFellowsRoute
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
   '/cpd-rapporteur-reports': typeof CpdRapporteurReportsRoute
@@ -449,6 +458,7 @@ export interface FileRouteTypes {
     | '/building-regulations'
     | '/buildpress-magazine'
     | '/certificate-verification'
+    | '/college-of-fellows'
     | '/contact'
     | '/cookies'
     | '/cpd-rapporteur-reports'
@@ -497,6 +507,7 @@ export interface FileRouteTypes {
     | '/building-regulations'
     | '/buildpress-magazine'
     | '/certificate-verification'
+    | '/college-of-fellows'
     | '/contact'
     | '/cookies'
     | '/cpd-rapporteur-reports'
@@ -545,6 +556,7 @@ export interface FileRouteTypes {
     | '/building-regulations'
     | '/buildpress-magazine'
     | '/certificate-verification'
+    | '/college-of-fellows'
     | '/contact'
     | '/cookies'
     | '/cpd-rapporteur-reports'
@@ -594,6 +606,7 @@ export interface RootRouteChildren {
   BuildingRegulationsRoute: typeof BuildingRegulationsRoute
   BuildpressMagazineRoute: typeof BuildpressMagazineRoute
   CertificateVerificationRoute: typeof CertificateVerificationRoute
+  CollegeOfFellowsRoute: typeof CollegeOfFellowsRoute
   ContactRoute: typeof ContactRoute
   CookiesRoute: typeof CookiesRoute
   CpdRapporteurReportsRoute: typeof CpdRapporteurReportsRoute
@@ -708,6 +721,13 @@ declare module '@tanstack/react-router' {
       path: '/certificate-verification'
       fullPath: '/certificate-verification'
       preLoaderRoute: typeof CertificateVerificationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/college-of-fellows': {
+      id: '/college-of-fellows'
+      path: '/college-of-fellows'
+      fullPath: '/college-of-fellows'
+      preLoaderRoute: typeof CollegeOfFellowsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -970,6 +990,7 @@ const rootRouteChildren: RootRouteChildren = {
   BuildingRegulationsRoute: BuildingRegulationsRoute,
   BuildpressMagazineRoute: BuildpressMagazineRoute,
   CertificateVerificationRoute: CertificateVerificationRoute,
+  CollegeOfFellowsRoute: CollegeOfFellowsRoute,
   ContactRoute: ContactRoute,
   CookiesRoute: CookiesRoute,
   CpdRapporteurReportsRoute: CpdRapporteurReportsRoute,
