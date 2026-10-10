@@ -386,6 +386,10 @@ const convention2026: MediaAlbum = {
   links: [
     { label: "Event details", href: "/events/aak-annual-convention-2026" },
     { label: "Convention highlights and videos", href: "https://convention.aak.or.ke/highlights" },
+    {
+      label: "The Convention programme (PDF)",
+      href: fileUrl("/documents/AAK-Annual-Convention-2026-Programme.pdf"),
+    },
   ],
 };
 

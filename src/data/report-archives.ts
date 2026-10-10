@@ -293,6 +293,23 @@ export const statusOfTheBuiltEnvironmentDocuments: ArchiveDocument[] = [
 
 export const generalDownloadsDocuments: ArchiveDocument[] = [
   {
+    title: "AAK Annual Convention 2026: Programme",
+    year: "2026",
+    href: fileUrl("/documents/AAK-Annual-Convention-2026-Programme.pdf"),
+  },
+  {
+    title: "AAK Annual Convention 2026: Prospectus",
+    year: "2026",
+    href: fileUrl("/documents/AAK-Annual-Convention-2026-Prospectus.pdf"),
+  },
+  {
+    title: "AAK-Basco DuraCoat Awards of Excellence 2026: Applicant Guidelines",
+    year: "2026",
+    href: fileUrl(
+      "/documents/AAK-Basco-DuraCoat-Awards-of-Excellence-2026-Applicant-Guidelines.pdf",
+    ),
+  },
+  {
     title:
       "UIA Heritage Conference, Mombasa: The Next 50, World Heritage as a Source of Resilience — Speakers and Programme",
     year: "2023",

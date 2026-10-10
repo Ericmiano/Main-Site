@@ -8,6 +8,7 @@ import { SectionHeading } from "@/components/site/SectionHeading";
 import { PageBreadcrumb } from "@/components/site/PageBreadcrumb";
 import { ArchitecturalDrawing } from "@/components/site/ArchitecturalDrawing";
 import { awardCategories as categories, awardWinners2024 as winners2024 } from "@/data/site";
+import { fileUrl } from "@/lib/files";
 import { jsonLd } from "@/lib/json-ld";
 
 // Winners, then runners-up, then honourable mentions, keeping the source
@@ -408,6 +409,16 @@ function AwardsPage() {
               >
                 2026 submission portal
                 <ArrowUpRight className="h-4 w-4" />
+              </a>
+              <a
+                href={fileUrl(
+                  "/documents/AAK-Basco-DuraCoat-Awards-of-Excellence-2026-Applicant-Guidelines.pdf",
+                )}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="link-quiet text-foreground"
+              >
+                2026 applicant guidelines (PDF)
               </a>
             </div>
           </div>
