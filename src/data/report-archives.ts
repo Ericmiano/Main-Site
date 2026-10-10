@@ -46,6 +46,16 @@ export const billsDocuments: ArchiveDocument[] = [
     year: "2026",
     href: fileUrl("/documents/AAK-Memorandum-on-the-Finance-Bill-2026-7.pdf"),
   },
+  {
+    title: "An Analysis of the Implications of the Finance Bill, 2024 on the Construction Industry",
+    year: "2024",
+    href: fileUrl("/documents/Analysis-of-the-Finance-Bill-2024-on-the-Construction-Industry.pdf"),
+  },
+  {
+    title: "Draft of the Built Environment Bill",
+    year: "2019",
+    href: fileUrl("/documents/Draft-Built-Environment-Bill-2019.pdf"),
+  },
 ];
 
 export const buildingRegulationsDocuments: ArchiveDocument[] = [
@@ -59,6 +69,16 @@ export const buildingRegulationsDocuments: ArchiveDocument[] = [
     title: "National Building Code, 2024: Popular Version (NCA)",
     year: "2024",
     href: fileUrl("/documents/National-Building-Code-2024-Popular-Version.pdf"),
+  },
+  {
+    title: "Brief on the National Building Code, 2024",
+    year: "2024",
+    href: fileUrl("/documents/Brief-on-the-National-Building-Code-2024.pdf"),
+  },
+  {
+    title: "Physical and Land Use Planning Handbook",
+    year: "2025",
+    href: fileUrl("/documents/Physical-and-Land-Use-Planning-Handbook-2025.pdf"),
   },
   {
     title: "Affordable Housing Act, No. 2 of 2024",
@@ -155,6 +175,11 @@ export const liaisonCommitteesReportsDocuments: ArchiveDocument[] = [
 
 export const mulikaMjengoReportDocuments: ArchiveDocument[] = [
   {
+    title: "Is that Building Safe? A Report of the Mulika Mjengo Project",
+    year: "2025",
+    href: fileUrl("/documents/Mulika-Mjengo-Report-2025.pdf"),
+  },
+  {
     title: "Mulika Mjengo Initiative",
     href: fileUrl("/documents/MULIKA-MJENGO-INITIATIVE.pdf"),
   },
@@ -200,6 +225,11 @@ export const salarySurveyDocuments: ArchiveDocument[] = [
     title: "AAK Salary Survey Report",
     year: "2022",
     href: fileUrl("/documents/AAK-Salary-Survey-Report-2022-1.pdf"),
+  },
+  {
+    title: "AAK Salary Survey 2022: Infographics",
+    year: "2022",
+    href: fileUrl("/documents/AAK-Salary-Survey-2022-Infographics.pdf"),
   },
   {
     title: "AAK Salary Survey",
@@ -262,6 +292,17 @@ export const statusOfTheBuiltEnvironmentDocuments: ArchiveDocument[] = [
 ];
 
 export const generalDownloadsDocuments: ArchiveDocument[] = [
+  {
+    title:
+      "UIA Heritage Conference, Mombasa: The Next 50, World Heritage as a Source of Resilience — Speakers and Programme",
+    year: "2023",
+    href: fileUrl("/documents/UIA-Heritage-Conference-Mombasa-2023-Speakers-and-Programme.pdf"),
+  },
+  {
+    title: "UIA Heritage Conference, Mombasa: The Next 50 — Synopsis and Themes",
+    year: "2023",
+    href: fileUrl("/documents/UIA-Heritage-Conference-Mombasa-2023-Synopsis-and-Themes.pdf"),
+  },
   {
     title: "AAK Memorandum on the Finance Bill",
     year: "2025",

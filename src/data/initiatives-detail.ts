@@ -99,6 +99,10 @@ export const initiativeDetails: InitiativeDetail[] = [
     imageAlt: "Mulika Mjengo site inspection in Kamulu",
     documents: [
       {
+        title: "Mulika Mjengo Report 2025: Is that Building Safe?",
+        href: fileUrl("/documents/Mulika-Mjengo-Report-2025.pdf"),
+      },
+      {
         title: "Mulika Mjengo Initiative",
         href: fileUrl("/documents/MULIKA-MJENGO-INITIATIVE.pdf"),
       },
