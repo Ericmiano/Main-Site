@@ -135,6 +135,11 @@ export const buildingRegulationsDocuments: ArchiveDocument[] = [
     href: fileUrl("/documents/County-Governments-Act-2012.pdf"),
   },
   {
+    title: "Arbitration Act, No. 4 of 1995 (Cap. 49)",
+    year: "2022",
+    href: fileUrl("/documents/Arbitration-Act-1995.pdf"),
+  },
+  {
     title: "Affordable Housing Regulations, 2025 (Legal Notice No. 114 of 2025)",
     year: "2025",
     href: fileUrl("/documents/Affordable-Housing-Regulations-2025.pdf"),

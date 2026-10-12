@@ -86,7 +86,7 @@ const pages: SearchEntry[] = [
   {
     title: "Arbitration",
     description:
-      "How AAK nominates arbitrators for construction disputes, and how to request a nomination while AAK's online arbitration service is being set up.",
+      "Why construction disputes go to arbitration, how AAK's President nominates arbitrators, what an award means under the Arbitration Act, and how to request a nomination.",
     category: "Page",
     href: "/arbitration",
   },
