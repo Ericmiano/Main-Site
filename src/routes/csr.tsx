@@ -56,7 +56,7 @@ const programmes: { title: string; body: string; href?: string | undefined }[] =
   {
     title: "Grow A Classroom Initiative",
     body: gac?.description ?? "",
-    href: gac?.externalUrl,
+    href: "/initiatives/grow-a-classroom",
   },
 ];
 
@@ -126,11 +126,9 @@ function CsrPage() {
                       {programme.href ? (
                         <a
                           href={programme.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
                           className="group mt-auto inline-flex items-center gap-2 pt-6 text-sm font-semibold text-foreground"
                         >
-                          Visit the Grow A Classroom site
+                          Explore Grow A Classroom
                           <ArrowUpRight className="h-4 w-4 text-primary" />
                         </a>
                       ) : null}

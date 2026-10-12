@@ -27,6 +27,7 @@ import {
   gacTargets,
   gacW800,
   gacVideo,
+  gacWebsite,
   type GacPhoto,
   type GacSchool,
 } from "@/data/grow-a-classroom";
@@ -262,7 +263,7 @@ function GrowAClassroom() {
                 title="Grow A Classroom"
                 className="hero-item mt-10 flex h-20 w-20 p-2.5 sm:h-24 sm:w-24 sm:p-3"
               />
-              <p className="hero-item meta-label mt-6 text-sustain">
+              <p className="hero-item meta-label mt-6 text-background/85">
                 Professional CSR &middot; Advocacy programme
               </p>
               <h1 className="hero-item hero-delay-1 mt-4 font-display text-5xl font-semibold leading-[0.95] tracking-tight text-background sm:text-7xl lg:text-8xl">
@@ -271,6 +272,15 @@ function GrowAClassroom() {
               <p className="hero-item hero-delay-2 mt-5 max-w-xl font-accent text-xl italic text-background/85 sm:text-2xl">
                 {gacTagline}
               </p>
+              <a
+                href={gacWebsite}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hero-item hero-delay-3 group btn-primary mt-8"
+              >
+                Visit schools.aak.or.ke
+                <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+              </a>
             </div>
             <div className="hero-item hero-delay-3 lg:justify-self-end">
               <DonateCard dark />
@@ -392,7 +402,16 @@ function GrowAClassroom() {
               ))}
             </div>
             <p className="mt-6 text-sm text-muted-foreground">
-              More schools across Kenya are joining the programme. Check back for updates.
+              More schools across Kenya are joining the programme. For the latest, visit{" "}
+              <a
+                href={gacWebsite}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="link-underline font-medium text-foreground"
+              >
+                schools.aak.or.ke
+              </a>
+              .
             </p>
           </div>
         </section>
@@ -417,6 +436,15 @@ function GrowAClassroom() {
                 className="group link-quiet mt-8"
               >
                 Partner with us: advocacy@aak.or.ke
+                <ArrowUpRight className="h-4 w-4" />
+              </a>
+              <a
+                href={gacWebsite}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group link-quiet mt-4 flex w-fit"
+              >
+                The Grow A Classroom website
                 <ArrowUpRight className="h-4 w-4" />
               </a>
             </Reveal>

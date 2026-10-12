@@ -28,6 +28,9 @@ export interface GacSchool {
   allPhotos?: GacPhoto[];
 }
 
+/** The programme's own website, linked from /initiatives/grow-a-classroom. */
+export const gacWebsite = "https://schools.aak.or.ke/";
+
 export const gacTagline = "Shaping the Urban Future through Sustainable Education";
 
 export const gacOverview =

@@ -271,9 +271,9 @@ export const initiatives: Initiative[] = [
     title: "Grow A Classroom",
     description:
       "Master plans, landscaping and classrooms built from mature on-site timber for under-served schools, paired with tree planting to grow national tree cover and carbon credits.",
-    href: "https://schools.aak.or.ke/",
-    // The programme's own site; /initiatives/grow-a-classroom stays for direct links.
-    externalUrl: "https://schools.aak.or.ke/",
+    // Cards open AAK's own page, which leads on to the programme's website
+    // (gacWebsite, schools.aak.or.ke).
+    href: "/initiatives/grow-a-classroom",
     cta: "Explore the project",
     image: "/img/grow-a-classroom-2307.webp",
     emblem: "/img/initiatives/grow-a-classroom-emblem.webp",
