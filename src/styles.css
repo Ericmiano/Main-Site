@@ -550,6 +550,21 @@
   animation: hero-scale 2400ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+/* School map: a ring spreads out once from a pin as it's chosen. */
+@keyframes pin-ripple {
+  from {
+    transform: scale(0.7);
+    opacity: 0.6;
+  }
+  to {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+.pin-ripple {
+  animation: pin-ripple 750ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
 /* Events timeline: a marker turns red as the scroll-drawn line reaches it
    (EventsStrip sets data-lit). Plain CSS, as GSAP can't tween oklch. */
 .timeline-dot {
@@ -714,6 +729,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .pin-ripple {
+    display: none;
+  }
   html {
     scroll-behavior: auto;
   }

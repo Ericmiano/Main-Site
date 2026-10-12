@@ -1,18 +1,32 @@
-import { useMemo, useState, type CSSProperties } from "react";
+import { useEffect, useId, useMemo, useRef, useState, type CSSProperties } from "react";
 import {
   IconArrowDown as ArrowDown,
   IconCheck as Check,
+  IconPlayerPlayFilled as Play,
+  IconPlayerStopFilled as Stop,
   IconX as Close,
 } from "@tabler/icons-react";
 
 import { gacW800, type GacSchool } from "@/data/grow-a-classroom";
 import { KENYA_COUNTIES, KENYA_VIEWBOX, kenyaPoint } from "@/data/kenya-map";
+import {
+  MOTION_OK,
+  gsapIfLoaded,
+  loadGsap,
+  loadMotionPath,
+  prefersReducedMotion,
+  whenMotionReady,
+} from "@/lib/gsap";
 import { cn } from "@/lib/utils";
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
 // Closest two pins may sit, in map units (~44px apart on a phone-width map).
 const MIN_GAP = 105;
+// How long the journey stays on each school, in seconds.
+const DWELL = 2.6;
+// The journey's marker starts hidden; GSAP shows it while it travels.
+const HIDDEN: CSSProperties = { opacity: 0, visibility: "hidden" };
 
 /**
  * Each school's true spot on the map and where its pin goes: schools close
@@ -51,23 +65,59 @@ function layoutPins(schools: GacSchool[]) {
   });
 }
 
+/** The journey between schools in visit order: one gentle arc per leg. */
+function routeLegs(pins: { x: number; y: number }[]) {
+  return pins.slice(1).map((b, i) => {
+    const a = pins[i]!;
+    const bend = 0.22;
+    const cx = (a.x + b.x) / 2 - (b.y - a.y) * bend;
+    const cy = (a.y + b.y) / 2 + (b.x - a.x) * bend;
+    return `M${a.x} ${a.y}Q${cx} ${cy} ${b.x} ${b.y}`;
+  });
+}
+
+const countyOf = (school: GacSchool) => school.county.replace(/ County$/, "");
+
 /** What a school's card says about it: its outcomes, or the visit if none yet. */
 function SchoolCard({
   school,
   index,
   onClose,
+  origin = "center",
   className,
   style,
 }: {
   school: GacSchool;
   index: number;
   onClose: () => void;
+  /** Which edge the card springs out from: the side its pin is on. */
+  origin?: string;
   className?: string;
   style?: CSSProperties;
 }) {
+  const ref = useRef<HTMLDivElement>(null);
   const photo = school.highlights[school.mapPhoto ?? 0] ?? school.highlights[0];
+
+  // Springs out of its pin, when GSAP is already on the page.
+  useEffect(() => {
+    const kit = gsapIfLoaded();
+    if (!kit || !ref.current || prefersReducedMotion()) return;
+    const tween = kit.gsap.from(ref.current, {
+      autoAlpha: 0,
+      scale: 0.9,
+      transformOrigin: origin,
+      duration: 0.45,
+      ease: "back.out(1.6)",
+      clearProps: "opacity,visibility,transform",
+    });
+    return () => {
+      tween.revert();
+    };
+  }, [origin]);
+
   return (
     <div
+      ref={ref}
       style={style}
       className={cn(
         "overflow-hidden rounded-2xl border border-border bg-background shadow-xl",
@@ -126,40 +176,230 @@ function SchoolCard({
 }
 
 /**
- * Kenya, with a pin on each Grow A Classroom school. Hovering, focusing or
- * tapping a pin (or a name in the list beside it) shows that school's card:
- * floating by the pin on wider screens, under the map on phones.
+ * Kenya, with a pin on each Grow A Classroom school, joined by the route of
+ * the visits in order. Hovering, focusing or tapping a pin (or a name in the
+ * list beside it) shows that school's card: floating by the pin on wider
+ * screens, under the map on phones. "Play the journey" tours the schools in
+ * turn, a marker travelling the route between them.
+ *
+ * With GSAP (loaded on first interaction, and only without reduced motion)
+ * the route draws itself as the map comes into view, the pins pop in as it
+ * reaches them, cards spring out of their pins and the map tilts a little
+ * with the mouse. Without it, everything is simply there.
  */
 export function SchoolMap({ schools }: { schools: GacSchool[] }) {
   const [active, setActive] = useState<number | null>(null);
+  const [touring, setTouring] = useState(false);
   const current = active === null ? undefined : schools[active];
-  const close = () => setActive(null);
   const layout = useMemo(() => layoutPins(schools), [schools]);
+  const legs = useMemo(() => routeLegs(layout.map((l) => l.pin)), [layout]);
+  const schoolCounties = useMemo(() => new Set(schools.map(countyOf)), [schools]);
+  const maskId = `route-${useId().replace(/:/g, "")}`;
+
+  const stageRef = useRef<HTMLDivElement>(null);
+  const pinRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const drawRefs = useRef<(SVGPathElement | null)[]>([]);
+  const legRefs = useRef<(SVGPathElement | null)[]>([]);
+  const markerRef = useRef<SVGCircleElement>(null);
+  const introRef = useRef<gsap.core.Timeline | null>(null);
+  const tourRef = useRef<gsap.core.Timeline | null>(null);
+  const tiltRef = useRef<((e: PointerEvent) => void) | null>(null);
+  const untiltRef = useRef<(() => void) | null>(null);
+
+  const stopTour = () => {
+    tourRef.current?.kill();
+    tourRef.current = null;
+    if (markerRef.current) gsapIfLoaded()?.gsap.set(markerRef.current, { autoAlpha: 0 });
+    setTouring(false);
+  };
+  /** The reader chose a school (or none): that takes over from the journey. */
+  const choose = (i: number | null) => {
+    if (tourRef.current) stopTour();
+    setActive(i);
+  };
+  /** Hover only previews while the journey isn't playing. */
+  const preview = (i: number | null) => {
+    if (!tourRef.current) setActive(i);
+  };
+
+  // The intro (route draws, pins pop in) and the tilt.
+  useEffect(() => {
+    if (prefersReducedMotion()) return;
+    let alive = true;
+    let revert: (() => void) | undefined;
+    void whenMotionReady().then(({ gsap }) => {
+      const stage = stageRef.current;
+      if (!alive || !stage) return;
+      const mm = gsap.matchMedia();
+      mm.add({ motion: MOTION_OK, fine: "(pointer: fine)" }, (ctx) => {
+        const { motion, fine } = ctx.conditions as { motion: boolean; fine: boolean };
+        if (!motion) return;
+        let stopIntroWatch: (() => void) | undefined;
+
+        // Already on screen: leave it as it is rather than make it flicker.
+        const box = stage.getBoundingClientRect();
+        if (box.top > window.innerHeight * 0.8) {
+          const pins = pinRefs.current.filter(Boolean);
+          const draws = drawRefs.current.filter(Boolean) as SVGPathElement[];
+          const tl = gsap.timeline({ paused: true });
+          tl.from(pins[0]!, { scale: 0, duration: 0.45, ease: "back.out(2.2)" });
+          draws.forEach((path, i) => {
+            const length = path.getTotalLength();
+            tl.fromTo(
+              path,
+              { strokeDasharray: length, strokeDashoffset: length },
+              { strokeDashoffset: 0, duration: 0.55 + length / 1400, ease: "power1.inOut" },
+            ).from(pins[i + 1]!, { scale: 0, duration: 0.45, ease: "back.out(2.2)" }, "-=0.12");
+          });
+          introRef.current = tl;
+          // Watches the map itself, so images loading above it can't throw
+          // the timing off.
+          const seen = new IntersectionObserver(
+            ([entry]) => {
+              if (!entry?.isIntersecting) return;
+              seen.disconnect();
+              void tl.play();
+            },
+            { threshold: 0.4 },
+          );
+          seen.observe(stage);
+          stopIntroWatch = () => seen.disconnect();
+        }
+
+        if (fine) {
+          const rx = gsap.quickTo(stage, "rotationX", { duration: 0.6, ease: "power3" });
+          const ry = gsap.quickTo(stage, "rotationY", { duration: 0.6, ease: "power3" });
+          gsap.set(stage, { transformPerspective: 1100 });
+          tiltRef.current = (e) => {
+            const r = stage.getBoundingClientRect();
+            ry(((e.clientX - r.left) / r.width - 0.5) * 7);
+            rx(-((e.clientY - r.top) / r.height - 0.5) * 7);
+          };
+          untiltRef.current = () => {
+            rx(0);
+            ry(0);
+          };
+        }
+
+        return () => {
+          stopIntroWatch?.();
+          introRef.current = null;
+          tiltRef.current = null;
+          untiltRef.current = null;
+        };
+      });
+      revert = () => mm.revert();
+    });
+    return () => {
+      alive = false;
+      revert?.();
+      tourRef.current?.kill();
+    };
+  }, []);
+
+  const playTour = async () => {
+    const reduce = prefersReducedMotion();
+    // Bring the whole map into view for the journey (below the sticky header).
+    const box = stageRef.current?.getBoundingClientRect();
+    if (box && (box.top < 64 || box.bottom > window.innerHeight)) {
+      stageRef.current!.scrollIntoView({
+        // Phones show the card under the map, so start at the map's top there.
+        block: window.innerWidth < 640 ? "start" : "center",
+        behavior: reduce ? "auto" : "smooth",
+      });
+    }
+    const { gsap } = reduce ? await loadGsap() : await loadMotionPath();
+    introRef.current?.progress(1);
+    tourRef.current?.kill();
+    const marker = markerRef.current;
+    const tl = gsap.timeline({
+      onComplete: () => {
+        tourRef.current = null;
+        setTouring(false);
+      },
+    });
+    tl.call(() => setActive(0)).to({}, { duration: DWELL });
+    legRefs.current.forEach((leg, i) => {
+      tl.call(() => setActive(null));
+      if (reduce || !leg || !marker) {
+        tl.to({}, { duration: 0.4 });
+      } else {
+        tl.set(marker, { autoAlpha: 1 }).to(marker, {
+          duration: 1.1 + leg.getTotalLength() / 700,
+          ease: "power1.inOut",
+          motionPath: { path: leg, align: leg, alignOrigin: [0.5, 0.5] },
+        });
+      }
+      tl.call(() => setActive(i + 1));
+      if (marker && !reduce) tl.set(marker, { autoAlpha: 0 });
+      tl.to({}, { duration: DWELL });
+    });
+    tourRef.current = tl;
+    setTouring(true);
+  };
+
+  const focusPin = (i: number) => pinRefs.current[(i + schools.length) % schools.length]?.focus();
 
   return (
     <div
       className="grid items-center gap-10 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)] lg:gap-16"
       onKeyDown={(e) => {
-        if (e.key === "Escape") close();
+        if (e.key === "Escape") choose(null);
       }}
     >
       <div className="mx-auto w-full max-w-[560px]">
         <div
-          className="relative"
+          ref={stageRef}
+          className="relative scroll-mt-20"
+          onPointerMove={(e) => {
+            if (e.pointerType === "mouse") tiltRef.current?.(e.nativeEvent);
+          }}
           onPointerLeave={(e) => {
-            if (e.pointerType === "mouse") close();
+            if (e.pointerType !== "mouse") return;
+            untiltRef.current?.();
+            preview(null);
           }}
         >
           <svg
             viewBox={`0 0 ${KENYA_VIEWBOX.width} ${KENYA_VIEWBOX.height}`}
-            className="h-auto w-full"
+            className="h-auto w-full overflow-visible"
             aria-hidden="true"
           >
+            <defs>
+              {/* Draws the dotted route: GSAP reveals these solid strokes. */}
+              <mask
+                id={maskId}
+                maskUnits="userSpaceOnUse"
+                x={0}
+                y={0}
+                width={KENYA_VIEWBOX.width}
+                height={KENYA_VIEWBOX.height}
+              >
+                <g fill="none" stroke="white" strokeWidth={16} strokeLinecap="round">
+                  {legs.map((d, i) => (
+                    <path
+                      key={d}
+                      d={d}
+                      ref={(el) => {
+                        drawRefs.current[i] = el;
+                      }}
+                    />
+                  ))}
+                </g>
+              </mask>
+            </defs>
             {KENYA_COUNTIES.map((county) => (
               <path
                 key={county.name}
                 d={county.d}
-                className="fill-paper-earth stroke-background"
+                className={cn(
+                  "stroke-background transition-[fill] duration-300",
+                  !schoolCounties.has(county.name)
+                    ? "fill-paper-earth"
+                    : current && countyOf(current) === county.name
+                      ? "fill-sustain/40"
+                      : "fill-sustain/15",
+                )}
                 strokeWidth={2}
                 strokeLinejoin="round"
               />
@@ -172,6 +412,31 @@ export function SchoolMap({ schools }: { schools: GacSchool[] }) {
                 </g>
               ) : null,
             )}
+            <g
+              mask={`url(#${maskId})`}
+              fill="none"
+              className="stroke-sustain"
+              strokeWidth={5}
+              strokeLinecap="round"
+              strokeDasharray="0.1 14"
+            >
+              {legs.map((d, i) => (
+                <path
+                  key={d}
+                  d={d}
+                  ref={(el) => {
+                    legRefs.current[i] = el;
+                  }}
+                />
+              ))}
+            </g>
+            <circle
+              ref={markerRef}
+              r={13}
+              style={HIDDEN}
+              className="fill-primary stroke-background"
+              strokeWidth={4}
+            />
           </svg>
 
           {schools.map((school, i) => {
@@ -180,14 +445,26 @@ export function SchoolMap({ schools }: { schools: GacSchool[] }) {
             return (
               <button
                 key={school.id}
+                ref={(el) => {
+                  pinRefs.current[i] = el;
+                }}
                 type="button"
                 aria-label={`${i + 1}: ${school.name}, ${school.county}`}
                 aria-expanded={isActive}
                 onPointerEnter={(e) => {
-                  if (e.pointerType === "mouse") setActive(i);
+                  if (e.pointerType === "mouse") preview(i);
                 }}
-                onFocus={() => setActive(i)}
-                onClick={() => setActive(i)}
+                onFocus={() => {
+                  if (!tourRef.current) setActive(i);
+                }}
+                onClick={() => choose(i)}
+                onKeyDown={(e) => {
+                  const step = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
+                  if (!step) return;
+                  e.preventDefault();
+                  if (tourRef.current) stopTour();
+                  focusPin(i + step);
+                }}
                 style={{ left: `${left}%`, top: `${top}%` }}
                 className={cn(
                   "group/pin absolute z-10 flex h-11 w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full",
@@ -201,6 +478,12 @@ export function SchoolMap({ schools }: { schools: GacSchool[] }) {
                     isActive && "hidden",
                   )}
                 />
+                {isActive ? (
+                  <span
+                    aria-hidden="true"
+                    className="pin-ripple absolute inset-1 rounded-full bg-foreground/25"
+                  />
+                ) : null}
                 <span
                   aria-hidden="true"
                   className={cn(
@@ -222,12 +505,14 @@ export function SchoolMap({ schools }: { schools: GacSchool[] }) {
                 const toLeft = left > 45;
                 const place = top < 30 ? "below" : top > 62 ? "above" : "level";
                 const offset = { below: "- 1.5rem", above: "+ 1.5rem", level: "+ 0px" }[place];
+                const vertical = { below: "top", above: "bottom", level: "center" }[place];
                 return (
                   <SchoolCard
                     key={current.id}
                     school={current}
                     index={active}
-                    onClose={close}
+                    onClose={() => choose(null)}
+                    origin={`${toLeft ? "right" : "left"} ${vertical}`}
                     style={{
                       left: `calc(${left}% ${toLeft ? "-" : "+"} 1.5rem)`,
                       top: `calc(${top}% ${offset})`,
@@ -244,7 +529,14 @@ export function SchoolMap({ schools }: { schools: GacSchool[] }) {
             : null}
         </div>
         {current && active !== null ? (
-          <SchoolCard school={current} index={active} onClose={close} className="mt-4 sm:hidden" />
+          <SchoolCard
+            key={current.id}
+            school={current}
+            index={active}
+            onClose={() => choose(null)}
+            origin="top center"
+            className="mt-4 sm:hidden"
+          />
         ) : null}
       </div>
 
@@ -254,11 +546,14 @@ export function SchoolMap({ schools }: { schools: GacSchool[] }) {
             <li key={school.id} className="border-b border-border">
               <a
                 href={`#${school.id}`}
+                onClick={() => {
+                  if (tourRef.current) stopTour();
+                }}
                 onPointerEnter={(e) => {
-                  if (e.pointerType === "mouse") setActive(i);
+                  if (e.pointerType === "mouse") preview(i);
                 }}
                 onPointerLeave={(e) => {
-                  if (e.pointerType === "mouse") close();
+                  if (e.pointerType === "mouse") preview(null);
                 }}
                 className={cn(
                   "group flex items-center gap-4 py-4 transition-colors",
@@ -289,8 +584,25 @@ export function SchoolMap({ schools }: { schools: GacSchool[] }) {
             </li>
           ))}
         </ol>
-        <p className="mt-4 text-sm text-muted-foreground">
-          Hover over or tap a pin to see what we did at each school.
+        <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3">
+          <button
+            type="button"
+            onClick={() => (touring ? stopTour() : void playTour())}
+            className="inline-flex items-center gap-2 rounded-full border border-foreground/20 px-4 py-2 text-sm font-semibold text-foreground transition-colors hover:border-foreground hover:bg-foreground hover:text-background"
+          >
+            {touring ? (
+              <Stop className="h-4 w-4" aria-hidden="true" />
+            ) : (
+              <Play className="h-4 w-4 text-primary" aria-hidden="true" />
+            )}
+            {touring ? "Stop the journey" : "Play the journey"}
+          </button>
+          <p className="text-sm text-muted-foreground">
+            Or hover over or tap a pin to see what we did at each school.
+          </p>
+        </div>
+        <p className="sr-only" aria-live="polite">
+          {touring && current ? `${active! + 1} of ${schools.length}: ${current.name}` : ""}
         </p>
       </div>
     </div>

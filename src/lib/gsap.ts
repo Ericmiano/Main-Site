@@ -1,4 +1,6 @@
 import type { gsap as GsapCore } from "gsap";
+// MotionPathPlugin's types extend TweenVars with `motionPath`.
+import type {} from "gsap/MotionPathPlugin";
 import type { Flip as FlipType } from "gsap/Flip";
 import type { ScrollTrigger as ScrollTriggerType } from "gsap/ScrollTrigger";
 
@@ -46,6 +48,18 @@ export function loadFlip(): Promise<typeof FlipType> {
 
 /** Flip if it has already loaded (see gsapIfLoaded). */
 export const flipIfLoaded = () => flipLoaded;
+
+let motionPath: Promise<GsapKit> | null = null;
+
+/** MotionPathPlugin, for the one thing that travels along a path (the school
+ * map's journey); loaded when that is first played. */
+export function loadMotionPath(): Promise<GsapKit> {
+  motionPath ??= Promise.all([loadGsap(), import("gsap/MotionPathPlugin")]).then(([kit, mod]) => {
+    kit.gsap.registerPlugin(mod.MotionPathPlugin);
+    return kit;
+  });
+  return motionPath;
+}
 
 /** Pages with Flip effects call this on mount: Flip arrives with GSAP itself,
  * on the reader's first interaction, so it's ready before the first click. */
