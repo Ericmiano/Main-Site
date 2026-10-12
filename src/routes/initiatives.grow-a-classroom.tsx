@@ -60,25 +60,31 @@ export const Route = createFileRoute("/initiatives/grow-a-classroom")({
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
-function DonateCard({ dark = false }: { dark?: boolean }) {
+function DonateCard({ variant = "light" }: { variant?: "light" | "red" }) {
+  if (variant === "red") {
+    // The hero's call to action, styled like the homepage's red event card:
+    // a brand-red label pasted onto the photograph at a slight angle.
+    return (
+      <div className="-rotate-2 bg-primary p-7 text-primary-foreground shadow-[0_18px_40px_-18px_rgb(0_0_0/0.6)] sm:p-8">
+        <p className="meta-label text-primary-foreground/90">
+          Donate &middot; {gacDonation.method}
+        </p>
+        <p className="mt-2 font-display text-2xl font-semibold leading-tight sm:text-3xl">
+          Help grow the next classroom
+        </p>
+        <div className="mt-5 flex flex-wrap gap-x-10 gap-y-4">
+          <CopyValue label="Paybill" value={gacDonation.paybill} onRed />
+          <CopyValue label="Account" value={gacDonation.account} onRed />
+        </div>
+      </div>
+    );
+  }
   return (
-    <div
-      className={cn(
-        "p-6 sm:p-7",
-        dark ? "bg-ink-deep/70 text-background backdrop-blur-md" : "bg-background text-foreground",
-      )}
-    >
-      <p
-        className={cn(
-          "meta-label",
-          dark ? "text-[oklch(0.75_0.13_38.5)]" : "text-muted-foreground",
-        )}
-      >
-        Donate &middot; {gacDonation.method}
-      </p>
+    <div className="bg-background p-6 text-foreground sm:p-7">
+      <p className="meta-label text-muted-foreground">Donate &middot; {gacDonation.method}</p>
       <div className="mt-4 flex flex-wrap gap-x-10 gap-y-4">
-        <CopyValue label="Paybill" value={gacDonation.paybill} dark={dark} />
-        <CopyValue label="Account" value={gacDonation.account} dark={dark} />
+        <CopyValue label="Paybill" value={gacDonation.paybill} />
+        <CopyValue label="Account" value={gacDonation.account} />
       </div>
     </div>
   );
@@ -276,14 +282,14 @@ function GrowAClassroom() {
                 href={gacWebsite}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hero-item hero-delay-3 group btn-primary mt-8"
+                className="hero-item hero-delay-3 group btn-primary mt-8 bg-background! text-primary! hover:bg-background/90!"
               >
-                Visit schools.aak.or.ke
+                Visit The Grow A Classroom Website
                 <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
               </a>
             </div>
             <div className="hero-item hero-delay-3 lg:justify-self-end">
-              <DonateCard dark />
+              <DonateCard variant="red" />
             </div>
           </div>
         </section>

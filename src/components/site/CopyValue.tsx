@@ -8,10 +8,13 @@ export function CopyValue({
   label,
   value,
   dark,
+  onRed,
 }: {
   label: string;
   value: string;
   dark?: boolean;
+  /** On the brand-red surface: near-white text that keeps AA contrast. */
+  onRed?: boolean;
 }) {
   const [copied, setCopied] = useState(false);
   const copy = async () => {
@@ -25,7 +28,16 @@ export function CopyValue({
   };
   return (
     <div>
-      <p className={cn("meta-label", dark ? "text-background/60" : "text-muted-foreground")}>
+      <p
+        className={cn(
+          "meta-label",
+          onRed
+            ? "text-primary-foreground/90"
+            : dark
+              ? "text-background/60"
+              : "text-muted-foreground",
+        )}
+      >
         {label}
       </p>
       <button type="button" onClick={copy} className="group mt-1 inline-flex items-center gap-2.5">
@@ -35,7 +47,11 @@ export function CopyValue({
         <span
           className={cn(
             "inline-flex items-center gap-1 text-xs font-semibold transition-opacity",
-            dark ? "text-background/70" : "text-muted-foreground",
+            onRed
+              ? "text-primary-foreground/90"
+              : dark
+                ? "text-background/70"
+                : "text-muted-foreground",
           )}
         >
           {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
