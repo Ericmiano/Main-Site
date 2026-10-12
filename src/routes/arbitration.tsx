@@ -153,10 +153,6 @@ function ArbitrationPage() {
                 Association makes the nomination, drawing on the built environment professions AAK
                 represents.
               </p>
-              <a href={NOMINATION_EMAIL} className="group btn-primary mt-8">
-                Request a nomination
-                <ArrowUpRight className="h-4 w-4" />
-              </a>
             </Reveal>
           </div>
         </section>
