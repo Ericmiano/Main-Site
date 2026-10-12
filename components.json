@@ -18,5 +18,8 @@
     "lib": "@/lib",
     "hooks": "@/hooks"
   },
-  "registries": {}
+  "registries": {
+    "@componentry": "https://componentry.fun/r/{name}.json",
+    "@spaceui": "https://www.spaceui.one/r/{name}.json"
+  }
 }

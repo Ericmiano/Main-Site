@@ -17,6 +17,7 @@ import { YouTubeEmbed } from "@/components/site/YouTubeEmbed";
 import { CopyValue } from "@/components/site/CopyValue";
 import { Lightbox } from "@/components/site/Lightbox";
 import { SchoolMap } from "@/components/site/SchoolMap";
+import { AuroraFlow } from "@/components/ui/aurora-flow";
 import { thumbnailFor } from "@/lib/thumbnail";
 import {
   gacDonation,
@@ -39,6 +40,8 @@ const TITLE = "Grow A Classroom | Architectural Association of Kenya";
 const DESCRIPTION =
   "AAK's Grow A Classroom programme: master plans, landscaping and on-site timber for Kenya's public schools, and the schools it has worked with so far.";
 const HERO = gacSchools[0]!.highlights[0]!;
+/** Hero colour flow: deep forest to leaf green, with a warm soil glow. */
+const HERO_AURORA = ["#06140c", "#14432a", "#2f7d46", "#c99a3e", "#f1e6c4"];
 const counties = new Set(gacSchools.map((s) => s.county)).size;
 
 export const Route = createFileRoute("/initiatives/grow-a-classroom")({
@@ -249,6 +252,18 @@ function GrowAClassroom() {
             alt={HERO.alt}
             fetchPriority="high"
             className="photo-grade absolute inset-0 -z-10 h-full w-full object-cover hero-zoom"
+          />
+          {/* A slow WebGL colour flow lit into the canopy (screen blend, fading out
+              before the text); it pauses off screen and holds still for reduced motion. */}
+          <AuroraFlow
+            aria-hidden="true"
+            colors={HERO_AURORA}
+            layers={5}
+            grain={false}
+            vignette={false}
+            lightingIntensity={0.6}
+            pointerStrength={0.5}
+            className="absolute! inset-0 -z-10 min-h-0! opacity-60 mix-blend-screen mask-b-from-5% mask-b-to-40% sm:opacity-80 sm:mask-b-from-30% sm:mask-b-to-85%"
           />
           <div
             aria-hidden="true"
