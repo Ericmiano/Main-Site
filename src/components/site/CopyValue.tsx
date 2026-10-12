@@ -28,12 +28,7 @@ export function CopyValue({
       <p className={cn("meta-label", dark ? "text-background/60" : "text-muted-foreground")}>
         {label}
       </p>
-      <button
-        type="button"
-        onClick={copy}
-        aria-label={`Copy ${label.toLowerCase()} ${value}`}
-        className="group mt-1 inline-flex items-center gap-2.5"
-      >
+      <button type="button" onClick={copy} className="group mt-1 inline-flex items-center gap-2.5">
         <span className="font-display text-2xl font-semibold tabular-nums sm:text-3xl">
           {value}
         </span>
@@ -45,6 +40,8 @@ export function CopyValue({
         >
           {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
           <span aria-live="polite">{copied ? "Copied" : "Copy"}</span>
+          {/* The spoken name keeps the visible words first: "988 567 Copy paybill". */}
+          <span className="sr-only">{label.toLowerCase()}</span>
         </span>
       </button>
     </div>

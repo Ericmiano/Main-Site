@@ -181,7 +181,7 @@ export function SchoolMap({ schools }: { schools: GacSchool[] }) {
               <button
                 key={school.id}
                 type="button"
-                aria-label={`${school.name}, ${school.county}`}
+                aria-label={`${i + 1}: ${school.name}, ${school.county}`}
                 aria-expanded={isActive}
                 onPointerEnter={(e) => {
                   if (e.pointerType === "mouse") setActive(i);

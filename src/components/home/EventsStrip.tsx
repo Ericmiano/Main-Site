@@ -28,7 +28,8 @@ export function EventsStrip() {
     for (const item of el.querySelectorAll("li")) {
       const day = item.querySelector("[data-day]");
       const dot = item.querySelector<HTMLElement>("[data-dot]");
-      gsap.set(day, { opacity: 0.35 });
+      // Dimmed, not faded out: still 3:1 against the dark ground (large text).
+      gsap.set(day, { opacity: 0.45 });
       gsap
         .timeline({
           scrollTrigger: {
