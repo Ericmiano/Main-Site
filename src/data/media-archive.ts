@@ -500,11 +500,64 @@ const awards2026: MediaAlbum = {
   links: [{ label: "The Awards of Excellence and the 2026 winners", href: "/awards" }],
 };
 
+const golf2026Photos = photosIn("aak-golf-tournament-2026", [
+  "Registration for the 27th AAK Golf Tournament",
+  "A four-ball ready at the first tee",
+  "A tee shot beside the clubhouse",
+  "Golfers on a fairway beneath a spreading tree",
+  "The clubhouse on tournament day",
+  "Three golfers pose before their round",
+  "Putting out on a green",
+  "A four-ball before heading out",
+  "A four-ball beside the clubhouse terrace",
+  "Golfers out on the course",
+  "A putt on the green",
+  "A golfer drives off the first tee",
+  "A tee shot beside the fountain pond",
+  "A golfer tees off",
+  "A four-ball pauses for a photo",
+  "Flights making their way down a fairway",
+  "A four-ball at the first tee",
+  "A swing in front of the fountain",
+  "A four-ball with sponsors' banners behind",
+  "A ladies' team on the course",
+  "The course and its fountain pond",
+  "A sponsor's paint stand",
+  "Mabati Rolling Mills' stand",
+  "Paving samples on display",
+  "Coaching on the driving range",
+  "A newcomer tries her swing on the driving range",
+  "A speaker opens the prize-giving",
+  "Guests at the prize-giving",
+  "A prize presented at the prize-giving",
+  "A winner receives her prize",
+  "A winner congratulated at the prize-giving",
+  "Players and organisers in a group photo",
+]);
+
+const golf2026: MediaAlbum = {
+  slug: "aak-golf-tournament-2026",
+  title: "27th AAK Golf Tournament",
+  category: "Golf",
+  date: "10 April 2026",
+  isoDate: "2026-04-10",
+  summary:
+    "The Association's 27th annual golf tournament, hosted by the Architects Chapter: a day of four-balls on the course, sponsors' stands and coaching on the driving range for newcomers, closing with the evening prize-giving.",
+  cover: golf2026Photos[2]!,
+  photos: golf2026Photos,
+  video: {
+    src: fileUrl("/documents/AAK-Golf-Tournament-2026.mp4"),
+    title: "27th AAK Golf Tournament: highlights",
+  },
+  links: [{ label: "The Architects Chapter", href: "/chapters/architects" }],
+};
+
 /** Newest first; undated albums after dated ones, in source order. */
 export const mediaAlbums: MediaAlbum[] = [
   convention2026,
   biennale2026,
   awards2026,
+  golf2026,
   waldorfVisit,
   architectsToolkit,
   financeAcceleratorKickoff,
