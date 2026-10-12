@@ -86,7 +86,7 @@ const pages: SearchEntry[] = [
   {
     title: "Arbitration",
     description:
-      "Why construction disputes go to arbitration, how AAK's President nominates arbitrators, what an award means under the Arbitration Act, and how to request a nomination.",
+      "Arbitration under Kenya's Arbitration Act (Cap. 49), and AAK's role under clause 17 of its Constitution: nominating arbitration panels and disputes involving the Association.",
     category: "Page",
     href: "/arbitration",
   },

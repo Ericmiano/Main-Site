@@ -1,7 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { chapters } from "@/data/site";
 import logoWhite from "@/assets/aak-logo-white.webp";
-import { SocialFeed } from "@/components/site/SocialFeed";
 import { portalLinks, socialLinks } from "@/data/site";
 
 const associationLinks = [
@@ -164,7 +163,24 @@ export function Footer() {
                 </li>
               ))}
             </ul>
-            <SocialFeed className="mt-6" />
+            {/* To the homepage's "Latest from AAK" section (on the homepage
+                itself, straight there, even if the address already ends #latest). */}
+            <Link
+              to="/"
+              hash="latest"
+              onClick={() =>
+                // After the router has handled the click, which would otherwise win.
+                window.setTimeout(() =>
+                  document
+                    .getElementById("latest")
+                    ?.scrollIntoView({ block: "start", behavior: "instant" }),
+                )
+              }
+              className="mt-6 inline-flex items-center gap-2 rounded-full border border-background/25 px-4 py-2 text-sm font-semibold text-background transition-colors hover:border-background/60 hover:bg-background/10"
+            >
+              <span className="h-1.5 w-1.5 rounded-full bg-primary" aria-hidden="true" />
+              Latest posts
+            </Link>
           </div>
         </div>
 

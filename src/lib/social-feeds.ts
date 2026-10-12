@@ -1,17 +1,9 @@
 /**
- * Live social feeds. Only Facebook (its page plugin) and YouTube (the
- * channel's uploads playlist) offer always-current embeds without an API
- * account, plus Instagram's profile embed (below). X's timeline widget no
- * longer loads for logged-out visitors, so X, LinkedIn and TikTok are linked.
+ * Live social feeds for the homepage's "Latest from AAK" section: YouTube
+ * (the channel's uploads playlist) and Instagram's profile embed (below).
+ * X's timeline widget no longer loads for logged-out visitors, so X posts are
+ * chosen by hand (X_POSTS); Facebook, LinkedIn and TikTok are linked.
  */
-
-/** Facebook page plugin: the page and its latest posts. It lays itself out at
- * the width in its address (180-500px), so pass the space actually available. */
-export const facebookFeedUrl = (width: number, height: number) =>
-  "https://www.facebook.com/plugins/page.php?href=" +
-  encodeURIComponent("https://www.facebook.com/ArchKE/") +
-  `&tabs=timeline&width=${Math.max(180, Math.min(500, Math.round(width)))}&height=${height}` +
-  "&small_header=true&adapt_container_width=true&hide_cover=false&show_facepile=false";
 
 /** AAK's YouTube uploads, newest first: channel UC7T3qQvpUIQ7E2CUhd2XYOw, whose
  * uploads playlist is "UU" + the same id. Privacy-enhanced mode. */

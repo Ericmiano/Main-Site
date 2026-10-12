@@ -12,7 +12,7 @@ import { jsonLd } from "@/lib/json-ld";
 const SITE_URL = "https://aak.or.ke";
 const TITLE = "Arbitration | Architectural Association of Kenya";
 const DESCRIPTION =
-  "Arbitration of construction disputes in Kenya: why it is used, how AAK's President nominates arbitrators under the AAK Constitution, what an award means under the Arbitration Act, and how to request a nomination.";
+  "How arbitration works under Kenya's Arbitration Act (Cap. 49), and AAK's role under clause 17 of its Constitution: nominating arbitration panels where contracts empower its President, and arbitration of disputes involving the Association.";
 
 const NOMINATION_EMAIL = "mailto:aak@aak.or.ke?subject=Request%20for%20arbitrator%20nomination";
 
@@ -64,58 +64,46 @@ function structuredData() {
   };
 }
 
-/* Sources: the Arbitration Act (Cap. 49), ss. 12, 32A, 35 and 36; the
-   Constitution of Kenya, Art. 159(2)(c); the AAK Constitution, s. 17. The
-   online arbitration system (a separate app) will plug in here when it
+/* Every statement below is taken from, and cites, one of three documents:
+   the Arbitration Act (Cap. 49), Revised Edition 2022 (Kenya Law); the
+   Constitution of Kenya, Article 159(2)(c); and the AAK Constitution and
+   By-Laws (2022 amendments), clause 17. Add nothing here that they don't say.
+   The online arbitration system (a separate app) will plug in here when it
    launches; the prototype steps and directory (arbitrationSteps,
    ArbitratorDirectory) are kept for it. */
 
-const REASONS = [
+const ACT_PROVISIONS = [
   {
-    title: "Decided by professionals",
-    body: "The parties can have their dispute decided by someone who knows building and construction, rather than by a court.",
+    title: "Appointing the arbitrator",
+    body: "The parties are free to agree on a procedure for appointing the arbitrator or arbitrators.",
+    cite: "s. 12(2)",
   },
   {
-    title: "Private",
-    body: "Proceedings take place between the parties and the arbitrator, not in open court.",
+    title: "Procedure",
+    body: "Subject to the Act, the parties are free to agree on the procedure the arbitral tribunal follows. Failing agreement, the tribunal may conduct the arbitration in the manner it considers appropriate.",
+    cite: "s. 20",
   },
   {
-    title: "Final and binding",
-    body: "Unless the parties agree otherwise, an award is final and binding on them (Arbitration Act, s. 32A).",
+    title: "Effect of the award",
+    body: "Except as otherwise agreed by the parties, an arbitral award is final and binding upon the parties to it.",
+    cite: "s. 32A",
   },
   {
-    title: "Enforceable",
-    body: "The High Court recognises a domestic award as binding and enforces it on application (s. 36).",
-  },
-];
-
-const STEPS = [
-  {
-    title: "Check your contract",
-    body: "The arbitration clause sets out how the arbitrator is appointed. Many building contracts, including the Joint Building Council's standard forms, name the President of AAK to nominate one when the parties cannot agree.",
+    title: "Setting aside",
+    body: "Recourse to the High Court against an award is only by an application to set it aside, on the grounds the Act lists, made within three months of receiving the award.",
+    cite: "s. 35",
   },
   {
-    title: "Request a nomination",
-    body: "Write to the Secretariat with a copy of the contract, the arbitration clause, the names of the parties and a short description of the dispute.",
-  },
-  {
-    title: "Nomination",
-    body: "The President of AAK, or in their absence the Vice-President, nominates the arbitrator or panel on the Association's behalf, in consultation with the Governing Council (AAK Constitution, s. 17.2).",
-  },
-  {
-    title: "Proceedings",
-    body: "The arbitrator agrees the procedure with the parties: how statements and documents are exchanged, whether there is a hearing, and the timetable to the award.",
-  },
-  {
-    title: "The award",
-    body: "The award is final and binding and can be enforced through the High Court. It can only be challenged by an application to the High Court to set it aside, on limited grounds, within three months of receiving it (s. 35).",
+    title: "Enforcement",
+    body: "A domestic arbitral award is recognised as binding and, upon application in writing to the High Court, is enforced.",
+    cite: "s. 36(1)",
   },
 ];
 
 const DOCUMENTS = [
   { title: "Arbitration Act (Cap. 49)", href: fileUrl("/documents/Arbitration-Act-1995.pdf") },
   {
-    title: "AAK Constitution and By-Laws (2022)",
+    title: "AAK Constitution and By-Laws (2022 amendments)",
     href: fileUrl("/documents/Constitution-2022-3.pdf"),
   },
 ];
@@ -142,36 +130,37 @@ function ArbitrationPage() {
                 Arbitration through AAK
               </h1>
               <p className="mt-5 text-base leading-relaxed text-muted-foreground">
-                Arbitration settles a dispute privately, before an independent arbitrator appointed
-                under the parties&rsquo; contract, instead of in court. It is the usual route for
-                disputes under building contracts in Kenya, and the Constitution of Kenya directs
-                that it be promoted alongside other forms of alternative dispute resolution (Article
-                159(2)(c)).
+                Under the Constitution of Kenya, courts and tribunals are guided by the principle
+                that alternative forms of dispute resolution, including arbitration, shall be
+                promoted (Article 159(2)(c)). Arbitration in Kenya is governed by the Arbitration
+                Act (Cap. 49).
               </p>
               <p className="mt-4 text-base leading-relaxed text-muted-foreground">
-                When a contract names AAK to nominate the arbitrator, the President of the
-                Association makes the nomination, drawing on the built environment professions AAK
-                represents.
+                Where contract documents or other legal documents empower the President of the
+                Association to nominate an arbitration panel, the President, or in their absence the
+                Vice-President, does so on behalf of the Association, in consultation with the
+                Governing Council (AAK Constitution, clause 17.2).
               </p>
             </Reveal>
           </div>
         </section>
 
-        <section aria-labelledby="why-title" className="py-16 lg:py-24">
+        <section aria-labelledby="act-title" className="py-16 lg:py-24">
           <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
             <SectionHeading
-              eyebrow="Why arbitration"
-              title={<span id="why-title">A binding decision, outside the courts</span>}
+              eyebrow="The Arbitration Act (Cap. 49)"
+              title={<span id="act-title">What the law provides</span>}
             />
-            <ul className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {REASONS.map((reason) => (
-                <li key={reason.title} className="rounded-2xl border border-border p-6">
+            <ul className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-5">
+              {ACT_PROVISIONS.map((item) => (
+                <li key={item.title} className="flex flex-col rounded-2xl border border-border p-6">
                   <h3 className="font-display text-lg font-semibold leading-snug text-foreground">
-                    {reason.title}
+                    {item.title}
                   </h3>
-                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                    {reason.body}
+                  <p className="mt-3 flex-1 text-sm leading-relaxed text-muted-foreground">
+                    {item.body}
                   </p>
+                  <p className="meta-label mt-4 text-primary">{item.cite}</p>
                 </li>
               ))}
             </ul>
@@ -179,48 +168,20 @@ function ArbitrationPage() {
         </section>
 
         <section
-          aria-labelledby="steps-title"
+          aria-labelledby="association-title"
           className="border-t border-border bg-secondary/40 py-16 lg:py-24"
         >
-          <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
-            <SectionHeading
-              eyebrow="How it works"
-              title={<span id="steps-title">How AAK nominates an arbitrator</span>}
-            />
-            <ol className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-5">
-              {STEPS.map((step, i) => (
-                <li
-                  key={step.title}
-                  className="flex flex-col rounded-2xl border border-border bg-background p-6"
-                >
-                  <span
-                    className="font-display text-3xl font-semibold tabular-nums text-primary"
-                    aria-hidden="true"
-                  >
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <h3 className="mt-4 font-display text-lg font-semibold leading-snug text-foreground">
-                    {step.title}
-                  </h3>
-                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{step.body}</p>
-                </li>
-              ))}
-            </ol>
-          </div>
-        </section>
-
-        <section aria-labelledby="association-title" className="py-16 lg:py-24">
           <div className="mx-auto grid max-w-[1400px] gap-12 px-6 lg:grid-cols-2 lg:gap-16 lg:px-12">
             <div>
               <SectionHeading
-                eyebrow="Disputes involving AAK"
+                eyebrow="AAK Constitution, clause 17.1"
                 title={<span id="association-title">When the Association is a party</span>}
               />
               <p className="mt-6 text-base leading-relaxed text-muted-foreground">
-                A dispute between the Association and one of its members, or any other person or
-                organisation, goes to a panel of three arbitrators appointed by the Chairman of the
-                Chartered Institute of Arbitrators (Kenya Branch): one an advocate, the other two
-                Corporate Members of AAK (AAK Constitution, s. 17.1).
+                A dispute between the Association and any of its members, or any other persons or
+                organisations, is referred to an arbitration panel of three persons appointed by the
+                Chairman of the Chartered Institute of Arbitrators (Kenya Branch): one an advocate,
+                the other two Corporate Members of the Association.
               </p>
             </div>
             <div>
@@ -247,11 +208,10 @@ function ArbitrationPage() {
         <section className="border-t border-border py-16 text-center lg:py-20">
           <div className="mx-auto max-w-xl px-6 lg:px-12">
             <h2 className="font-display text-2xl font-semibold tracking-tight text-foreground">
-              Need an arbitrator nominated?
+              Contact the Secretariat
             </h2>
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-              Write to the Secretariat with a copy of the contract and a short description of the
-              dispute.
+              For a nomination under clause 17.2, write to the Association&rsquo;s Secretariat.
             </p>
             <a href={NOMINATION_EMAIL} className="group btn-primary mt-7">
               Email aak@aak.or.ke
