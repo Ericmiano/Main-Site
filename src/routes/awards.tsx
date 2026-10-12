@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { IconArrowUpRight as ArrowUpRight, IconTrophy as Trophy } from "@tabler/icons-react";
 
 import { Header } from "@/components/site/Header";
@@ -150,6 +150,16 @@ function AwardsPage() {
             <SectionHeading
               eyebrow="Awards of Excellence 2026"
               title={<span id="winners-title">Winning projects</span>}
+              action={
+                <Link
+                  to="/media/$slug"
+                  params={{ slug: "awards-of-excellence-2026" }}
+                  className="group inline-flex items-center gap-2 text-sm font-semibold text-foreground hover:text-primary"
+                >
+                  Photos and film from the ceremony
+                  <ArrowUpRight className="h-4 w-4 text-primary" aria-hidden="true" />
+                </Link>
+              }
             />
             <ul className="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {winnersFirst.map((winner, i) => (

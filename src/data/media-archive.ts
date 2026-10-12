@@ -444,10 +444,67 @@ const biennale2026: MediaAlbum = {
   ],
 };
 
+// AAK-Basco DuraCoat Awards of Excellence 2026, 26 March 2026 (the photos'
+// capture date and the ceremony date on /awards): the afternoon session and
+// the awards evening, plus the event's highlights film (on R2).
+const awards2026Photos = photosIn("awards-of-excellence-2026", [
+  "AAK officials at the head table for the afternoon session",
+  "Delegates filling the hall for the afternoon session",
+  "A participant asks a question from the floor",
+  "The afternoon session in progress at the Argyle Grand Hotel",
+  "A delegate speaks during the open discussion",
+  "A speaker addresses the session",
+  "Project boards on display at the Awards of Excellence 2026",
+  "The Awards of Excellence 2026 backdrop, marking DuraCoat's 50 years",
+  "A speaker at the head table beneath the AAK banner",
+  "A participant receives a certificate",
+  "A participant receives a certificate",
+  "The ballroom set for the awards evening",
+  "Awards of Excellence trophies",
+  "Framed Awards of Excellence certificates",
+  "Guests in conversation before the awards",
+  "Guests gather for the evening",
+  "Guests at the Awards of Excellence 2026 photo wall",
+  "An award recipient with her certificate",
+  "A speaker on stage at the awards evening",
+  "A speaker at the podium",
+  "A guest speaker addresses the room",
+  "An award presented on stage",
+  "An award presented on stage",
+  "An award presented on stage",
+  "Guests at their tables during the awards",
+  "Guests at their tables during the awards",
+  "A guest at the awards evening",
+  "Award recipients and guests in a group photo",
+  "The master of ceremonies on stage",
+  "Award recipients with their trophies and certificates",
+  "Winners with their trophies at the Awards of Excellence 2026",
+  "An award recipient with his trophy and certificate",
+]);
+
+const awards2026: MediaAlbum = {
+  slug: "awards-of-excellence-2026",
+  title: "Awards of Excellence 2026",
+  category: "Awards",
+  date: "26 March 2026",
+  isoDate: "2026-03-26",
+  location: "Argyle Grand Hotel, Nairobi",
+  summary:
+    "The AAK-Basco DuraCoat Awards of Excellence in Architecture 2026, in DuraCoat's 50th year: an afternoon session with talks and certificates, then the awards evening and its winners.",
+  cover: awards2026Photos[27]!,
+  photos: awards2026Photos,
+  video: {
+    src: fileUrl("/documents/Awards-of-Excellence-2026-Highlights.mp4"),
+    title: "Awards of Excellence 2026: extended highlights",
+  },
+  links: [{ label: "The Awards of Excellence and the 2026 winners", href: "/awards" }],
+};
+
 /** Newest first; undated albums after dated ones, in source order. */
 export const mediaAlbums: MediaAlbum[] = [
   convention2026,
   biennale2026,
+  awards2026,
   waldorfVisit,
   architectsToolkit,
   financeAcceleratorKickoff,
