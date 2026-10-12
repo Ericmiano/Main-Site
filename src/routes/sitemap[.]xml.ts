@@ -70,8 +70,7 @@ function buildUrls(): SitemapUrl[] {
       changefreq: "yearly",
       priority: "0.5",
     })),
-    // Arbitration: on hold while the page is being finished. Re-add once ready.
-    // { loc: `${SITE_URL}/arbitration`, changefreq: "monthly", priority: "0.8" },
+    { loc: `${SITE_URL}/arbitration`, changefreq: "monthly", priority: "0.5" },
     ...chapters.map((chapter): SitemapUrl => ({
       loc: `${SITE_URL}/chapters/${chapter.slug}`,
       changefreq: "monthly",

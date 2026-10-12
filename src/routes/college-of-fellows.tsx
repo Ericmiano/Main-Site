@@ -14,6 +14,7 @@ import { YouTubeEmbed } from "@/components/site/YouTubeEmbed";
 import { ArchitecturalDrawing } from "@/components/site/ArchitecturalDrawing";
 import { collegeOfFellows } from "@/data/site";
 import {
+  fellowsAdmission,
   fellowsIntro,
   fellowsRoles,
   MEET_THE_FELLOWS_PLAYLIST,
@@ -128,7 +129,7 @@ function CollegeOfFellowsPage() {
               eyebrow="What Fellows do"
               title={<span id="roles-title">Roles of the College</span>}
             />
-            <ol className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <ol className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-5">
               {fellowsRoles.map((role, i) => (
                 <li key={role.title}>
                   <Reveal delay={i * 70} className="h-full">
@@ -228,8 +229,7 @@ function CollegeOfFellowsPage() {
               </ul>
             </Reveal>
             <p className="mt-10 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-              Fellowship isn&rsquo;t applied for: Corporate Members are nominated by the Governing
-              Council and invited by the College.{" "}
+              {fellowsAdmission}{" "}
               <Link to="/membership" className="link-underline font-medium text-foreground">
                 See all membership categories
               </Link>

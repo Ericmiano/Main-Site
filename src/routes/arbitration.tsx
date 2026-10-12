@@ -4,17 +4,13 @@ import { IconArrowUpRight as ArrowUpRight, IconGavel as Gavel } from "@tabler/ic
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { Reveal } from "@/components/site/Reveal";
-import { SectionHeading } from "@/components/site/SectionHeading";
 import { PageBreadcrumb } from "@/components/site/PageBreadcrumb";
-import { arbitrationSteps, portalLinks } from "@/data/site";
-import { arbitrators } from "@/data/arbitrators";
-import { ArbitratorDirectory } from "@/components/site/ArbitratorDirectory";
 import { jsonLd } from "@/lib/json-ld";
 
 const SITE_URL = "https://aak.or.ke";
 const TITLE = "Arbitration | Architectural Association of Kenya";
 const DESCRIPTION =
-  "Construction-dispute arbitration in Kenya: the Joint Building Council contract framework, the Arbitration Act 1995, and how to reach AAK's secretariat.";
+  "How AAK nominates arbitrators for construction disputes under the AAK Constitution, and how to request a nomination while AAK's online arbitration service is being set up.";
 
 /** Set to the published Microsoft Forms link; until then the button emails the secretariat. */
 const ARBITRATION_FORM_URL: string | null = null;
@@ -63,25 +59,16 @@ function structuredData() {
         areaServed: "KE",
         serviceType: "Construction dispute arbitration",
       },
-      {
-        "@type": "ItemList",
-        name: "AAK arbitrator panel",
-        itemListElement: arbitrators.map((arbitrator, i) => ({
-          "@type": "ListItem",
-          position: i + 1,
-          item: {
-            "@type": "Person",
-            name: arbitrator.name,
-            jobTitle: arbitrator.position,
-            worksFor: { "@type": "Organization", name: arbitrator.organization },
-            memberOf: { "@id": `${SITE_URL}/#organization` },
-          },
-        })),
-      },
     ],
   };
 }
 
+/**
+ * A small holding page while AAK's arbitration system is built (a separate
+ * app, planned for its own subdomain). The fuller page's process steps and
+ * arbitrator directory (arbitrationSteps, ArbitratorDirectory) are kept for
+ * when that launches.
+ */
 function ArbitrationPage() {
   return (
     <>
@@ -99,105 +86,46 @@ function ArbitrationPage() {
               <div className="meta-label flex items-center gap-3 border-t border-border pt-5 text-muted-foreground">
                 <Gavel className="h-4 w-4 text-primary" aria-hidden="true" />
                 <span>Dispute resolution</span>
+                <span className="rounded-full bg-primary/10 px-2.5 py-0.5 text-primary">
+                  Coming soon
+                </span>
               </div>
               <h1 className="mt-5 font-display text-4xl font-semibold leading-[1.02] tracking-tight text-balance text-foreground sm:text-5xl lg:text-6xl">
                 Arbitration through AAK
               </h1>
               <p className="mt-5 text-base leading-relaxed text-muted-foreground">
-                AAK co-founded the Joint Building Council (JBC) with the Kenya Association of
-                Building and Civil Engineering Contractors, which publishes the Standard Agreement
-                and Conditions of Contract for Building Works used across the industry: the contract
-                form under which many building disputes are referred to arbitration. Awards made
-                under the Arbitration Act, 1995 are final and binding.
+                Many building contracts, including the Joint Building Council&rsquo;s standard
+                forms, name the President of the Architectural Association of Kenya to nominate an
+                arbitrator or arbitration panel when a dispute arises. Under the AAK Constitution,
+                the President, or in their absence the Vice-President, makes that nomination on the
+                Association&rsquo;s behalf, in consultation with the Governing Council.
               </p>
               <p className="mt-4 text-base leading-relaxed text-muted-foreground">
-                Parties working under an independently negotiated contract, not just a JBC, FIDIC or
-                NCA standard form, can apply too. Any written arbitration agreement between the
-                parties is enough to start the process.
+                We are setting up an online arbitration service to handle requests and manage cases
+                from start to finish. Details will be published here when it opens.
               </p>
             </Reveal>
           </div>
         </section>
 
-        <section aria-labelledby="arbitration-steps-title" className="py-16 lg:py-24">
-          <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
-            <SectionHeading
-              eyebrow="How it works"
-              title={<span id="arbitration-steps-title">The application, in five steps</span>}
-              description="From checking the contract clause to receiving a binding award: what happens, and roughly how long each stage takes."
-            />
-
-            <ol className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-5">
-              {arbitrationSteps.map((step, i) => (
-                <li key={step.step}>
-                  <Reveal delay={i * 70} className="h-full">
-                    <div className="flex h-full flex-col rounded-2xl border border-border p-6">
-                      <span className="font-display text-3xl font-semibold tabular-nums text-primary">
-                        {step.step}
-                      </span>
-                      <h3 className="mt-4 font-display text-lg font-semibold leading-snug text-foreground">
-                        {step.title}
-                      </h3>
-                      <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                        {step.body}
-                      </p>
-                    </div>
-                  </Reveal>
-                </li>
-              ))}
-            </ol>
-
-            <Reveal delay={300} className="mt-10">
-              <a
-                href={portalLinks.home}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group btn-primary"
-              >
-                Start an application
-                <ArrowUpRight className="h-4 w-4" />
-              </a>
-            </Reveal>
-          </div>
-        </section>
-
-        <section
-          aria-labelledby="arbitrator-directory-title"
-          className="border-t border-border bg-secondary/40 py-16 lg:py-24"
-        >
-          <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
-            <SectionHeading
-              eyebrow="Panel"
-              title={<span id="arbitrator-directory-title">Arbitrator directory</span>}
-              description="Filter by chapter, then open a profile for full credentials, ADR experience and professional background."
-            />
-
-            <div className="mt-14">
-              <ArbitratorDirectory />
-            </div>
-          </div>
-        </section>
-
-        <section className="border-t border-border py-16 text-center lg:py-20">
+        <section className="py-16 text-center lg:py-20">
           <div className="mx-auto max-w-xl px-6 lg:px-12">
             <h2 className="font-display text-2xl font-semibold tracking-tight text-foreground">
-              Have a construction dispute, under any contract?
+              Need an arbitrator nominated now?
             </h2>
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-              JBC, FIDIC, NCA or independently negotiated: check the dispute-resolution clause,
-              apply below.
-              {ARBITRATION_FORM_URL
-                ? null
-                : " Email the secretariat a copy of the contract and a short description of the dispute."}
+              Until the service opens, write to the Secretariat with a copy of the contract and a
+              short description of the dispute.
             </p>
             <a
               href={
-                ARBITRATION_FORM_URL ?? "mailto:aak@aak.or.ke?subject=Arbitration%20application"
+                ARBITRATION_FORM_URL ??
+                "mailto:aak@aak.or.ke?subject=Request%20for%20arbitrator%20nomination"
               }
               {...(ARBITRATION_FORM_URL ? { target: "_blank", rel: "noopener noreferrer" } : {})}
               className="group btn-primary mt-7"
             >
-              Apply for arbitration
+              Email aak@aak.or.ke
               <ArrowUpRight className="h-4 w-4" />
             </a>
           </div>

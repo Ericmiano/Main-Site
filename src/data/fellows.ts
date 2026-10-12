@@ -1,8 +1,9 @@
 /**
- * The College of Fellows: AAK's senior membership category. Wording from the
- * former aak.or.ke/college-of-fellows page; the videos are AAK's "Meet the
- * Fellows Campaign" playlist on YouTube. The names are `collegeOfFellows` in
- * site.ts.
+ * The College of Fellows: AAK's senior membership category. Admission, roles
+ * and affix from the AAK Constitution and By-Laws (2022 amendments: By-Laws
+ * 3.2, 8.1 and 22.1) and the former aak.or.ke/college-of-fellows page; the
+ * videos are AAK's "Meet the Fellows Campaign" playlist on YouTube. The names
+ * are `collegeOfFellows` in site.ts.
  */
 
 export const fellowsIntro =
@@ -11,7 +12,7 @@ export const fellowsIntro =
 export const fellowsRoles = [
   {
     title: "Advising the Council",
-    body: "Complementing the Governing Council in carrying out the activities of the Association, with advisory opinions on matters of interest in the built and natural environment.",
+    body: "Complementing the Governing Council in guiding the activities of the Association, with advisory opinions on matters of interest in the built and natural environments.",
   },
   {
     title: "Advocacy",
@@ -22,10 +23,18 @@ export const fellowsRoles = [
     body: "Providing mentorship to students and young professionals.",
   },
   {
+    title: "Mediation",
+    body: "Providing mediation within the Association.",
+  },
+  {
     title: "Exhibitions and innovation",
     body: "Staging exhibitions and making technical innovations, locally and internationally.",
   },
 ];
+
+/** How Corporate Members become Fellows (By-Laws 3.2.1, 8.1 and 22.1). */
+export const fellowsAdmission =
+  "Fellowship isn't applied for. Corporate Members are nominated by the Governing Council, or invited by the College of Fellows, into the Class of Fellows, and pay a Fellowship entrance fee equal to ten years' Corporate subscription (KES 75,000 at today's rate). Fellows are entitled to the affix F.A.A.K.";
 
 /** "Meet the Fellows Campaign" playlist on AAK's YouTube channel. */
 export const MEET_THE_FELLOWS_PLAYLIST = "PL2WvnH1y-v8PTqAOUX6T0ZNmBH0YnqA2Y";

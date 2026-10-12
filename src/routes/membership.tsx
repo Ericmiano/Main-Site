@@ -69,6 +69,36 @@ const steps = [
   },
 ];
 
+/** Professional affixes, from the AAK Constitution and By-Laws (By-Law 8.0). */
+const AFFIXES: { cls: string; affix: string; note?: string }[] = [
+  { cls: "Fellow", affix: "F.A.A.K." },
+  {
+    cls: "Corporate",
+    affix: "M.A.A.K. (chapter)",
+    note: "For example M.A.A.K.(A) for an architect; one per chapter you belong to.",
+  },
+  {
+    cls: "Licentiate",
+    affix: "L.A.A.K. (chapter)",
+    note: "For example L.A.A.K.(QS) for a quantity surveyor; one per chapter you belong to.",
+  },
+  {
+    cls: "Firm and Institutional",
+    affix: "Affiliated Member of the Architectural Association of Kenya",
+    note: "Cited on official stationery.",
+  },
+];
+const CHAPTER_CODES: [string, string][] = [
+  ["(A)", "Architects"],
+  ["(E)", "Engineers"],
+  ["(QS)", "Quantity Surveyors"],
+  ["(TP)", "Town Planners"],
+  ["(LA)", "Landscape Architects"],
+  ["(EDC)", "Environmental Design Consultants"],
+  ["(CPM)", "Construction Project Managers"],
+  ["(ID)", "Interior Designers"],
+];
+
 const electionCriteria = [
   "Election is determined by a majority vote of the Chapter Council.",
   "Rejections include a summary of reasons; re-application is permitted after twelve months.",
@@ -275,6 +305,46 @@ function MembershipPage() {
                   ))}
                 </tbody>
               </table>
+            </div>
+          </div>
+        </section>
+
+        <section
+          aria-labelledby="affixes-title"
+          className="border-t border-border bg-secondary/40 py-16 lg:py-24"
+        >
+          <div className="mx-auto grid max-w-[1400px] gap-10 px-6 lg:grid-cols-[1fr_1.3fr] lg:gap-16 lg:px-12">
+            <SectionHeading
+              eyebrow="Professional affixes"
+              title={<span id="affixes-title">The letters after your name</span>}
+              description="Members may use the affix of their class and chapter, as set by the AAK Constitution and By-Laws (By-Law 8.0). No other affixes may be used for AAK membership."
+            />
+            <div>
+              <dl className="divide-y divide-border rounded-2xl border border-border bg-card">
+                {AFFIXES.map((row) => (
+                  <div
+                    key={row.cls}
+                    className="grid gap-1 px-6 py-4 sm:grid-cols-[10rem_1fr] sm:gap-6"
+                  >
+                    <dt className="text-sm font-semibold text-foreground">{row.cls}</dt>
+                    <dd className="text-sm text-muted-foreground">
+                      <span className="font-display text-base font-semibold text-foreground">
+                        {row.affix}
+                      </span>
+                      {row.note ? <span className="block mt-1">{row.note}</span> : null}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+              <p className="mt-5 text-sm leading-relaxed text-muted-foreground">
+                Chapter codes:{" "}
+                {CHAPTER_CODES.map(([code, name], i) => (
+                  <span key={code}>
+                    <strong className="font-semibold text-foreground">{code}</strong> {name}
+                    {i < CHAPTER_CODES.length - 1 ? " · " : "."}
+                  </span>
+                ))}
+              </p>
             </div>
           </div>
         </section>

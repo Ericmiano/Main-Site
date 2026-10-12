@@ -83,14 +83,13 @@ const pages: SearchEntry[] = [
     category: "Page",
     href: "/certificate-verification",
   },
-  // Arbitration: on hold while the page is being finished. Re-add once ready.
-  // {
-  //   title: "Arbitration",
-  //   description:
-  //     "Construction-dispute arbitration in Kenya: the Joint Building Council contract framework, the Arbitration Act 1995, and how to reach AAK's secretariat.",
-  //   category: "Page",
-  //   href: "/arbitration",
-  // },
+  {
+    title: "Arbitration",
+    description:
+      "How AAK nominates arbitrators for construction disputes, and how to request a nomination while AAK's online arbitration service is being set up.",
+    category: "Page",
+    href: "/arbitration",
+  },
   {
     title: "Frequently asked questions",
     description:

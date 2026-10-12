@@ -23,10 +23,9 @@ export default defineConfig({
             autoSubfolderIndex: true,
             failOnError: true,
             // Only render pages. The crawler would otherwise fetch linked PDFs
-            // through the renderer and write them back corrupted. Arbitration
-            // is on hold, so it isn't exported either.
+            // through the renderer and write them back corrupted.
             filter: ({ path }: { path: string }) =>
-              path === "/sitemap.xml" || (!/\.[a-z0-9]+$/i.test(path) && path !== "/arbitration"),
+              path === "/sitemap.xml" || !/\.[a-z0-9]+$/i.test(path),
           },
           // The shared page every /news/<slug> article is served from
           // (public/api/news-page.php); articles live in WordPress, not the build.
