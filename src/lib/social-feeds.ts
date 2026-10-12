@@ -63,57 +63,92 @@ export interface XPost {
 }
 export const X_POSTS: XPost[] = [
   {
-    id: "2107363980444606531",
-    date: "6 October 2026",
-    text: "Join us this Friday for a FREE AAK Members Forum 2026 on transitioning into entrepreneurship or scaling your young practice in the built environment, moderated by Arch. Rosemary Litunya. Blue Violets Plaza, Suite 704, Kamburu Drive; Friday 9 October, 2 to 5 PM. Free for members in good standing, KES 1,500 for non-members.",
+    id: "2108812628491378995",
+    date: "10 October 2026",
+    text: "Happy Mazingira Day! The Architectural Association of Kenya is integrating professional design and environmental stewardship to create better learning environments in public schools across Kenya. Scan the QR code or visit schools.aak.or.ke to learn more.",
     images: [
       {
-        src: "/img/x/2107363980444606531-1.webp",
+        src: "/img/x/2108812628491378995-1.webp",
         width: 800,
-        height: 640,
-        alt: "Poster for the AAK Members Forum 2026, Winning Your First Clients, with speakers Abigael Osidiana, Humphrey Mumita, Arch. Sharon Njiru and Eng. Nashon Tambo, Friday 9 October 2026",
+        height: 800,
+        alt: "Mazingira Day poster, 10 October 2026: Our Environment, Our Responsibility, with pupils and AAK members planting trees",
       },
     ],
   },
   {
-    id: "2107072202181095583",
-    date: "5 October 2026",
-    text: "Happy World Habitat Day! Houses are more than buildings; they are where life happens. On World Habitat Day, we re-commit to planning and designing inclusive, resilient and sustainable habitats for all Kenyans.",
+    id: "2108526724916883757",
+    date: "9 October 2026",
+    text: "#TeamAAK is exhibiting at the East Africa Institute of Architects (EAIA) Annual Congress, AGM and Rwanda Architecture Week, showcasing selected projects from the Nairobi Biennale 2026 and the AAK Duracoat Awards of Excellence.",
     images: [
       {
-        src: "/img/x/2107072202181095583-1.webp",
+        src: "/img/x/2108526724916883757-1.webp",
         width: 800,
-        height: 800,
-        alt: "World Habitat Day 2026 poster: Adequate Housing for All, with a green city skyline cut from paper",
+        height: 600,
+        alt: "Delegates on stage at the Rwanda Architecture Week and EAIA Congress",
+      },
+      {
+        src: "/img/x/2108526724916883757-2.webp",
+        width: 800,
+        height: 600,
+        alt: "The AAK team at the EAIA Congress in Kigali",
+      },
+      {
+        src: "/img/x/2108526724916883757-3.webp",
+        width: 800,
+        height: 1067,
+        alt: "The AAK exhibition stand with project boards",
+      },
+      {
+        src: "/img/x/2108526724916883757-4.webp",
+        width: 800,
+        height: 602,
+        alt: "Visitors at the AAK Architects Chapter stand",
       },
     ],
   },
   {
-    id: "2107056417836617755",
-    date: "5 October 2026",
-    text: "Happy World Architecture Day! What does a dignified home mean to you? Today we join architects worldwide in affirming that decent, affordable shelter must be for everyone, not a privilege for a few. Let's design for people, for equity, and for a better tomorrow.",
+    id: "2108473562247926222",
+    date: "9 October 2026",
+    text: "As we marked Members' Week, we visited some of our firm members, listening, learning and talking about how we can better support the professionals shaping Kenya's built environment. Thank you to Waweru & Associates, Miradi Consultants, Lexicon + ion, Precise Architects, Planning Systems Services and Morphosis.",
     images: [
       {
-        src: "/img/x/2107056417836617755-1.webp",
+        src: "/img/x/2108473562247926222-1.webp",
         width: 800,
-        height: 800,
-        alt: "World Architecture Day 2026 poster: Housing is a Human Right. Build It., over an aerial photo of a Kenyan housing estate",
+        height: 450,
+        alt: "The AAK team with staff of Precise Architects outside their office",
+      },
+      {
+        src: "/img/x/2108473562247926222-2.webp",
+        width: 800,
+        height: 450,
+        alt: "The AAK team presenting a gift at Planning Systems Services",
+      },
+      {
+        src: "/img/x/2108473562247926222-3.webp",
+        width: 800,
+        height: 450,
+        alt: "The AAK team with a member firm in its office",
+      },
+      {
+        src: "/img/x/2108473562247926222-4.webp",
+        width: 800,
+        height: 450,
+        alt: "The AAK team and a member firm's staff in their studio",
       },
     ],
   },
   {
-    id: "2107021173922173405",
-    date: "5 October 2026",
-    text: "Happy Customer Service Week from AAK! We appreciate our members, partners, clients, and staff. Thank you for your continued trust and collaboration. We remain committed to serving you with professionalism, integrity and excellence. Jacob Mwangi, Chief Executive Officer, AAK.",
+    id: "2108142867751322044",
+    date: "8 October 2026",
+    text: "AAK, NowNow, ICLEI Africa and Kisumu City invite you to a briefing and guided site visit at Jubilee Market, Kisumu, on Wednesday 21 October 2026, one of the two case-study sites for the Living Markets: Where the City Meets design competition.",
     images: [
       {
-        src: "/img/x/2107021173922173405-1.webp",
+        src: "/img/x/2108142867751322044-1.webp",
         width: 800,
-        height: 800,
-        alt: "Still from a video message by AAK Chief Executive Officer Jacob Mwangi",
+        height: 1020,
+        alt: "Poster for the site visit to Jubilee Market, Kisumu, 21 October 2026",
       },
     ],
-    video: true,
   },
 ];
 

@@ -133,6 +133,29 @@ export const events: SiteEvent[] = [
     albumSlug: "nairobi-biennale-2026",
   },
   {
+    // Date confirmed by the user (12 Oct 2026); venue, theme and registration
+    // to follow.
+    slug: "urban-thinkers-campus-2026",
+    title: "Urban Thinkers Campus 2026",
+    kicker: "Urban Thinkers Campus",
+    date: "22 October 2026",
+    isoDate: "2026-10-22",
+    location: "Kenya · venue to be announced",
+    venue: "Venue to be announced",
+    status: "upcoming",
+    summary:
+      "This year's session of AAK's Urban Thinkers Campus, the platform for open exchange on the future of Kenya's cities.",
+    body: [
+      "The Urban Thinkers Campus is AAK's platform, run with UN-Habitat under the World Urban Campaign, for open exchange between urban researchers, built environment professionals, policymakers and decision-makers on the future of Kenya's cities. Venue, theme and registration details will be shared here.",
+    ],
+    facts: [{ label: "Date", value: "22 October 2026" }],
+    image: "/img/1h5a2307-1200x800.webp",
+    imageAlt: "Members in discussion at an AAK Urban Thinkers Campus session",
+    registerTo: { to: "/initiatives/$slug", params: { slug: "urban-thinkers-campus" } },
+    registerLabel: "Learn about Urban Thinkers Campus",
+    cta: "View details",
+  },
+  {
     slug: "status-of-built-environment-2026",
     title: "Release of the Status of the Built Environment Report & President's Dinner",
     kicker: "Save the date",
