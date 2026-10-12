@@ -85,6 +85,110 @@ export const buildingRegulationsDocuments: ArchiveDocument[] = [
     year: "2024",
     href: fileUrl("/documents/Affordable-Housing-Act-2024.pdf"),
   },
+  // Acts and regulations: Kenya Law's own PDFs (new.kenyalaw.org), hosted
+  // here as downloads. `year` is the version's date: most are the Revised
+  // Edition as at 31 December 2022, the Architects and Quantity Surveyors Act
+  // as amended to 11 December 2023.
+  {
+    title: "Constitution of Kenya, 2010",
+    year: "2010",
+    href: fileUrl("/documents/Constitution-of-Kenya-2010.pdf"),
+  },
+  {
+    title: "Architects and Quantity Surveyors Act (Cap. 525)",
+    year: "2023",
+    href: fileUrl("/documents/Architects-and-Quantity-Surveyors-Act.pdf"),
+  },
+  {
+    title: "Engineers Act, No. 43 of 2011 (Cap. 530)",
+    year: "2022",
+    href: fileUrl("/documents/Engineers-Act-2011.pdf"),
+  },
+  {
+    title: "National Construction Authority Act, No. 41 of 2011 (Cap. 118)",
+    year: "2022",
+    href: fileUrl("/documents/National-Construction-Authority-Act-2011.pdf"),
+  },
+  {
+    title: "Building Surveyors Act, No. 19 of 2018 (Cap. 541)",
+    year: "2022",
+    href: fileUrl("/documents/Building-Surveyors-Act-2018.pdf"),
+  },
+  {
+    title: "Physical and Land Use Planning Act, No. 13 of 2019 (Cap. 303)",
+    year: "2022",
+    href: fileUrl("/documents/Physical-and-Land-Use-Planning-Act-2019.pdf"),
+  },
+  {
+    title: "Physical Planners Registration Act, No. 3 of 1996 (Cap. 536)",
+    year: "2022",
+    href: fileUrl("/documents/Physical-Planners-Registration-Act-1996.pdf"),
+  },
+  {
+    title: "Urban Areas and Cities Act, No. 13 of 2011 (Cap. 275)",
+    year: "2022",
+    href: fileUrl("/documents/Urban-Areas-and-Cities-Act-2011.pdf"),
+  },
+  {
+    title: "County Governments Act, No. 17 of 2012 (Cap. 265)",
+    year: "2022",
+    href: fileUrl("/documents/County-Governments-Act-2012.pdf"),
+  },
+  {
+    title: "Affordable Housing Regulations, 2025 (Legal Notice No. 114 of 2025)",
+    year: "2025",
+    href: fileUrl("/documents/Affordable-Housing-Regulations-2025.pdf"),
+  },
+  {
+    title: "Housing Act (Cap. 117)",
+    year: "2022",
+    href: fileUrl("/documents/Housing-Act-Cap-117.pdf"),
+  },
+  {
+    title: "Sectional Properties Act, No. 21 of 2020 (Cap. 286)",
+    year: "2022",
+    href: fileUrl("/documents/Sectional-Properties-Act-2020.pdf"),
+  },
+  {
+    title: "Land Act, No. 6 of 2012 (Cap. 280)",
+    year: "2022",
+    href: fileUrl("/documents/Land-Act-2012.pdf"),
+  },
+  {
+    title: "National Land Commission Act, No. 5 of 2012 (Cap. 281)",
+    year: "2022",
+    href: fileUrl("/documents/National-Land-Commission-Act-2012.pdf"),
+  },
+  {
+    title: "Community Land Act, No. 27 of 2016 (Cap. 287)",
+    year: "2022",
+    href: fileUrl("/documents/Community-Land-Act-2016.pdf"),
+  },
+  {
+    title: "Land Adjudication Act (Cap. 284)",
+    year: "2022",
+    href: fileUrl("/documents/Land-Adjudication-Act-Cap-284.pdf"),
+  },
+  {
+    title: "Environment and Land Court Act, No. 19 of 2011 (Cap. 8D)",
+    year: "2022",
+    href: fileUrl("/documents/Environment-and-Land-Court-Act-2011.pdf"),
+  },
+  {
+    title: "Environmental Management and Co-ordination Act, No. 8 of 1999 (Cap. 387)",
+    year: "2022",
+    href: fileUrl("/documents/Environmental-Management-and-Co-ordination-Act-1999.pdf"),
+  },
+  {
+    title: "Sustainable Waste Management Act, No. 31 of 2022 (Cap. 387C)",
+    year: "2022",
+    href: fileUrl("/documents/Sustainable-Waste-Management-Act-2022.pdf"),
+  },
+  {
+    title: "Kenya Roads Act, No. 2 of 2007 (Cap. 408)",
+    year: "2022",
+    href: fileUrl("/documents/Kenya-Roads-Act-2007.pdf"),
+  },
   {
     title: "Automation of Development Control in Kenya",
     href: fileUrl(
