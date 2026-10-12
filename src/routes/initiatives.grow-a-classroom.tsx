@@ -39,7 +39,7 @@ const SITE_URL = "https://aak.or.ke";
 const TITLE = "Grow A Classroom | Architectural Association of Kenya";
 const DESCRIPTION =
   "AAK's Grow A Classroom programme: master plans, landscaping and on-site timber for Kenya's public schools, and the schools it has worked with so far.";
-const HERO = gacSchools[0]!.highlights[0]!;
+const HERO = gacSchools.find((s) => s.id === "mabokoni-primary")!.highlights[0]!;
 /** Hero colour flow: deep forest to leaf green, with a warm soil glow. */
 const HERO_AURORA = ["#06140c", "#14432a", "#2f7d46", "#c99a3e", "#f1e6c4"];
 const counties = new Set(gacSchools.map((s) => s.county)).size;
