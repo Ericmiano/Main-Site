@@ -133,22 +133,25 @@ export const events: SiteEvent[] = [
     albumSlug: "nairobi-biennale-2026",
   },
   {
-    // Date confirmed by the user (12 Oct 2026); venue, theme and registration
-    // to follow.
+    // Date (12 Oct 2026), title and venue (13 Oct 2026) confirmed by the user;
+    // theme and registration to follow.
     slug: "urban-thinkers-campus-2026",
-    title: "Urban Thinkers Campus 2026",
+    title: "Urban Thinkers Campus 10.0/2nd AAK Finance Accelerator Programme workshop",
     kicker: "Urban Thinkers Campus",
     date: "22 October 2026",
     isoDate: "2026-10-22",
-    location: "Kenya · venue to be announced",
-    venue: "Venue to be announced",
+    location: "Nairobi, Kenya",
+    venue: "Fairview Hotel, Off Bishops Road, Nairobi",
     status: "upcoming",
     summary:
-      "This year's session of AAK's Urban Thinkers Campus, the platform for open exchange on the future of Kenya's cities.",
+      "Urban Thinkers Campus 10.0 and the 2nd AAK Finance Accelerator Programme workshop, at the Fairview Hotel, Nairobi, on 22 October 2026.",
     body: [
-      "The Urban Thinkers Campus is AAK's platform, run with UN-Habitat under the World Urban Campaign, for open exchange between urban researchers, built environment professionals, policymakers and decision-makers on the future of Kenya's cities. Venue, theme and registration details will be shared here.",
+      "The Urban Thinkers Campus is AAK's platform, run with UN-Habitat under the World Urban Campaign, for open exchange between urban researchers, built environment professionals, policymakers and decision-makers on the future of Kenya's cities. This year's session, Urban Thinkers Campus 10.0, is held with the 2nd AAK Finance Accelerator Programme workshop at the Fairview Hotel, Off Bishops Road, Nairobi. Theme and registration details will be shared here.",
     ],
-    facts: [{ label: "Date", value: "22 October 2026" }],
+    facts: [
+      { label: "Date", value: "22 October 2026" },
+      { label: "Venue", value: "Fairview Hotel, Off Bishops Road, Nairobi" },
+    ],
     image: "/img/1h5a2307-1200x800.webp",
     imageAlt: "Members in discussion at an AAK Urban Thinkers Campus session",
     registerTo: { to: "/initiatives/$slug", params: { slug: "urban-thinkers-campus" } },
