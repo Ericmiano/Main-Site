@@ -20,6 +20,9 @@ const SLIDES: {
   ratio: number;
   alt: string;
   caption: string;
+  /** Where the crop centres (CSS object-position), to keep faces in frame
+   * when the wide hero cuts the photo's top and bottom. Default: centre. */
+  position?: string;
 }[] = [
   {
     name: "convention-2026",
@@ -48,6 +51,7 @@ const SLIDES: {
     ratio: 1688 / 3008,
     alt: "Guests holding copies of AAK's Healthy Homes Guidelines at the launch",
     caption: "Launch of the Healthy Homes Guidelines",
+    position: "50% 15%",
   },
   {
     name: "members-waldorf",
@@ -62,6 +66,7 @@ const SLIDES: {
     ratio: 2 / 3,
     alt: "Pupils, teachers and AAK members at Mabokoni Primary School, Kwale",
     caption: "Grow A Classroom · Mabokoni, Kwale",
+    position: "50% 80%",
   },
 ];
 const SLIDE_MS = 6000;
@@ -111,6 +116,7 @@ function HeroPhotos() {
             height={Math.round(largest * slide.ratio)}
             fetchPriority={i === 0 ? "high" : undefined}
             decoding={i === 0 ? undefined : "async"}
+            style={slide.position ? { objectPosition: slide.position } : undefined}
             className={cn(
               "absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ease-in-out",
               i === index ? "opacity-100" : "opacity-0",
