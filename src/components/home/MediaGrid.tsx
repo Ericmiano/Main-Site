@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { IconArrowUpRight as ArrowUpRight } from "@tabler/icons-react";
-import { media } from "@/data/site";
+import { conventionMagazine2026 as magazine, media } from "@/data/site";
 import { Reveal } from "@/components/site/Reveal";
 import { SectionRule } from "@/components/site/SectionRule";
 import { Lightbox } from "@/components/site/Lightbox";
@@ -26,16 +26,47 @@ export function MediaGrid() {
     // Charcoal "gallery wall": the light plates read as exhibited work.
     <section id="media" aria-labelledby="media-title" className="bg-ink-deep py-24 lg:py-32">
       <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
-        <Reveal className="max-w-2xl">
-          <SectionRule index="06" label="The archive" tone="dark" />
-          <h2 id="media-title" className="type-section mt-8 text-background">
-            Work, events and award-winning projects.
-          </h2>
-          <p className="mt-5 max-w-xl text-base leading-relaxed text-background/70">
-            A rolling record of what members are building, the sites we visit and the projects
-            recognised at the Awards of Excellence.
-          </p>
-        </Reveal>
+        <div className="flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between">
+          <Reveal className="max-w-2xl">
+            <SectionRule index="06" label="The archive" tone="dark" />
+            <h2 id="media-title" className="type-section mt-8 text-background">
+              Work, events and award-winning projects.
+            </h2>
+            <p className="mt-5 max-w-xl text-base leading-relaxed text-background/70">
+              A rolling record of what members are building, the sites we visit and the projects
+              recognised at the Awards of Excellence.
+            </p>
+          </Reveal>
+
+          {/* New: a small card for the latest AAK publication. */}
+          <Reveal delay={120} className="lg:shrink-0">
+            <a
+              href={magazine.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex max-w-sm items-center gap-4 rounded-xl border border-background/15 p-3 pr-5 transition-colors hover:border-background/40 hover:bg-background/5"
+            >
+              <img
+                src={magazine.cover}
+                alt={magazine.coverAlt}
+                width={360}
+                height={509}
+                loading="lazy"
+                className="w-16 shrink-0 rounded-sm shadow-lg transition-transform duration-300 group-hover:-rotate-2"
+              />
+              <span className="min-w-0">
+                <span className="meta-label block text-background/70">New</span>
+                <span className="mt-1 block font-display text-base font-semibold leading-snug text-background">
+                  {magazine.title}
+                </span>
+                <span className="mt-1.5 inline-flex items-center gap-1 text-xs font-semibold text-background/80">
+                  Read the magazine &middot; {magazine.details}
+                  <ArrowUpRight className="h-3.5 w-3.5 text-primary" aria-hidden="true" />
+                </span>
+              </span>
+            </a>
+          </Reveal>
+        </div>
 
         {/* Phones: a swipeable, auto-advancing rail of equal plates. sm+: the asymmetric mosaic. */}
         <div

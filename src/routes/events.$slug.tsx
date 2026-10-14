@@ -193,6 +193,16 @@ function EventDetail() {
                       See the photos
                     </Link>
                   ) : null}
+                  {event.publication ? (
+                    <a
+                      href={event.publication.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 text-sm font-semibold text-foreground transition-colors hover:text-primary"
+                    >
+                      {event.publication.label} (PDF)
+                    </a>
+                  ) : null}
                   {status !== "past" ? (
                     <AddToCalendar
                       event={event}

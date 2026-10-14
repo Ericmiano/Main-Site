@@ -412,6 +412,11 @@ export const generalDownloadsDocuments: ArchiveDocument[] = [
     href: fileUrl("/documents/AAK-Annual-Convention-2026-Prospectus.pdf"),
   },
   {
+    title: "AAK Annual Convention 2026: Magazine",
+    year: "2026",
+    href: fileUrl("/documents/AAK-Annual-Convention-Magazine-2026.pdf"),
+  },
+  {
     title: "AAK-Basco DuraCoat Awards of Excellence 2026: Applicant Guidelines",
     year: "2026",
     href: fileUrl(

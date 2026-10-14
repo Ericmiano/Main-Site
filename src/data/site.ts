@@ -1,5 +1,17 @@
 import { fileUrl } from "@/lib/files";
 
+/** The AAK Annual Convention 2026 Magazine (130 pages; the PDF is dated 9
+ * October 2026): listed under General Downloads, linked from the convention's event
+ * page and shown as a small card in the homepage archive section. */
+export const conventionMagazine2026 = {
+  title: "AAK Annual Convention 2026 Magazine",
+  href: fileUrl("/documents/AAK-Annual-Convention-Magazine-2026.pdf"),
+  cover: "/img/publications/aak-convention-magazine-2026-cover.webp",
+  coverAlt:
+    "Cover of the AAK Annual Convention 2026 Magazine: Shifting the Built Environment From Fragility to Resilience",
+  details: "PDF · 130 pages · 24 MB",
+};
+
 const MEMBER_PORTAL = "https://members.aak.or.ke";
 
 /** The members portal's public pages, as published by its provider (Africa
@@ -65,6 +77,8 @@ export interface SiteEvent {
   externalSiteHref?: string;
   /** A /media album of the event's photos, linked from its page. */
   albumSlug?: string;
+  /** A publication from the event (its magazine), linked from its page. */
+  publication?: { label: string; href: string };
 }
 
 /**
@@ -101,6 +115,7 @@ export const events: SiteEvent[] = [
     cta: "See the highlights",
     externalSiteHref: "https://convention.aak.or.ke/",
     albumSlug: "aak-annual-convention-2026",
+    publication: { label: "Read the Convention Magazine", href: conventionMagazine2026.href },
   },
   {
     slug: "nairobi-biennale-2026",
