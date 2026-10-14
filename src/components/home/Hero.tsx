@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { announcement } from "@/data/announcement";
 import {
   IconArrowRight as ArrowRight,
   IconArrowUpRight,
@@ -219,6 +220,18 @@ export function Hero() {
             <a href="#events" className="link-quiet">
               What&rsquo;s on
             </a>
+            {announcement ? (
+              <a
+                data-announcement="hero"
+                href={announcement.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="link-quiet text-primary"
+              >
+                <span className="h-1.5 w-1.5 rounded-full bg-primary" aria-hidden="true" />
+                New: {announcement.short}
+              </a>
+            ) : null}
           </div>
         </div>
       </div>

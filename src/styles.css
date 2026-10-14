@@ -550,6 +550,13 @@
   animation: hero-scale 2400ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+/* Site announcement (@/data/announcement): the head script marks <html>
+   when it has expired (bar and hero link go) or been dismissed (bar goes). */
+html[data-announce-expired] [data-announcement],
+html[data-announce-dismissed] [data-announcement="bar"] {
+  display: none;
+}
+
 /* School map: a ring spreads out once from a pin as it's chosen. */
 @keyframes pin-ripple {
   from {

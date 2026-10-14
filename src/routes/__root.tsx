@@ -1,4 +1,5 @@
 import { InfoDialogHost } from "@/components/info/InfoDialogHost";
+import { ANNOUNCEMENT_SCRIPT } from "@/data/announcement";
 import { MotionLayer } from "@/components/site/MotionLayer";
 import { NotFound } from "@/components/site/NotFound";
 import {
@@ -93,15 +94,19 @@ export const Route = createRootRoute({
       { rel: "shortcut icon", href: "/favicon.ico" },
     ],
     // Cloudflare Web Analytics: set VITE_CF_BEACON_TOKEN at build time to switch it on.
-    scripts: CF_BEACON_TOKEN
-      ? [
-          {
-            src: "https://static.cloudflareinsights.com/beacon.min.js",
-            defer: true,
-            "data-cf-beacon": JSON.stringify({ token: CF_BEACON_TOKEN }),
-          },
-        ]
-      : [],
+    scripts: [
+      // Hides the site announcement once expired or dismissed, before first paint.
+      ...(ANNOUNCEMENT_SCRIPT ? [{ children: ANNOUNCEMENT_SCRIPT }] : []),
+      ...(CF_BEACON_TOKEN
+        ? [
+            {
+              src: "https://static.cloudflareinsights.com/beacon.min.js",
+              defer: true,
+              "data-cf-beacon": JSON.stringify({ token: CF_BEACON_TOKEN }),
+            },
+          ]
+        : []),
+    ],
   }),
 
   shellComponent: RootShell,
@@ -112,7 +117,8 @@ export const Route = createRootRoute({
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    // The announcement script may mark <html> before React hydrates it.
+    <html lang="en" suppressHydrationWarning>
       <head>
         <HeadContent />
       </head>
