@@ -454,8 +454,8 @@ export const initiativeDetails: InitiativeDetail[] = [
       { label: "Partner", value: "UN-Habitat, World Urban Campaign" },
       { label: "Led by", value: "Town Planners Chapter" },
     ],
-    image: "/img/1h5a2307-1200x800.webp",
-    imageAlt: "Members in discussion at an AAK Urban Thinkers Campus session",
+    image: "/img/urban-thinkers-campus-group-1400.webp",
+    imageAlt: "Participants and AAK members in a group photo in a garden courtyard",
     documents: [
       {
         title: "AAK × UN-Habitat Urban Thinkers Campus",
