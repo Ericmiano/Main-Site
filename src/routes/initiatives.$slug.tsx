@@ -155,7 +155,10 @@ function InitiativeDetail() {
                 {initiative.stats.length ? (
                   <dl className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
                     {initiative.stats.map((stat) => (
-                      <div key={stat.label} className="rounded-xl border border-border p-4">
+                      <div
+                        key={`${stat.label}-${stat.value}`}
+                        className="rounded-xl border border-border p-4"
+                      >
                         <dt className="meta-label text-muted-foreground">{stat.label}</dt>
                         <dd className="mt-1.5 text-sm font-medium text-foreground">{stat.value}</dd>
                       </div>

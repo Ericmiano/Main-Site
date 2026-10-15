@@ -28,6 +28,15 @@ export function InitiativeLink({
       </a>
     );
   }
+  // Grow A Classroom has its own route; linking it through /initiatives/$slug
+  // makes the router warn on every render.
+  if (initiative.slug === "grow-a-classroom") {
+    return (
+      <Link to="/initiatives/grow-a-classroom" className={className} onClick={onClick}>
+        {children}
+      </Link>
+    );
+  }
   return (
     <Link
       to="/initiatives/$slug"
