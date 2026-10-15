@@ -169,6 +169,13 @@ function SchoolStory({
                     >
                       <img
                         src={gacW800(p.src)}
+                        // The full photo for wide or high-density screens.
+                        srcSet={`${gacW800(p.src)} 800w, ${p.src} 1600w`}
+                        sizes={
+                          i === 0
+                            ? "(min-width: 1024px) 55vw, 100vw"
+                            : "(min-width: 1024px) 18vw, 50vw"
+                        }
                         alt={p.alt}
                         loading="lazy"
                         className={cn(

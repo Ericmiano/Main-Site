@@ -180,6 +180,16 @@ function MediaIndex() {
                       <div className="relative overflow-hidden bg-secondary">
                         <img
                           src={album.cover.thumb ?? album.cover.src}
+                          // The thumbnail is 640px: offer the full photo too, so the
+                          // wide lead card and high-density screens stay sharp.
+                          {...(album.cover.thumb
+                            ? {
+                                srcSet: `${album.cover.thumb} 640w, ${album.cover.src} 1600w`,
+                                sizes: isLead
+                                  ? "(min-width: 640px) 90vw, 100vw"
+                                  : "(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 100vw",
+                              }
+                            : {})}
                           alt=""
                           loading={i < 2 ? "eager" : "lazy"}
                           // Carried into its place in the album's grid.
