@@ -1,7 +1,8 @@
 import { fileUrl } from "@/lib/files";
 
 /** The AAK Annual Convention 2026 Magazine (130 pages; the PDF is dated 9
- * October 2026): listed under General Downloads, linked from the convention's event
+ * October 2026), published exactly as supplied, unedited and uncompressed:
+ * listed under General Downloads, linked from the convention's event
  * page and shown as a small card in the homepage archive section. */
 export const conventionMagazine2026 = {
   title: "AAK Annual Convention 2026 Magazine",
@@ -9,7 +10,7 @@ export const conventionMagazine2026 = {
   cover: "/img/publications/aak-convention-magazine-2026-cover.webp",
   coverAlt:
     "Cover of the AAK Annual Convention 2026 Magazine: Shifting the Built Environment From Fragility to Resilience",
-  details: "PDF · 130 pages · 24 MB",
+  details: "PDF · 130 pages · 49 MB",
 };
 
 const MEMBER_PORTAL = "https://members.aak.or.ke";
