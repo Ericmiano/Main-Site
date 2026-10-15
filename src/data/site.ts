@@ -190,20 +190,16 @@ export const events: SiteEvent[] = [
     location: "Nairobi, Kenya",
     venue: "City Park, Nairobi",
     status: "upcoming",
+    // Not shown on the page; keeps search engines from listing AAK as organiser.
     organizer: "Friends of City Park and Safer Nairobi Initiative (SNI)",
     summary:
-      "A six-day programme at City Park, Nairobi, by Friends of City Park and the Safer Nairobi Initiative, in partnership with Nairobi City County Government, AAK and partners.",
+      "A six-day programme using City Park as a living laboratory to explore, co-design, build, activate and celebrate better public spaces.",
     body: [
       "Using City Park as a living laboratory, the six-day programme will bring together government, communities, youth, women, children, persons with disabilities, professionals, artists, academia, civil society, private sector and development partners to listen, explore, co-design, build, activate and celebrate better public spaces.",
     ],
     facts: [
       { label: "Dates", value: "26 – 31 October 2026" },
       { label: "Venue", value: "City Park, Nairobi" },
-      {
-        label: "Partners",
-        value:
-          "Friends of City Park & Safer Nairobi Initiative (SNI), in partnership with Nairobi City County Government, AAK and partners",
-      },
     ],
     registerLabel: "",
     cta: "View details",
@@ -218,20 +214,16 @@ export const events: SiteEvent[] = [
     location: "Kenya · venue to be announced",
     venue: "Venue to be announced",
     status: "upcoming",
+    // Not shown on the page; keeps search engines from listing AAK as organiser.
     organizer: "Nation Media Group",
     summary:
-      'The Nation Media Group\'s Smart Cities Forum, on the theme "Regenerating Our Cities: From Urban Challenges to Smart, Sustainable and Inclusive Futures".',
+      "On the theme “Regenerating Our Cities: From Urban Challenges to Smart, Sustainable and Inclusive Futures”.",
     body: [
-      'An initiative by the Nation Media Group, on the theme "Regenerating Our Cities: From Urban Challenges to Smart, Sustainable and Inclusive Futures". AAK\'s Research and Advocacy team takes part.',
+      "On the theme “Regenerating Our Cities: From Urban Challenges to Smart, Sustainable and Inclusive Futures”.",
     ],
     facts: [
       { label: "Dates", value: "29 – 30 October 2026" },
-      { label: "Organiser", value: "Nation Media Group" },
-      {
-        label: "Theme",
-        value:
-          "Regenerating Our Cities: From Urban Challenges to Smart, Sustainable and Inclusive Futures",
-      },
+      { label: "Venue", value: "To be announced" },
     ],
     registerLabel: "",
     cta: "View details",
@@ -246,14 +238,13 @@ export const events: SiteEvent[] = [
     venue: "Venue to be announced",
     status: "upcoming",
     summary:
-      "On World Cities Day, AAK's Je, Una Mjengo? campaign engages the public through a built environment clinic and a public space activation in Nairobi.",
+      "A public awareness campaign with a built environment clinic and public space activation, raising awareness of the quality, safety and liveability of Nairobi's built environment.",
     body: [
-      "A public awareness campaign that engages the public through a built environment clinic and public space activation, using an interactive street intervention to raise awareness of the quality, safety and liveability of Nairobi's built environment. Held on World Cities Day with Nairobi City County Government.",
+      "A public awareness campaign that engages the public through a built environment clinic and public space activation, using an interactive street intervention to raise awareness of the quality, safety and liveability of Nairobi's built environment.",
     ],
     facts: [
       { label: "Date", value: "31 October 2026" },
-      { label: "Theme", value: "Regenerating the City: Adequate Housing for All" },
-      { label: "Partner", value: "Nairobi City County Government" },
+      { label: "Venue", value: "To be announced, Nairobi" },
     ],
     registerTo: { to: "/initiatives/$slug", params: { slug: "je-una-mjengo" } },
     registerLabel: "About Je, Una Mjengo?",
