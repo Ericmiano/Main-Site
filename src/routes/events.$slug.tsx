@@ -35,7 +35,7 @@ export const Route = createFileRoute("/events/$slug")({
         { property: "og:title", content: title },
         { property: "og:description", content: event.summary },
         { property: "og:type", content: "article" },
-        { property: "og:image", content: event.image },
+        ...(event.image ? [{ property: "og:image", content: event.image }] : []),
         { property: "og:url", content: `${SITE_URL}/events/${event.slug}` },
         { name: "twitter:card", content: "summary_large_image" },
       ],
@@ -47,6 +47,7 @@ export const Route = createFileRoute("/events/$slug")({
 });
 
 function RegisterCta({ event, className }: { event: SiteEvent; className: string }) {
+  if (!event.registerTo && !event.registerHref) return null;
   if (event.registerTo) {
     return (
       <Link {...event.registerTo} className={className}>
@@ -99,22 +100,24 @@ function structuredData(event: SiteEvent) {
         ...(event.endIsoDate ? { endDate: event.endIsoDate } : {}),
         eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
         eventStatus: "https://schema.org/EventScheduled",
-        image: event.image,
+        ...(event.image ? { image: event.image } : {}),
         location: {
           "@type": "Place",
           name: event.location,
           address: event.venue,
         },
-        organizer: {
-          "@type": "Organization",
-          name: "Architectural Association of Kenya",
-          url: SITE_URL,
-        },
-        offers: {
-          "@type": "Offer",
-          url: registerUrl(event),
-          availability: "https://schema.org/InStock",
-        },
+        organizer: event.organizer
+          ? { "@type": "Organization", name: event.organizer }
+          : { "@type": "Organization", name: "Architectural Association of Kenya", url: SITE_URL },
+        ...(registerUrl(event)
+          ? {
+              offers: {
+                "@type": "Offer",
+                url: registerUrl(event),
+                availability: "https://schema.org/InStock",
+              },
+            }
+          : {}),
       },
     ],
   };
@@ -216,15 +219,17 @@ function EventDetail() {
               </Reveal>
 
               <Reveal delay={120}>
-                <figure className="overflow-hidden rounded-2xl bg-secondary">
-                  <img
-                    src={event.image}
-                    alt={event.imageAlt}
-                    loading="lazy"
-                    className="aspect-4/3 w-full object-cover"
-                  />
-                </figure>
-                <div className="mt-6 space-y-3 rounded-2xl border border-border p-6 text-sm text-muted-foreground">
+                {event.image ? (
+                  <figure className="mb-6 overflow-hidden rounded-2xl bg-secondary">
+                    <img
+                      src={event.image}
+                      alt={event.imageAlt ?? ""}
+                      loading="lazy"
+                      className="aspect-4/3 w-full object-cover"
+                    />
+                  </figure>
+                ) : null}
+                <div className="space-y-3 rounded-2xl border border-border p-6 text-sm text-muted-foreground">
                   <p className="flex items-center gap-2">
                     <CalendarDays className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
                     <time dateTime={event.isoDate}>{event.date}</time>

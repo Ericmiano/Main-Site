@@ -61,8 +61,11 @@ export interface SiteEvent {
   body: string[];
   facts: EventFact[];
   agenda?: EventAgendaItem[];
-  image: string;
-  imageAlt: string;
+  /** Omit when there's no photo of this event; the page then shows its details only. */
+  image?: string;
+  imageAlt?: string;
+  /** Who runs it, when that isn't AAK (for search engines' event data). */
+  organizer?: string;
   /** External registration / RSVP destination — omit when `registerTo` is set. */
   registerHref?: string;
   /** An internal page instead, when registration/"learn more" just points at content this site already hosts. */
@@ -70,6 +73,7 @@ export interface SiteEvent {
     | { to: "/events" }
     | { to: "/status-of-the-built-environment" }
     | { to: "/initiatives/$slug"; params: { slug: string } };
+  /** Button text for registerHref / registerTo; no button when neither is set. */
   registerLabel: string;
   /** Short label used on the homepage rail */
   cta: string;
@@ -171,6 +175,88 @@ export const events: SiteEvent[] = [
     imageAlt: "Participants and AAK members in a group photo in a garden courtyard",
     registerTo: { to: "/initiatives/$slug", params: { slug: "urban-thinkers-campus" } },
     registerLabel: "Learn about Urban Thinkers Campus",
+    cta: "View details",
+  },
+  // Urban October 2026: the confirmed activities in AAK's Updated Urban
+  // October Planner (15 Oct 2026). Its unconfirmed rows (Landscape Build Tour
+  // 2, IFLA World Council & Congress, AAQS General Assembly) stay off the site.
+  {
+    slug: "placemaking-week-nairobi-2026",
+    title: "Placemaking Week Nairobi 2026",
+    kicker: "Urban October",
+    date: "26 – 31 October 2026",
+    isoDate: "2026-10-26",
+    endIsoDate: "2026-10-31",
+    location: "Nairobi, Kenya",
+    venue: "City Park, Nairobi",
+    status: "upcoming",
+    organizer: "Friends of City Park and Safer Nairobi Initiative (SNI)",
+    summary:
+      "A six-day programme at City Park, Nairobi, by Friends of City Park and the Safer Nairobi Initiative, in partnership with Nairobi City County Government, AAK and partners.",
+    body: [
+      "Using City Park as a living laboratory, the six-day programme will bring together government, communities, youth, women, children, persons with disabilities, professionals, artists, academia, civil society, private sector and development partners to listen, explore, co-design, build, activate and celebrate better public spaces.",
+    ],
+    facts: [
+      { label: "Dates", value: "26 – 31 October 2026" },
+      { label: "Venue", value: "City Park, Nairobi" },
+      {
+        label: "Partners",
+        value:
+          "Friends of City Park & Safer Nairobi Initiative (SNI), in partnership with Nairobi City County Government, AAK and partners",
+      },
+    ],
+    registerLabel: "",
+    cta: "View details",
+  },
+  {
+    slug: "smart-cities-forum-2026",
+    title: "Smart Cities Forum",
+    kicker: "Urban October",
+    date: "29 – 30 October 2026",
+    isoDate: "2026-10-29",
+    endIsoDate: "2026-10-30",
+    location: "Kenya · venue to be announced",
+    venue: "Venue to be announced",
+    status: "upcoming",
+    organizer: "Nation Media Group",
+    summary:
+      'The Nation Media Group\'s Smart Cities Forum, on the theme "Regenerating Our Cities: From Urban Challenges to Smart, Sustainable and Inclusive Futures".',
+    body: [
+      'An initiative by the Nation Media Group, on the theme "Regenerating Our Cities: From Urban Challenges to Smart, Sustainable and Inclusive Futures". AAK\'s Research and Advocacy team takes part.',
+    ],
+    facts: [
+      { label: "Dates", value: "29 – 30 October 2026" },
+      { label: "Organiser", value: "Nation Media Group" },
+      {
+        label: "Theme",
+        value:
+          "Regenerating Our Cities: From Urban Challenges to Smart, Sustainable and Inclusive Futures",
+      },
+    ],
+    registerLabel: "",
+    cta: "View details",
+  },
+  {
+    slug: "world-cities-day-je-una-mjengo-2026",
+    title: "World Cities Day: AAK Je, Una Mjengo? Activation",
+    kicker: "Urban October",
+    date: "31 October 2026",
+    isoDate: "2026-10-31",
+    location: "Nairobi, Kenya",
+    venue: "Venue to be announced",
+    status: "upcoming",
+    summary:
+      "On World Cities Day, AAK's Je, Una Mjengo? campaign engages the public through a built environment clinic and a public space activation in Nairobi.",
+    body: [
+      "A public awareness campaign that engages the public through a built environment clinic and public space activation, using an interactive street intervention to raise awareness of the quality, safety and liveability of Nairobi's built environment. Held on World Cities Day with Nairobi City County Government.",
+    ],
+    facts: [
+      { label: "Date", value: "31 October 2026" },
+      { label: "Theme", value: "Regenerating the City: Adequate Housing for All" },
+      { label: "Partner", value: "Nairobi City County Government" },
+    ],
+    registerTo: { to: "/initiatives/$slug", params: { slug: "je-una-mjengo" } },
+    registerLabel: "About Je, Una Mjengo?",
     cta: "View details",
   },
   {
