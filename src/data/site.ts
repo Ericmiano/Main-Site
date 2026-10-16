@@ -65,6 +65,8 @@ export interface SiteEvent {
   /** Omit when there's no photo of this event; the page then shows its details only. */
   image?: string;
   imageAlt?: string;
+  /** "poster": a square flyer, shown whole instead of cropped to 4:3. */
+  imageFit?: "poster";
   /** Who runs it, when that isn't AAK (for search engines' event data). */
   organizer?: string;
   /** External registration / RSVP destination — omit when `registerTo` is set. */
@@ -151,6 +153,41 @@ export const events: SiteEvent[] = [
     cta: "Explore the Biennale",
     externalSiteHref: "https://www.biennale.aak.or.ke/",
     albumSlug: "nairobi-biennale-2026",
+  },
+  {
+    // From the chapter's poster and post (16 Oct 2026). Leaves the homepage
+    // at 1 PM through TIMED_HIDE_SCRIPT.
+    slug: "mental-wellness-webinar-2026",
+    title: "Mental Wellness Webinar",
+    kicker: "Construction Project Managers Chapter",
+    date: "16 October 2026, 12:00 noon – 1:00 PM",
+    isoDate: "2026-10-16T12:00:00+03:00",
+    endIsoDate: "2026-10-16T13:00:00+03:00",
+    location: "Online · Microsoft Teams",
+    venue: "Online · Microsoft Teams",
+    status: "upcoming",
+    summary:
+      "Beyond “I AM FINE”: Are you really fine? A conversation on mental wellness with Kathleen Muthoni, Senior Clinical Psychologist at Chiromo Hospital Group.",
+    body: [
+      "As work, life, careers and studies continue to prosper, let’s remember that they all thrive best when supported by a healthy mind.",
+      "Join us as we engage Kathleen Muthoni, Senior Clinical Psychologist at Chiromo Hospital Group, for an important conversation on mental wellness, understanding our minds and knowing when and how to seek help when needed. Let’s go beyond “I AM FINE” and check in with ourselves.",
+    ],
+    facts: [
+      { label: "Date", value: "Friday, 16 October 2026" },
+      { label: "Time", value: "12:00 noon – 1:00 PM" },
+      { label: "Where", value: "Microsoft Teams" },
+      {
+        label: "Speaker",
+        value: "Kathleen Muthoni, Senior Clinical Psychologist, Chiromo Hospital Group",
+      },
+    ],
+    image: "/img/events/mental-wellness-webinar-2026.webp",
+    imageAlt:
+      "Poster: the AAK Construction Project Managers Chapter invites you to a Mental Wellness Webinar, Beyond “I AM FINE”: Are you really fine?, with Kathleen Muthoni, Friday 16 October 2026, 12.00 noon to 1.00 PM on Teams",
+    imageFit: "poster",
+    registerHref: "https://shorturl.at/zIGJF",
+    registerLabel: "Register",
+    cta: "Register",
   },
   {
     // Date (12 Oct 2026), title and venue (13 Oct 2026) confirmed by the user;
@@ -282,13 +319,29 @@ export const events: SiteEvent[] = [
 export const heroEventSlug: string | null = "status-of-built-environment-2026";
 
 /** The event's real status right now — "upcoming"/"ongoing" in the data goes stale once the date passes. */
+/** isoDate / endIsoDate are either dates ("2026-10-22", the whole day in
+ * Nairobi) or exact times ("2026-10-16T12:00:00+03:00"). */
+const NAIROBI = "+03:00";
+export function eventStartTime(event: SiteEvent): number {
+  return Date.parse(
+    event.isoDate.includes("T") ? event.isoDate : `${event.isoDate}T00:00:00${NAIROBI}`,
+  );
+}
+/** When the event is over: its end time, or the end of its last day. */
+export function eventEndTime(event: SiteEvent): number {
+  const last = event.endIsoDate ?? event.isoDate;
+  return last.includes("T")
+    ? Date.parse(last)
+    : Date.parse(`${last}T00:00:00${NAIROBI}`) + 86_400_000 - 1;
+}
+
 export function getEventDisplayStatus(
   event: SiteEvent,
   referenceDate: Date = new Date(),
 ): EventStatus | "past" {
   const now = referenceDate.getTime();
-  const start = new Date(event.isoDate).getTime();
-  const end = event.endIsoDate ? new Date(event.endIsoDate).getTime() : start;
+  const start = eventStartTime(event);
+  const end = eventEndTime(event);
   if (end < now) return "past";
   if (start <= now && now <= end) return "ongoing";
   return event.status === "ongoing" ? "upcoming" : event.status;
@@ -300,7 +353,7 @@ export function getSortedEvents(referenceDate: Date = new Date()): SiteEvent[] {
   const withComputedStatus = events.map((event) => ({
     event,
     computed: getEventDisplayStatus(event, referenceDate),
-    start: new Date(event.isoDate).getTime(),
+    start: eventStartTime(event),
   }));
   return withComputedStatus
     .sort((a, b) => statusRank[a.computed] - statusRank[b.computed] || a.start - b.start)

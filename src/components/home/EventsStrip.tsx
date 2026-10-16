@@ -1,7 +1,8 @@
 import { IconArrowUpRight as ArrowUpRight, IconMapPin as MapPin } from "@tabler/icons-react";
 import { useRef } from "react";
 import { Link } from "@tanstack/react-router";
-import { getEventDisplayStatus, getSortedEvents } from "@/data/site";
+import { eventEndTime, getEventDisplayStatus, getSortedEvents } from "@/data/site";
+import { renderTime } from "@/lib/render-time";
 import { Countdown } from "@/components/site/Countdown";
 import { Reveal } from "@/components/site/Reveal";
 import { SectionRule } from "@/components/site/SectionRule";
@@ -9,7 +10,13 @@ import { cn } from "@/lib/utils";
 import { useGsap } from "@/hooks/use-gsap";
 
 export function EventsStrip() {
-  const events = getSortedEvents().filter((event) => getEventDisplayStatus(event) !== "past");
+  // As of when the page was rendered, so the browser's first render matches
+  // the prebuilt page; events that end after that are hidden on time by
+  // TIMED_HIDE_SCRIPT through data-ends.
+  const asOf = new Date(renderTime());
+  const events = getSortedEvents(asOf).filter(
+    (event) => getEventDisplayStatus(event, asOf) !== "past",
+  );
   const timeline = useRef<HTMLDivElement>(null);
 
   // The year as a journey: a line draws down the rail as the reader scrolls,
@@ -80,7 +87,7 @@ export function EventsStrip() {
           </div>
           <ul>
             {events.map((event, i) => {
-              const status = getEventDisplayStatus(event);
+              const status = getEventDisplayStatus(event, asOf);
               const start = new Date(event.isoDate);
               const month = start.toLocaleDateString("en-US", { month: "long" });
               const day = start.toLocaleDateString("en-US", { day: "2-digit" });
@@ -137,6 +144,7 @@ export function EventsStrip() {
               return (
                 <li
                   key={event.slug}
+                  data-ends={eventEndTime(event)}
                   className="relative border-b border-background/12 first:border-t"
                 >
                   <span

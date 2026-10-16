@@ -7,11 +7,17 @@ const icsDate = (d: Date) => d.toISOString().slice(0, 10).replace(/-/g, "");
 const icsText = (s: string) =>
   s.replace(/\\/g, "\\\\").replace(/\n/g, "\\n").replace(/,/g, "\\,").replace(/;/g, "\\;");
 
-/** Events are all-day, so DTEND is the day after the last day (exclusive). */
+const icsTime = (d: Date) => `${d.toISOString().replace(/[-:]/g, "").slice(0, 15)}Z`;
+
+/** All-day events end the day after their last day (DTEND is exclusive);
+ * events with times (isoDate "…T12:00:00+03:00") use them. */
 function buildIcs(event: SiteEvent) {
-  const start = new Date(`${event.isoDate}T00:00:00Z`);
-  const last = new Date(`${event.endIsoDate ?? event.isoDate}T00:00:00Z`);
-  const end = new Date(last.getTime() + 86_400_000);
+  const timed = event.isoDate.includes("T");
+  const start = new Date(timed ? event.isoDate : `${event.isoDate}T00:00:00Z`);
+  const last = event.endIsoDate ?? event.isoDate;
+  const end = timed
+    ? new Date(last.includes("T") ? last : event.isoDate)
+    : new Date(new Date(`${last}T00:00:00Z`).getTime() + 86_400_000);
   const url = `${SITE_URL}/events/${event.slug}`;
   return [
     "BEGIN:VCALENDAR",
@@ -21,8 +27,8 @@ function buildIcs(event: SiteEvent) {
     "BEGIN:VEVENT",
     `UID:${event.slug}@aak.or.ke`,
     `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, "").slice(0, 15)}Z`,
-    `DTSTART;VALUE=DATE:${icsDate(start)}`,
-    `DTEND;VALUE=DATE:${icsDate(end)}`,
+    timed ? `DTSTART:${icsTime(start)}` : `DTSTART;VALUE=DATE:${icsDate(start)}`,
+    timed ? `DTEND:${icsTime(end)}` : `DTEND;VALUE=DATE:${icsDate(end)}`,
     `SUMMARY:${icsText(event.title)}`,
     `LOCATION:${icsText(event.venue)}`,
     `DESCRIPTION:${icsText(`${event.summary}\n\n${url}`)}`,

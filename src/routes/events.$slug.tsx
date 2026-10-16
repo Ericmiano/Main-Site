@@ -225,7 +225,11 @@ function EventDetail() {
                       src={event.image}
                       alt={event.imageAlt ?? ""}
                       loading="lazy"
-                      className="aspect-4/3 w-full object-cover"
+                      className={
+                        event.imageFit === "poster"
+                          ? "aspect-square w-full object-contain"
+                          : "aspect-4/3 w-full object-cover"
+                      }
                     />
                   </figure>
                 ) : null}

@@ -1,5 +1,7 @@
 import { InfoDialogHost } from "@/components/info/InfoDialogHost";
 import { ANNOUNCEMENT_SCRIPT } from "@/data/announcement";
+import { TIMED_HIDE_SCRIPT } from "@/data/timed-hide";
+import { renderTime } from "@/lib/render-time";
 import { MotionLayer } from "@/components/site/MotionLayer";
 import { NotFound } from "@/components/site/NotFound";
 import {
@@ -97,6 +99,8 @@ export const Route = createRootRoute({
     scripts: [
       // Hides the site announcement once expired or dismissed, before first paint.
       ...(ANNOUNCEMENT_SCRIPT ? [{ children: ANNOUNCEMENT_SCRIPT }] : []),
+      // Takes events off the homepage the moment they end.
+      { children: TIMED_HIDE_SCRIPT },
       ...(CF_BEACON_TOKEN
         ? [
             {
@@ -118,7 +122,7 @@ export const Route = createRootRoute({
 function RootShell({ children }: { children: ReactNode }) {
   return (
     // The announcement script may mark <html> before React hydrates it.
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning data-render-time={renderTime()}>
       <head>
         <HeadContent />
       </head>
