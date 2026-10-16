@@ -67,6 +67,9 @@ export interface SiteEvent {
   imageAlt?: string;
   /** "poster": a square flyer, shown whole instead of cropped to 4:3. */
   imageFit?: "poster";
+  /** Takes over the homepage hero card until it ends; the usual card returns
+   * on its own at that moment (see TIMED_HIDE_SCRIPT). */
+  heroUntilEnd?: boolean;
   /** Who runs it, when that isn't AAK (for search engines' event data). */
   organizer?: string;
   /** External registration / RSVP destination — omit when `registerTo` is set. */
@@ -185,6 +188,7 @@ export const events: SiteEvent[] = [
     imageAlt:
       "Poster: the AAK Construction Project Managers Chapter invites you to a Mental Wellness Webinar, Beyond “I AM FINE”: Are you really fine?, with Kathleen Muthoni, Friday 16 October 2026, 12.00 noon to 1.00 PM on Teams",
     imageFit: "poster",
+    heroUntilEnd: true,
     registerHref: "https://shorturl.at/zIGJF",
     registerLabel: "Register",
     cta: "Register",

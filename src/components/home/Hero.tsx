@@ -8,7 +8,15 @@ import {
 } from "@tabler/icons-react";
 import { Link } from "@tanstack/react-router";
 import { Countdown } from "@/components/site/Countdown";
-import { chapters, getEventDisplayStatus, getSortedEvents, heroEventSlug } from "@/data/site";
+import {
+  chapters,
+  eventEndTime,
+  getEventDisplayStatus,
+  getSortedEvents,
+  heroEventSlug,
+  type SiteEvent,
+} from "@/data/site";
+import { renderTime } from "@/lib/render-time";
 import { cn } from "@/lib/utils";
 
 /** The hero's rotating photographs: AAK's people at work, built from the
@@ -186,10 +194,65 @@ function dayMonth(iso: string) {
     day % 100 >= 11 && day % 100 <= 13 ? "th" : (["th", "st", "nd", "rd"][day % 10] ?? "th");
   return `${day}${suffix} ${date.toLocaleDateString("en-GB", { month: "long", timeZone: "UTC" })}`;
 }
+/** The angled red card on the hero photos, linking to an event. */
+function HeroCard({
+  event,
+  label,
+  asOf,
+  ends,
+  from,
+}: {
+  event: SiteEvent;
+  label: string;
+  asOf: Date;
+  /** Hidden from this time (epoch ms) by TIMED_HIDE_SCRIPT. */
+  ends?: number | undefined;
+  /** Hidden until this time. */
+  from?: number | undefined;
+}) {
+  return (
+    <Link
+      to="/events/$slug"
+      params={{ slug: event.slug }}
+      data-ends={ends}
+      data-from={from}
+      // Bleeds off the left edge like a pasted-on label; the photo clips it.
+      className="hero-item hero-delay-2 group absolute bottom-2 -left-6 w-[min(34rem,calc(100%-1.5rem))] origin-bottom-left -rotate-3 bg-primary py-7 pr-16 pl-12 text-primary-foreground shadow-[0_18px_40px_-18px_rgb(0_0_0/0.55)] transition-transform duration-300 hover:-rotate-2 sm:bottom-4 sm:py-9 sm:pl-[4.5rem] lg:top-[max(1.5rem,calc(100svh-39rem))] lg:bottom-auto lg:w-[calc(max(0px,(100vw-1400px)/2)+38rem)] lg:pl-[calc(max(0px,(100vw-1400px)/2)+4.5rem)]"
+    >
+      <IconArrowUpRight
+        className="absolute top-5 right-5 h-9 w-9 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 sm:h-11 sm:w-11"
+        stroke={2.6}
+        aria-hidden="true"
+      />
+      <span className="meta-label block text-primary-foreground/85">
+        {getEventDisplayStatus(event, asOf) === "ongoing" ? "Happening now" : label} &middot;{" "}
+        {dayMonth(event.isoDate)}
+      </span>
+      <span className="mt-2 block font-display text-2xl font-semibold leading-tight text-balance sm:text-3xl">
+        {event.title}
+      </span>
+      <Countdown
+        targetIso={event.isoDate}
+        endIso={event.endIsoDate}
+        className="mt-2 block text-sm font-semibold text-primary-foreground/85"
+      />
+    </Link>
+  );
+}
+
 export function Hero() {
-  const upcoming = getSortedEvents().filter((event) => getEventDisplayStatus(event) !== "past");
+  // As of when the page was rendered, so the first render matches the
+  // prebuilt page; TIMED_HIDE_SCRIPT handles anything ending after that.
+  const asOf = new Date(renderTime());
+  const upcoming = getSortedEvents(asOf).filter(
+    (event) => getEventDisplayStatus(event, asOf) !== "past",
+  );
   const pinned = upcoming.find((event) => event.slug === heroEventSlug);
   const next = pinned ?? upcoming[0];
+  // Events that take the card until they end (heroUntilEnd); the usual card
+  // waits, hidden, until the last of them is over.
+  const takeovers = upcoming.filter((event) => event.heroUntilEnd && event !== next);
+  const takeoverEnd = takeovers.length ? Math.max(...takeovers.map(eventEndTime)) : undefined;
 
   return (
     <section aria-labelledby="hero-title" className="bg-background">
@@ -239,35 +302,22 @@ export function Hero() {
       <div className="relative isolate h-[58svh] min-h-[22rem] overflow-hidden bg-ink-deep lg:h-[68svh]">
         <HeroPhotos />
 
+        {takeovers.map((event) => (
+          <HeroCard
+            key={event.slug}
+            event={event}
+            label={event.kicker}
+            asOf={asOf}
+            ends={eventEndTime(event)}
+          />
+        ))}
         {next ? (
-          <Link
-            to="/events/$slug"
-            params={{ slug: next.slug }}
-            // Bleeds off the left edge like a pasted-on label; the photo clips it.
-            className="hero-item hero-delay-2 group absolute bottom-2 -left-6 w-[min(34rem,calc(100%-1.5rem))] origin-bottom-left -rotate-3 bg-primary py-7 pr-16 pl-12 text-primary-foreground shadow-[0_18px_40px_-18px_rgb(0_0_0/0.55)] transition-transform duration-300 hover:-rotate-2 sm:bottom-4 sm:py-9 sm:pl-[4.5rem] lg:top-[max(1.5rem,calc(100svh-39rem))] lg:bottom-auto lg:w-[calc(max(0px,(100vw-1400px)/2)+38rem)] lg:pl-[calc(max(0px,(100vw-1400px)/2)+4.5rem)]"
-          >
-            <IconArrowUpRight
-              className="absolute top-5 right-5 h-9 w-9 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 sm:h-11 sm:w-11"
-              stroke={2.6}
-              aria-hidden="true"
-            />
-            <span className="meta-label block text-primary-foreground/85">
-              {getEventDisplayStatus(next) === "ongoing"
-                ? "Happening now"
-                : pinned
-                  ? pinned.kicker
-                  : "Next up"}{" "}
-              &middot; {dayMonth(next.isoDate)}
-            </span>
-            <span className="mt-2 block font-display text-2xl font-semibold leading-tight text-balance sm:text-3xl">
-              {next.title}
-            </span>
-            <Countdown
-              targetIso={next.isoDate}
-              endIso={next.endIsoDate}
-              className="mt-2 block text-sm font-semibold text-primary-foreground/85"
-            />
-          </Link>
+          <HeroCard
+            event={next}
+            label={pinned ? pinned.kicker : "Next up"}
+            asOf={asOf}
+            from={takeoverEnd}
+          />
         ) : null}
       </div>
     </section>
