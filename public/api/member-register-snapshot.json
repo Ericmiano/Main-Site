@@ -5,5 +5,10 @@
     "inGoodStanding": 2715
   },
   "byChapter": [],
-  "byCategory": []
+  "byCategory": [
+    {
+      "category": "corporate",
+      "members": 217
+    }
+  ]
 }
