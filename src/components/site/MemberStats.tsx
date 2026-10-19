@@ -128,14 +128,17 @@ export function MemberStats({ sticky = false }: { sticky?: boolean }) {
           </span>
         </p>
 
+        {/* One column per figure on phones; from md up the figures sit side by
+            side at their own width, so a short register leaves no empty slot. */}
         <ul
           className={cn(
-            "grid flex-1 gap-x-3 md:divide-x md:divide-border",
-            items.length > 3 ? "grid-cols-4" : "grid-cols-3",
+            "grid flex-1 gap-x-3 md:flex md:divide-x md:divide-border",
+            ["grid-cols-1", "grid-cols-1", "grid-cols-2", "grid-cols-3"][items.length] ??
+              "grid-cols-4",
           )}
         >
           {items.map(({ label, value, icon: ItemIcon }) => (
-            <li key={label} className="flex items-center gap-3 md:px-5 md:first:pl-0">
+            <li key={label} className="flex items-center gap-3 md:px-8 md:first:pl-0">
               <ItemIcon
                 className="hidden h-6 w-6 shrink-0 text-foreground/55 xl:block"
                 stroke={1.5}
