@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-import { createFileRoute, useLocation } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
@@ -47,6 +46,19 @@ function structuredData() {
     "@context": "https://schema.org",
     "@graph": [
       {
+        "@type": "WebSite",
+        name: "Architectural Association of Kenya",
+        url: `${SITE_URL}/`,
+        potentialAction: {
+          "@type": "SearchAction",
+          target: {
+            "@type": "EntryPoint",
+            urlTemplate: `${SITE_URL}/search?q={search_term_string}`,
+          },
+          "query-input": "required name=search_term_string",
+        },
+      },
+      {
         "@type": "Organization",
         "@id": `${SITE_URL}/#organization`,
         name: "Architectural Association of Kenya",
@@ -84,24 +96,6 @@ function structuredData() {
 }
 
 function Index() {
-  // Links into a section from other pages (/#latest from the footer,
-  // /#chapters from chapter breadcrumbs) land at the top of the page, as the
-  // router opens new pages there; take the reader on to the section.
-  const hash = useLocation({ select: (location) => location.hash });
-  useEffect(() => {
-    if (!hash) return;
-    // Jump rather than glide: a smooth scroll this long gets cut short. Once
-    // more after the router's own scroll and the page's late layout settle.
-    const jump = () =>
-      document.getElementById(hash)?.scrollIntoView({ block: "start", behavior: "instant" });
-    const frame = requestAnimationFrame(jump);
-    const settle = window.setTimeout(jump, 350);
-    return () => {
-      cancelAnimationFrame(frame);
-      window.clearTimeout(settle);
-    };
-  }, [hash]);
-
   return (
     <>
       <script

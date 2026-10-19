@@ -3,6 +3,7 @@ import { ANNOUNCEMENT_SCRIPT } from "@/data/announcement";
 import { TIMED_HIDE_SCRIPT } from "@/data/timed-hide";
 import { renderTime } from "@/lib/render-time";
 import { MotionLayer } from "@/components/site/MotionLayer";
+import { HashScroll } from "@/components/site/HashScroll";
 import { NotFound } from "@/components/site/NotFound";
 import {
   Outlet,
@@ -141,6 +142,7 @@ function RootComponent() {
       <Outlet />
       <InfoDialogHost />
       <MotionLayer />
+      <HashScroll />
     </>
   );
 }

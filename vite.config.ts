@@ -29,7 +29,7 @@ export default defineConfig({
           },
           // The shared page every /news/<slug> article is served from
           // (public/api/news-page.php); articles live in WordPress, not the build.
-          pages: [{ path: "/sitemap.xml" }, { path: "/news/__article__" }],
+          pages: [{ path: "/sitemap.xml" }, { path: "/news/__article__" }, { path: "/search" }],
         }
       : {}),
   },

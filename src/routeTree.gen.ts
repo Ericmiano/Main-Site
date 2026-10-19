@@ -37,6 +37,7 @@ import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ProgramsRouteImport } from './routes/programs'
 import { Route as ResourcesRouteImport } from './routes/resources'
 import { Route as SalarySurveyRouteImport } from './routes/salary-survey'
+import { Route as SearchRouteImport } from './routes/search'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as StatusOfTheBuiltEnvironmentRouteImport } from './routes/status-of-the-built-environment'
 import { Route as StoreRouteImport } from './routes/store'
@@ -198,6 +199,11 @@ const SalarySurveyRoute = SalarySurveyRouteImport.update({
   path: '/salary-survey',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SearchRoute = SearchRouteImport.update({
+  id: '/search',
+  path: '/search',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
@@ -325,6 +331,7 @@ export interface FileRoutesByFullPath {
   '/programs': typeof ProgramsRoute
   '/resources': typeof ResourcesRoute
   '/salary-survey': typeof SalarySurveyRoute
+  '/search': typeof SearchRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/status-of-the-built-environment': typeof StatusOfTheBuiltEnvironmentRoute
   '/store': typeof StoreRoute
@@ -374,6 +381,7 @@ export interface FileRoutesByTo {
   '/programs': typeof ProgramsRoute
   '/resources': typeof ResourcesRoute
   '/salary-survey': typeof SalarySurveyRoute
+  '/search': typeof SearchRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/status-of-the-built-environment': typeof StatusOfTheBuiltEnvironmentRoute
   '/store': typeof StoreRoute
@@ -424,6 +432,7 @@ export interface FileRoutesById {
   '/programs': typeof ProgramsRoute
   '/resources': typeof ResourcesRoute
   '/salary-survey': typeof SalarySurveyRoute
+  '/search': typeof SearchRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/status-of-the-built-environment': typeof StatusOfTheBuiltEnvironmentRoute
   '/store': typeof StoreRoute
@@ -475,6 +484,7 @@ export interface FileRouteTypes {
     | '/programs'
     | '/resources'
     | '/salary-survey'
+    | '/search'
     | '/sitemap.xml'
     | '/status-of-the-built-environment'
     | '/store'
@@ -524,6 +534,7 @@ export interface FileRouteTypes {
     | '/programs'
     | '/resources'
     | '/salary-survey'
+    | '/search'
     | '/sitemap.xml'
     | '/status-of-the-built-environment'
     | '/store'
@@ -573,6 +584,7 @@ export interface FileRouteTypes {
     | '/programs'
     | '/resources'
     | '/salary-survey'
+    | '/search'
     | '/sitemap.xml'
     | '/status-of-the-built-environment'
     | '/store'
@@ -623,6 +635,7 @@ export interface RootRouteChildren {
   ProgramsRoute: typeof ProgramsRoute
   ResourcesRoute: typeof ResourcesRoute
   SalarySurveyRoute: typeof SalarySurveyRoute
+  SearchRoute: typeof SearchRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   StatusOfTheBuiltEnvironmentRoute: typeof StatusOfTheBuiltEnvironmentRoute
   StoreRoute: typeof StoreRoute
@@ -842,6 +855,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SalarySurveyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/search': {
+      id: '/search'
+      path: '/search'
+      fullPath: '/search'
+      preLoaderRoute: typeof SearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sitemap.xml': {
       id: '/sitemap.xml'
       path: '/sitemap.xml'
@@ -1007,6 +1027,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProgramsRoute: ProgramsRoute,
   ResourcesRoute: ResourcesRoute,
   SalarySurveyRoute: SalarySurveyRoute,
+  SearchRoute: SearchRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   StatusOfTheBuiltEnvironmentRoute: StatusOfTheBuiltEnvironmentRoute,
   StoreRoute: StoreRoute,

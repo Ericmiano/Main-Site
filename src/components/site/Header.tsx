@@ -185,6 +185,16 @@ export function Header() {
         e.preventDefault();
         setSearchLoaded(true);
         setSearchOpen((v) => !v);
+        return;
+      }
+      // "/" opens search too, unless the reader is typing somewhere.
+      const target = e.target as HTMLElement | null;
+      const typing =
+        target?.isContentEditable || /^(input|textarea|select)$/i.test(target?.tagName ?? "");
+      if (e.key === "/" && !typing && !e.metaKey && !e.ctrlKey && !e.altKey) {
+        e.preventDefault();
+        setSearchLoaded(true);
+        setSearchOpen(true);
       }
     };
     document.addEventListener("keydown", onKey);
