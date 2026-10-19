@@ -195,6 +195,12 @@ export const buildingRegulationsDocuments: ArchiveDocument[] = [
     href: fileUrl("/documents/Kenya-Roads-Act-2007.pdf"),
   },
   {
+    title:
+      "The Nairobi Planning & Development Management System (NPDMS): User Experience 2023 Survey Findings",
+    year: "2023",
+    href: fileUrl("/documents/AAK-NPDMS-User-Experience-Survey-2023.pdf"),
+  },
+  {
     title: "Automation of Development Control in Kenya",
     href: fileUrl(
       "/documents/FINAL_AUTOMATION-OF-DEVELOPMENT-CONTROLAUTOMATION-OF-DEVELOPMENT-CONTROL.pdf",
@@ -236,7 +242,7 @@ export const buildpressMagazineDocuments: ArchiveDocument[] = [
     href: fileUrl("/documents/BuildPress-Magazine-2021f.pdf"),
   },
   {
-    title: "BuildPress — Kisumu",
+    title: "BuildPress, October 2025 Convention Edition: Shaping the Urban Future",
     year: "2025",
     href: fileUrl("/documents/AAK_BuildPress2025_Kisumu.pdf"),
   },
@@ -331,9 +337,9 @@ export const pressStatementsDocuments: ArchiveDocument[] = [
 
 export const salarySurveyDocuments: ArchiveDocument[] = [
   {
-    title: "AAK Salary Survey Report",
+    title: "AAK Salary Survey Report 2022 (Second Edition)",
     year: "2022",
-    href: fileUrl("/documents/AAK-Salary-Survey-Report-2022-1.pdf"),
+    href: fileUrl("/documents/AAK-Salary-Survey-Report-2022-Second-Edition.pdf"),
   },
   {
     title: "AAK Salary Survey 2022: Infographics",
@@ -415,6 +421,17 @@ export const generalDownloadsDocuments: ArchiveDocument[] = [
     title: "AAK Annual Convention 2026: Magazine",
     year: "2026",
     href: fileUrl("/documents/AAK-Annual-Convention-Magazine-2026.pdf"),
+  },
+  {
+    title: "AAK Convention Magazine 2024: Social Habitat for the Region",
+    year: "2024",
+    href: fileUrl("/documents/AAK-Annual-Convention-Magazine-2024.pdf"),
+  },
+  {
+    title:
+      "Advancing Social Equity and Community Engagement through 3iF (10th Annual East Africa Regional Workshop & Exhibition)",
+    year: "2023",
+    href: fileUrl("/documents/Advancing-Social-Equity-and-Community-Engagement-through-3iF.pdf"),
   },
   {
     title: "AAK-Basco DuraCoat Awards of Excellence 2026: Applicant Guidelines",

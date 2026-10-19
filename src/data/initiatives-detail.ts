@@ -153,6 +153,10 @@ export const initiativeDetails: InitiativeDetail[] = [
         title: "Je Una Mjengo Campaign Report",
         href: fileUrl("/documents/Je-Una-Mjengo-Campaign.pdf"),
       },
+      {
+        title: "Je, Una Mjengo? Media Coverage Report (June 2024)",
+        href: fileUrl("/documents/AAK-Je-Una-Mjengo-Media-Coverage-2024.pdf"),
+      },
     ],
     videos: [
       {
@@ -458,7 +462,12 @@ export const initiativeDetails: InitiativeDetail[] = [
     imageAlt: "Participants and AAK members in a group photo in a garden courtyard",
     documents: [
       {
-        title: "AAK × UN-Habitat Urban Thinkers Campus",
+        title:
+          "Urban Thinkers Campus 9.0 Report (2024): Holistic Housing Solutions for Inclusive and Sustainable Urban Futures",
+        href: fileUrl("/documents/AAK-Urban-Thinkers-Campus-9.0-Report-2024.pdf"),
+      },
+      {
+        title: "AAK × UN-Habitat Urban Thinkers Campus 7.0 Report (2022)",
         href: fileUrl("/documents/AAK-UN-Habitat-Urban-Thinkers-Campus.pdf"),
       },
     ],

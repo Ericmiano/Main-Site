@@ -43,3 +43,6 @@ mail-merge.csv
 
 # Python bytecode
 __pycache__/
+
+# Over GitHub's 100 MB file limit: served from R2 only (aak-documents/documents/).
+documents/AAK-Annual-Convention-Magazine-2024.pdf

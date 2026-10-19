@@ -261,13 +261,13 @@ export const events: SiteEvent[] = [
     body: [
       "Smart Cities Forum brings together government leaders, agencies, special economic zone operators, municipalities, private sector players, urban planners, academia, developers, counties, innovators and development partners to explore solutions shaping Africa’s Smart Cities Agenda.",
       "What to expect: sharing ideas and experiences, panel sessions, masterclasses, exhibition and display opportunities, and speaking opportunities.",
-      "Delegate fee: KES 17,400 + VAT inc., covering conference access, masterclasses, tea breaks and lunch, and networking. Pay by M-Pesa (Paybill 500700, account: your name or company name) or to Co-operative Bank of Kenya, account name Nation Media Group PLC, account number 01136846333300 (KES), Swift code KCOOKENA.",
+      "Delegate fee: KES 17,400 (VAT inclusive), covering conference access, masterclasses, tea breaks and lunch, and networking. Pay by M-Pesa (Paybill 500700, account: your name or company name) or to Co-operative Bank of Kenya, account name Nation Media Group PLC, account number 01136846333300 (KES), Swift code KCOOKENA.",
       "Enquiries: Jason on +254 719 852 358 or jjmutua@ke.nationmedia.com, or AAK on +254 721 691 337 or aak@aak.or.ke.",
     ],
     facts: [
       { label: "Dates", value: "29 – 30 October 2026" },
       { label: "Venue", value: "Iconic Plaza Hotel, Nairobi" },
-      { label: "Delegate fee", value: "KES 17,400 + VAT inc." },
+      { label: "Delegate fee", value: "KES 17,400 (VAT inclusive)" },
       { label: "CPD", value: "CPD points approved" },
     ],
     registerLabel: "",
