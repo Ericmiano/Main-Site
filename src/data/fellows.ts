@@ -32,9 +32,10 @@ export const fellowsRoles = [
   },
 ];
 
-/** How Corporate Members become Fellows (By-Laws 3.2.1, 8.1 and 22.1). */
+/** How Corporate Members become Fellows (By-Laws 3.2.1 and 8.1); fees per the
+ * Secretariat, 19 Oct 2026. */
 export const fellowsAdmission =
-  "Fellowship isn't applied for. Corporate Members are nominated by the Governing Council, or invited by the College of Fellows, into the Class of Fellows, and pay a Fellowship entrance fee equal to ten years' Corporate subscription (KES 75,000 at today's rate). Fellows are entitled to the affix F.A.A.K.";
+  "Fellowship isn't applied for. Corporate Members are nominated by the Governing Council, or invited by the College of Fellows, into the Class of Fellows. Fellows pay no fees, and are entitled to the affix F.A.A.K.";
 
 /** "Meet the Fellows Campaign" playlist on AAK's YouTube channel. */
 export const MEET_THE_FELLOWS_PLAYLIST = "PL2WvnH1y-v8PTqAOUX6T0ZNmBH0YnqA2Y";

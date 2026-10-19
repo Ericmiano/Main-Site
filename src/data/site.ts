@@ -1247,10 +1247,9 @@ export const membershipFees: MembershipFee[] = [
   { category: "Licentiate", entrance: "1,000.00", annual: "5,500.00", group: "Individual members" },
   { category: "Corporate", entrance: "1,000.00", annual: "7,500.00", group: "Individual members" },
   {
-    // Entrance fee from the AAK Constitution, By-Law 22.1 (ten years' Corporate
-    // subscription); the By-Laws set no separate annual subscription for Fellows.
+    // The Secretariat, 19 Oct 2026: Fellows pay no fees.
     category: "Fellow",
-    entrance: "75,000.00",
+    entrance: "None",
     annual: "None",
     group: "Individual members",
     note: "Senior category · by nomination",
