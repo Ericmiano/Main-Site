@@ -67,9 +67,6 @@ export interface SiteEvent {
   imageAlt?: string;
   /** "poster": a square flyer, shown whole instead of cropped to 4:3. */
   imageFit?: "poster";
-  /** Takes over the homepage hero card until it ends; the usual card returns
-   * on its own at that moment (see TIMED_HIDE_SCRIPT). */
-  heroUntilEnd?: boolean;
   /** Who runs it, when that isn't AAK (for search engines' event data). */
   organizer?: string;
   /** External registration / RSVP destination — omit when `registerTo` is set. */
@@ -188,7 +185,6 @@ export const events: SiteEvent[] = [
     imageAlt:
       "Poster: the AAK Construction Project Managers Chapter invites you to a Mental Wellness Webinar, Beyond “I AM FINE”: Are you really fine?, with Kathleen Muthoni, Friday 16 October 2026, 12.00 noon to 1.00 PM on Teams",
     imageFit: "poster",
-    heroUntilEnd: true,
     registerHref: "https://shorturl.at/zIGJF",
     registerLabel: "Register",
     cta: "Register",
@@ -324,10 +320,6 @@ export const events: SiteEvent[] = [
     cta: "View details",
   },
 ];
-
-/** The event pinned to the homepage hero card while it's still ahead; once it
- * has passed (or with no slug set) the card falls back to the next event. */
-export const heroEventSlug: string | null = "status-of-built-environment-2026";
 
 /** The event's real status right now — "upcoming"/"ongoing" in the data goes stale once the date passes. */
 /** isoDate / endIsoDate are either dates ("2026-10-22", the whole day in

@@ -13,7 +13,6 @@ import {
   eventEndTime,
   getEventDisplayStatus,
   getSortedEvents,
-  heroEventSlug,
   type SiteEvent,
 } from "@/data/site";
 import { renderTime } from "@/lib/render-time";
@@ -181,9 +180,8 @@ const chapterList = (() => {
 
 /**
  * Statement hero, after RIBA's: the positioning line in AAK red on a light
- * band, then full-bleed rotating photographs carrying an angled red card for the
- * lead story: the pinned event (heroEventSlug) while it's ahead, else the
- * next event.
+ * band, then full-bleed rotating photographs carrying an angled red card that
+ * cycles through every upcoming event.
  */
 
 /** "3rd December" */
@@ -194,49 +192,147 @@ function dayMonth(iso: string) {
     day % 100 >= 11 && day % 100 <= 13 ? "th" : (["th", "st", "nd", "rd"][day % 10] ?? "th");
   return `${day}${suffix} ${date.toLocaleDateString("en-GB", { month: "long", timeZone: "UTC" })}`;
 }
-/** The angled red card on the hero photos, linking to an event. */
-function HeroCard({
-  event,
-  label,
-  asOf,
-  ends,
-  from,
-}: {
-  event: SiteEvent;
-  label: string;
-  asOf: Date;
-  /** Hidden from this time (epoch ms) by TIMED_HIDE_SCRIPT. */
-  ends?: number | undefined;
-  /** Hidden until this time. */
-  from?: number | undefined;
-}) {
+const CARD_MS = 30_000;
+
+/**
+ * The angled red card on the hero photos: every upcoming event in turn,
+ * soonest first, a new one every 30 seconds. Hovering or focusing the card
+ * holds it; the dots pick an event and the button pauses. No automatic
+ * turning for prefers-reduced-motion. Each card carries its end time
+ * (data-ends), so one that ends is hidden by TIMED_HIDE_SCRIPT and skipped,
+ * even mid-loop.
+ */
+function HeroEvents({ events, asOf }: { events: SiteEvent[]; asOf: Date }) {
+  const [index, setIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const [held, setHeld] = useState(false);
+  const [reduced, setReduced] = useState(false);
+  const count = events.length;
+
+  /** The next event that hasn't ended, after `from` (or `from` if none). */
+  const nextLive = (from: number) => {
+    for (let k = 1; k <= count; k++) {
+      const j = (from + k) % count;
+      if (eventEndTime(events[j]!) > Date.now()) return j;
+    }
+    return from;
+  };
+
+  useEffect(() => {
+    setReduced(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  }, []);
+  // Off the current card the moment its event ends (or at once if it has).
+  useEffect(() => {
+    const current = events[index];
+    if (!current) return;
+    const left = eventEndTime(current) - Date.now();
+    if (left <= 0) {
+      setIndex((i) => nextLive(i));
+      return;
+    }
+    if (left > 2 ** 31 - 1) return;
+    const timer = window.setTimeout(() => setIndex((i) => nextLive(i)), left + 50);
+    return () => window.clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [index, events]);
+  useEffect(() => {
+    if (paused || held || reduced || count < 2) return;
+    const timer = window.setInterval(() => setIndex((i) => nextLive(i)), CARD_MS);
+    return () => window.clearInterval(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [paused, held, reduced, count, index]);
+
+  if (!count) return null;
   return (
-    <Link
-      to="/events/$slug"
-      params={{ slug: event.slug }}
-      data-ends={ends}
-      data-from={from}
+    <div
+      role="region"
+      aria-label="Upcoming events"
+      onMouseEnter={() => setHeld(true)}
+      onMouseLeave={() => setHeld(false)}
+      onFocus={() => setHeld(true)}
+      onBlur={() => setHeld(false)}
       // Bleeds off the left edge like a pasted-on label; the photo clips it.
-      className="hero-item hero-delay-2 group absolute bottom-2 -left-6 w-[min(34rem,calc(100%-1.5rem))] origin-bottom-left -rotate-3 bg-primary py-7 pr-16 pl-12 text-primary-foreground shadow-[0_18px_40px_-18px_rgb(0_0_0/0.55)] transition-transform duration-300 hover:-rotate-2 sm:bottom-4 sm:py-9 sm:pl-[4.5rem] lg:top-[max(1.5rem,calc(100svh-39rem))] lg:bottom-auto lg:w-[calc(max(0px,(100vw-1400px)/2)+38rem)] lg:pl-[calc(max(0px,(100vw-1400px)/2)+4.5rem)]"
+      className="hero-item hero-delay-2 absolute bottom-2 -left-6 w-[min(34rem,calc(100%-1.5rem))] origin-bottom-left -rotate-3 shadow-[0_18px_40px_-18px_rgb(0_0_0/0.55)] transition-transform duration-300 hover:-rotate-2 sm:bottom-4 lg:top-[max(1.5rem,calc(100svh-39rem))] lg:bottom-auto lg:w-[calc(max(0px,(100vw-1400px)/2)+38rem)]"
     >
-      <IconArrowUpRight
-        className="absolute top-5 right-5 h-9 w-9 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 sm:h-11 sm:w-11"
-        stroke={2.6}
-        aria-hidden="true"
-      />
-      <span className="meta-label block text-primary-foreground/85">
-        {getEventDisplayStatus(event, asOf) === "ongoing" ? "Happening now" : label} &middot;{" "}
-        {dayMonth(event.isoDate)}
-      </span>
-      <span className="mt-2 block font-display text-2xl font-semibold leading-tight text-balance sm:text-3xl">
-        {event.title}
-      </span>
-      <Countdown
-        targetIso={event.isoDate}
-        endIso={event.endIsoDate}
-        className="mt-2 block text-sm font-semibold text-primary-foreground/85"
-      />
-    </Link>
+      {/* All cards share one grid cell, so the box keeps the tallest card's
+          height and doesn't jump as they change. */}
+      <div className="grid bg-primary">
+        {events.map((event, i) => {
+          const shown = i === index;
+          return (
+            <Link
+              key={event.slug}
+              to="/events/$slug"
+              params={{ slug: event.slug }}
+              data-ends={eventEndTime(event)}
+              aria-hidden={shown ? undefined : true}
+              tabIndex={shown ? undefined : -1}
+              className={cn(
+                "group relative block py-7 pr-16 pl-12 text-primary-foreground transition-opacity duration-500 [grid-area:1/1] sm:py-9 sm:pl-[4.5rem] lg:pl-[calc(max(0px,(100vw-1400px)/2)+4.5rem)]",
+                count > 1 && "pb-12 sm:pb-14",
+                shown ? "opacity-100" : "pointer-events-none opacity-0",
+              )}
+            >
+              <IconArrowUpRight
+                className="absolute top-5 right-5 h-9 w-9 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 sm:h-11 sm:w-11"
+                stroke={2.6}
+                aria-hidden="true"
+              />
+              <span className="meta-label block text-primary-foreground/85">
+                {getEventDisplayStatus(event, asOf) === "ongoing" ? "Happening now" : event.kicker}{" "}
+                &middot; {dayMonth(event.isoDate)}
+              </span>
+              <span className="mt-2 block font-display text-2xl font-semibold leading-tight text-balance sm:text-3xl">
+                {event.title}
+              </span>
+              <Countdown
+                targetIso={event.isoDate}
+                endIso={event.endIsoDate}
+                className="mt-2 block text-sm font-semibold text-primary-foreground/85"
+              />
+            </Link>
+          );
+        })}
+      </div>
+      {count > 1 ? (
+        <div className="absolute right-4 bottom-2 flex items-center gap-1 text-primary-foreground sm:bottom-3">
+          <span className="flex items-center" role="group" aria-label="Choose an event">
+            {events.map((event, i) => (
+              <button
+                key={event.slug}
+                type="button"
+                data-ends={eventEndTime(event)}
+                onClick={() => setIndex(i)}
+                aria-label={`Event ${i + 1} of ${count}: ${event.title}`}
+                aria-current={i === index ? "true" : undefined}
+                className="flex h-6 w-4 items-center justify-center"
+              >
+                <span
+                  className={cn(
+                    "block h-1.5 rounded-full bg-primary-foreground transition-all",
+                    i === index ? "w-3.5" : "w-1.5 opacity-50",
+                  )}
+                />
+              </button>
+            ))}
+          </span>
+          {reduced ? null : (
+            <button
+              type="button"
+              onClick={() => setPaused((v) => !v)}
+              aria-label={paused ? "Play the events" : "Pause the events"}
+              className="flex h-6 w-6 items-center justify-center"
+            >
+              {paused ? (
+                <Play className="h-3 w-3" aria-hidden="true" />
+              ) : (
+                <Pause className="h-3 w-3" aria-hidden="true" />
+              )}
+            </button>
+          )}
+        </div>
+      ) : null}
+    </div>
   );
 }
 
@@ -247,12 +343,6 @@ export function Hero() {
   const upcoming = getSortedEvents(asOf).filter(
     (event) => getEventDisplayStatus(event, asOf) !== "past",
   );
-  const pinned = upcoming.find((event) => event.slug === heroEventSlug);
-  const next = pinned ?? upcoming[0];
-  // Events that take the card until they end (heroUntilEnd); the usual card
-  // waits, hidden, until the last of them is over.
-  const takeovers = upcoming.filter((event) => event.heroUntilEnd && event !== next);
-  const takeoverEnd = takeovers.length ? Math.max(...takeovers.map(eventEndTime)) : undefined;
 
   return (
     <section aria-labelledby="hero-title" className="bg-background">
@@ -302,23 +392,7 @@ export function Hero() {
       <div className="relative isolate h-[58svh] min-h-[22rem] overflow-hidden bg-ink-deep lg:h-[68svh]">
         <HeroPhotos />
 
-        {takeovers.map((event) => (
-          <HeroCard
-            key={event.slug}
-            event={event}
-            label={event.kicker}
-            asOf={asOf}
-            ends={eventEndTime(event)}
-          />
-        ))}
-        {next ? (
-          <HeroCard
-            event={next}
-            label={pinned ? pinned.kicker : "Next up"}
-            asOf={asOf}
-            from={takeoverEnd}
-          />
-        ) : null}
+        <HeroEvents events={upcoming} asOf={asOf} />
       </div>
     </section>
   );
