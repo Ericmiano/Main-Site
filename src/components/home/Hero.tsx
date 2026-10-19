@@ -1,11 +1,6 @@
 import { useEffect, useState } from "react";
 import { announcement } from "@/data/announcement";
-import {
-  IconArrowRight as ArrowRight,
-  IconArrowUpRight,
-  IconPlayerPauseFilled as Pause,
-  IconPlayerPlayFilled as Play,
-} from "@tabler/icons-react";
+import { IconArrowRight as ArrowRight, IconArrowUpRight } from "@tabler/icons-react";
 import { Link } from "@tanstack/react-router";
 import { Countdown } from "@/components/site/Countdown";
 import {
@@ -84,12 +79,11 @@ const file = (name: string, w: number) => `/img/hero/${name}-${w}.webp`;
  * Crossfading hero photographs. The first loads at once (it's the LCP); each
  * of the others loads while the one before it is showing, so it's decoded
  * before it fades in and visitors only download the photos they reach.
- * Auto-advances every 6s unless paused, and never for prefers-reduced-motion.
- * The dots pick a photo; the button pauses.
+ * Auto-advances every 6s, never for prefers-reduced-motion. The dots pick a
+ * photo.
  */
 function HeroPhotos() {
   const [index, setIndex] = useState(0);
-  const [paused, setPaused] = useState(false);
   const [reduced, setReduced] = useState(false);
   // Highest slide index allowed to load: the current one and the next.
   const [loadUpTo, setLoadUpTo] = useState(0);
@@ -101,10 +95,10 @@ function HeroPhotos() {
     setLoadUpTo((n) => Math.max(n, Math.min(index + 1, SLIDES.length - 1)));
   }, [index]);
   useEffect(() => {
-    if (paused || reduced) return;
+    if (reduced) return;
     const timer = window.setInterval(() => setIndex((i) => (i + 1) % SLIDES.length), SLIDE_MS);
     return () => window.clearInterval(timer);
-  }, [paused, reduced, index]);
+  }, [reduced, index]);
 
   const current = SLIDES[index]!;
   return (
@@ -153,20 +147,6 @@ function HeroPhotos() {
             </button>
           ))}
         </span>
-        {reduced ? null : (
-          <button
-            type="button"
-            onClick={() => setPaused((p) => !p)}
-            aria-label={paused ? "Play hero photos" : "Pause hero photos"}
-            className="flex h-6 w-6 items-center justify-center"
-          >
-            {paused ? (
-              <Play className="h-3 w-3" aria-hidden="true" />
-            ) : (
-              <Pause className="h-3 w-3" aria-hidden="true" />
-            )}
-          </button>
-        )}
       </div>
     </>
   );
@@ -197,14 +177,13 @@ const CARD_MS = 30_000;
 /**
  * The angled red card on the hero photos: every upcoming event in turn,
  * soonest first, a new one every 30 seconds. Hovering or focusing the card
- * holds it; the dots pick an event and the button pauses. No automatic
+ * holds it; the dots pick an event. No automatic
  * turning for prefers-reduced-motion. Each card carries its end time
  * (data-ends), so one that ends is hidden by TIMED_HIDE_SCRIPT and skipped,
  * even mid-loop.
  */
 function HeroEvents({ events, asOf }: { events: SiteEvent[]; asOf: Date }) {
   const [index, setIndex] = useState(0);
-  const [paused, setPaused] = useState(false);
   const [held, setHeld] = useState(false);
   const [reduced, setReduced] = useState(false);
   const count = events.length;
@@ -236,11 +215,11 @@ function HeroEvents({ events, asOf }: { events: SiteEvent[]; asOf: Date }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [index, events]);
   useEffect(() => {
-    if (paused || held || reduced || count < 2) return;
+    if (held || reduced || count < 2) return;
     const timer = window.setInterval(() => setIndex((i) => nextLive(i)), CARD_MS);
     return () => window.clearInterval(timer);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [paused, held, reduced, count, index]);
+  }, [held, reduced, count, index]);
 
   if (!count) return null;
   return (
@@ -316,20 +295,6 @@ function HeroEvents({ events, asOf }: { events: SiteEvent[]; asOf: Date }) {
               </button>
             ))}
           </span>
-          {reduced ? null : (
-            <button
-              type="button"
-              onClick={() => setPaused((v) => !v)}
-              aria-label={paused ? "Play the events" : "Pause the events"}
-              className="flex h-6 w-6 items-center justify-center"
-            >
-              {paused ? (
-                <Play className="h-3 w-3" aria-hidden="true" />
-              ) : (
-                <Pause className="h-3 w-3" aria-hidden="true" />
-              )}
-            </button>
-          )}
         </div>
       ) : null}
     </div>
