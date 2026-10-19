@@ -245,7 +245,8 @@ export const events: SiteEvent[] = [
   },
   {
     // Details from the forum's flyer (19 Oct 2026); the flyer itself isn't
-    // published yet, at the user's request.
+    // published on this page yet, at the user's request. Theme, World Cities
+    // Day and the exhibitor option from AAK's X post of 19 Oct 2026.
     slug: "smart-cities-forum-2026",
     title: "Smart Cities Forum 2026",
     kicker: "Urban October",
@@ -260,14 +261,20 @@ export const events: SiteEvent[] = [
     summary:
       "The 2nd edition of the Smart Cities Forum: People | Innovation | Sustainable Cities. For architects, engineers, planners, surveyors, project managers and consultants. CPD points approved.",
     body: [
+      "Held for World Cities Day, the forum is hosted by Nation Media Group in partnership with AAK under the theme “From Urban Challenges to Smart, Sustainable and Inclusive Futures”.",
       "Smart Cities Forum brings together government leaders, agencies, special economic zone operators, municipalities, private sector players, urban planners, academia, developers, counties, innovators and development partners to explore solutions shaping Africa’s Smart Cities Agenda.",
       "What to expect: sharing ideas and experiences, panel sessions, masterclasses, exhibition and display opportunities, and speaking opportunities.",
+      "Take part as a delegate, with access to all the masterclasses and sessions, or as an exhibitor or booth partner showcasing your innovations.",
       "Delegate fee: KES 17,400 (VAT inclusive), covering conference access, masterclasses, tea breaks and lunch, and networking. Pay by M-Pesa (Paybill 500700, account: your name or company name) or to Co-operative Bank of Kenya, account name Nation Media Group PLC, account number 01136846333300 (KES), Swift code KCOOKENA.",
       "Enquiries: Jason on +254 719 852 358 or jjmutua@ke.nationmedia.com, or AAK on +254 721 691 337 or aak@aak.or.ke.",
     ],
     facts: [
       { label: "Dates", value: "29 – 30 October 2026" },
       { label: "Venue", value: "Iconic Plaza Hotel, Nairobi" },
+      {
+        label: "Theme",
+        value: "From Urban Challenges to Smart, Sustainable and Inclusive Futures",
+      },
       { label: "Delegate fee", value: "KES 17,400 (VAT inclusive)" },
       { label: "CPD", value: "CPD points approved" },
     ],
