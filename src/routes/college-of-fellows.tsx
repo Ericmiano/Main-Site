@@ -12,9 +12,10 @@ import { SectionHeading } from "@/components/site/SectionHeading";
 import { PageBreadcrumb } from "@/components/site/PageBreadcrumb";
 import { YouTubeEmbed } from "@/components/site/YouTubeEmbed";
 import { ArchitecturalDrawing } from "@/components/site/ArchitecturalDrawing";
-import { collegeOfFellows } from "@/data/site";
 import {
   fellowsAdmission,
+  fellowsOfficers,
+  fellowsRegister,
   fellowsIntro,
   fellowsRoles,
   MEET_THE_FELLOWS_PLAYLIST,
@@ -45,7 +46,7 @@ export const Route = createFileRoute("/college-of-fellows")({
   component: CollegeOfFellowsPage,
 });
 
-const fellows = [...collegeOfFellows].sort((a, b) => a.localeCompare(b));
+const fellows = fellowsRegister;
 const [featured, ...moreVideos] = meetTheFellowsVideos;
 
 function CollegeOfFellowsPage() {
@@ -94,6 +95,16 @@ function CollegeOfFellowsPage() {
                 <p className="mt-5 text-base leading-relaxed text-muted-foreground">
                   {fellowsIntro}
                 </p>
+                <dl className="mt-6 flex flex-wrap gap-x-10 gap-y-3">
+                  {fellowsOfficers.map((officer) => (
+                    <div key={officer.role}>
+                      <dt className="meta-label text-muted-foreground">{officer.role}</dt>
+                      <dd className="mt-1 font-display text-lg font-semibold text-foreground">
+                        {officer.name}
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
               </Reveal>
               <Reveal delay={100}>
                 <dl className="grid grid-cols-2 gap-4">
@@ -220,10 +231,32 @@ function CollegeOfFellowsPage() {
               }
             />
             <Reveal delay={100}>
-              <ul className="mt-10 grid grid-cols-2 gap-x-6 gap-y-1 text-sm sm:grid-cols-3 lg:grid-cols-5">
-                {fellows.map((name) => (
-                  <li key={name} className="border-b border-border py-1.5 text-foreground">
-                    {name}
+              <ul className="mt-10 grid grid-cols-1 gap-x-8 sm:grid-cols-2 lg:grid-cols-4">
+                {fellows.map((fellow) => (
+                  <li
+                    key={fellow.name}
+                    className="flex items-start justify-between gap-3 border-b border-border py-3"
+                  >
+                    <span className="min-w-0">
+                      <span className="block text-sm font-medium text-foreground">
+                        {fellow.name}
+                      </span>
+                      <span className="block text-xs text-muted-foreground">
+                        {fellow.chapters.join(" · ")}
+                      </span>
+                    </span>
+                    {fellow.video ? (
+                      <a
+                        href={`https://www.youtube.com/watch?v=${fellow.video}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`Watch ${fellow.name} in Meet the Fellows (YouTube)`}
+                        className="inline-flex shrink-0 items-center gap-1 rounded-full border border-border px-2.5 py-1 text-xs font-semibold text-foreground transition-colors hover:border-primary hover:text-primary"
+                      >
+                        <Youtube className="h-3.5 w-3.5 text-primary" aria-hidden="true" />
+                        Watch
+                      </a>
+                    ) : null}
                   </li>
                 ))}
               </ul>

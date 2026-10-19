@@ -89,11 +89,8 @@ export function MemberStats({ sticky = false }: { sticky?: boolean }) {
 
   const items: { label: string; value: number; icon: Icon }[] = [
     { label: "Registered members", value: stats.totals.members, icon: IconUsers },
-    // Only from the live feed: the hand-entered snapshot's "active" count is the
-    // dashboard's active accounts (5,503 of 5,513), not members in good standing.
-    ...(live
-      ? [{ label: "Active members", value: stats.totals.inGoodStanding, icon: IconUserCheck }]
-      : []),
+    // Members in good standing: paid up for the year.
+    { label: "Active members", value: stats.totals.inGoodStanding, icon: IconUserCheck },
     ...stats.byCategory.map((c) => ({
       label: `${capitalise(c.category)} members`,
       value: c.members,

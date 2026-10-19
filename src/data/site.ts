@@ -1,4 +1,5 @@
 import { fileUrl } from "@/lib/files";
+import { fellowsRegister } from "@/data/fellows";
 
 /** The AAK Annual Convention 2026 Magazine (130 pages; the PDF is dated 9
  * October 2026), published exactly as supplied, unedited and uncompressed:
@@ -1045,59 +1046,8 @@ export const secretariat: SecretariatMember[] = [
 ];
 
 /** College of Fellows 2026 — the highest honour AAK bestows on members. */
-export const collegeOfFellows: string[] = [
-  "Kebathi Stanley",
-  "Prof Alfred Omenya",
-  "Prof. Maringa Paul",
-  "Eshani Mehraz",
-  "Oundo Steven",
-  "Musyoki Norbert",
-  "Gathecha Waweru",
-  "Mutiso Reuben",
-  "Njendu James",
-  "Magutu Gerald",
-  "Mulyungi Gideon",
-  "Munyanya Mohammed",
-  "Sika Philip",
-  "Kungu Philip",
-  "Ndong Jeremiah",
-  "Karuri Lee",
-  "Mwangi Benson",
-  "Gitoho James",
-  "Cavanagh Jon Anthony",
-  "Simu Allan",
-  "Kimathi James",
-  "Oino Evans Juma",
-  "Mugure Njendu",
-  "Prof. Kibue Susan",
-  "Emma Miloyo",
-  "Masu Sylvester",
-  "Ogoda James",
-  "Gichunge Hezekiah",
-  "F. Kairu Bachia",
-  "Hajee Bashir",
-  "Aluvaala Alfred",
-  "Gichuiri Onesimus",
-  "Kimoro Daniel",
-  "Kimani Mathu",
-  "Muchungu Anna",
-  "Murage Stanley",
-  "Njuguna David",
-  "Chanzu Yusuf",
-  "Oketch Tom",
-  "Kagondu Grace",
-  "Matalanga Nathaniel",
-  "Mangat Harcharan",
-  "Goro Evans",
-  "Hirani Ratna",
-  "Kitololo Austin",
-  "Odinga Raila",
-  "Otwani Justus",
-  "Kimeu Musau",
-  "Njau Gilbert",
-  "Masinde Augustine",
-  "Mehta Hitesh",
-];
+/** The Fellows' names, from AAK's register (see fellowsRegister in fellows.ts). */
+export const collegeOfFellows: string[] = fellowsRegister.map((fellow) => fellow.name);
 
 /** The nine judged categories of the AAK-Basco DuraCoat Awards of Excellence. */
 export const awardCategories = [
@@ -1285,7 +1235,13 @@ export interface MembershipFee {
   href?: string;
 }
 export const membershipFees: MembershipFee[] = [
-  { category: "Student", entrance: "None", annual: "500.00", group: "Individual members" },
+  {
+    category: "Student",
+    entrance: "500.00",
+    annual: "None",
+    group: "Individual members",
+    note: "One-off fee at registration; on finishing school, students upgrade and pay annual fees",
+  },
   { category: "Technician", entrance: "600.00", annual: "1,500.00", group: "Individual members" },
   { category: "Graduate", entrance: "600.00", annual: "3,750.00", group: "Individual members" },
   { category: "Licentiate", entrance: "1,000.00", annual: "5,500.00", group: "Individual members" },
@@ -1295,10 +1251,16 @@ export const membershipFees: MembershipFee[] = [
     // subscription); the By-Laws set no separate annual subscription for Fellows.
     category: "Fellow",
     entrance: "75,000.00",
-    annual: "Contact the Secretariat",
+    annual: "None",
     group: "Individual members",
     note: "Senior category · by nomination",
     href: "/college-of-fellows",
+  },
+  {
+    category: "Honorary",
+    entrance: "None",
+    annual: "None",
+    group: "Individual members",
   },
   { category: "Visiting", entrance: "None", annual: "75,000.00", group: "Individual members" },
   { category: "Firm", entrance: "2,000.00", annual: "15,000.00", group: "Firms and institutions" },

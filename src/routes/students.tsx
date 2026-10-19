@@ -143,8 +143,9 @@ function StudentsPage() {
               Ready to join?
             </h2>
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-              Student membership carries a reduced subscription. See the fees table for the current
-              rate.
+              Student membership is a one-off fee of KES 500, paid at registration, with no annual
+              subscription. When you finish school, you upgrade and pay the annual fees of your new
+              category.
             </p>
             <Link to="/membership" className="group btn-primary mt-7">
               View membership &amp; fees

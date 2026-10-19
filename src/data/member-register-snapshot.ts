@@ -26,16 +26,13 @@ import type { MemberStats } from "@/lib/member-stats";
  *   byCategory: [],
  * }
  */
-// From the members portal admin dashboard (members.aak.or.ke/admin/dashboard),
-// read 28 Sept 2026: total 5,513 (5,296 individual, 217 corporate), active 5,503.
-// The dashboard has no per-chapter breakdown, so `byChapter` stays empty.
+// From the Secretariat, 19 Oct 2026: 5,569 members in the register, of whom
+// 2,715 are active, i.e. in good standing (paid up for the year). No current
+// category or chapter breakdown, so those stay empty.
 // Keep in step with public/api/member-register-snapshot.json (cPanel).
 export const registerSnapshot: MemberStats | null = {
-  updatedAt: "2026-09-28T10:46:00+03:00",
-  totals: { members: 5513, inGoodStanding: 5503, firms: 217 },
+  updatedAt: "2026-10-19T12:00:00+03:00",
+  totals: { members: 5569, inGoodStanding: 2715 },
   byChapter: [],
-  byCategory: [
-    { category: "individual", members: 5296 },
-    { category: "corporate", members: 217 },
-  ],
+  byCategory: [],
 };
