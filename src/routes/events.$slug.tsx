@@ -293,15 +293,18 @@ function EventDetail() {
             </section>
           ) : null}
 
-          <section className="border-t border-border py-16 text-center lg:py-20">
-            <div className="mx-auto max-w-xl px-6 lg:px-12">
-              <h2 className="font-display text-2xl font-semibold tracking-tight text-foreground">
-                Ready to take part?
-              </h2>
-              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{event.cta}</p>
-              <RegisterCta event={event} className="group btn-primary mt-7" />
-            </div>
-          </section>
+          {/* Only when there's somewhere to go: registration or more information. */}
+          {event.registerHref || event.registerTo ? (
+            <section className="border-t border-border py-16 text-center lg:py-20">
+              <div className="mx-auto max-w-xl px-6 lg:px-12">
+                <h2 className="font-display text-2xl font-semibold tracking-tight text-foreground">
+                  Ready to take part?
+                </h2>
+                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{event.cta}</p>
+                <RegisterCta event={event} className="group btn-primary mt-7" />
+              </div>
+            </section>
+          ) : null}
         </article>
       </main>
       <Footer />
