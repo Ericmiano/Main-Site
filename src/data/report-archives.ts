@@ -89,6 +89,14 @@ export const buildingRegulationsDocuments: ArchiveDocument[] = [
     year: "2025",
     href: fileUrl("/documents/Physical-and-Land-Use-Planning-Handbook-2025.pdf"),
   },
+  // State Department for Public Works, dated October 2025.
+  {
+    title: "Kenya's National Buildings and Construction Decarbonization Roadmap (2026–2040)",
+    year: "2025",
+    href: fileUrl(
+      "/documents/Kenya-National-Buildings-and-Construction-Decarbonization-Roadmap-2026-2040.pdf",
+    ),
+  },
   {
     title: "Affordable Housing Act, No. 2 of 2024",
     year: "2024",
