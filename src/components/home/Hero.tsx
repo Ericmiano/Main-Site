@@ -117,6 +117,7 @@ const SLIDES: {
     ratio: 1044 / 2560,
     alt: "AAK members and guests in a group photo beside a vintage railway carriage, an AAK banner behind them",
     caption: "AAK members and guests",
+    position: "50% 25%",
   },
 ];
 const SLIDE_MS = 6000;

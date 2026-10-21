@@ -754,7 +754,7 @@ export const partners: Partner[] = [
     name: "Commonwealth Association of Architects",
     abbreviation: "CAA",
     logo: "/img/partners/caa.webp",
-    logoWidth: 92,
+    logoWidth: 90,
     logoHeight: 40,
     href: "https://www.comarchitect.org/",
   },
