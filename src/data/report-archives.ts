@@ -39,6 +39,13 @@ export const agmReportsDocuments: ArchiveDocument[] = [
 
 export const billsDocuments: ArchiveDocument[] = [
   {
+    title: "AAK Memorandum on the Architectural and Quantity Surveying Practitioners Bill, 2026",
+    year: "2026",
+    href: fileUrl(
+      "/documents/AAK-Memorandum-on-the-Architectural-and-Quantity-Surveying-Practitioners-Bill-2026.pdf",
+    ),
+  },
+  {
     title: "AAK Memorandum on the Finance Bill",
     year: "2025",
     href: fileUrl("/documents/AAK-Memorandum-on-Finance-Bill-2025.pdf"),
@@ -324,6 +331,11 @@ export const opinionEditorialsDocuments: ArchiveDocument[] = [
 ];
 
 export const pressStatementsDocuments: ArchiveDocument[] = [
+  {
+    title: "Avert the Looming Environmental Crisis",
+    year: "2026",
+    href: fileUrl("/documents/AAK-Statement-Avert-the-Looming-Environmental-Crisis-20261016.pdf"),
+  },
   {
     title: "Built Environment Associations Press Statement",
     year: "2025",
