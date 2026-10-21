@@ -10,6 +10,8 @@ export interface ArchiveDocument {
   title: string;
   year?: string;
   href: string;
+  /** The report's cover, shown as a small thumbnail beside its title. */
+  cover?: { src: string; width: number; height: number };
 }
 
 interface ReportArchivePageProps {
@@ -72,6 +74,17 @@ export function ReportArchivePage({
                           <span className="pt-1 font-display text-xs tabular-nums text-muted-foreground sm:pt-0">
                             {String(i + 1).padStart(2, "0")}
                           </span>
+                          {doc.cover ? (
+                            <img
+                              src={doc.cover.src}
+                              alt=""
+                              width={doc.cover.width}
+                              height={doc.cover.height}
+                              loading="lazy"
+                              decoding="async"
+                              className="h-20 w-auto shrink-0 rounded-sm border border-border bg-secondary shadow-sm"
+                            />
+                          ) : null}
                           <h3 className="font-display text-lg font-semibold leading-snug text-foreground sm:text-xl">
                             {doc.title}
                           </h3>

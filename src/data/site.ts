@@ -68,6 +68,8 @@ export interface SiteEvent {
   imageAlt?: string;
   /** "poster": a square flyer, shown whole instead of cropped to 4:3. */
   imageFit?: "poster";
+  /** The event's own logo, shown above its title. */
+  logo?: { src: string; alt: string; width: number; height: number };
   /** Who runs it, when that isn't AAK (for search engines' event data). */
   organizer?: string;
   /** External registration / RSVP destination — omit when `registerTo` is set. */
@@ -149,6 +151,13 @@ export const events: SiteEvent[] = [
     ],
     image: "/media/nairobi-biennale-2026/16.webp",
     imageAlt: "A full audience for a talk in the exhibition hall at the Nairobi Biennale 2026",
+    // From biennale.aak.or.ke.
+    logo: {
+      src: "/img/biennale/nairobi-biennale-logo.webp",
+      alt: "Nairobi Biennale",
+      width: 272,
+      height: 288,
+    },
     registerHref: "https://www.biennale.aak.or.ke/virtual-tour.php",
     registerLabel: "Take the virtual tour",
     cta: "Explore the Biennale",
@@ -738,6 +747,16 @@ export const partners: Partner[] = [
     logoHeight: 48,
     brand: { light: "#d51319", dark: "#ee3c42" },
     href: "https://www.uia-architectes.org/en/",
+  },
+  {
+    // Listed among AAK's partners on the old aak.or.ke (Wayback, 19 Sept 2026);
+    // logo from comarchitect.org.
+    name: "Commonwealth Association of Architects",
+    abbreviation: "CAA",
+    logo: "/img/partners/caa.webp",
+    logoWidth: 92,
+    logoHeight: 40,
+    href: "https://www.comarchitect.org/",
   },
 ];
 

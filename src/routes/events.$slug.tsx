@@ -147,6 +147,15 @@ function EventDetail() {
           <section className="py-14 lg:py-20">
             <div className="mx-auto grid max-w-[1400px] gap-14 px-6 lg:grid-cols-[1.1fr_1fr] lg:px-12">
               <Reveal>
+                {event.logo ? (
+                  <img
+                    src={event.logo.src}
+                    alt={event.logo.alt}
+                    width={event.logo.width}
+                    height={event.logo.height}
+                    className="mb-8 h-24 w-auto"
+                  />
+                ) : null}
                 <div className="meta-label flex items-center gap-3 border-t border-border pt-5 text-muted-foreground">
                   <span
                     className={

@@ -71,6 +71,53 @@ const SLIDES: {
     caption: "Grow A Classroom · Mabokoni, Kwale",
     position: "50% 80%",
   },
+  // From the old aak.or.ke homepage (Wayback, 19 Sept 2026), where they ran
+  // without captions: dates from the photos' camera data, events not named.
+  {
+    name: "archive-audience-2025",
+    widths: [960, 1600, 2400],
+    ratio: 1707 / 2560,
+    alt: "Two members in suits listening from the front row of an audience",
+    caption: "In the audience · March 2025",
+    position: "50% 30%",
+  },
+  {
+    name: "archive-golf-2025",
+    widths: [960, 1600, 2400],
+    ratio: 1707 / 2560,
+    alt: "A golfer putting on the green as other players and caddies look on",
+    caption: "On the green · April 2025",
+  },
+  {
+    name: "archive-team-2025",
+    widths: [960, 1600, 2400],
+    ratio: 1707 / 2560,
+    alt: "A group photo in a meeting room, the AAK logo on the screen behind",
+    caption: "AAK team and members · February 2025",
+    position: "50% 35%",
+  },
+  {
+    name: "archive-track-2022",
+    widths: [960, 1600, 2400],
+    ratio: 1920 / 2560,
+    alt: "A large crowd cheering with raised arms for a group photo beside a running track",
+    caption: "At the track · November 2022",
+    position: "50% 55%",
+  },
+  {
+    name: "archive-workshop-2025",
+    widths: [960, 1600, 2400],
+    ratio: 1707 / 2560,
+    alt: "Students seated in a studio listening to a presenter beside a laptop and projector",
+    caption: "A workshop session · February 2025",
+  },
+  {
+    name: "archive-heritage",
+    widths: [960, 1600, 2400],
+    ratio: 1044 / 2560,
+    alt: "AAK members and guests in a group photo beside a vintage railway carriage, an AAK banner behind them",
+    caption: "AAK members and guests",
+  },
 ];
 const SLIDE_MS = 6000;
 const file = (name: string, w: number) => `/img/hero/${name}-${w}.webp`;

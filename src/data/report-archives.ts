@@ -10,6 +10,8 @@ export interface ArchiveDocument {
   title: string;
   year?: string;
   href: string;
+  /** The report's cover, shown as a small thumbnail beside its title. */
+  cover?: { src: string; width: number; height: number };
 }
 
 export const agmReportsDocuments: ArchiveDocument[] = [
@@ -283,8 +285,14 @@ export const liaisonCommitteesReportsDocuments: ArchiveDocument[] = [
   },
   {
     title: "Nairobi Physical and Land Use Planning Liaison Committee Report",
-    year: "2026",
+    // The report's own cover is dated 2024.
+    year: "2024",
     href: fileUrl("/documents/Nairobi-Physical-and-Land-Use-Planning-Liaison-Committee.pdf"),
+    cover: {
+      src: "/img/publications/nairobi-liaison-committee-report-2024-cover.webp",
+      width: 339,
+      height: 240,
+    },
   },
 ];
 
@@ -358,6 +366,12 @@ export const statusOfTheBuiltEnvironmentDocuments: ArchiveDocument[] = [
     title: "AAK Status of the Built Environment Report 2025",
     year: "2025",
     href: fileUrl("/documents/AAK-Status-of-the-Built-Environment-Report-2025-1.pdf"),
+    // The cover as shown on the old aak.or.ke homepage (Wayback, 19 Sept 2026).
+    cover: {
+      src: "/img/publications/status-of-the-built-environment-report-2025-cover.webp",
+      width: 172,
+      height: 240,
+    },
   },
   {
     title: "Status of the Built Environment Report",
