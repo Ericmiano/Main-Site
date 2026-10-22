@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "rea
 import { IconArrowUpRight as ArrowUpRight, IconX as X } from "@tabler/icons-react";
 
 import { cn } from "@/lib/utils";
+import { ARBITRATION_REQUIREMENTS as REQUIREMENTS } from "@/data/site";
 
 /*
  * Application to the President for appointment of an arbitrator: AAK's Form
@@ -161,11 +162,11 @@ function PartyFields({
           className={inputClass}
         />
       </Field>
-      <Field label={applicant ? "Email" : "Email (if known)"}>
+      <Field label="Email">
         <input
           name={`${role}Email`}
           type="email"
-          required={applicant}
+          required
           maxLength={254}
           autoComplete={applicant ? "email" : "off"}
           className={inputClass}
@@ -785,6 +786,11 @@ function ApplicationForm({ onDone }: { onDone: () => void }) {
           title="Attach documents"
           note={`PDF, Word, Excel, JPG or PNG, up to ${formatSize(MAX_TOTAL_BYTES)} in total. Anything not to hand can be sent once the Secretariat replies.`}
         >
+          <ul className="flex flex-col gap-1.5 border-l-2 border-ledger-red pl-3 text-[12.5px] text-ledger-ink sm:col-span-2">
+            {REQUIREMENTS.map((r) => (
+              <li key={r}>{r}</li>
+            ))}
+          </ul>
           <ul className="flex flex-col divide-y divide-ledger-hairline border-y border-ledger-hairline sm:col-span-2">
             {DOCUMENT_ITEMS.map(([item, label]) => {
               const attached = files.filter((f) => f.item === item);
@@ -871,6 +877,19 @@ function ApplicationForm({ onDone }: { onDone: () => void }) {
           <Field label="Date">
             <input value={today} readOnly tabIndex={-1} className={cn(inputClass, "font-mono")} />
           </Field>
+          <label className="flex items-start gap-2.5 text-[12.5px] text-ledger-ink-2 sm:col-span-2">
+            <input
+              type="checkbox"
+              name="otherPartyCopied"
+              value="yes"
+              required
+              className={checkClass}
+            />
+            <span>
+              Both parties are copied on the correspondence requesting the appointment, and it
+              states the amount in dispute.
+            </span>
+          </label>
           <label className="flex items-start gap-2.5 text-[12.5px] text-ledger-ink-2 sm:col-span-2">
             <input type="checkbox" name="declaration" value="yes" required className={checkClass} />
             <span>

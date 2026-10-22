@@ -65,6 +65,7 @@ const WINDOW_SECONDS = 3600;     // ... per hour
 const MAX_FILES = 10;
 const MAX_TOTAL_BYTES = 15 * 1024 * 1024; // keeps the email under common 25 MB mailbox limits
 const MIN_SECONDS_ON_FORM = 5;   // quicker than this is a script, not a person
+const MAX_PER_DAY = 30;          // the whole site: caps misuse of the acknowledgement emails
 
 /** Form SP/1's parties in dispute. */
 const PARTY_KINDS = [
@@ -92,6 +93,18 @@ $cc = array_key_exists('cc', $config) ? $config['cc'] : 'fiona@aak.or.ke';
 $from = $config['from'] ?? 'arbitration@aak.or.ke';
 $fromName = $config['fromName'] ?? 'AAK Arbitration';
 
+// Posts only from this site's own pages: another website can't submit
+// applications in its visitors' names.
+$origin = (string) ($_SERVER['HTTP_ORIGIN'] ?? $_SERVER['HTTP_REFERER'] ?? '');
+$originHost = strtolower((string) parse_url($origin, PHP_URL_HOST));
+$originPort = parse_url($origin, PHP_URL_PORT);
+$allowed = preg_match('/^((www|new)\.)?aak\.or\.ke$/', $originHost)
+    || (in_array($originHost, ['localhost', '127.0.0.1'], true)
+        && strtolower((string) ($_SERVER['HTTP_HOST'] ?? '')) === $originHost . ($originPort ? ":$originPort" : ''));
+if (!$allowed) {
+    respond(403, ['status' => 'forbidden']);
+}
+
 // A body bigger than post_max_size arrives empty: say so rather than "invalid".
 $contentLength = (int) ($_SERVER['CONTENT_LENGTH'] ?? 0);
 if ($contentLength > 0 && !$_POST && !$_FILES) {
@@ -116,6 +129,18 @@ $hits = array_values(array_filter(is_array($hits) ? $hits : [], fn ($t) => is_in
 if (count($hits) >= MAX_REQUESTS) {
     header('Retry-After: ' . WINDOW_SECONDS);
     respond(429, ['status' => 'rate_limited']);
+}
+$dayFile = $limitDir . '/day-' . date('Ymd') . '.count';
+$today = is_file($dayFile) ? (int) file_get_contents($dayFile) : 0;
+if ($today >= MAX_PER_DAY) {
+    error_log('arbitration-request: the daily limit of ' . MAX_PER_DAY . ' applications was reached');
+    header('Retry-After: 3600');
+    respond(429, ['status' => 'rate_limited']);
+}
+foreach (glob($limitDir . '/day-*.count') ?: [] as $old) {
+    if ($old !== $dayFile) {
+        @unlink($old);
+    }
 }
 
 /** One line of text: no control characters (so nothing can be smuggled into email headers). */
@@ -209,6 +234,20 @@ function fail(string $message): void
     respond(400, ['status' => 'invalid', 'error' => $message]);
 }
 
+/** Files must be what their names say: the first bytes of each format. */
+function looksLike(string $ext, string $data): bool
+{
+    $head = substr($data, 0, 4);
+    return match ($ext) {
+        'pdf' => $head === '%PDF',
+        'png' => $head === "\x89PNG",
+        'jpg', 'jpeg' => substr($head, 0, 3) === "\xFF\xD8\xFF",
+        'docx', 'xlsx' => $head === "PK\x03\x04",
+        'doc', 'xls' => $head === "\xD0\xCF\x11\xE0",
+        default => false,
+    };
+}
+
 function party(string $role, bool $emailRequired): array
 {
     $type = line("{$role}Type", 20, true);
@@ -250,7 +289,7 @@ if (!in_array($basis, ['contractual_clause', 'mutual_agreement'], true)) {
     fail('basis is invalid');
 }
 $claimant = party('claimant', true);
-$respondent = party('respondent', false);
+$respondent = party('respondent', true);
 
 // The applicant's representative, advocate or agent: optional, but reachable if given.
 $representative = null;
@@ -338,6 +377,9 @@ $application = [
     ],
     'documents' => [],
 ];
+if (($_POST['otherPartyCopied'] ?? '') !== 'yes') {
+    fail('Please confirm the other party is copied');
+}
 if (($_POST['declaration'] ?? '') !== 'yes') {
     fail('Please confirm the declaration');
 }
@@ -378,6 +420,9 @@ if ($files && is_array($files['name'])) {
             respond(413, ['status' => 'too_large']);
         }
         $data = (string) file_get_contents($files['tmp_name'][$i]);
+        if (!looksLike($ext, $data)) {
+            fail(mb_substr($safe, 0, 60) . " isn't a readable " . strtoupper($ext) . ' file');
+        }
         $systemType = DOCUMENT_ITEMS[$item][1] ?? ($basis === 'contractual_clause' ? 'contract_copy' : 'submission_agreement');
         $attachments[] = ['name' => mb_substr($safe, 0, 120), 'data' => $data];
         $application['documents'][] = [
@@ -392,6 +437,7 @@ if ($files && is_array($files['name'])) {
 
 $hits[] = $now;
 @file_put_contents($limitFile, json_encode($hits), LOCK_EX);
+@file_put_contents($dayFile, (string) ($today + 1), LOCK_EX);
 
 /* The emails ----------------------------------------------------------- */
 

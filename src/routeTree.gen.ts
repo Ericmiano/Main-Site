@@ -44,6 +44,7 @@ import { Route as StoreRouteImport } from './routes/store'
 import { Route as StudentsRouteImport } from './routes/students'
 import { Route as TeamRouteImport } from './routes/team'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as ApiArbitrationRequestRouteImport } from './routes/api.arbitration-request'
 import { Route as ApiCertificateRouteImport } from './routes/api.certificate'
 import { Route as ApiMemberStatsRouteImport } from './routes/api.member-stats'
 import { Route as ApiNewsRouteImport } from './routes/api.news'
@@ -235,6 +236,11 @@ const TermsRoute = TermsRouteImport.update({
   path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiArbitrationRequestRoute = ApiArbitrationRequestRouteImport.update({
+  id: '/api/arbitration-request',
+  path: '/api/arbitration-request',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiCertificateRoute = ApiCertificateRouteImport.update({
   id: '/api/certificate',
   path: '/api/certificate',
@@ -338,6 +344,7 @@ export interface FileRoutesByFullPath {
   '/students': typeof StudentsRoute
   '/team': typeof TeamRoute
   '/terms': typeof TermsRoute
+  '/api/arbitration-request': typeof ApiArbitrationRequestRoute
   '/api/certificate': typeof ApiCertificateRoute
   '/api/member-stats': typeof ApiMemberStatsRoute
   '/api/news': typeof ApiNewsRoute
@@ -388,6 +395,7 @@ export interface FileRoutesByTo {
   '/students': typeof StudentsRoute
   '/team': typeof TeamRoute
   '/terms': typeof TermsRoute
+  '/api/arbitration-request': typeof ApiArbitrationRequestRoute
   '/api/certificate': typeof ApiCertificateRoute
   '/api/member-stats': typeof ApiMemberStatsRoute
   '/api/news': typeof ApiNewsRoute
@@ -439,6 +447,7 @@ export interface FileRoutesById {
   '/students': typeof StudentsRoute
   '/team': typeof TeamRoute
   '/terms': typeof TermsRoute
+  '/api/arbitration-request': typeof ApiArbitrationRequestRoute
   '/api/certificate': typeof ApiCertificateRoute
   '/api/member-stats': typeof ApiMemberStatsRoute
   '/api/news': typeof ApiNewsRoute
@@ -491,6 +500,7 @@ export interface FileRouteTypes {
     | '/students'
     | '/team'
     | '/terms'
+    | '/api/arbitration-request'
     | '/api/certificate'
     | '/api/member-stats'
     | '/api/news'
@@ -541,6 +551,7 @@ export interface FileRouteTypes {
     | '/students'
     | '/team'
     | '/terms'
+    | '/api/arbitration-request'
     | '/api/certificate'
     | '/api/member-stats'
     | '/api/news'
@@ -591,6 +602,7 @@ export interface FileRouteTypes {
     | '/students'
     | '/team'
     | '/terms'
+    | '/api/arbitration-request'
     | '/api/certificate'
     | '/api/member-stats'
     | '/api/news'
@@ -642,6 +654,7 @@ export interface RootRouteChildren {
   StudentsRoute: typeof StudentsRoute
   TeamRoute: typeof TeamRoute
   TermsRoute: typeof TermsRoute
+  ApiArbitrationRequestRoute: typeof ApiArbitrationRequestRoute
   ApiCertificateRoute: typeof ApiCertificateRoute
   ApiMemberStatsRoute: typeof ApiMemberStatsRoute
   ApiNewsRoute: typeof ApiNewsRoute
@@ -904,6 +917,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/arbitration-request': {
+      id: '/api/arbitration-request'
+      path: '/api/arbitration-request'
+      fullPath: '/api/arbitration-request'
+      preLoaderRoute: typeof ApiArbitrationRequestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/certificate': {
       id: '/api/certificate'
       path: '/api/certificate'
@@ -1034,6 +1054,7 @@ const rootRouteChildren: RootRouteChildren = {
   StudentsRoute: StudentsRoute,
   TeamRoute: TeamRoute,
   TermsRoute: TermsRoute,
+  ApiArbitrationRequestRoute: ApiArbitrationRequestRoute,
   ApiCertificateRoute: ApiCertificateRoute,
   ApiMemberStatsRoute: ApiMemberStatsRoute,
   ApiNewsRoute: ApiNewsRoute,

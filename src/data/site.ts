@@ -790,6 +790,12 @@ export const publications: Publication[] = [
 /** Arbitration enquiries go to the Secretariat with fiona@aak.or.ke copied in
  * (the Secretariat's instruction). Applications use the form on /arbitration. */
 export const ARBITRATION_EMAIL = "aak@aak.or.ke";
+
+/** The Secretariat's requirements for arbitration correspondence (22 October 2026). */
+export const ARBITRATION_REQUIREMENTS = [
+  "Both parties must be copied on the email correspondence requesting the appointment.",
+  "The correspondence must state the amount in dispute.",
+];
 export const arbitrationEnquiryMailto = `mailto:${ARBITRATION_EMAIL}?cc=fiona@aak.or.ke&subject=${encodeURIComponent(
   "Arbitration enquiry",
 )}`;

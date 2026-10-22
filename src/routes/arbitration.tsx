@@ -9,7 +9,11 @@ import { SectionHeading } from "@/components/site/SectionHeading";
 import { ArbitratorDirectory } from "@/components/site/ArbitratorDirectory";
 import { arbitrators } from "@/data/arbitrators";
 import { ArbitrationApplication } from "@/components/site/ArbitrationRequestForm";
-import { ARBITRATION_EMAIL, arbitrationEnquiryMailto } from "@/data/site";
+import {
+  ARBITRATION_EMAIL,
+  ARBITRATION_REQUIREMENTS as REQUIREMENTS,
+  arbitrationEnquiryMailto,
+} from "@/data/site";
 import { fileUrl } from "@/lib/files";
 import { jsonLd } from "@/lib/json-ld";
 
@@ -191,6 +195,18 @@ function ArbitrationPage() {
                 </p>
                 <ul className="mt-5 divide-y divide-border border-y border-border">
                   {SP1_DOCUMENTS.map((item) => (
+                    <li
+                      key={item}
+                      className="flex gap-3 py-3.5 text-sm leading-relaxed text-foreground"
+                    >
+                      <span className="mt-2 h-1.5 w-1.5 shrink-0 bg-primary" aria-hidden="true" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+                <h3 className="meta-label mt-8 text-foreground">Requirements</h3>
+                <ul className="mt-3 divide-y divide-border border-y border-border">
+                  {REQUIREMENTS.map((item) => (
                     <li
                       key={item}
                       className="flex gap-3 py-3.5 text-sm leading-relaxed text-foreground"
