@@ -792,22 +792,29 @@ export const publications: Publication[] = [
  * arbitration system asks for when a case is opened. */
 export const ARBITRATION_EMAIL = "aak@aak.or.ke";
 export const ARBITRATION_CC = "fiona@aak.or.ke";
-export const arbitrationRequestMailto = `mailto:${ARBITRATION_EMAIL}?cc=${ARBITRATION_CC}&subject=${encodeURIComponent(
-  "Request for arbitration",
-)}&body=${encodeURIComponent(
-  [
-    "Claimant (name, phone, email):",
-    "Respondent (name, phone, email):",
-    "Basis: arbitration clause in the contract, or a separate written agreement to refer the dispute:",
-    "Contract (title, date and the arbitration clause number):",
-    "Project:",
-    "Value of the dispute:",
-    "Nature of the dispute (for example payment, delay, defects):",
-    "Short description of the dispute:",
-    "",
-    "Attached: copy of the contract; the separate agreement to arbitrate, if any; relevant correspondence; supporting evidence; proof of identity.",
-  ].join("\r\n"),
-)}`;
+const ARBITRATION_SUBJECT = "Request for arbitration";
+const ARBITRATION_BODY = [
+  "Claimant (name, phone, email):",
+  "Respondent (name, phone, email):",
+  "Basis: arbitration clause in the contract, or a separate written agreement to refer the dispute:",
+  "Contract (title, date and the arbitration clause number):",
+  "Project:",
+  "Value of the dispute:",
+  "Nature of the dispute (for example payment, delay, defects):",
+  "Short description of the dispute:",
+  "",
+  "Attached: copy of the contract; the separate agreement to arbitrate, if any; relevant correspondence; supporting evidence; proof of identity.",
+].join("\r\n");
+
+const enc = encodeURIComponent;
+export const arbitrationRequestMailto = `mailto:${ARBITRATION_EMAIL}?cc=${ARBITRATION_CC}&subject=${enc(ARBITRATION_SUBJECT)}&body=${enc(ARBITRATION_BODY)}`;
+
+/** For visitors with no mail app: the same email, written in webmail or pasted anywhere. */
+export const arbitrationRequestWebmail = {
+  gmail: `https://mail.google.com/mail/?view=cm&fs=1&to=${ARBITRATION_EMAIL}&cc=${ARBITRATION_CC}&su=${enc(ARBITRATION_SUBJECT)}&body=${enc(ARBITRATION_BODY)}`,
+  outlook: `https://outlook.office.com/mail/deeplink/compose?to=${ARBITRATION_EMAIL}&cc=${ARBITRATION_CC}&subject=${enc(ARBITRATION_SUBJECT)}&body=${enc(ARBITRATION_BODY)}`,
+  text: `To: ${ARBITRATION_EMAIL}\nCc: ${ARBITRATION_CC}\nSubject: ${ARBITRATION_SUBJECT}\n\n${ARBITRATION_BODY.replace(/\r\n/g, "\n")}`,
+};
 
 export interface ArbitrationStep {
   step: string;

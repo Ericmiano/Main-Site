@@ -8,7 +8,8 @@ import { PageBreadcrumb } from "@/components/site/PageBreadcrumb";
 import { SectionHeading } from "@/components/site/SectionHeading";
 import { ArbitratorDirectory } from "@/components/site/ArbitratorDirectory";
 import { arbitrators } from "@/data/arbitrators";
-import { ARBITRATION_CC, ARBITRATION_EMAIL, arbitrationRequestMailto } from "@/data/site";
+import { ArbitrationEmail } from "@/components/site/ArbitrationEmail";
+import { ARBITRATION_EMAIL } from "@/data/site";
 import { fileUrl } from "@/lib/files";
 import { jsonLd } from "@/lib/json-ld";
 
@@ -225,16 +226,7 @@ function ArbitrationPage() {
                 </p>
               </div>
             </div>
-            <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3">
-              <a href={arbitrationRequestMailto} className="group btn-primary">
-                Email the Secretariat
-                <ArrowUpRight className="h-4 w-4" />
-              </a>
-              <p className="text-sm text-muted-foreground">
-                To {ARBITRATION_EMAIL}, copying {ARBITRATION_CC}. The email opens with this
-                checklist filled in.
-              </p>
-            </div>
+            <ArbitrationEmail label="Email the Secretariat" className="mt-10" />
           </div>
         </section>
 
@@ -305,12 +297,10 @@ function ArbitrationPage() {
             </h2>
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
               To apply for arbitration, or for a nomination under clause 17.2, write to the
-              Association&rsquo;s Secretariat at {ARBITRATION_EMAIL}, copying {ARBITRATION_CC}.
+              Association&rsquo;s Secretariat at {ARBITRATION_EMAIL}. The email opens with the
+              checklist above filled in.
             </p>
-            <a href={arbitrationRequestMailto} className="group btn-primary mt-7">
-              Email {ARBITRATION_EMAIL}
-              <ArrowUpRight className="h-4 w-4" />
-            </a>
+            <ArbitrationEmail label={`Email ${ARBITRATION_EMAIL}`} center className="mt-7" />
           </div>
         </section>
       </main>
