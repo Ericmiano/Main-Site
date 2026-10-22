@@ -17,11 +17,17 @@
  * the applicant gets an acknowledgement with the reference. Nothing is kept
  * on the server apart from a hashed rate-limit counter.
  *
- * Optional settings live OUTSIDE public_html, in
+ * Settings live OUTSIDE public_html, in
  *   /home/<account>/aak-arbitration/config.php
- * returning an array with any of: to, cc, from, fromName, outbox. "outbox"
- * is a folder: when set, emails are written there as .eml files instead of
- * being sent (for testing). Without the file the defaults below apply.
+ * returning an array with any of: to, cc, from, fromName, graph, outbox.
+ *   graph   Microsoft 365 sending (aak.or.ke's mail is on Microsoft 365):
+ *           ['tenantId' => ..., 'clientId' => ..., 'clientSecret' => ...]
+ *           for an app with Mail.Send for the arbitration@ mailbox. Without
+ *           it, PHP's mail() is used, which aak.or.ke's SPF rejects.
+ *   outbox  a folder: emails are written there as .eml files instead of
+ *           being sent (local testing).
+ * To test, set 'to' to a mailbox of your own and 'cc' to null, send one
+ * application, then remove both lines: the defaults below apply again.
  */
 
 ini_set('display_errors', '0');
@@ -82,10 +88,9 @@ const CURRENCIES = ['KES', 'USD', 'EUR', 'GBP'];
 $private = dirname($_SERVER['DOCUMENT_ROOT'] ?? __DIR__ . '/../..') . '/aak-arbitration';
 $config = is_file($private . '/config.php') ? (array) include $private . '/config.php' : [];
 $to = $config['to'] ?? 'aak@aak.or.ke';
-$cc = $config['cc'] ?? 'fiona@aak.or.ke';
+$cc = array_key_exists('cc', $config) ? $config['cc'] : 'fiona@aak.or.ke';
 $from = $config['from'] ?? 'arbitration@aak.or.ke';
 $fromName = $config['fromName'] ?? 'AAK Arbitration';
-$outbox = $config['outbox'] ?? null;
 
 // A body bigger than post_max_size arrives empty: say so rather than "invalid".
 $contentLength = (int) ($_SERVER['CONTENT_LENGTH'] ?? 0);
@@ -473,59 +478,231 @@ function alternative(string $plain, string $html, string $boundary): string
         . "--$boundary--\r\n";
 }
 
-function sendMail(string $to, ?string $cc, string $subject, string $headers, string $body, string $from, ?string $outbox): bool
+function contentType(string $name): string
 {
-    if ($outbox) {
-        @mkdir($outbox, 0700, true);
-        $file = rtrim($outbox, '/\\') . '/' . date('Ymd-His') . '-' . bin2hex(random_bytes(3)) . '.eml';
-        $all = "To: $to\r\n" . ($cc ? "Cc: $cc\r\n" : '') . 'Subject: ' . encodedHeader($subject) . "\r\n" . $headers . "\r\n\r\n" . $body;
+    return [
+        'pdf' => 'application/pdf',
+        'doc' => 'application/msword',
+        'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'xls' => 'application/vnd.ms-excel',
+        'xlsx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        'jpg' => 'image/jpeg',
+        'jpeg' => 'image/jpeg',
+        'png' => 'image/png',
+        'json' => 'application/json',
+    ][strtolower(pathinfo($name, PATHINFO_EXTENSION))] ?? 'application/octet-stream';
+}
+
+/** One email as MIME headers and body (for the test outbox and PHP's mail()). */
+function mime(array $m, string $from, string $fromName, string $domain): array
+{
+    $alt = 'alt-' . bin2hex(random_bytes(8));
+    $headers = 'From: ' . encodedHeader($fromName) . " <$from>\r\nMIME-Version: 1.0\r\nDate: " . date('r')
+        . ($m['replyTo'] ? "\r\nReply-To: {$m['replyTo']}" : '')
+        . (!empty($m['messageId']) ? "\r\nMessage-ID: <{$m['messageId']}@$domain>" : '');
+    if (!$m['attachments']) {
+        return [$headers . "\r\nContent-Type: multipart/alternative; boundary=\"$alt\"", alternative($m['plain'], $m['html'], $alt)];
+    }
+    $mixed = 'mixed-' . bin2hex(random_bytes(8));
+    $body = "--$mixed\r\nContent-Type: multipart/alternative; boundary=\"$alt\"\r\n\r\n" . alternative($m['plain'], $m['html'], $alt);
+    foreach ($m['attachments'] as $f) {
+        $body .= "--$mixed\r\nContent-Type: " . contentType($f['name']) . '; name="' . encodedHeader($f['name']) . "\"\r\n"
+            . 'Content-Transfer-Encoding: base64' . "\r\n" . 'Content-Disposition: attachment; filename="' . encodedHeader($f['name']) . "\"\r\n\r\n"
+            . chunked($f['data']);
+    }
+    return [$headers . "\r\nContent-Type: multipart/mixed; boundary=\"$mixed\"", $body . "--$mixed--\r\n"];
+}
+
+/* Microsoft 365 (aak.or.ke's mail) ---------------------------------------
+ * aak.or.ke's SPF allows only Microsoft 365 to send for the domain, so mail
+ * goes out through Microsoft Graph as the arbitration@ mailbox: an app
+ * registered in the AAK tenant with the Mail.Send application permission
+ * (limited to that mailbox), its details in config.php under "graph":
+ * tenantId, clientId, clientSecret. Each email is made as a draft, its
+ * attachments added (over 3 MB in chunks, as Graph requires), then sent, so
+ * it also lands in the mailbox's Sent Items. */
+
+const GRAPH_CHUNK = 9 * 320 * 1024; // under Graph's 4 MB per upload request
+
+function http(string $method, string $url, array $headers, ?string $body): array
+{
+    $ch = curl_init($url);
+    curl_setopt_array($ch, [
+        CURLOPT_CUSTOMREQUEST => $method,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HTTPHEADER => $headers,
+        CURLOPT_TIMEOUT => 60,
+    ]);
+    if ($body !== null) {
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+    }
+    $response = curl_exec($ch);
+    $status = (int) curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
+    if ($response === false) {
+        error_log("arbitration-request: $method " . parse_url($url, PHP_URL_HOST) . ' failed: ' . curl_error($ch));
+    }
+    curl_close($ch);
+    return [$status, is_string($response) ? (json_decode($response, true) ?: []) : []];
+}
+
+function graphToken(array $g): ?string
+{
+    [$status, $json] = http(
+        'POST',
+        ($g['loginBase'] ?? 'https://login.microsoftonline.com') . '/' . rawurlencode((string) $g['tenantId']) . '/oauth2/v2.0/token',
+        ['Content-Type: application/x-www-form-urlencoded'],
+        http_build_query([
+            'grant_type' => 'client_credentials',
+            'client_id' => $g['clientId'],
+            'client_secret' => $g['clientSecret'],
+            'scope' => 'https://graph.microsoft.com/.default',
+        ]),
+    );
+    if ($status !== 200 || empty($json['access_token'])) {
+        error_log("arbitration-request: Microsoft sign-in failed ($status " . ($json['error'] ?? '') . ')');
+        return null;
+    }
+    return $json['access_token'];
+}
+
+function sendGraph(array $m, array $g, string $from, string $fromName): bool
+{
+    static $token = null;
+    if (!function_exists('curl_init')) {
+        error_log('arbitration-request: PHP curl is off; it is needed to send through Microsoft 365');
+        return false;
+    }
+    $token ??= graphToken($g);
+    if (!$token) {
+        return false;
+    }
+    $auth = ['Authorization: Bearer ' . $token, 'Content-Type: application/json'];
+    $json = fn (array $data) => json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+    $who = fn (?string $address) => $address ? [['emailAddress' => ['address' => $address]]] : [];
+    $mailbox = ($g['graphBase'] ?? 'https://graph.microsoft.com/v1.0') . '/users/' . rawurlencode($from);
+
+    [$status, $draft] = http('POST', "$mailbox/messages", $auth, $json([
+        'subject' => $m['subject'],
+        'body' => ['contentType' => 'HTML', 'content' => $m['html']],
+        'from' => ['emailAddress' => ['address' => $from, 'name' => $fromName]],
+        'toRecipients' => $who($m['to']),
+        'ccRecipients' => $who($m['cc']),
+        'replyTo' => $who($m['replyTo']),
+    ]));
+    if ($status !== 201 || empty($draft['id'])) {
+        error_log("arbitration-request: Microsoft 365 draft failed ($status " . ($draft['error']['code'] ?? '') . ')');
+        return false;
+    }
+    $message = "$mailbox/messages/" . rawurlencode($draft['id']);
+
+    foreach ($m['attachments'] as $f) {
+        $size = strlen($f['data']);
+        if ($size < 3 * 1024 * 1024) {
+            [$status, $res] = http('POST', "$message/attachments", $auth, $json([
+                '@odata.type' => '#microsoft.graph.fileAttachment',
+                'name' => $f['name'],
+                'contentType' => contentType($f['name']),
+                'contentBytes' => base64_encode($f['data']),
+            ]));
+            if ($status !== 201) {
+                error_log("arbitration-request: Microsoft 365 attachment failed ($status " . ($res['error']['code'] ?? '') . ')');
+                return false;
+            }
+            continue;
+        }
+        [$status, $session] = http('POST', "$message/attachments/createUploadSession", $auth, $json([
+            'AttachmentItem' => [
+                'attachmentType' => 'file',
+                'name' => $f['name'],
+                'size' => $size,
+                'contentType' => contentType($f['name']),
+            ],
+        ]));
+        if ($status !== 201 || empty($session['uploadUrl'])) {
+            error_log("arbitration-request: Microsoft 365 upload session failed ($status)");
+            return false;
+        }
+        // The upload address carries its own authorisation: no token on these requests.
+        for ($at = 0; $at < $size; $at += GRAPH_CHUNK) {
+            $chunk = substr($f['data'], $at, GRAPH_CHUNK);
+            [$status] = http('PUT', $session['uploadUrl'], [
+                'Content-Type: application/octet-stream',
+                'Content-Range: bytes ' . $at . '-' . ($at + strlen($chunk) - 1) . '/' . $size,
+            ], $chunk);
+            if (!in_array($status, [200, 201], true)) {
+                error_log("arbitration-request: Microsoft 365 upload failed ($status)");
+                return false;
+            }
+        }
+    }
+
+    [$status, $res] = http('POST', "$message/send", ['Authorization: Bearer ' . $token], '');
+    if ($status !== 202) {
+        error_log("arbitration-request: Microsoft 365 send failed ($status " . ($res['error']['code'] ?? '') . ')');
+        return false;
+    }
+    return true;
+}
+
+/**
+ * Sends one email: written to the test outbox if one is set, otherwise
+ * through Microsoft 365 when config.php has "graph", otherwise PHP's mail().
+ */
+function deliver(array $m, array $config, string $from, string $fromName, string $domain): bool
+{
+    if (!empty($config['outbox'])) {
+        [$headers, $body] = mime($m, $from, $fromName, $domain);
+        @mkdir($config['outbox'], 0700, true);
+        $file = rtrim($config['outbox'], '/\\') . '/' . date('Ymd-His') . '-' . bin2hex(random_bytes(3)) . '.eml';
+        $all = "To: {$m['to']}\r\n" . ($m['cc'] ? "Cc: {$m['cc']}\r\n" : '') . 'Subject: ' . encodedHeader($m['subject']) . "\r\n" . $headers . "\r\n\r\n" . $body;
         return file_put_contents($file, $all) !== false;
     }
-    $headersWithCc = ($cc ? "Cc: $cc\r\n" : '') . $headers;
-    return mail($to, encodedHeader($subject), $body, $headersWithCc, '-f' . $from);
+    if (!empty($config['graph'])) {
+        return sendGraph($m, (array) $config['graph'], $from, $fromName);
+    }
+    [$headers, $body] = mime($m, $from, $fromName, $domain);
+    return mail($m['to'], encodedHeader($m['subject']), $body, ($m['cc'] ? "Cc: {$m['cc']}\r\n" : '') . $headers, '-f' . $from);
 }
 
 $domain = substr(strrchr($from, '@') ?: '@aak.or.ke', 1);
-$common = 'From: ' . encodedHeader($fromName) . " <$from>\r\nMIME-Version: 1.0\r\nDate: " . date('r');
+$partyName = fn (array $p) => $p['organizationName'] ?? $p['fullName'];
 
 // 1. To the Secretariat: the application, the documents, and the JSON copy.
-$mixed = 'mixed-' . bin2hex(random_bytes(8));
-$alt = 'alt-' . bin2hex(random_bytes(8));
-$intro = "A new application to the President for appointment of an arbitrator (Form SP/1) was submitted on aak.or.ke.";
-$plain = "$intro\n\n" . plainTable($rows) . "\n\nReply to this email to answer the applicant.\nThe attached JSON holds the same details in the arbitration system's format.";
-$html = '<p style="font:14px Arial,sans-serif">' . h($intro) . '</p>' . htmlTable($rows)
-    . '<p style="font:13px Arial,sans-serif;color:#555">Reply to this email to answer the applicant. The attached JSON holds the same details in the arbitration system&rsquo;s format.</p>';
-$body = "--$mixed\r\nContent-Type: multipart/alternative; boundary=\"$alt\"\r\n\r\n" . alternative($plain, $html, $alt);
-foreach ($attachments as $file) {
-    $body .= "--$mixed\r\nContent-Type: application/octet-stream; name=\"" . encodedHeader($file['name']) . "\"\r\n"
-        . "Content-Transfer-Encoding: base64\r\nContent-Disposition: attachment; filename=\"" . encodedHeader($file['name']) . "\"\r\n\r\n"
-        . chunked($file['data']);
-}
+$intro = 'A new application to the President for appointment of an arbitrator (Form SP/1) was submitted on aak.or.ke.';
 $jsonName = 'arbitration-request-' . $a['reference'] . '.json';
-$body .= "--$mixed\r\nContent-Type: application/json; name=\"$jsonName\"\r\nContent-Transfer-Encoding: base64\r\n"
-    . "Content-Disposition: attachment; filename=\"$jsonName\"\r\n\r\n"
-    . chunked(json_encode($application, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE))
-    . "--$mixed--\r\n";
-
-$partyName = fn (array $p) => $p['organizationName'] ?? $p['fullName'];
-$subject = 'Application for appointment of arbitrator ' . $a['reference'] . ': ' . $partyName($claimant) . ' v ' . $partyName($respondent);
-$headers = $common . "\r\nReply-To: " . $applicantEmail . "\r\nMessage-ID: <" . strtolower($a['reference']) . '@' . $domain . ">\r\n"
-    . "Content-Type: multipart/mixed; boundary=\"$mixed\"";
-
-if (!sendMail($to, $cc, $subject, $headers, $body, $from, $outbox)) {
+$secretariat = [
+    'to' => $to,
+    'cc' => $cc ?: null,
+    'replyTo' => $applicantEmail,
+    'messageId' => strtolower($a['reference']),
+    'subject' => 'Application for appointment of arbitrator ' . $a['reference'] . ': ' . $partyName($claimant) . ' v ' . $partyName($respondent),
+    'plain' => "$intro\n\n" . plainTable($rows) . "\n\nReply to this email to answer the applicant.\nThe attached JSON holds the same details in the arbitration system's format.",
+    'html' => '<p style="font:14px Arial,sans-serif">' . h($intro) . '</p>' . htmlTable($rows)
+        . '<p style="font:13px Arial,sans-serif;color:#555">Reply to this email to answer the applicant. The attached JSON holds the same details in the arbitration system&rsquo;s format.</p>',
+    'attachments' => array_merge($attachments, [[
+        'name' => $jsonName,
+        'data' => json_encode($application, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
+    ]]),
+];
+if (!deliver($secretariat, $config, $from, $fromName, $domain)) {
     error_log('arbitration-request: the Secretariat email could not be sent');
     respond(502, ['status' => 'error']);
 }
 
 // 2. To the applicant: the acknowledgement, with what they sent (not the files).
-$ackAlt = 'alt-' . bin2hex(random_bytes(8));
 $ackIntro = 'Thank you. The Architectural Association of Kenya has received your application to the President for appointment of an arbitrator. '
     . 'Your reference is ' . $a['reference'] . '; please quote it when you write to the Secretariat.';
-$ackPlain = "$ackIntro\n\nWhat you sent:\n\n" . plainTable($rows) . "\n\nArchitectural Association of Kenya\naak@aak.or.ke · +254 721 691 337";
-$ackHtml = '<p style="font:14px Arial,sans-serif">' . h($ackIntro) . '</p><p style="font:14px Arial,sans-serif">What you sent:</p>'
-    . htmlTable($rows) . '<p style="font:13px Arial,sans-serif;color:#555">Architectural Association of Kenya<br>aak@aak.or.ke · +254 721 691 337</p>';
-$ackHeaders = $common . "\r\nReply-To: $to\r\nContent-Type: multipart/alternative; boundary=\"$ackAlt\"";
-if (!sendMail($applicantEmail, null, 'Your application for appointment of an arbitrator: ' . $a['reference'], $ackHeaders, alternative($ackPlain, $ackHtml, $ackAlt), $from, $outbox)) {
+$acknowledgement = [
+    'to' => $applicantEmail,
+    'cc' => null,
+    'replyTo' => $to,
+    'subject' => 'Your application for appointment of an arbitrator: ' . $a['reference'],
+    'plain' => "$ackIntro\n\nWhat you sent:\n\n" . plainTable($rows) . "\n\nArchitectural Association of Kenya\naak@aak.or.ke · +254 721 691 337",
+    'html' => '<p style="font:14px Arial,sans-serif">' . h($ackIntro) . '</p><p style="font:14px Arial,sans-serif">What you sent:</p>'
+        . htmlTable($rows) . '<p style="font:13px Arial,sans-serif;color:#555">Architectural Association of Kenya<br>aak@aak.or.ke · +254 721 691 337</p>',
+    'attachments' => [],
+];
+if (!deliver($acknowledgement, $config, $from, $fromName, $domain)) {
     error_log('arbitration-request: the acknowledgement could not be sent');
 }
 
