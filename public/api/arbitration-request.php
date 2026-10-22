@@ -23,7 +23,10 @@
  *   graph   Microsoft 365 sending (aak.or.ke's mail is on Microsoft 365):
  *           ['tenantId' => ..., 'clientId' => ..., 'clientSecret' => ...]
  *           for an app with Mail.Send for the arbitration@ mailbox. Without
- *           it, PHP's mail() is used, which aak.or.ke's SPF rejects.
+ *           it (the setup in use), PHP's mail() sends through this cPanel
+ *           server as arbitration@aak.or.ke (a cPanel mailbox), which
+ *           needs the server in aak.or.ke's SPF record:
+ *           v=spf1 include:spf.protection.outlook.com ip4:192.185.129.133 -all
  *   outbox  a folder: emails are written there as .eml files instead of
  *           being sent (local testing).
  * To test, set 'to' to a mailbox of your own and 'cc' to null, send one
