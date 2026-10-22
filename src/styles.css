@@ -18,6 +18,20 @@
   --font-display: "Libre Baskerville", ui-serif, Georgia, serif;
   --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
   --font-accent: "Libre Baskerville", ui-serif, Georgia, serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+  /* The arbitration system's "ledger" palette (Arbitration app,
+     client/tailwind.config.js), used only by the arbitration application so it
+     looks like the system it feeds: warm paper, ink rules, AAK red. */
+  --color-ledger-paper: #fbf8f1;
+  --color-ledger-band: #f0eade;
+  --color-ledger-ink: #17150e;
+  --color-ledger-ink-2: #3c382f;
+  --color-ledger-muted: #6b6455;
+  --color-ledger-rule: #cfc8ba;
+  --color-ledger-hairline: #e2dbcd;
+  --color-ledger-red: #a5121c;
+  --color-ledger-red-hover: #7c0d14;
 
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);

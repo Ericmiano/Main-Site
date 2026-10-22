@@ -787,34 +787,12 @@ export const publications: Publication[] = [
 /* Arbitration ------------------------------------------------------- */
 /** Arbitrator profiles live in @/data/arbitrators — sourced from AAK's own roster document. */
 
-/** Arbitration requests go to the Secretariat with fiona@aak.or.ke copied in
- * (the Secretariat's instruction). The body is a checklist of what AAK's
- * arbitration system asks for when a case is opened. */
+/** Arbitration enquiries go to the Secretariat with fiona@aak.or.ke copied in
+ * (the Secretariat's instruction). Applications use the form on /arbitration. */
 export const ARBITRATION_EMAIL = "aak@aak.or.ke";
-export const ARBITRATION_CC = "fiona@aak.or.ke";
-const ARBITRATION_SUBJECT = "Request for arbitration";
-const ARBITRATION_BODY = [
-  "Claimant (name, phone, email):",
-  "Respondent (name, phone, email):",
-  "Basis: arbitration clause in the contract, or a separate written agreement to refer the dispute:",
-  "Contract (title, date and the arbitration clause number):",
-  "Project:",
-  "Value of the dispute:",
-  "Nature of the dispute (for example payment, delay, defects):",
-  "Short description of the dispute:",
-  "",
-  "Attached: copy of the contract; the separate agreement to arbitrate, if any; relevant correspondence; supporting evidence; proof of identity.",
-].join("\r\n");
-
-const enc = encodeURIComponent;
-export const arbitrationRequestMailto = `mailto:${ARBITRATION_EMAIL}?cc=${ARBITRATION_CC}&subject=${enc(ARBITRATION_SUBJECT)}&body=${enc(ARBITRATION_BODY)}`;
-
-/** For visitors with no mail app: the same email, written in webmail or pasted anywhere. */
-export const arbitrationRequestWebmail = {
-  gmail: `https://mail.google.com/mail/?view=cm&fs=1&to=${ARBITRATION_EMAIL}&cc=${ARBITRATION_CC}&su=${enc(ARBITRATION_SUBJECT)}&body=${enc(ARBITRATION_BODY)}`,
-  outlook: `https://outlook.office.com/mail/deeplink/compose?to=${ARBITRATION_EMAIL}&cc=${ARBITRATION_CC}&subject=${enc(ARBITRATION_SUBJECT)}&body=${enc(ARBITRATION_BODY)}`,
-  text: `To: ${ARBITRATION_EMAIL}\nCc: ${ARBITRATION_CC}\nSubject: ${ARBITRATION_SUBJECT}\n\n${ARBITRATION_BODY.replace(/\r\n/g, "\n")}`,
-};
+export const arbitrationEnquiryMailto = `mailto:${ARBITRATION_EMAIL}?cc=fiona@aak.or.ke&subject=${encodeURIComponent(
+  "Arbitration enquiry",
+)}`;
 
 export interface ArbitrationStep {
   step: string;

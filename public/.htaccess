@@ -44,7 +44,7 @@
   # scripts left on the server (wp-login.php, plugins, uploads) stay inert.
   RewriteCond %{HTTP_HOST} ^((www|new)\.)?aak\.or\.ke$|^(localhost|127\.0\.0\.1)(:\d+)?$ [NC]
   RewriteCond %{REQUEST_URI} \.(php[0-9]?|phtml|phar)$ [NC]
-  RewriteCond %{REQUEST_URI} !^/api/(member-stats|portal-events|certificate|news|news-page|news-sitemap)\.php$
+  RewriteCond %{REQUEST_URI} !^/api/(member-stats|portal-events|certificate|arbitration-request|news|news-page|news-sitemap)\.php$
   RewriteRule ^ - [F,L]
 
   # Member register endpoint (see api/member-stats.php).
@@ -55,6 +55,9 @@
 
   # Event certificate lookups (see api/certificate.php).
   RewriteRule ^api/certificate/?$ api/certificate.php [L]
+
+  # Applications for arbitration from /arbitration (see api/arbitration-request.php).
+  RewriteRule ^api/arbitration-request/?$ api/arbitration-request.php [L]
 
   # News & insights, written in the WordPress back office (see api/news-lib.php):
   # the feed, each article page (/news/<slug>) and the articles' sitemap. The
