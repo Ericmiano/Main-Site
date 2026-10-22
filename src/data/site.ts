@@ -787,6 +787,28 @@ export const publications: Publication[] = [
 /* Arbitration ------------------------------------------------------- */
 /** Arbitrator profiles live in @/data/arbitrators — sourced from AAK's own roster document. */
 
+/** Arbitration requests go to the Secretariat with fiona@aak.or.ke copied in
+ * (the Secretariat's instruction). The body is a checklist of what AAK's
+ * arbitration system asks for when a case is opened. */
+export const ARBITRATION_EMAIL = "aak@aak.or.ke";
+export const ARBITRATION_CC = "fiona@aak.or.ke";
+export const arbitrationRequestMailto = `mailto:${ARBITRATION_EMAIL}?cc=${ARBITRATION_CC}&subject=${encodeURIComponent(
+  "Request for arbitration",
+)}&body=${encodeURIComponent(
+  [
+    "Claimant (name, phone, email):",
+    "Respondent (name, phone, email):",
+    "Basis: arbitration clause in the contract, or a separate written agreement to refer the dispute:",
+    "Contract (title, date and the arbitration clause number):",
+    "Project:",
+    "Value of the dispute:",
+    "Nature of the dispute (for example payment, delay, defects):",
+    "Short description of the dispute:",
+    "",
+    "Attached: copy of the contract; the separate agreement to arbitrate, if any; relevant correspondence; supporting evidence; proof of identity.",
+  ].join("\r\n"),
+)}`;
+
 export interface ArbitrationStep {
   step: string;
   title: string;

@@ -14,6 +14,7 @@ import { Reveal } from "@/components/site/Reveal";
 import { PageBreadcrumb } from "@/components/site/PageBreadcrumb";
 import { ClickToLoadMap } from "@/components/site/ClickToLoadMap";
 import { jsonLd } from "@/lib/json-ld";
+import { ARBITRATION_CC, arbitrationRequestMailto } from "@/data/site";
 
 const SITE_URL = "https://aak.or.ke";
 const TITLE = "Contact Us | Architectural Association of Kenya";
@@ -148,6 +149,16 @@ function ContactPage() {
                       advocacy@aak.or.ke
                     </a>{" "}
                     (advocacy &amp; Mulika Mjengo)
+                  </li>
+                  <li>
+                    <a className="link-underline" href={arbitrationRequestMailto}>
+                      aak@aak.or.ke, cc {ARBITRATION_CC}
+                    </a>{" "}
+                    (arbitration;{" "}
+                    <Link to="/arbitration" hash="apply" className="link-underline">
+                      what to send
+                    </Link>
+                    )
                   </li>
                 </ul>
               </div>

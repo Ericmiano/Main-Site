@@ -6,15 +6,16 @@ import { Footer } from "@/components/site/Footer";
 import { Reveal } from "@/components/site/Reveal";
 import { PageBreadcrumb } from "@/components/site/PageBreadcrumb";
 import { SectionHeading } from "@/components/site/SectionHeading";
+import { ArbitratorDirectory } from "@/components/site/ArbitratorDirectory";
+import { arbitrators } from "@/data/arbitrators";
+import { ARBITRATION_CC, ARBITRATION_EMAIL, arbitrationRequestMailto } from "@/data/site";
 import { fileUrl } from "@/lib/files";
 import { jsonLd } from "@/lib/json-ld";
 
 const SITE_URL = "https://aak.or.ke";
 const TITLE = "Arbitration | Architectural Association of Kenya";
 const DESCRIPTION =
-  "How arbitration works under Kenya's Arbitration Act (Cap. 49), and AAK's role under clause 17 of its Constitution: nominating arbitration panels where contracts empower its President, and arbitration of disputes involving the Association.";
-
-const NOMINATION_EMAIL = "mailto:aak@aak.or.ke?subject=Request%20for%20arbitrator%20nomination";
+  "AAK's panel of arbitrators, what to send when applying for arbitration, and how arbitration works under Kenya's Arbitration Act (Cap. 49).";
 
 export const Route = createFileRoute("/arbitration")({
   head: () => ({
@@ -64,13 +65,33 @@ function structuredData() {
   };
 }
 
-/* Every statement below is taken from, and cites, one of three documents:
+/* Every statement below is taken from, and cites, one of these sources:
    the Arbitration Act (Cap. 49), Revised Edition 2022 (Kenya Law); the
-   Constitution of Kenya, Article 159(2)(c); and the AAK Constitution and
-   By-Laws (2022 amendments), clause 17. Add nothing here that they don't say.
-   The online arbitration system (a separate app) will plug in here when it
-   launches; the prototype steps and directory (arbitrationSteps,
-   ArbitratorDirectory) are kept for it. */
+   Constitution of Kenya, Article 159(2)(c); the AAK Constitution and By-Laws
+   (2022 amendments), clause 17; the panel in "ARBITRATOR PROFILES_2026.docx"
+   (@/data/arbitrators); and, for what to send, the case-opening form of AAK's
+   arbitration system (the separate Arbitration app: parties, basis, contract,
+   value, category, description and its document types). Add nothing here
+   that they don't say. The prototype steps (arbitrationSteps) are kept for
+   when that system launches. */
+
+/** What the arbitration system asks for when a case is opened. */
+const REQUEST_DETAILS = [
+  "The claimant and the respondent: names and contact details",
+  "The basis for arbitration: the arbitration clause in your contract, or a separate written agreement to refer the dispute",
+  "The contract and the project it relates to",
+  "The value of the dispute",
+  "The nature of the dispute, for example payment, delay or defects",
+  "A short description of the dispute",
+];
+
+const REQUEST_DOCUMENTS = [
+  "A copy of the contract, including its arbitration clause",
+  "The separate agreement to arbitrate, where there is no clause in the contract",
+  "Relevant correspondence between the parties",
+  "Supporting evidence",
+  "Proof of identity",
+];
 
 const ACT_PROVISIONS = [
   {
@@ -145,7 +166,79 @@ function ArbitrationPage() {
           </div>
         </section>
 
-        <section aria-labelledby="act-title" className="py-16 lg:py-24">
+        <section id="panel" aria-labelledby="panel-title" className="py-16 lg:py-24">
+          <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
+            <SectionHeading
+              eyebrow="Panel of arbitrators"
+              title={<span id="panel-title">AAK&rsquo;s arbitrators</span>}
+              description={`${arbitrators.length} members of the Association across its chapters, with their arbitration and dispute resolution credentials. Select a name for the full profile.`}
+            />
+            <div className="mt-12">
+              <ArbitratorDirectory />
+            </div>
+          </div>
+        </section>
+
+        <section
+          id="apply"
+          aria-labelledby="apply-title"
+          className="border-t border-border bg-secondary/40 py-16 lg:py-24"
+        >
+          <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
+            <SectionHeading
+              eyebrow="Applying for arbitration"
+              title={<span id="apply-title">What to send the Secretariat</span>}
+              description="An arbitration agreement must be in writing. It may be a clause in your contract or a separate agreement (Arbitration Act, s. 4)."
+            />
+            <div className="mt-12 grid gap-10 lg:grid-cols-2 lg:gap-16">
+              <div>
+                <h3 className="meta-label text-muted-foreground">Details to include</h3>
+                <ul className="mt-4 divide-y divide-border border-y border-border">
+                  {REQUEST_DETAILS.map((item) => (
+                    <li
+                      key={item}
+                      className="flex gap-3 py-3.5 text-sm leading-relaxed text-foreground"
+                    >
+                      <span className="mt-2 h-1.5 w-1.5 shrink-0 bg-primary" aria-hidden="true" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div>
+                <h3 className="meta-label text-muted-foreground">Documents to attach</h3>
+                <ul className="mt-4 divide-y divide-border border-y border-border">
+                  {REQUEST_DOCUMENTS.map((item) => (
+                    <li
+                      key={item}
+                      className="flex gap-3 py-3.5 text-sm leading-relaxed text-foreground"
+                    >
+                      <span className="mt-2 h-1.5 w-1.5 shrink-0 bg-primary" aria-hidden="true" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+                <p className="mt-6 text-sm leading-relaxed text-muted-foreground">
+                  Once the tribunal is in place, the claimant states the facts supporting the claim,
+                  the points at issue and the relief sought, and the parties may submit all the
+                  documents they consider relevant (Arbitration Act, s. 24).
+                </p>
+              </div>
+            </div>
+            <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3">
+              <a href={arbitrationRequestMailto} className="group btn-primary">
+                Email the Secretariat
+                <ArrowUpRight className="h-4 w-4" />
+              </a>
+              <p className="text-sm text-muted-foreground">
+                To {ARBITRATION_EMAIL}, copying {ARBITRATION_CC}. The email opens with this
+                checklist filled in.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section aria-labelledby="act-title" className="border-t border-border py-16 lg:py-24">
           <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
             <SectionHeading
               eyebrow="The Arbitration Act (Cap. 49)"
@@ -211,10 +304,11 @@ function ArbitrationPage() {
               Contact the Secretariat
             </h2>
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-              For a nomination under clause 17.2, write to the Association&rsquo;s Secretariat.
+              To apply for arbitration, or for a nomination under clause 17.2, write to the
+              Association&rsquo;s Secretariat at {ARBITRATION_EMAIL}, copying {ARBITRATION_CC}.
             </p>
-            <a href={NOMINATION_EMAIL} className="group btn-primary mt-7">
-              Email aak@aak.or.ke
+            <a href={arbitrationRequestMailto} className="group btn-primary mt-7">
+              Email {ARBITRATION_EMAIL}
               <ArrowUpRight className="h-4 w-4" />
             </a>
           </div>
