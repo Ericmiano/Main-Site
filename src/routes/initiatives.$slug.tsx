@@ -157,10 +157,29 @@ function InitiativeDetail() {
                     {initiative.stats.map((stat) => (
                       <div
                         key={`${stat.label}-${stat.value}`}
-                        className="rounded-xl border border-border p-4"
+                        className={
+                          stat.href
+                            ? "relative rounded-xl border border-border p-4 transition-colors hover:border-primary hover:bg-secondary/60"
+                            : "rounded-xl border border-border p-4"
+                        }
                       >
                         <dt className="meta-label text-muted-foreground">{stat.label}</dt>
-                        <dd className="mt-1.5 text-sm font-medium text-foreground">{stat.value}</dd>
+                        <dd className="mt-1.5 text-sm font-medium text-foreground">
+                          {stat.href ? (
+                            // The link covers the whole card, so the card itself is the target.
+                            <a
+                              href={stat.href}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1.5 text-primary after:absolute after:inset-0 after:content-['']"
+                            >
+                              {stat.value}
+                              <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+                            </a>
+                          ) : (
+                            stat.value
+                          )}
+                        </dd>
                       </div>
                     ))}
                   </dl>

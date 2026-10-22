@@ -5,6 +5,8 @@ import { fileUrl } from "@/lib/files";
 export interface InitiativeStat {
   label: string;
   value: string;
+  /** Makes the card a link, e.g. to the form it describes. */
+  href?: string;
 }
 
 export interface InitiativeGalleryImage {
@@ -90,7 +92,11 @@ export const initiativeDetails: InitiativeDetail[] = [
       "It was launched as the practical, reporting arm of the wider Je Una Mjengo? sensitisation campaign during the 2023 campaign cycle, giving the public a direct policing platform for illegal and poorly constructed buildings in Nairobi County.",
     ],
     stats: [
-      { label: "Objective", value: "Report unsafe buildings" },
+      {
+        label: "Objective",
+        value: "Report unsafe buildings",
+        href: "https://forms.cloud.microsoft/r/h1TCEjvRNz?origin=lprLink",
+      },
       { label: "Objective", value: "Ensure site compliance" },
       { label: "Partners", value: "NCA & County Governments" },
       { label: "Coverage", value: "Nairobi County (initial rollout)" },
