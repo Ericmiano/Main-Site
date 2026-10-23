@@ -8,9 +8,11 @@ import { createFileRoute } from "@tanstack/react-router";
  * same check and the same emails, for testing on the review site before
  * anything goes live: keep the two in step.
  *
- * It sends through Microsoft 365 (Graph) as arbitration@aak.or.ke, with the
- * Worker secrets ARBITRATION_GRAPH_TENANT_ID, ARBITRATION_GRAPH_CLIENT_ID and
- * ARBITRATION_GRAPH_CLIENT_SECRET, and only ever to ARBITRATION_TO (default
+ * It sends as arbitration@aak.or.ke through the cPanel mail server
+ * (mail.aak.or.ke:465, signed in with the Worker secret
+ * ARBITRATION_SMTP_PASSWORD), or, without that secret, through Microsoft 365
+ * (Graph) with ARBITRATION_GRAPH_TENANT_ID, _CLIENT_ID and _CLIENT_SECRET.
+ * Either way only ever to ARBITRATION_TO (default
  * arbitration@aak.or.ke) and ARBITRATION_CC (default none), so the review
  * site never writes to the Secretariat. Subjects start "[Review site]".
  * No rate limit here (a Worker keeps no files); the spam traps are the PHP's.
@@ -176,6 +178,7 @@ interface Mail {
   cc: string | null;
   replyTo: string | null;
   subject: string;
+  plain: string;
   html: string;
   attachments: { name: string; data: Bytes }[];
 }
@@ -296,6 +299,120 @@ async function sendGraph(m: Mail, token: string): Promise<void> {
     }),
     [202],
   );
+}
+
+/* The cPanel mail server -------------------------------------------------- */
+
+/** RFC 2047 encoding for a header value that isn't plain ASCII. */
+const headerText = (value: string) =>
+  /^[\x20-\x7e]*$/.test(value) ? value : `=?UTF-8?B?${base64(new TextEncoder().encode(value))}?=`;
+
+const wrap76 = (b64: string) => b64.replace(/.{1,76}/g, "$&\r\n");
+
+/** One email as MIME text: plain + HTML, then the attachments. */
+function mime(m: Mail, messageId: string): string {
+  const boundary = (tag: string) =>
+    `${tag}-${[...crypto.getRandomValues(new Uint8Array(8))].map((b) => b.toString(16).padStart(2, "0")).join("")}`;
+  const alt = boundary("alt");
+  const mixed = boundary("mixed");
+  const utf8 = (text: string) => wrap76(base64(new TextEncoder().encode(text)));
+  const alternative =
+    `--${alt}\r\nContent-Type: text/plain; charset=UTF-8\r\nContent-Transfer-Encoding: base64\r\n\r\n${utf8(m.plain)}` +
+    `--${alt}\r\nContent-Type: text/html; charset=UTF-8\r\nContent-Transfer-Encoding: base64\r\n\r\n${utf8(m.html)}` +
+    `--${alt}--\r\n`;
+  const headers = [
+    `From: ${headerText(FROM_NAME)} <${FROM}>`,
+    `To: ${m.to}`,
+    ...(m.cc ? [`Cc: ${m.cc}`] : []),
+    ...(m.replyTo ? [`Reply-To: ${m.replyTo}`] : []),
+    `Subject: ${headerText(m.subject)}`,
+    `Date: ${new Date().toUTCString().replace("GMT", "+0000")}`,
+    `Message-ID: <${messageId}@aak.or.ke>`,
+    "MIME-Version: 1.0",
+  ];
+  if (!m.attachments.length)
+    return `${headers.join("\r\n")}\r\nContent-Type: multipart/alternative; boundary="${alt}"\r\n\r\n${alternative}`;
+  let body = `--${mixed}\r\nContent-Type: multipart/alternative; boundary="${alt}"\r\n\r\n${alternative}`;
+  for (const f of m.attachments) {
+    const name = headerText(f.name);
+    body +=
+      `--${mixed}\r\nContent-Type: ${contentType(f.name)}; name="${name}"\r\nContent-Transfer-Encoding: base64\r\n` +
+      `Content-Disposition: attachment; filename="${name}"\r\n\r\n${wrap76(base64(f.data))}`;
+  }
+  return `${headers.join("\r\n")}\r\nContent-Type: multipart/mixed; boundary="${mixed}"\r\n\r\n${body}--${mixed}--\r\n`;
+}
+
+interface SmtpSocket {
+  readable: ReadableStream<Uint8Array>;
+  writable: WritableStream<Uint8Array>;
+  close(): Promise<void>;
+}
+// A variable, so neither the cPanel build nor the dev server tries to resolve
+// this Workers-only module; it's loaded only when an email is sent.
+const SOCKETS_MODULE = "cloudflare:sockets";
+
+/** Sends one email through the cPanel mail server, signed in as arbitration@. */
+async function sendSmtp(m: Mail, password: string, messageId: string): Promise<void> {
+  const host = env("ARBITRATION_SMTP_HOST") ?? "mail.aak.or.ke";
+  const port = Number(env("ARBITRATION_SMTP_PORT") ?? 465);
+  const tls = env("ARBITRATION_SMTP_TLS") !== "off"; // "off" only for local tests
+  const { connect } = (await import(/* @vite-ignore */ SOCKETS_MODULE)) as {
+    connect: (
+      address: { hostname: string; port: number },
+      options?: { secureTransport?: string },
+    ) => SmtpSocket;
+  };
+  const socket = connect({ hostname: host, port }, { secureTransport: tls ? "on" : "off" });
+  const reader = socket.readable.getReader();
+  const writer = socket.writable.getWriter();
+  const encoder = new TextEncoder();
+  const decoder = new TextDecoder();
+  let buffer = "";
+
+  /** The next complete reply ("250-..." lines end with "250 ..."). */
+  const reply = async (): Promise<number> => {
+    for (;;) {
+      const lines = buffer.split("\r\n");
+      for (let i = 0; i < lines.length - 1; i++) {
+        if (/^\d{3} /.test(lines[i]!)) {
+          buffer = lines.slice(i + 1).join("\r\n");
+          return Number(lines[i]!.slice(0, 3));
+        }
+      }
+      const { value, done } = await reader.read();
+      if (done) throw new Error("The mail server closed the connection");
+      buffer += decoder.decode(value, { stream: true });
+    }
+  };
+  /** Sends a command (never logged: one carries the password) and checks the reply. */
+  const step = async (what: string, command: string | null, ok: number[]) => {
+    if (command !== null) await writer.write(encoder.encode(`${command}\r\n`));
+    const code = await reply();
+    if (!ok.includes(code)) throw new Error(`Mail server ${what} failed (${code})`);
+  };
+
+  const work = (async () => {
+    await step("greeting", null, [220]);
+    await step("hello", "EHLO aak.or.ke", [250]);
+    await step("sign-in", `AUTH PLAIN ${base64(encoder.encode(`\0${FROM}\0${password}`))}`, [235]);
+    await step("sender", `MAIL FROM:<${FROM}>`, [250]);
+    for (const rcpt of [m.to, m.cc].filter((r): r is string => !!r))
+      await step("recipient", `RCPT TO:<${rcpt}>`, [250, 251]);
+    await step("data", "DATA", [354]);
+    // Lines starting with "." are doubled, as SMTP requires.
+    const message = mime(m, messageId).replace(/^\./gm, "..");
+    await writer.write(encoder.encode(`${message}\r\n.\r\n`));
+    await step("delivery", null, [250]);
+    await writer.write(encoder.encode("QUIT\r\n")).catch(() => {});
+  })();
+  const timeout = new Promise<never>((_, reject) =>
+    setTimeout(() => reject(new Error("The mail server took too long")), 30_000),
+  );
+  try {
+    await Promise.race([work, timeout]);
+  } finally {
+    await socket.close().catch(() => {});
+  }
 }
 
 /** Posts only from this site (another site can't submit in a visitor's name). */
@@ -599,41 +716,48 @@ async function handle(request: Request): Promise<Response> {
     p.organizationName ?? p.fullName;
   const to = env("ARBITRATION_TO") ?? FROM;
   const cc = env("ARBITRATION_CC") ?? null;
+  const plainTable = rows.map(([k, v]) => `${k}:\n  ${v.replace(/\n/g, "\n  ")}`).join("\n");
   const intro =
     "A new application to the President for appointment of an arbitrator (Form SP/1) was submitted on aak.or.ke.";
 
-  const token = await graphToken();
-  await sendGraph(
-    {
-      to,
-      cc,
-      replyTo: applicantEmail,
-      subject: `[Review site] Application for appointment of arbitrator ${reference}: ${partyName(claimant)} v ${partyName(respondent)}`,
-      html: `<p style="font:14px Arial,sans-serif">${escapeHtml(intro)}</p>${htmlTable}<p style="font:13px Arial,sans-serif;color:#555">Reply to this email to answer the applicant. The attached JSON holds the same details in the arbitration system&rsquo;s format.</p>`,
-      attachments: [
-        ...attachments,
-        {
-          name: `arbitration-request-${reference}.json`,
-          data: new TextEncoder().encode(JSON.stringify(application, null, 4)),
-        },
-      ],
-    },
-    token,
-  );
+  // The cPanel mail server when its password is set, otherwise Microsoft 365.
+  const smtpPassword = env("ARBITRATION_SMTP_PASSWORD");
+  let token: string | null = null;
+  let sent = 0;
+  const send = async (m: Mail) => {
+    sent += 1;
+    if (smtpPassword) return sendSmtp(m, smtpPassword, `${reference.toLowerCase()}.${sent}`);
+    token ??= await graphToken();
+    return sendGraph(m, token);
+  };
+
+  await send({
+    to,
+    cc,
+    replyTo: applicantEmail,
+    subject: `[Review site] Application for appointment of arbitrator ${reference}: ${partyName(claimant)} v ${partyName(respondent)}`,
+    plain: `${intro}\n\n${plainTable}\n\nReply to this email to answer the applicant.\nThe attached JSON holds the same details in the arbitration system's format.`,
+    html: `<p style="font:14px Arial,sans-serif">${escapeHtml(intro)}</p>${htmlTable}<p style="font:13px Arial,sans-serif;color:#555">Reply to this email to answer the applicant. The attached JSON holds the same details in the arbitration system&rsquo;s format.</p>`,
+    attachments: [
+      ...attachments,
+      {
+        name: `arbitration-request-${reference}.json`,
+        data: new TextEncoder().encode(JSON.stringify(application, null, 4)),
+      },
+    ],
+  });
   const ackIntro = `Thank you. The Architectural Association of Kenya has received your application to the President for appointment of an arbitrator. Your reference is ${reference}; please quote it when you write to the Secretariat.`;
   try {
-    await sendGraph(
-      {
-        // The review site never writes to outsiders: the copy goes to the test mailbox.
-        to,
-        cc: null,
-        replyTo: SECRETARIAT,
-        subject: `[Review site] Your application for appointment of an arbitrator: ${reference}`,
-        html: `<p style="font:14px Arial,sans-serif">${escapeHtml(ackIntro)}</p><p style="font:14px Arial,sans-serif">What you sent:</p>${htmlTable}<p style="font:13px Arial,sans-serif;color:#555">Architectural Association of Kenya<br>aak@aak.or.ke · +254 721 691 337</p>`,
-        attachments: [],
-      },
-      token,
-    );
+    await send({
+      // The review site never writes to outsiders: the copy goes to the test mailbox.
+      to,
+      cc: null,
+      replyTo: SECRETARIAT,
+      subject: `[Review site] Your application for appointment of an arbitrator: ${reference}`,
+      plain: `${ackIntro}\n\nWhat you sent:\n\n${plainTable}\n\nArchitectural Association of Kenya\naak@aak.or.ke · +254 721 691 337`,
+      html: `<p style="font:14px Arial,sans-serif">${escapeHtml(ackIntro)}</p><p style="font:14px Arial,sans-serif">What you sent:</p>${htmlTable}<p style="font:13px Arial,sans-serif;color:#555">Architectural Association of Kenya<br>aak@aak.or.ke · +254 721 691 337</p>`,
+      attachments: [],
+    });
   } catch (err) {
     console.error("arbitration-request: the acknowledgement could not be sent:", String(err));
   }
