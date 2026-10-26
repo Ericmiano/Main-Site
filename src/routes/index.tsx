@@ -17,7 +17,7 @@ import { Membership } from "@/components/home/Membership";
 import { SectionIndicator } from "@/components/home/SectionIndicator";
 import { FeaturedFirm } from "@/components/home/FeaturedFirm";
 import { MemberStats } from "@/components/site/MemberStats";
-import { getSortedEvents } from "@/data/site";
+import { eventSchemaLocation, getSortedEvents } from "@/data/site";
 import { jsonLd } from "@/lib/json-ld";
 
 const SITE_URL = "https://aak.or.ke";
@@ -83,9 +83,8 @@ function structuredData() {
             name: event.title,
             startDate: event.isoDate,
             ...(event.endIsoDate ? { endDate: event.endIsoDate } : {}),
-            eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
             eventStatus: "https://schema.org/EventScheduled",
-            location: { "@type": "Place", name: event.location },
+            ...eventSchemaLocation(event, `${SITE_URL}/events/${event.slug}`),
             url: `${SITE_URL}/events/${event.slug}`,
             organizer: { "@id": `${SITE_URL}/#organization` },
           },

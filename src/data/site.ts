@@ -344,6 +344,20 @@ export const events: SiteEvent[] = [
 ];
 
 /** The event's real status right now — "upcoming"/"ongoing" in the data goes stale once the date passes. */
+/** Attendance mode and location for search engines' event data: online
+ * events (location "Online…") get the event page as a virtual location. */
+export function eventSchemaLocation(event: SiteEvent, pageUrl: string) {
+  return event.location.startsWith("Online")
+    ? {
+        eventAttendanceMode: "https://schema.org/OnlineEventAttendanceMode",
+        location: { "@type": "VirtualLocation", url: pageUrl },
+      }
+    : {
+        eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+        location: { "@type": "Place", name: event.location, address: event.venue },
+      };
+}
+
 /** isoDate / endIsoDate are either dates ("2026-10-22", the whole day in
  * Nairobi) or exact times ("2026-10-16T12:00:00+03:00"). */
 const NAIROBI = "+03:00";

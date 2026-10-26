@@ -14,7 +14,13 @@ import { PageBreadcrumb } from "@/components/site/PageBreadcrumb";
 import { PortalEvents } from "@/components/site/PortalEvents";
 import { cn } from "@/lib/utils";
 import { fileUrl } from "@/lib/files";
-import { getEventDisplayStatus, getSortedEvents, portalLinks, type SiteEvent } from "@/data/site";
+import {
+  eventSchemaLocation,
+  getEventDisplayStatus,
+  getSortedEvents,
+  portalLinks,
+  type SiteEvent,
+} from "@/data/site";
 import { jsonLd } from "@/lib/json-ld";
 
 const SITE_URL = "https://aak.or.ke";
@@ -60,9 +66,8 @@ function structuredData(events: SiteEvent[]) {
             name: event.title,
             startDate: event.isoDate,
             ...(event.endIsoDate ? { endDate: event.endIsoDate } : {}),
-            eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
             eventStatus: "https://schema.org/EventScheduled",
-            location: { "@type": "Place", name: event.location },
+            ...eventSchemaLocation(event, `${SITE_URL}/events/${event.slug}`),
             url: `${SITE_URL}/events/${event.slug}`,
             organizer: { "@id": `${SITE_URL}/#organization` },
           },
