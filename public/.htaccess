@@ -15,6 +15,13 @@
 <IfModule mod_rewrite.c>
   RewriteEngine On
 
+  # mail.aak.or.ke is the mail server's name, but on the web it showed this
+  # site (and turned up in search results): send it to aak.or.ke. Its SSL
+  # certificate checks (.well-known) and cPanel's webmail links stay put.
+  RewriteCond %{HTTP_HOST} ^mail\.aak\.or\.ke$ [NC]
+  RewriteCond %{REQUEST_URI} !^/(\.well-known|webmail|cpanel)(/|$) [NC]
+  RewriteRule ^ https://aak.or.ke%{REQUEST_URI} [R=301,L,NE]
+
   # Requests for the other sites on this account pass through untouched.
   RewriteCond %{HTTP_HOST} !^((www|new)\.)?aak\.or\.ke$ [NC]
   RewriteCond %{HTTP_HOST} !^(localhost|127\.0\.0\.1)(:\d+)?$ [NC]
