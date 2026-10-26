@@ -244,6 +244,8 @@ export const events: SiteEvent[] = [
       "A six-day programme using City Park as a living laboratory to explore, co-design, build, activate and celebrate better public spaces.",
     body: [
       "Using City Park as a living laboratory, the six-day programme will bring together government, communities, youth, women, children, persons with disabilities, professionals, artists, academia, civil society, private sector and development partners to listen, explore, co-design, build, activate and celebrate better public spaces.",
+      // AAK's Urban October planner (updated 26 Oct 2026).
+      "On 30 October, the programme includes the Nairobi Then and Now Exhibition and Conversation.",
     ],
     facts: [
       { label: "Dates", value: "26 – 31 October 2026" },
@@ -288,28 +290,6 @@ export const events: SiteEvent[] = [
       { label: "CPD", value: "CPD points approved" },
     ],
     registerLabel: "",
-    cta: "View details",
-  },
-  {
-    slug: "world-cities-day-je-una-mjengo-2026",
-    title: "World Cities Day: AAK Je, Una Mjengo? Activation",
-    kicker: "Urban October",
-    date: "31 October 2026",
-    isoDate: "2026-10-31",
-    location: "Nairobi, Kenya",
-    venue: "Venue to be announced",
-    status: "upcoming",
-    summary:
-      "A public awareness campaign with a built environment clinic and public space activation, raising awareness of the quality, safety and liveability of Nairobi's built environment.",
-    body: [
-      "A public awareness campaign that engages the public through a built environment clinic and public space activation, using an interactive street intervention to raise awareness of the quality, safety and liveability of Nairobi's built environment.",
-    ],
-    facts: [
-      { label: "Date", value: "31 October 2026" },
-      { label: "Venue", value: "To be announced, Nairobi" },
-    ],
-    registerTo: { to: "/initiatives/$slug", params: { slug: "je-una-mjengo" } },
-    registerLabel: "About Je, Una Mjengo?",
     cta: "View details",
   },
   {

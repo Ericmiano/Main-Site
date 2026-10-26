@@ -71,6 +71,8 @@
   # results keep working. WordPress files under /wp-content/uploads/ are left
   # in place on the server and served as-is.
   RewriteRule ^about-us/?$ /about [R=301,L]
+  # Shelved (AAK's Urban October planner, 26 Oct 2026): its page went to the events list.
+  RewriteRule ^events/world-cities-day-je-una-mjengo-2026/?$ /events [R=301,L]
   RewriteRule ^fees-subscriptions/?$ /membership [R=301,L]
   RewriteRule ^benefits/?$ /membership [R=301,L]
   RewriteRule ^contact-us/?$ /contact [R=301,L]
