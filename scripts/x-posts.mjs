@@ -106,10 +106,22 @@ for (const [, quote] of input.matchAll(/<blockquote[^>]*>([\s\S]*?)<\/blockquote
       .replace(/&mdash;/g, "—")
       .replace(/&hellip;/g, "…"),
   )
-    .replace(/https:\/\/t\.co\/\w+|pic\.(twitter|x)\.com\/\w+/g, "")
+    .replace(/pic\.(twitter|x)\.com\/\w+/g, "")
     .replace(/\s+/g, " ")
     .trim();
   if (text) embedTexts.set(id, text);
+}
+// Links in that wording are X's t.co short links: show where they go, as X
+// does (aak.or.ke/initiatives/...), or drop any that can't be followed.
+for (const [id, text] of embedTexts) {
+  let out = text;
+  for (const link of new Set(text.match(/https:\/\/t\.co\/\w+/g) ?? [])) {
+    const to = await fetch(link, { redirect: "manual" })
+      .then((r) => r.headers.get("location"))
+      .catch(() => null);
+    out = out.replaceAll(link, to ? to.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "") : "");
+  }
+  embedTexts.set(id, out.replace(/\s+/g, " ").trim());
 }
 
 /** The fuller of the two: X's data, or the pasted embed code's text. */
