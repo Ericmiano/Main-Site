@@ -229,6 +229,31 @@ export const events: SiteEvent[] = [
   // October Planner (15 Oct 2026). Its unconfirmed rows (Landscape Build Tour
   // 2, IFLA World Council & Congress, AAQS General Assembly) stay off the site.
   {
+    // The planner's JUM row (updated planner, 26 Oct 2026); its "JUM Campaign"
+    // sheet names the campaign. That sheet's outreach plan stays internal.
+    slug: "je-una-mjengo-online-campaign-2026",
+    title: "Je, Una Mjengo? Online Campaign",
+    kicker: "Urban October",
+    date: "26 – 31 October 2026",
+    isoDate: "2026-10-26",
+    endIsoDate: "2026-10-31",
+    location: "Online",
+    venue: "Online",
+    status: "upcoming",
+    summary:
+      "An online campaign on regularisation and the role played by the different built environment professionals.",
+    body: [
+      "An online campaign on regularisation and the role played by the different built environment professionals, part of AAK's Je, Una Mjengo? campaign.",
+    ],
+    facts: [
+      { label: "Dates", value: "26 – 31 October 2026" },
+      { label: "Where", value: "Online" },
+    ],
+    registerTo: { to: "/initiatives/$slug", params: { slug: "je-una-mjengo" } },
+    registerLabel: "About Je, Una Mjengo?",
+    cta: "View details",
+  },
+  {
     slug: "placemaking-week-nairobi-2026",
     title: "Placemaking Week Nairobi 2026",
     kicker: "Urban October",
