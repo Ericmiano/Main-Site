@@ -269,14 +269,23 @@ export const events: SiteEvent[] = [
       "A six-day programme using City Park as a living laboratory to explore, co-design, build, activate and celebrate better public spaces.",
     body: [
       "Using City Park as a living laboratory, the six-day programme will bring together government, communities, youth, women, children, persons with disabilities, professionals, artists, academia, civil society, private sector and development partners to listen, explore, co-design, build, activate and celebrate better public spaces.",
-      // AAK's Urban October planner (updated 26 Oct 2026).
-      "On 30 October, the programme includes the Nairobi Then and Now Exhibition and Conversation.",
+      // AAK's Urban October planner (updated 26 Oct 2026); details from the
+      // exhibition's poster and AAK's X post of 27 Oct 2026.
+      "On Friday, 30 October, the programme includes Nairobi Then & Now: the city we inherited, and the one we are making. It's a photographic exhibition, documentary screening and public conversation at the National Museums of Kenya, Nairobi, exploring Nairobi’s evolving built environment, urban heritage and the future of Kenyan cities. How has Nairobi changed, what have we lost along the way, and what should we carry into its future?",
+      "The exhibition runs from 9:00 a.m. to 5:00 p.m., and the film screening and public conversation from 3:00 p.m. to 5:10 p.m. Choose to attend the exhibition, the film screening and conversation, or both.",
     ],
     facts: [
       { label: "Dates", value: "26 – 31 October 2026" },
       { label: "Venue", value: "City Park, Nairobi" },
+      {
+        label: "Nairobi Then & Now",
+        value: "Friday, 30 October 2026, National Museums of Kenya, Nairobi",
+      },
+      { label: "Exhibition", value: "9:00 a.m. – 5:00 p.m." },
+      { label: "Film and conversation", value: "3:00 p.m. – 5:10 p.m." },
     ],
-    registerLabel: "",
+    registerHref: "https://forms.cloud.microsoft/r/MFukFuynRP",
+    registerLabel: "Register for Nairobi Then & Now",
     cta: "View details",
   },
   {
