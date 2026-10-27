@@ -343,6 +343,15 @@ export const events: SiteEvent[] = [
   },
 ];
 
+/** The order of the homepage hero's event card (user, 27 Oct 2026). Upcoming
+ * events not named here come in date order where "*" is; past ones drop out. */
+export const HERO_EVENT_ORDER = [
+  "smart-cities-forum-2026",
+  "placemaking-week-nairobi-2026",
+  "*",
+  "je-una-mjengo-online-campaign-2026",
+];
+
 /** The event's real status right now — "upcoming"/"ongoing" in the data goes stale once the date passes. */
 /** Attendance mode and location for search engines' event data: online
  * events (location "Online…") get the event page as a virtual location. */

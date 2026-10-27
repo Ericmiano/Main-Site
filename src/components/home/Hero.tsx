@@ -8,6 +8,7 @@ import {
   eventEndTime,
   getEventDisplayStatus,
   getSortedEvents,
+  HERO_EVENT_ORDER,
   type SiteEvent,
 } from "@/data/site";
 import { renderTime } from "@/lib/render-time";
@@ -220,11 +221,11 @@ function dayMonth(iso: string) {
     day % 100 >= 11 && day % 100 <= 13 ? "th" : (["th", "st", "nd", "rd"][day % 10] ?? "th");
   return `${day}${suffix} ${date.toLocaleDateString("en-GB", { month: "long", timeZone: "UTC" })}`;
 }
-const CARD_MS = 30_000;
+const CARD_MS = 8_000;
 
 /**
- * The angled red card on the hero photos: every upcoming event in turn,
- * soonest first, a new one every 30 seconds. Hovering or focusing the card
+ * The angled red card on the hero photos: every upcoming event in turn, in
+ * HERO_EVENT_ORDER, a new one every 8 seconds. Hovering or focusing the card
  * holds it; the dots pick an event. No automatic
  * turning for prefers-reduced-motion. Each card carries its end time
  * (data-ends), so one that ends is hidden by TIMED_HIDE_SCRIPT and skipped,
@@ -356,6 +357,11 @@ export function Hero() {
   const upcoming = getSortedEvents(asOf).filter(
     (event) => getEventDisplayStatus(event, asOf) !== "past",
   );
+  const heroPlace = (slug: string) => {
+    const at = HERO_EVENT_ORDER.indexOf(slug);
+    return at === -1 ? HERO_EVENT_ORDER.indexOf("*") : at;
+  };
+  const heroEvents = [...upcoming].sort((a, b) => heroPlace(a.slug) - heroPlace(b.slug));
 
   return (
     <section aria-labelledby="hero-title" className="bg-background">
@@ -405,7 +411,7 @@ export function Hero() {
       <div className="relative isolate h-[58svh] min-h-[22rem] overflow-hidden bg-ink-deep lg:h-[68svh]">
         <HeroPhotos />
 
-        <HeroEvents events={upcoming} asOf={asOf} />
+        <HeroEvents events={heroEvents} asOf={asOf} />
       </div>
     </section>
   );
