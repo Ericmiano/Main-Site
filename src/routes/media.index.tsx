@@ -11,6 +11,7 @@ import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { Reveal } from "@/components/site/Reveal";
 import { PageBreadcrumb } from "@/components/site/PageBreadcrumb";
+import type { RingTower as RingTowerComponent } from "@/components/ui/ring-tower";
 import { mediaAlbums } from "@/data/media-archive";
 import { flipIfLoaded, gsapIfLoaded, preloadFlip, prefersReducedMotion } from "@/lib/gsap";
 import { cn } from "@/lib/utils";
@@ -43,6 +44,37 @@ export const Route = createFileRoute("/media/")({
   }),
   component: MediaIndex,
 });
+
+/** Photos for the rings: each album's cover and one more, the grid-sized
+ * copies, dealt round the five rings so no two show the same set. */
+const RING_PHOTOS = mediaAlbums.flatMap((album) =>
+  [album.cover, album.photos.find((photo) => photo.src !== album.cover.src)]
+    .filter((photo) => photo !== undefined)
+    .map((photo) => photo.thumb ?? photo.src),
+);
+const RINGS = Array.from({ length: 5 }, (_, i) => ({
+  images: RING_PHOTOS.filter((_, j) => j % 5 === i),
+}));
+
+/**
+ * Album photos crawling round a tower of tilted rings on a dark stage under
+ * the title (drag to spin). Decorative: the albums themselves are listed
+ * below. three.js loads only here, once the page is up.
+ */
+function PhotoRings() {
+  const [Tower, setTower] = useState<typeof RingTowerComponent | null>(null);
+  useEffect(() => {
+    let live = true;
+    void import("@/components/ui/ring-tower").then((module) => {
+      if (live) setTower(() => module.RingTower);
+    });
+    return () => {
+      live = false;
+    };
+  }, []);
+  // The stage is always dark, so the rings' insides fade to black.
+  return Tower ? <Tower images={RING_PHOTOS} rings={RINGS} theme="dark" /> : null;
+}
 
 function MediaIndex() {
   const totalPhotos = mediaAlbums.reduce((n, album) => n + album.photos.length, 0);
@@ -104,7 +136,7 @@ function MediaIndex() {
     <>
       <Header />
       <main>
-        <section className="border-b border-border bg-secondary/40 py-14 lg:py-20">
+        <section className="border-b border-border bg-secondary/40 pt-14 pb-10 lg:pt-20 lg:pb-14">
           <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
             <PageBreadcrumb trail={[{ label: "Media" }]} />
 
@@ -122,6 +154,15 @@ function MediaIndex() {
                 {DESCRIPTION}
               </p>
             </Reveal>
+
+            {/* A dark stage of its own for the rings, so they read as a
+                showcase rather than spilling over the words. */}
+            <div className="relative isolate mt-10 h-[22rem] overflow-hidden rounded-2xl bg-ink-deep sm:h-[28rem] lg:mt-12 lg:h-[34rem]">
+              <PhotoRings />
+              <p className="meta-label pointer-events-none absolute bottom-4 left-4 rounded-full bg-ink-deep/75 px-3 py-1.5 text-background/75 lg:bottom-6 lg:left-6">
+                Drag to spin
+              </p>
+            </div>
           </div>
         </section>
 

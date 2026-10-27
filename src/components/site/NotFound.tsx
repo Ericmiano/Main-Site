@@ -1,8 +1,11 @@
 import { Link } from "@tanstack/react-router";
 import { IconArrowUpRight as ArrowUpRight } from "@tabler/icons-react";
 import logoMark from "@/assets/aak-logo-mark.webp";
+import { Snake404 } from "@/components/ui/snake-404";
+import { NOT_FOUND_SNAKE } from "@/components/site/not-found-snake";
 
-// Plain links only: on cPanel this renders as static HTML with no scripts.
+// Plain links only: on cPanel this renders as static HTML without the app's
+// scripts; only the snake game gets one of its own there.
 const destinations = [
   { to: "/events", label: "Events", hint: "What's on at AAK" },
   { to: "/membership", label: "Membership", hint: "Join, renew and fees" },
@@ -23,7 +26,7 @@ export function NotFound() {
           </span>
         </Link>
 
-        <div className="my-auto grid gap-12 py-16 lg:grid-cols-[1.2fr_1fr] lg:items-end lg:gap-20">
+        <div className="my-auto grid gap-12 py-12 lg:grid-cols-[1fr_1.15fr] lg:items-center lg:gap-16">
           <div>
             <p className="meta-label border-t border-border pt-5 text-foreground/70">
               Error 404 &middot; Page not found
@@ -40,26 +43,35 @@ export function NotFound() {
             </Link>
           </div>
 
-          <ul className="border-t border-border">
-            {destinations.map((d) => (
-              <li key={d.to} className="border-b border-border">
-                <Link
-                  to={d.to}
-                  className="group flex items-center justify-between gap-4 py-4 text-foreground"
-                >
-                  <span>
-                    <span className="type-title block">{d.label}</span>
-                    <span className="text-sm text-muted-foreground">{d.hint}</span>
-                  </span>
-                  <ArrowUpRight
-                    className="h-5 w-5 shrink-0 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                    aria-hidden="true"
-                  />
-                </Link>
-              </li>
-            ))}
-          </ul>
+          <figure>
+            <div className="relative h-64 overflow-hidden rounded-2xl border border-border bg-secondary/40 sm:h-80 lg:h-[26rem]">
+              <Snake404 {...NOT_FOUND_SNAKE} />
+            </div>
+            <figcaption className="mt-3 text-sm text-muted-foreground">
+              Click the game and steer with the arrow keys, or swipe. Esc hands it back.
+            </figcaption>
+          </figure>
         </div>
+
+        <ul className="grid border-t border-border sm:grid-cols-2 sm:gap-x-8 lg:grid-cols-5">
+          {destinations.map((d) => (
+            <li key={d.to} className="border-b border-border">
+              <Link
+                to={d.to}
+                className="group flex items-center justify-between gap-4 py-4 text-foreground"
+              >
+                <span>
+                  <span className="type-title block">{d.label}</span>
+                  <span className="text-sm text-muted-foreground">{d.hint}</span>
+                </span>
+                <ArrowUpRight
+                  className="h-5 w-5 shrink-0 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                  aria-hidden="true"
+                />
+              </Link>
+            </li>
+          ))}
+        </ul>
       </div>
     </main>
   );
