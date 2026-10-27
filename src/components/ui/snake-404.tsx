@@ -1,6 +1,7 @@
 // Snake 404 from the open-source 23rd.dev registry
 // (https://23rd.dev/docs/components/snake-404), as published apart from
-// formatting and a typing fix for this project's stricter TypeScript. Used
+// formatting, a typing fix for this project's stricter TypeScript, and AAK's
+// additions marked (AAK): levels (speed-up, level words, blocks). Used
 // on the 404 page (see components/site/NotFound.tsx).
 
 import { useEffect, useRef, useState } from "react";
@@ -34,6 +35,19 @@ export type Snake404Options = {
    * (`html.dark` class).
    */
   theme?: Snake404Theme;
+  /**
+   * (AAK) Levels for a player: taking over starts a fresh game, slow; every
+   * pellet speeds the snake up. Clearing the digits is level 2, which spells
+   * the first of `levelWords` among blocks to steer round; each level after
+   * spells the next word with more blocks, a little faster, and lets the
+   * snake grow longer. The level shows top right. The autopilot keeps to
+   * `speed` and the plain digits. Default `false`.
+   */
+  levels?: boolean;
+  /** (AAK) Words for levels 2 onwards, repeating. Default `["AAK"]`. */
+  levelWords?: string[] | undefined;
+  /** (AAK) Colour of the blocks. Default: the theme's ink. */
+  blockColor?: string | undefined;
   /** After each pellet: how many are left, out of how many. */
   onEat?: (left: number, total: number) => void;
   /** The last pellet is gone; the digits come back shortly after. */
@@ -72,6 +86,35 @@ const BLINKS = 6;
 const MAX_QUEUE = 3;
 const SWIPE_PX = 24;
 
+// (AAK) Levels: cells per second at the start, added per pellet and per
+// level, the top speed, extra length allowed per level, and the level-up blink.
+const LEVEL_START_SPEED = 6;
+const PELLET_SPEED_STEP = 0.12;
+const LEVEL_SPEED_STEP = 1.5;
+const MAX_LEVEL_SPEED = 24;
+const LEVEL_LENGTH_STEP = 12;
+const LEVEL_UP_MS = 1600;
+// (AAK) Blocks: bars on level 2, more per level after, up to a limit; none
+// this close (cells, walking distance) to the head when a level starts.
+const BLOCK_BARS_START = 6;
+const BLOCK_BARS_STEP = 3;
+const MAX_BLOCK_BARS = 24;
+const BLOCK_CLEARANCE = 6;
+/** (AAK) "L" and "V" for the level counter, 3×5 like the score digits. */
+const LEVEL_LETTERS: Record<string, string> = { L: "100100100100111", V: "101101101101010" };
+
+/** (AAK) Small seeded random numbers, so each level's blocks are the same every time. */
+function seeded(seed: number) {
+  let a = seed >>> 0;
+  return () => {
+    a = (a + 0x6d2b79f5) >>> 0;
+    let t = a;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
 const DX = [1, 0, -1, 0] as const;
 const DY = [0, 1, 0, -1] as const;
 
@@ -87,6 +130,21 @@ const DIGITS: Record<string, readonly string[]> = {
   "7": ["######", "....##", "...##.", "..##..", "..##..", "..##..", "..##.."],
   "8": [".####.", "##..##", "##..##", ".####.", "##..##", "##..##", ".####."],
   "9": [".####.", "##..##", "##..##", ".#####", "....##", "....##", ".####."],
+  // (AAK) Letters for the level words.
+  A: [".####.", "##..##", "##..##", "######", "##..##", "##..##", "##..##"],
+  B: ["#####.", "##..##", "##..##", "#####.", "##..##", "##..##", "#####."],
+  C: [".####.", "##..##", "##....", "##....", "##....", "##..##", ".####."],
+  D: ["#####.", "##..##", "##..##", "##..##", "##..##", "##..##", "#####."],
+  E: ["######", "##....", "##....", "#####.", "##....", "##....", "######"],
+  I: [".####.", "..##..", "..##..", "..##..", "..##..", "..##..", ".####."],
+  K: ["##..##", "##.##.", "####..", "###...", "####..", "##.##.", "##..##"],
+  M: ["#....#", "##..##", "######", "##..##", "##..##", "##..##", "##..##"],
+  N: ["##..##", "###.##", "######", "##.###", "##..##", "##..##", "##..##"],
+  P: ["#####.", "##..##", "##..##", "#####.", "##....", "##....", "##...."],
+  R: ["#####.", "##..##", "##..##", "#####.", "####..", "##.##.", "##..##"],
+  S: [".####.", "##..##", "##....", ".####.", "....##", "##..##", ".####."],
+  T: ["######", "..##..", "..##..", "..##..", "..##..", "..##..", "..##.."],
+  U: ["##..##", "##..##", "##..##", "##..##", "##..##", "##..##", ".####."],
 };
 const DIGIT_W = 6;
 const DIGIT_H = 7;
@@ -200,6 +258,11 @@ export function createSnake404(
   let glyph: number[] = [];
   let remaining = 0;
   let refillAt = 0;
+  // (AAK) Blocks (1 = blocked), the same as a list for drawing, and the
+  // level whose word and blocks are on the field.
+  let blocks = new Uint8Array(0);
+  let blockCells: number[] = [];
+  let boardLevel = 1;
 
   // Snake, head first. Cells may sit off the grid while it slides in.
   let bx: number[] = [];
@@ -215,6 +278,10 @@ export function createSnake404(
   let deadAt = 0;
   let acc = 0;
   let score = 0;
+  // (AAK) The player's level, pellets eaten in it, and when it last went up.
+  let level = 1;
+  let levelEaten = 0;
+  let levelUpAt = -Infinity;
 
   let playing = false;
   let queue: Snake404Direction[] = [];
@@ -242,6 +309,7 @@ export function createSnake404(
   const passable = (x: number, y: number, freeTail: number) => {
     if (!inGrid(x, y)) return false;
     const i = y * cols + x;
+    if (blocks[i]) return false;
     return occ[i] === 0 || (i === freeTail && occ[i] === 1);
   };
 
@@ -395,7 +463,10 @@ export function createSnake404(
   /** Decide the move for the step now starting. */
   const plan = (now: number) => {
     const last = bx.length - 1;
-    growing = fed[last]! && bx.length < Math.max(START_LENGTH, options.maxLength ?? 32);
+    // (AAK) Each level lets a player's snake grow longer.
+    const longest =
+      (options.maxLength ?? 32) + (options.levels && playing ? (level - 1) * LEVEL_LENGTH_STEP : 0);
+    growing = fed[last]! && bx.length < Math.max(START_LENGTH, longest);
     const freeTail = growing ? -1 : tailCell();
     let d = dir;
     if (playing) {
@@ -439,9 +510,16 @@ export function createSnake404(
       food[i] = 0;
       remaining--;
       score++;
+      levelEaten++;
       options.onEat?.(remaining, glyph.length);
       if (remaining === 0) {
         refillAt = now + REFILL_DELAY_MS;
+        // (AAK) Cleared by a player: next level (its board comes at refill).
+        if (options.levels && playing) {
+          level++;
+          levelEaten = 0;
+          levelUpAt = now;
+        }
         options.onClear?.();
       }
     }
@@ -468,9 +546,156 @@ export function createSnake404(
     growing = false;
     acc = 0;
     score = 0;
+    levelEaten = 0;
     queue = [];
     phase = onScreen ? "run" : "wait";
     enterAt = now + ENTER_DELAY_MS;
+    // (AAK) Back to the autopilot: back to level 1's plain digits.
+    if (!playing) {
+      level = 1;
+      if (boardLevel !== 1) setBoard(now);
+    }
+  };
+
+  /** (AAK) The word for a level: the digits, then `levelWords` in turn. */
+  const wordFor = (n: number) => {
+    if (n <= 1) return codeDigits(options.code);
+    const words = (options.levelWords?.length ? options.levelWords : ["AAK"]).map((w) =>
+      [...w.toUpperCase()].filter((ch) => DIGITS[ch]).join(""),
+    );
+    return words[(n - 2) % words.length] || codeDigits(options.code);
+  };
+
+  /** Lays `word` out as food in the middle of the field. (AAK: moved here
+   * from layout, so each level can bring its own word.) */
+  const placeWord = (word: string, now: number, popIn: boolean) => {
+    for (const i of glyph) food[i] = 0;
+    glyph = [];
+    remaining = 0;
+    const bw = word.length * DIGIT_W + (word.length - 1) * DIGIT_GAP;
+    const k = Math.max(1, Math.floor(Math.min((cols * 0.74) / bw, (rows * 0.5) / DIGIT_H)));
+    const gx0 = Math.floor((cols - bw * k) / 2);
+    const gy0 = Math.floor((rows - DIGIT_H * k) / 2);
+    for (let di = 0; di < word.length; di++) {
+      const bitmap = DIGITS[word[di]!]!;
+      const left = gx0 + di * (DIGIT_W + DIGIT_GAP) * k;
+      for (let r = 0; r < DIGIT_H; r++) {
+        for (let c = 0; c < DIGIT_W; c++) {
+          if (bitmap[r]![c] !== "#") continue;
+          for (let sy = 0; sy < k; sy++) {
+            for (let sx = 0; sx < k; sx++) {
+              const x = left + c * k + sx;
+              const y = gy0 + r * k + sy;
+              if (!inGrid(x, y)) continue;
+              glyph.push(y * cols + x);
+            }
+          }
+        }
+      }
+    }
+    if (popIn) {
+      refill(now);
+    } else {
+      for (const i of glyph) {
+        food[i] = 1;
+        born[i] = 0;
+        remaining++;
+      }
+    }
+  };
+
+  /** (AAK) Whether every pellet can be reached from the head, round the blocks. */
+  const foodReachable = () => {
+    const hx = Math.min(cols - 1, Math.max(0, bx[0]!));
+    const hy = Math.min(rows - 1, Math.max(0, by[0]!));
+    const s = nextStamp();
+    const start = hy * cols + hx;
+    seen[start] = s;
+    bfs[0] = start;
+    let head = 0;
+    let tail = 1;
+    let found = food[start] === 1 ? 1 : 0;
+    while (head < tail) {
+      const c = bfs[head++]!;
+      const x = c % cols;
+      const y = (c / cols) | 0;
+      for (let d = 0; d < 4; d++) {
+        const nx = x + DX[d]!;
+        const ny = y + DY[d]!;
+        if (!inGrid(nx, ny)) continue;
+        const n = ny * cols + nx;
+        if (blocks[n] || seen[n] === s) continue;
+        seen[n] = s;
+        if (food[n] === 1) found++;
+        bfs[tail++] = n;
+      }
+    }
+    return found >= remaining;
+  };
+
+  /**
+   * (AAK) The level's blocks: short bars, more each level, never on food, on
+   * the snake or near its head, and never cutting any food off. Seeded by
+   * level, so a level's blocks are the same every time.
+   */
+  const placeBlocks = () => {
+    blocks.fill(0);
+    blockCells = [];
+    if (level < 2) return;
+    const bars = Math.min(MAX_BLOCK_BARS, BLOCK_BARS_START + (level - 2) * BLOCK_BARS_STEP);
+    const hx = bx[0]!;
+    const hy = by[0]!;
+    for (let attempt = 0; attempt < 40; attempt++) {
+      blocks.fill(0);
+      blockCells = [];
+      const rand = seeded(level * 7919 + attempt);
+      let placed = 0;
+      for (let tries = 0; placed < bars && tries < bars * 40; tries++) {
+        const len = 2 + Math.floor(rand() * 3);
+        const across = rand() < 0.5;
+        const x0 = Math.floor(rand() * cols);
+        const y0 = Math.floor(rand() * rows);
+        const cells: number[] = [];
+        for (let s = 0; s < len; s++) {
+          const x = x0 + (across ? s : 0);
+          const y = y0 + (across ? 0 : s);
+          if (!inGrid(x, y)) break;
+          const i = y * cols + x;
+          if (food[i] || occ[i] || blocks[i]) break;
+          if (Math.abs(x - hx) + Math.abs(y - hy) < BLOCK_CLEARANCE) break;
+          // Keep the score (top left) and level (top right) readable.
+          if (y < 3 && (x < 7 || x >= cols - 7)) break;
+          cells.push(i);
+        }
+        if (cells.length !== len) continue;
+        for (const i of cells) {
+          blocks[i] = 1;
+          blockCells.push(i);
+        }
+        placed++;
+      }
+      if (foodReachable()) return;
+    }
+    // No fair layout found: this level plays without blocks.
+    blocks.fill(0);
+    blockCells = [];
+  };
+
+  /** (AAK) Puts the current level's word and blocks on the field. */
+  const setBoard = (now: number) => {
+    boardLevel = level;
+    placeWord(wordFor(level), now, true);
+    placeBlocks();
+  };
+
+  /** (AAK) Cells per second now: the autopilot keeps to `speed`; a player
+   * starts slow and speeds up with every pellet and level. */
+  const currentSpeed = () => {
+    if (!options.levels || !playing) return Math.max(1, options.speed ?? 14);
+    return Math.min(
+      MAX_LEVEL_SPEED,
+      LEVEL_START_SPEED + (level - 1) * LEVEL_SPEED_STEP + levelEaten * PELLET_SPEED_STEP,
+    );
   };
 
   const refill = (now: number) => {
@@ -503,36 +728,16 @@ export function createSnake404(
     glyph = [];
     remaining = 0;
     refillAt = 0;
+    blocks = new Uint8Array(n);
+    blockCells = [];
 
-    const digits = codeDigits(options.code);
-    const bw = digits.length * DIGIT_W + (digits.length - 1) * DIGIT_GAP;
-    const k = Math.max(1, Math.floor(Math.min((cols * 0.74) / bw, (rows * 0.5) / DIGIT_H)));
-    const gx0 = Math.floor((cols - bw * k) / 2);
-    const gy0 = Math.floor((rows - DIGIT_H * k) / 2);
-    for (let di = 0; di < digits.length; di++) {
-      const bitmap = DIGITS[digits[di]!]!;
-      const left = gx0 + di * (DIGIT_W + DIGIT_GAP) * k;
-      for (let r = 0; r < DIGIT_H; r++) {
-        for (let c = 0; c < DIGIT_W; c++) {
-          if (bitmap[r]![c] !== "#") continue;
-          for (let sy = 0; sy < k; sy++) {
-            for (let sx = 0; sx < k; sx++) {
-              const x = left + c * k + sx;
-              const y = gy0 + r * k + sy;
-              if (!inGrid(x, y)) continue;
-              const i = y * cols + x;
-              food[i] = 1;
-              glyph.push(i);
-              remaining++;
-            }
-          }
-        }
-      }
-    }
     if (playing) {
       playing = false;
       options.onPlayChange?.(false);
     }
+    level = 1;
+    boardLevel = 1;
+    placeWord(wordFor(1), now, false);
     spawn(now);
   };
 
@@ -594,6 +799,19 @@ export function createSnake404(
     if (options.grid) {
       drawGhost(ink);
       ctx.drawImage(ghost, 0, 0, cssW, cssH);
+    }
+
+    // (AAK) Blocks: solid cells, a touch larger than a pellet.
+    if (blockCells.length) {
+      ctx.fillStyle = options.blockColor ?? (dark ? DARK_COLOR : LIGHT_COLOR);
+      for (const i of blockCells) {
+        ctx.fillRect(
+          ox + (i % cols) * cell + 1,
+          oy + ((i / cols) | 0) * cell + 1,
+          cell - 2,
+          cell - 2,
+        );
+      }
     }
 
     ctx.fillStyle = ink;
@@ -711,6 +929,29 @@ export function createSnake404(
       }
       ctx.globalAlpha = 1;
     }
+
+    // (AAK) The player's level, top right ("LV2"), blinking as it goes up.
+    if (options.levels && (playing || phase === "dead")) {
+      const since = now - levelUpAt;
+      const blinkOff = since < LEVEL_UP_MS && Math.floor(since / BLINK_MS) % 2 === 1;
+      if (!blinkOff) {
+        const dot = Math.max(2, Math.round(cell / 4));
+        const text = `LV${level}`;
+        const x0 = ox + cols * cell - cell - (text.length * 4 - 1) * dot;
+        const y0 = oy + cell;
+        ctx.globalAlpha = since < LEVEL_UP_MS ? 1 : 0.6;
+        for (let d = 0; d < text.length; d++) {
+          const ch = text[d]!;
+          const bits = LEVEL_LETTERS[ch] ?? SCORE_DIGITS[ch.charCodeAt(0) - 48];
+          if (!bits) continue;
+          for (let b = 0; b < 15; b++) {
+            if (bits[b] !== "1") continue;
+            ctx.fillRect(x0 + d * dot * 4 + (b % 3) * dot, y0 + Math.floor(b / 3) * dot, dot, dot);
+          }
+        }
+        ctx.globalAlpha = 1;
+      }
+    }
   };
 
   const tick = (now: number) => {
@@ -720,12 +961,14 @@ export function createSnake404(
 
     if (refillAt && now >= refillAt) {
       refillAt = 0;
-      refill(now);
+      // (AAK) A new level brings its own word and blocks.
+      if (boardLevel !== level) setBoard(now);
+      else refill(now);
     }
     if (phase === "wait" && now >= enterAt && !reduce) phase = "run";
     if (phase === "dead" && now - deadAt >= DEATH_MS) spawn(now);
 
-    const stepMs = 1000 / Math.max(1, options.speed ?? 14);
+    const stepMs = 1000 / currentSpeed();
     if (phase === "run" && (!reduce || playing)) {
       acc += dt;
       while (acc >= stepMs && phase === "run") {
@@ -749,6 +992,15 @@ export function createSnake404(
   const steer = (d: Snake404Direction) => {
     if (!options.playable || phase === "dead") return;
     if (!playing) {
+      // (AAK) With levels, taking over starts a fresh game at level 1.
+      if (options.levels) {
+        const now = performance.now();
+        spawn(now);
+        refillAt = 0;
+        level = 1;
+        levelUpAt = -Infinity;
+        setBoard(now);
+      }
       playing = true;
       queue = [];
       options.onPlayChange?.(true);
@@ -899,6 +1151,9 @@ export function Snake404({
   score = true,
   smooth = true,
   theme = "auto",
+  levels = false,
+  levelWords,
+  blockColor,
   onEat,
   onClear,
   onPlayChange,
@@ -927,6 +1182,9 @@ export function Snake404({
     score,
     smooth,
     theme,
+    levels,
+    levelWords,
+    blockColor,
   };
 
   useEffect(() => {
@@ -954,7 +1212,22 @@ export function Snake404({
     instanceRef.current?.setOptions(options);
     // `options` is rebuilt every render; its fields are the real deps.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [code, color, cellSize, speed, maxLength, grid, lcd, playable, score, smooth, theme]);
+  }, [
+    code,
+    color,
+    cellSize,
+    speed,
+    maxLength,
+    grid,
+    lcd,
+    playable,
+    score,
+    smooth,
+    theme,
+    levels,
+    levelWords,
+    blockColor,
+  ]);
 
   const name = label ?? `${codeDigits(code)}, page not found`;
 

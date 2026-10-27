@@ -1,6 +1,8 @@
 // Ring Tower from the open-source 23rd.dev registry
 // (https://23rd.dev/docs/components/ring-tower), as published apart from
-// formatting and two typing fixes for this project's stricter TypeScript.
+// formatting, two typing fixes for this project's stricter TypeScript, and
+// AAK's additions marked (AAK): onHover and onPick report which photo is
+// under the pointer or was clicked, so the media archive can link to albums.
 // Used on the media archive (/media).
 
 import { useEffect, useRef } from "react";
@@ -83,7 +85,14 @@ export type RingTowerOptions = {
   backface?: number;
   /** `"auto"` follows the page. Default `"auto"`. */
   theme?: RingTowerTheme;
+  /** (AAK) The photo under the pointer as it moves, `null` off the photos. */
+  onHover?: ((hit: RingTowerHit | null) => void) | undefined;
+  /** (AAK) A photo was clicked or tapped, not dragged. */
+  onPick?: ((hit: RingTowerHit) => void) | undefined;
 };
+
+/** (AAK) A photo on the rings: its URL, its ring, and where the pointer is. */
+export type RingTowerHit = { url: string; ring: number; clientX: number; clientY: number };
 
 export type RingTowerInstance = {
   setOptions: (options: Partial<RingTowerOptions>) => void;
@@ -173,10 +182,11 @@ function loadImage(url: string) {
   });
 }
 
-type Strip = { canvas: HTMLCanvasElement; aspect: number };
+/** `urls[i]` ends at `stops[i]` across the strip, 0 to 1 (AAK: for picking). */
+type Strip = { canvas: HTMLCanvasElement; aspect: number; urls: string[]; stops: number[] };
 
 /** Draws the images side by side at one height on a white strip. */
-function stitch(images: HTMLImageElement[], maxSize: number): Strip | null {
+function stitch(images: HTMLImageElement[], urls: string[], maxSize: number): Strip | null {
   const sizes = images.map((img) => {
     const aspect = img.naturalWidth / Math.max(1, img.naturalHeight);
     return { img, width: STRIP_HEIGHT * aspect };
@@ -198,11 +208,13 @@ function stitch(images: HTMLImageElement[], maxSize: number): Strip | null {
   ctx.fillStyle = "#ffffff";
   ctx.fillRect(0, 0, width, STRIP_HEIGHT);
   let x = 0;
+  const stops: number[] = [];
   for (const s of sizes) {
     ctx.drawImage(s.img, x, 0, s.width, STRIP_HEIGHT);
     x += s.width;
+    stops.push(x / width);
   }
-  return { canvas, aspect: width / STRIP_HEIGHT };
+  return { canvas, aspect: width / STRIP_HEIGHT, urls, stops };
 }
 
 /** Plain green grid band, used when no image loads. */
@@ -231,7 +243,7 @@ function gridStrip(): Strip | null {
     ctx.lineTo(1024, i);
     ctx.stroke();
   }
-  return { canvas, aspect: 2 };
+  return { canvas, aspect: 2, urls: [], stops: [] };
 }
 
 /**
@@ -286,11 +298,18 @@ export function createRingTower(
     material: MeshBasicMaterial;
     texture: Texture;
     tiles: number;
+    key: string;
   };
   let bands: Band[] = [];
   // One strip per distinct image list, shared by every ring that shows it.
   // `base` is null while the images load.
-  type Entry = { base: CanvasTexture | null; tiles: number; token: number };
+  type Entry = {
+    base: CanvasTexture | null;
+    tiles: number;
+    token: number;
+    urls: string[];
+    stops: number[];
+  };
   const strips = new Map<string, Entry>();
   let rings = ringsOf(options.rings);
   // Kept across rebuilds, so a strip arriving never snaps a ring back.
@@ -363,7 +382,7 @@ export function createRingTower(
       const mesh = new Mesh(geometry, material);
       mesh.position.set(0, (i - middle) * SPACING, 0);
       tower.add(mesh);
-      bands.push({ index: i, mesh, material, texture, tiles: entry.tiles });
+      bands.push({ index: i, mesh, material, texture, tiles: entry.tiles, key: keyFor(ring) });
     });
     pose();
   };
@@ -381,6 +400,8 @@ export function createRingTower(
     texture.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
     entry.tiles = fit(texture, next.aspect);
     entry.base = texture;
+    entry.urls = next.urls;
+    entry.stops = next.stops;
     buildBands();
     wake();
   };
@@ -399,15 +420,24 @@ export function createRingTower(
     for (const [key, urls] of needed) {
       if (strips.has(key)) continue;
       const token = ++loadToken;
-      strips.set(key, { base: null, tiles: 1, token });
+      strips.set(key, { base: null, tiles: 1, token, urls: [], stops: [] });
       if (urls.length === 0) {
         setStrip(key, gridStrip());
         continue;
       }
       void Promise.allSettled(urls.map(loadImage)).then((results) => {
         if (destroyed || strips.get(key)?.token !== token) return;
-        const loaded = results.flatMap((r) => (r.status === "fulfilled" ? [r.value] : []));
-        const next = loaded.length ? stitch(loaded, renderer.capabilities.maxTextureSize) : null;
+        const ok = results.flatMap((r, i) => (r.status === "fulfilled" ? [i] : []));
+        const loaded = ok.map(
+          (i) => (results[i] as PromiseFulfilledResult<HTMLImageElement>).value,
+        );
+        const next = loaded.length
+          ? stitch(
+              loaded,
+              ok.map((i) => urls[i]!),
+              renderer.capabilities.maxTextureSize,
+            )
+          : null;
         setStrip(key, next ?? gridStrip());
       });
     }
@@ -541,6 +571,25 @@ export function createRingTower(
     return raycaster.intersectObjects(tower.children, false).length > 0;
   };
 
+  /** (AAK) The photo under the pointer: where the hit lands along its strip. */
+  const photoAt = (e: PointerEvent): RingTowerHit | null => {
+    if (!hits(e)) return null;
+    const hit = raycaster.intersectObjects(tower.children, false)[0];
+    const band = bands.find((b) => b.mesh === hit?.object);
+    const entry = band && strips.get(band.key);
+    if (!hit?.uv || !band || !entry?.stops.length) return null;
+    const u = hit.uv.x * band.texture.repeat.x + band.texture.offset.x;
+    const along = u - Math.floor(u);
+    const i = entry.stops.findIndex((stop) => along < stop);
+    const url = entry.urls[i === -1 ? entry.urls.length - 1 : i];
+    return url ? { url, ring: band.index, clientX: e.clientX, clientY: e.clientY } : null;
+  };
+  const picking = () => Boolean(options.onPick);
+  // A press that barely moves is a click (pick), not a drag.
+  let pressX = 0;
+  let pressY = 0;
+  let travelled = 0;
+
   const setCursor = (value: string) => {
     if (canvas.style.cursor !== value) canvas.style.cursor = value;
   };
@@ -560,6 +609,9 @@ export function createRingTower(
     if (options.draggable === false || !hits(e)) return;
     dragging = true;
     dragX = e.clientX;
+    pressX = e.clientX;
+    pressY = e.clientY;
+    travelled = 0;
     velocity = 0;
     canvas.setPointerCapture(e.pointerId);
     setCursor("grabbing");
@@ -571,9 +623,15 @@ export function createRingTower(
       angle += delta;
       velocity = delta * 60;
       dragX = e.clientX;
+      travelled = Math.max(travelled, Math.hypot(e.clientX - pressX, e.clientY - pressY));
+      if (travelled > 6) options.onHover?.(null);
       return;
     }
-    setCursor(options.draggable !== false && hits(e) ? "grab" : "");
+    const photo = options.onHover || picking() ? photoAt(e) : null;
+    options.onHover?.(photo);
+    setCursor(
+      photo && picking() ? "pointer" : options.draggable !== false && hits(e) ? "grab" : "",
+    );
   };
   const onUp = (e: PointerEvent) => {
     if (!dragging) return;
@@ -581,11 +639,17 @@ export function createRingTower(
     if (canvas.hasPointerCapture(e.pointerId)) {
       canvas.releasePointerCapture(e.pointerId);
     }
+    const photo = e.type === "pointerup" && travelled <= 6 ? photoAt(e) : null;
+    if (photo && options.onPick) {
+      velocity = 0;
+      options.onPick(photo);
+    }
     setCursor(hits(e) ? "grab" : "");
     wake();
   };
   const onLeave = () => {
     if (!dragging) setCursor("");
+    options.onHover?.(null);
   };
   canvas.addEventListener("pointerdown", onDown);
   canvas.addEventListener("pointermove", onMove);
@@ -709,9 +773,16 @@ export function RingTower({
   parallax = DEFAULT_PARALLAX,
   backface = DEFAULT_BACKFACE,
   theme = "auto",
+  onHover,
+  onPick,
 }: RingTowerProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const instanceRef = useRef<RingTowerInstance | null>(null);
+  // (AAK) The latest callbacks, so the engine never holds stale ones.
+  const callbacksRef = useRef({ onHover, onPick });
+  useEffect(() => {
+    callbacksRef.current = { onHover, onPick };
+  }, [onHover, onPick]);
 
   useEffect(() => {
     const root = rootRef.current;
@@ -724,6 +795,8 @@ export function RingTower({
       parallax,
       backface,
       theme,
+      onHover: (hit) => callbacksRef.current.onHover?.(hit),
+      onPick: callbacksRef.current.onPick ? (hit) => callbacksRef.current.onPick?.(hit) : undefined,
     });
     return () => {
       instanceRef.current?.destroy();

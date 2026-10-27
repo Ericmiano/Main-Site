@@ -1,5 +1,5 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import {
   IconArrowUpRight as ArrowUpRight,
   IconCalendar as CalendarDays,
@@ -11,7 +11,7 @@ import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { Reveal } from "@/components/site/Reveal";
 import { PageBreadcrumb } from "@/components/site/PageBreadcrumb";
-import type { RingTower as RingTowerComponent } from "@/components/ui/ring-tower";
+import type { RingTower as RingTowerComponent, RingTowerHit } from "@/components/ui/ring-tower";
 import { mediaAlbums } from "@/data/media-archive";
 import { flipIfLoaded, gsapIfLoaded, preloadFlip, prefersReducedMotion } from "@/lib/gsap";
 import { cn } from "@/lib/utils";
@@ -46,23 +46,35 @@ export const Route = createFileRoute("/media/")({
 });
 
 /** Photos for the rings: each album's cover and one more, the grid-sized
- * copies, dealt round the five rings so no two show the same set. */
+ * copies, dealt round the five rings so no two show the same set. Each
+ * remembers its album, so a click on the rings can open it. */
 const RING_PHOTOS = mediaAlbums.flatMap((album) =>
   [album.cover, album.photos.find((photo) => photo.src !== album.cover.src)]
     .filter((photo) => photo !== undefined)
-    .map((photo) => photo.thumb ?? photo.src),
+    .map((photo) => ({ url: photo.thumb ?? photo.src, album })),
 );
+const ALBUM_OF = new Map(RING_PHOTOS.map(({ url, album }) => [url, album]));
 const RINGS = Array.from({ length: 5 }, (_, i) => ({
-  images: RING_PHOTOS.filter((_, j) => j % 5 === i),
+  images: RING_PHOTOS.filter((_, j) => j % 5 === i).map(({ url }) => url),
 }));
 
 /**
- * Album photos crawling round a tower of tilted rings on a dark stage under
- * the title (drag to spin). Decorative: the albums themselves are listed
- * below. three.js loads only here, once the page is up.
+ * The opening screen's rings: album photos crawling round a tower of tilted
+ * rings. Hovering a photo names its album and clicking (or tapping) opens
+ * it; dragging spins the tower. Pointer only: the same albums are listed,
+ * with links, below. three.js loads only here, once the page is up.
  */
 function PhotoRings() {
+  const navigate = useNavigate();
+  const stage = useRef<HTMLDivElement>(null);
   const [Tower, setTower] = useState<typeof RingTowerComponent | null>(null);
+  const [hover, setHover] = useState<{
+    slug: string;
+    x: number;
+    y: number;
+    /** Near the right edge: the label goes left of the pointer instead. */
+    flip: boolean;
+  } | null>(null);
   useEffect(() => {
     let live = true;
     void import("@/components/ui/ring-tower").then((module) => {
@@ -72,8 +84,67 @@ function PhotoRings() {
       live = false;
     };
   }, []);
-  // The stage is always dark, so the rings' insides fade to black.
-  return Tower ? <Tower images={RING_PHOTOS} rings={RINGS} theme="dark" /> : null;
+  const onHover = useCallback((hit: RingTowerHit | null) => {
+    const album = hit && ALBUM_OF.get(hit.url);
+    const box = stage.current?.getBoundingClientRect();
+    setHover(
+      hit && album && box
+        ? {
+            slug: album.slug,
+            x: hit.clientX - box.left,
+            y: hit.clientY - box.top,
+            flip: Math.min(box.right, window.innerWidth) - hit.clientX < 300,
+          }
+        : null,
+    );
+  }, []);
+  const onPick = useCallback(
+    (hit: RingTowerHit) => {
+      const album = ALBUM_OF.get(hit.url);
+      if (album) void navigate({ to: "/media/$slug", params: { slug: album.slug } });
+    },
+    [navigate],
+  );
+  const album = hover && mediaAlbums.find((a) => a.slug === hover.slug);
+
+  return (
+    <div
+      ref={stage}
+      // Runs off the right edge of the window; fades in from the words' side.
+      className="relative h-[26rem] sm:h-[32rem] lg:-mr-[max(0px,calc((100vw-1400px)/2))] lg:h-auto lg:[mask-image:linear-gradient(to_right,transparent,#000_16%)]"
+    >
+      {/* The stage is always dark, so the rings' insides fade to black. */}
+      {Tower ? (
+        <Tower
+          rings={RINGS}
+          theme="dark"
+          className="lg:right-[-14%] lg:left-[4%]"
+          onHover={onHover}
+          onPick={onPick}
+        />
+      ) : null}
+      {album && hover ? (
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute z-10 w-max max-w-64 rounded-lg bg-background px-4 py-3 text-ink-deep shadow-xl"
+          style={{
+            left: hover.x + (hover.flip ? -16 : 16),
+            top: hover.y + 16,
+            transform: hover.flip ? "translateX(-100%)" : undefined,
+          }}
+        >
+          <span className="meta-label block text-primary">{album.category}</span>
+          <span className="mt-1 block font-display text-lg leading-snug font-semibold">
+            {album.title}
+          </span>
+          <span className="mt-1 flex items-center gap-1 text-sm text-ink-deep/70">
+            {album.photos.length} photos &middot; Open album
+            <ArrowUpRight className="h-4 w-4 text-primary" />
+          </span>
+        </div>
+      ) : null}
+    </div>
+  );
 }
 
 function MediaIndex() {
@@ -136,33 +207,33 @@ function MediaIndex() {
     <>
       <Header />
       <main>
-        <section className="border-b border-border bg-secondary/40 pt-14 pb-10 lg:pt-20 lg:pb-14">
-          <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
-            <PageBreadcrumb trail={[{ label: "Media" }]} />
+        {/* A dark opening screen: the words on the left, the album rings on
+            the right. The colour tokens flip so the breadcrumb and text read
+            light on dark. */}
+        <section className="overflow-hidden bg-ink-deep [--border:color-mix(in_oklab,var(--background)_18%,transparent)] [--foreground:var(--background)] [--muted-foreground:color-mix(in_oklab,var(--background)_70%,transparent)]">
+          <div className="mx-auto grid max-w-[1400px] lg:min-h-[calc(100svh-10.5rem)] lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
+            <div className="relative z-10 flex flex-col justify-between gap-12 px-6 pt-12 pb-4 lg:px-12 lg:py-16">
+              <PageBreadcrumb trail={[{ label: "Media" }]} />
 
-            <Reveal className="mt-8">
-              <div className="meta-label flex items-center gap-3 border-t border-border pt-5 text-muted-foreground">
-                <Photo className="h-4 w-4 text-primary" aria-hidden="true" />
-                <span>
-                  {mediaAlbums.length} albums &nbsp;/&nbsp; {totalPhotos} photographs
-                </span>
-              </div>
-              <h1 className="mt-5 font-display text-4xl font-semibold leading-[1.02] tracking-tight text-balance text-foreground sm:text-5xl lg:text-6xl">
-                Media archive
-              </h1>
-              <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground">
-                {DESCRIPTION}
-              </p>
-            </Reveal>
-
-            {/* A dark stage of its own for the rings, so they read as a
-                showcase rather than spilling over the words. */}
-            <div className="relative isolate mt-10 h-[22rem] overflow-hidden rounded-2xl bg-ink-deep sm:h-[28rem] lg:mt-12 lg:h-[34rem]">
-              <PhotoRings />
-              <p className="meta-label pointer-events-none absolute bottom-4 left-4 rounded-full bg-ink-deep/75 px-3 py-1.5 text-background/75 lg:bottom-6 lg:left-6">
-                Drag to spin
-              </p>
+              <Reveal>
+                <div className="meta-label flex items-center gap-3 border-t border-border pt-5 text-muted-foreground">
+                  <Photo className="h-4 w-4 text-primary" aria-hidden="true" />
+                  <span>
+                    {mediaAlbums.length} albums &nbsp;/&nbsp; {totalPhotos} photographs
+                  </span>
+                </div>
+                <h1 className="mt-5 font-display text-5xl font-semibold leading-[1.02] tracking-tight text-balance text-foreground sm:text-6xl lg:text-7xl">
+                  Media archive
+                </h1>
+                <p className="mt-5 max-w-md text-base leading-relaxed text-muted-foreground sm:text-lg">
+                  {DESCRIPTION}
+                </p>
+                <p className="meta-label mt-8 text-muted-foreground">
+                  Click or tap a photo to open its album &middot; drag to spin
+                </p>
+              </Reveal>
             </div>
+            <PhotoRings />
           </div>
         </section>
 

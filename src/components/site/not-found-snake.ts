@@ -10,5 +10,10 @@ export const NOT_FOUND_SNAKE: Snake404Options = {
   // AAK red (--aak-red).
   color: "#B71727",
   cellSize: 14,
+  // The idle demo's pace; a player starts slower and speeds up (levels).
+  speed: 10,
+  levels: true,
+  // Short words, so they still fit the game on a phone.
+  levelWords: ["AAK", "CPD", "CAD"],
   theme: "light",
 };
