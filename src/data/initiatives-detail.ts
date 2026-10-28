@@ -50,6 +50,22 @@ export interface InitiativeAudioClip {
   src: string;
 }
 
+/** A statement AAK issued under the initiative, quoted word for word from its PDF. */
+export interface InitiativeStatement {
+  /** e.g. "Public statement" */
+  kind: string;
+  title: string;
+  /** Human-readable date, e.g. "28 October 2026" */
+  date: string;
+  isoDate: string;
+  paragraphs: string[];
+  signedBy: string;
+  /** The statement as issued (PDF). */
+  href: string;
+  /** The call to action the statement closes with, if any. */
+  action?: { label: string; href: string };
+}
+
 export interface InitiativeContact {
   label: string;
   value: string;
@@ -70,6 +86,8 @@ export interface InitiativeDetail {
   /** One titled section per dated site visit / event (e.g. a school trip), each with its own optional video and photos. */
   events?: InitiativeEvent[];
   documents?: InitiativeDocument[];
+  /** Statements issued under the initiative, newest first. */
+  statements?: InitiativeStatement[];
   /** First entry is used as the hero's featured video; any others show in a "More video" list. */
   videos?: InitiativeVideo[];
   audio?: InitiativeAudioClip[];
@@ -105,12 +123,49 @@ export const initiativeDetails: InitiativeDetail[] = [
     imageAlt: "Mulika Mjengo site inspection in Kamulu",
     documents: [
       {
+        title: "Public Statement on the Eastleigh Building Collapse (28 October 2026)",
+        href: fileUrl("/documents/AAK-Statement-Eastleigh-Building-Collapse-20261028.pdf"),
+      },
+      {
         title: "Mulika Mjengo Report 2025: Is that Building Safe?",
         href: fileUrl("/documents/Mulika-Mjengo-Report-2025.pdf"),
       },
       {
         title: "Mulika Mjengo Initiative",
         href: fileUrl("/documents/MULIKA-MJENGO-INITIATIVE.pdf"),
+      },
+    ],
+    // MULIKA MJENGO RELEASES (Canva PDF, 28 October 2026), text as issued.
+    statements: [
+      {
+        kind: "Public statement",
+        title:
+          "Eastleigh Building Collapse: Urgent Need for Systemic Reform in Building Safety and Development Control",
+        date: "28 October 2026",
+        isoDate: "2026-10-28",
+        paragraphs: [
+          "Our thoughts are with the families affected by the tragic collapse of the building under construction on 9th Street in Eastleigh, with those who sustained injuries, and with the emergency teams that continue to work tirelessly at the site.",
+          "As investigations continue, it is important that attention is not limited to the immediate structural causes of the collapse, as every building failure is also a failure of systems, oversight, accountability and compliance. Let’s be ready to confront the truth of how such a building was allowed to reach such a stage if critical safeguards were absent, ignored or bypassed.",
+          "The Architectural Association of Kenya (AAK) supports a thorough, independent and transparent investigation into this incident. That investigation must examine the actions of every party involved, including the developer, contractor, consultants, approving authorities and inspection agencies. Responsibility must be established based on evidence, not assumption.",
+          "At the same time, AAK wishes to highlight a recurring problem of increasing disconnect between approved projects and professionally supervised projects within Kenya's construction industry.",
+          "Construction is often perceived as the responsibility of a contractor alone, while in reality, a building of this scale depends on the coordinated work of a team of professionals from inception to completion. Physical and land use planners guide development permissions, zoning requirements and land-use compliance. Architects coordinate the design process and ensure that projects meet planning, safety and regulatory standards. Structural engineers ensure the building’s integrity and the safety of its load-bearing systems. Mechanical and electrical engineers design essential building services, including power, water, ventilation and fire protection systems. Geotechnical engineers assess the suitability of ground conditions, while environmental, safety and project management professionals provide additional layers of oversight and risk management. Quantity surveyors monitor project costs, procurement and value for money.",
+          "Each of these professionals plays a distinct role in forming a safety chain designed to protect the public. When one link is removed, weakened or ignored, the entire system becomes vulnerable.",
+          "AAK notes that a growing number of developers engage professionals only long enough to secure statutory approvals, after which construction proceeds without the supervision, inspections and coordination that those approvals assume will continue. In some cases, approved drawings are altered without the knowledge of the professionals who prepared them. Floors are added, layouts modified, structural systems changed & building uses revised without proper technical review or regulatory approval.",
+          "Even more concerning are reports from professionals who discover that projects bearing their names have proceeded long after their engagement ended, sometimes without payment, formal contracts, or any subsequent site involvement. There are instances where professional drawings, seals, signatures and credentials have allegedly been misused to secure approvals or justify works that the original consultant neither authorized nor supervised. Such practices undermine professional accountability, erode public confidence and, most importantly, place lives at risk. This is why accountability for building safety must extend beyond the preparation of drawings to include the entire project lifecycle.",
+          "We therefore call for a broader re-examination of how projects are approved, monitored & supervised. County governments, the National Construction Authority, professional regulatory boards and other oversight agencies must strengthen systems that verify not only who appears on project documentation, but whether those professionals remain actively involved throughout implementation.",
+          "One critical reform would be requiring every professional named on a project to formally confirm their appointment, scope of service and level of engagement before approvals are issued. Approval authorities should not assume that the presence of a name, stamp or registration number automatically means active participation. There should be direct confirmation that the professional is aware of the project, has accepted responsibility and remains engaged in the agreed capacity.",
+          "At the same time, AAK recognizes that accountability must apply equally to the profession itself. Any practitioner found to have lent their name, seal, signature or registration to projects they neither supervised nor monitored should face the full consequences provided under professional and statutory frameworks.",
+          "However, responsibility must also be attributed fairly, ensuring that professionals do not automatically become the face of failure where they were excluded from decision-making, denied access to projects, had their work altered without consent or had their credentials misused. Investigations must distinguish between professional negligence and professional exclusion.",
+          "Beyond this incident, we urge county governments to immediately review ongoing high-risk developments, particularly high-rise buildings, projects in densely populated areas and sites where occupation has commenced before completion. Such reviews should verify the current status of approvals, establish whether registered professionals remain actively engaged, confirm that construction reflects approved plans, & identify projects where critical professional roles are absent.",
+          "We also call on enforcement agencies to pursue meaningful action against developers, contractors and any other parties who knowingly bypass professional requirements or compromise public safety. Misuse of professional drawings, names, stamps or certificates should be treated as a serious offence. The cost of non-compliance cannot continue to be borne by workers, tenants, neighbouring communities and the public at large.",
+          "Beyond approvals, safe buildings require engaged professionals, responsible developers, vigilant regulators and a shared commitment to protecting human life. The professional identified on paper must also be the professional empowered to perform their role in practice. Anything less creates unacceptable risks for everyone who lives, works or passes through our built environment.",
+        ],
+        signedBy: "George A. Ndege, President, Architectural Association of Kenya",
+        href: fileUrl("/documents/AAK-Statement-Eastleigh-Building-Collapse-20261028.pdf"),
+        action: {
+          label: "Report a non-compliant or unsafe building or construction site",
+          href: "https://forms.cloud.microsoft/r/h1TCEjvRNz?origin=lprLink",
+        },
       },
     ],
     contacts: [

@@ -205,6 +205,65 @@ function InitiativeDetail() {
             </div>
           </section>
 
+          {initiative.statements?.map((statement) => {
+            const [lead, ...rest] = statement.paragraphs;
+            return (
+              <section
+                key={statement.href}
+                id="statement"
+                aria-labelledby={`statement-${statement.isoDate}`}
+                className="scroll-mt-24 border-t border-border bg-secondary/40 py-14 lg:py-20"
+              >
+                <div className="mx-auto max-w-3xl px-6 lg:px-12">
+                  <p className="meta-label text-primary">
+                    {statement.kind} · <time dateTime={statement.isoDate}>{statement.date}</time>
+                  </p>
+                  <h2
+                    id={`statement-${statement.isoDate}`}
+                    className="mt-3 font-display text-2xl font-semibold leading-tight tracking-tight text-balance text-foreground sm:text-3xl"
+                  >
+                    {statement.title}
+                  </h2>
+                  <p className="mt-6 text-base leading-relaxed text-foreground">{lead}</p>
+                  <details className="group mt-6">
+                    <summary className="inline-flex cursor-pointer list-none items-center gap-2 text-sm font-semibold text-primary [&::-webkit-details-marker]:hidden">
+                      <span className="group-open:hidden">Read the full statement</span>
+                      <span className="hidden group-open:inline">Show less</span>
+                    </summary>
+                    <div className="mt-6 space-y-5 text-base leading-relaxed text-muted-foreground">
+                      {rest.map((paragraph, i) => (
+                        <p key={i}>{paragraph}</p>
+                      ))}
+                      <p className="pt-2 font-semibold text-foreground">{statement.signedBy}</p>
+                    </div>
+                  </details>
+                  <div className="mt-8 flex flex-wrap gap-x-6 gap-y-3">
+                    <a
+                      href={statement.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 text-sm font-semibold text-foreground"
+                    >
+                      The statement as issued (PDF)
+                      <ArrowUpRight className="h-4 w-4 text-primary" aria-hidden="true" />
+                    </a>
+                    {statement.action ? (
+                      <a
+                        href={statement.action.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 text-sm font-semibold text-foreground"
+                      >
+                        {statement.action.label}
+                        <ArrowUpRight className="h-4 w-4 text-primary" aria-hidden="true" />
+                      </a>
+                    ) : null}
+                  </div>
+                </div>
+              </section>
+            );
+          })}
+
           {moreVideos.length ? (
             <section className="border-t border-border py-14 lg:py-20">
               <div className="mx-auto max-w-3xl px-6 lg:px-12">

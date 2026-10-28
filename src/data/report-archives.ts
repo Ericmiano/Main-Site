@@ -340,6 +340,12 @@ export const opinionEditorialsDocuments: ArchiveDocument[] = [
 
 export const pressStatementsDocuments: ArchiveDocument[] = [
   {
+    title:
+      "Eastleigh Building Collapse: Urgent Need for Systemic Reform in Building Safety and Development Control",
+    year: "2026",
+    href: fileUrl("/documents/AAK-Statement-Eastleigh-Building-Collapse-20261028.pdf"),
+  },
+  {
     title: "Avert the Looming Environmental Crisis",
     year: "2026",
     href: fileUrl("/documents/AAK-Statement-Avert-the-Looming-Environmental-Crisis-20261016.pdf"),
