@@ -188,9 +188,6 @@ function ContactPage() {
                 >
                   Mulika Mjengo
                 </Link>
-                <a href="mailto:aak@aak.or.ke" className="link-quiet text-foreground">
-                  Email the secretariat
-                </a>
               </div>
             </div>
           </Reveal>
