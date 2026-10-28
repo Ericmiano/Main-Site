@@ -17,8 +17,14 @@ export default {
       return Response.redirect("https://aak.or.ke/resources", 302);
     }
 
-    const key = decodeURIComponent(url.pathname.slice(1));
-    if (!key.startsWith("documents/") || key.includes("..")) {
+    let key;
+    try {
+      key = decodeURIComponent(url.pathname.slice(1));
+    } catch {
+      // A malformed escape ("%E0%A4%A") is no file name.
+      return new Response("Not found", { status: 404 });
+    }
+    if (!key.startsWith("documents/") || key.includes("..") || key.includes("\0")) {
       return new Response("Not found", { status: 404 });
     }
 

@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       AAK Site Connector
  * Description:       Turns this WordPress into the private back office for aak.or.ke: posts publish to News & insights on the main site, and event certificates are uploaded here for verification.
- * Version:           1.0.0
+ * Version:           1.1.0
  * Requires at least: 6.0
  * Requires PHP:      7.4
  * Author:            Architectural Association of Kenya
@@ -122,6 +122,75 @@ add_action('parse_request', function ($wp) {
         exit;
     }
 });
+
+// No WordPress version in pages or feeds (it tells attackers what to try).
+remove_action('wp_head', 'wp_generator');
+add_filter('the_generator', '__return_empty_string');
+
+// Application passwords sign in to the REST API without the login page (and
+// its lock-out below). Nothing here uses them: the main site reads published
+// posts without signing in.
+add_filter('wp_is_application_passwords_available', '__return_false');
+
+/* ---------------------------------------------------------------------------
+ * Sign-in protection. WordPress allows unlimited password guesses: after
+ * five wrong ones from an address, sign-in from it is refused for 15 minutes
+ * (each further try restarts the wait). The address is kept only as a hash.
+ */
+const AAK_LOGIN_MAX_FAILS = 5;
+const AAK_LOGIN_LOCK_SECONDS = 900;
+
+function aak_login_key(): string
+{
+    return 'aak_login_' . substr(hash('sha256', 'aak-login|' . ($_SERVER['REMOTE_ADDR'] ?? '')), 0, 32);
+}
+
+function aak_login_locked(): bool
+{
+    return (int) get_transient(aak_login_key()) >= AAK_LOGIN_MAX_FAILS;
+}
+
+// After WordPress has checked the password (priority 20), so a correct
+// password from a locked-out address is refused too.
+add_filter('authenticate', function ($user) {
+    if (aak_login_locked()) {
+        return new WP_Error('aak_locked', 'Too many failed sign-in attempts. Please wait 15 minutes, then try again.');
+    }
+    return $user;
+}, 100);
+
+add_action('wp_login_failed', function () {
+    $key = aak_login_key();
+    set_transient($key, (int) get_transient($key) + 1, AAK_LOGIN_LOCK_SECONDS);
+});
+
+// One message for a wrong username or a wrong password, so the login page
+// can't be used to find out which usernames exist.
+add_filter('login_errors', function ($error) {
+    return aak_login_locked()
+        ? 'Too many failed sign-in attempts. Please wait 15 minutes, then try again.'
+        : '<strong>Error:</strong> The username or password is incorrect.';
+});
+
+/* ---------------------------------------------------------------------------
+ * The same browser protections as aak.or.ke, on the back office's pages.
+ */
+function aak_security_headers(): void
+{
+    if (headers_sent()) {
+        return;
+    }
+    header('X-Content-Type-Options: nosniff');
+    header('X-Frame-Options: SAMEORIGIN');
+    header('Referrer-Policy: strict-origin-when-cross-origin');
+    header('Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()');
+    if (is_ssl()) {
+        header('Strict-Transport-Security: max-age=31536000');
+    }
+}
+add_action('send_headers', 'aak_security_headers');
+add_action('admin_init', 'aak_security_headers');
+add_action('login_init', 'aak_security_headers');
 
 /* ---------------------------------------------------------------------------
  * What the main site needs from each post, ready to use.

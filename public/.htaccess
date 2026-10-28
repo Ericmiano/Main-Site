@@ -54,6 +54,13 @@
   RewriteCond %{REQUEST_URI} !^/api/(member-stats|portal-events|certificate|arbitration-request|news|news-page|news-sitemap)\.php$
   RewriteRule ^ - [F,L]
 
+  # Archives, backups, database exports and logs are never served: a site
+  # zip left behind after unpacking, or a dump, would download to anyone.
+  # The site itself has no such files (downloads live in R2).
+  RewriteCond %{HTTP_HOST} ^((www|new)\.)?aak\.or\.ke$|^(localhost|127\.0\.0\.1)(:\d+)?$ [NC]
+  RewriteCond %{REQUEST_URI} \.(zip|rar|7z|tar|gz|tgz|bz2|sql|sqlite3?|db|bak|old|orig|save|swp|log|ini|env|sh)$ [NC]
+  RewriteRule ^ - [F,L]
+
   # Member register endpoint (see api/member-stats.php).
   RewriteRule ^api/member-stats/?$ api/member-stats.php [L]
 
@@ -131,13 +138,16 @@
     Header always set X-Frame-Options "SAMEORIGIN"
     Header always set Referrer-Policy "strict-origin-when-cross-origin"
     Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()"
+    # A page this site opens in a new tab can't reach back into it (sharing
+    # pop-ups this site opens still work).
+    Header always set Cross-Origin-Opener-Policy "same-origin-allow-popups"
     # What pages may load: this site, YouTube (player + thumbnails), images in
     # News & insights articles (from the WordPress back office), Google
     # Maps (on request, contact page), Facebook's page plugin (footer "Latest
     # posts", on request), and the downloads host (radio clips).
     # Inline scripts are allowed because the framework writes page state
     # inline, and that differs on every page.
-    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://platform.x.com https://platform.twitter.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://cms.aak.or.ke https://i.ytimg.com https://pbs.twimg.com https://syndication.x.com https://syndication.twitter.com; font-src 'self'; connect-src 'self' https://syndication.twitter.com https://cdn.syndication.twimg.com; media-src 'self' https://aak-files.aak-kenya.workers.dev; frame-src https://www.youtube-nocookie.com https://www.google.com https://www.facebook.com https://www.instagram.com https://platform.twitter.com https://members.aak.or.ke; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'"
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://platform.x.com https://platform.twitter.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://cms.aak.or.ke https://i.ytimg.com https://pbs.twimg.com https://syndication.x.com https://syndication.twitter.com; font-src 'self'; connect-src 'self' https://syndication.twitter.com https://cdn.syndication.twimg.com; media-src 'self' https://aak-files.aak-kenya.workers.dev; frame-src https://www.youtube-nocookie.com https://www.google.com https://www.facebook.com https://www.instagram.com https://platform.twitter.com https://members.aak.or.ke; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests"
     # Browsers remember to use HTTPS. Subdomains aren't included on purpose.
     Header always set Strict-Transport-Security "max-age=31536000" "expr=%{HTTPS} == 'on'"
   </If>
