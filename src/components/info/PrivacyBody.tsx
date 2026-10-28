@@ -51,7 +51,7 @@ export default function PrivacyBody() {
         </li>
         <li>
           <strong>The map</strong> on the <Link to="/contact">contact page</Link> loads from Google
-          Maps only if you choose &ldquo;Show map&rdquo;.
+          Maps as you scroll to it, so Google receives information about your visit to that page.
         </li>
       </ul>
       <p>

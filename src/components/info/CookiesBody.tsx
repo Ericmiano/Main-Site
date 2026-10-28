@@ -14,15 +14,15 @@ export default function CookiesBody() {
         the site from abuse. It isn&rsquo;t used to identify or track you.
       </p>
 
-      <h2>Services that load only when you choose</h2>
+      <h2>Services from other companies</h2>
       <ul>
         <li>
           <strong>YouTube videos</strong> are embedded in YouTube&rsquo;s privacy-enhanced mode.
           YouTube may set cookies once you play a video.
         </li>
         <li>
-          <strong>Google Maps</strong> on the <Link to="/contact">contact page</Link> loads only
-          when you select &ldquo;Show map&rdquo;. Google may then set cookies.
+          <strong>Google Maps</strong> loads on the <Link to="/contact">contact page</Link> as you
+          scroll to the map. Google may then set cookies.
         </li>
         <li>
           <strong>Instagram</strong> and <strong>X</strong> posts load in the &ldquo;Latest from

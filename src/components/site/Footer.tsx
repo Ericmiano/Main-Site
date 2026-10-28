@@ -44,6 +44,12 @@ const externalQuickLinks = [
   { label: "Job Portal", href: portalLinks.jobs },
 ];
 
+const phoneNumbers = [
+  { label: "0721 691 337", href: "tel:+254721691337" },
+  { label: "020 242 0808", href: "tel:+254202420808" },
+  { label: "020 242 0586", href: "tel:+254202420586" },
+];
+
 export function Footer() {
   return (
     <footer className="bg-ink-deep text-background">
@@ -60,10 +66,6 @@ export function Footer() {
               height={317}
               loading="lazy"
             />
-            <p className="mt-4 max-w-xs text-sm leading-relaxed text-background/60">
-              The Architectural Association of Kenya has united professionals across the built and
-              natural environment since 1967.
-            </p>
             <address className="mt-6 space-y-1 text-sm not-italic text-background/60">
               <p>Blue Violets Plaza, 6th Floor, Room 605</p>
               <p>Kindaruma Rd, Off Ngong Rd</p>
@@ -77,6 +79,22 @@ export function Footer() {
                 </a>
               </p>
             </address>
+            {/* The numbers on the contact page. */}
+            <ul
+              aria-label="Phone numbers"
+              className="mt-4 flex flex-wrap gap-x-4 gap-y-1 text-sm text-background/60"
+            >
+              {phoneNumbers.map((phone) => (
+                <li key={phone.href}>
+                  <a
+                    className="link-underline transition-colors hover:text-background"
+                    href={phone.href}
+                  >
+                    {phone.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
 
           <nav aria-label="Chapters">

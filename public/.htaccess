@@ -143,7 +143,7 @@
     Header always set Cross-Origin-Opener-Policy "same-origin-allow-popups"
     # What pages may load: this site, YouTube (player + thumbnails), images in
     # News & insights articles (from the WordPress back office), Google
-    # Maps (on request, contact page), Facebook's page plugin (footer "Latest
+    # Maps (contact page), Facebook's page plugin (footer "Latest
     # posts", on request), and the downloads host (radio clips).
     # Inline scripts are allowed because the framework writes page state
     # inline, and that differs on every page.

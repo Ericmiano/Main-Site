@@ -47,7 +47,7 @@ export const infoDocs: Record<InfoDocKey, InfoDoc> = {
       "What personal information the AAK website collects, what it is used for, and how to contact the Association about it.",
     intro:
       "What personal information this website collects, what it's used for, and how to reach us about it.",
-    updated: "28 September 2026",
+    updated: "28 October 2026",
     draft: !LEGAL_PAGES_APPROVED,
     load: () => import("./PrivacyBody"),
   },
@@ -66,10 +66,10 @@ export const infoDocs: Record<InfoDocKey, InfoDoc> = {
     path: "/cookies",
     title: "Cookie notice",
     description:
-      "The AAK website sets no cookies of its own and uses no tracking. Embedded videos and the map load only when you choose.",
+      "The AAK website sets no cookies of its own and uses no tracking. Embedded videos load only when you play them; the map on the contact page loads from Google Maps.",
     intro:
       "This website sets no cookies of its own and doesn't track you, which is why it doesn't ask for cookie consent.",
-    updated: "28 September 2026",
+    updated: "28 October 2026",
     draft: !LEGAL_PAGES_APPROVED,
     load: () => import("./CookiesBody"),
   },

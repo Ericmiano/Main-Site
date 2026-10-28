@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
+  IconArrowRight as ArrowRight,
   IconArrowUpRight as ArrowUpRight,
   IconClock as Clock,
   IconMail as Mail,
@@ -12,7 +13,6 @@ import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { Reveal } from "@/components/site/Reveal";
 import { PageBreadcrumb } from "@/components/site/PageBreadcrumb";
-import { ClickToLoadMap } from "@/components/site/ClickToLoadMap";
 import { jsonLd } from "@/lib/json-ld";
 
 const SITE_URL = "https://aak.or.ke";
@@ -100,9 +100,7 @@ function ContactPage() {
             <Reveal delay={60} className="h-full">
               <div className="flex h-full flex-col gap-3 rounded-2xl border border-border p-7">
                 <Phone className="h-5 w-5 text-primary" aria-hidden="true" />
-                <h2 className="font-display text-base font-semibold text-foreground">
-                  Call &amp; WhatsApp
-                </h2>
+                <h2 className="font-display text-base font-semibold text-foreground">Call us</h2>
                 <ul className="space-y-1 text-sm text-muted-foreground">
                   <li>
                     <a className="link-underline" href="tel:+254721691337">
@@ -177,10 +175,12 @@ function ContactPage() {
               <div className="flex items-center gap-3">
                 <MessageCircle className="h-5 w-5 text-primary" aria-hidden="true" />
                 <p className="text-sm text-foreground">
-                  Report an unsafe building via Mulika Mjengo, or reach the secretariat directly.
+                  Report unsafe buildings via Mulika Mjengo, or reach the secretariat directly.
                 </p>
               </div>
-              <div className="flex flex-wrap gap-3">
+              <div className="flex flex-wrap items-center gap-3">
+                {/* Points at the Mulika Mjengo button. */}
+                <ArrowRight className="h-5 w-5 shrink-0 text-primary" aria-hidden="true" />
                 <Link
                   to="/initiatives/$slug"
                   params={{ slug: "mulika-mjengo" }}
@@ -222,9 +222,12 @@ function ContactPage() {
               </a>
             </div>
             <div className="aspect-4/3 overflow-hidden rounded-2xl border border-border bg-secondary sm:aspect-video">
-              <ClickToLoadMap
+              <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.7954780058567!2d36.790491314254716!3d-1.2974023990537153!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f109787542ce1%3A0x1fff8b8ca80946c!2sBlue+Violet+Plaza%2C+Kamburu+Dr%2C+Nairobi!5e0!3m2!1sen!2ske!4v1549692093091"
                 title="Map showing Blue Violet Plaza, Nairobi"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                className="h-full w-full border-0"
               />
             </div>
           </div>
