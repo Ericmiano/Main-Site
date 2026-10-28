@@ -7,7 +7,8 @@
  * OCCASION_SCRIPT picks the occasion in the visitor's browser, on Nairobi
  * dates, before the page is drawn, so the static site needs no rebuild when
  * one starts or ends. Add ?occasion=<id> to any address to preview one
- * (?occasion=none for none).
+ * (?occasion=none for none), or ?occasion-date=yyyy-mm-dd to see what the
+ * calendar puts on that day (at noon in Nairobi).
  *
  * Fixed days repeat every year and Easter is worked out for each year. The
  * Islamic dates follow the sighting of the moon, so MOON_DATES holds the
@@ -140,7 +141,8 @@ export function occasionTimes(fromYear = new Date().getFullYear()) {
 
 /**
  * Runs in <head> before anything is drawn: marks <html data-occasion="id">
- * for the occasion now on (or the ?occasion= preview), and shows that
+ * for the occasion now on (or the ?occasion= preview, or the one on the
+ * ?occasion-date= test day), and shows that
  * occasion's elements ([data-occasion-for~="id"], hidden by default in
  * styles.css). If the page stays open, it changes over on the hour the next
  * occasion starts or this one ends.
@@ -148,5 +150,5 @@ export function occasionTimes(fromYear = new Date().getFullYear()) {
 export const OCCASION_SCRIPT = (() => {
   const times = occasionTimes();
   const ids = OCCASIONS.map((o) => o.id);
-  return `(function(){try{var w=${JSON.stringify(times)},ids=${JSON.stringify(ids)},d=document,h=d.documentElement,s=null,q=/[?&]occasion=([a-z-]+)/.exec(location.search);function now(){var n=Date.now(),id="";for(var i=0;i<w.length;i++)if(n>=w[i][1]&&n<w[i][2])id=w[i][0];return id}function set(id){if(ids.indexOf(id)<0)id="";if(id)h.setAttribute("data-occasion",id);else h.removeAttribute("data-occasion");if(s)s.remove();s=null;if(id){s=d.createElement("style");s.appendChild(d.createTextNode('[data-occasion-for~="'+id+'"]{display:flex!important}'));d.head.appendChild(s)}}if(q){set(q[1]);return}set(now());(function next(){var n=Date.now(),t=Infinity;for(var i=0;i<w.length;i++){if(w[i][1]>n&&w[i][1]<t)t=w[i][1];if(w[i][2]>n&&w[i][2]<t)t=w[i][2]}if(t-n<2147483647)setTimeout(function(){set(now());next()},t-n+50)})()}catch(x){}})()`;
+  return `(function(){try{var w=${JSON.stringify(times)},ids=${JSON.stringify(ids)},d=document,h=d.documentElement,s=null,q=/[?&]occasion=([a-z-]+)/.exec(location.search),t0=/[?&]occasion-date=(\\d{4}-\\d{2}-\\d{2})/.exec(location.search);function now(){var n=t0?Date.parse(t0[1]+"T12:00:00+03:00"):Date.now(),id="";for(var i=0;i<w.length;i++)if(n>=w[i][1]&&n<w[i][2])id=w[i][0];return id}function set(id){if(ids.indexOf(id)<0)id="";if(id)h.setAttribute("data-occasion",id);else h.removeAttribute("data-occasion");if(s)s.remove();s=null;if(id){s=d.createElement("style");s.appendChild(d.createTextNode('[data-occasion-for~="'+id+'"]{display:flex!important}'));d.head.appendChild(s)}}if(q){set(q[1]);return}set(now());if(t0)return;(function next(){var n=Date.now(),t=Infinity;for(var i=0;i<w.length;i++){if(w[i][1]>n&&w[i][1]<t)t=w[i][1];if(w[i][2]>n&&w[i][2]<t)t=w[i][2]}if(t-n<2147483647)setTimeout(function(){set(now());next()},t-n+50)})()}catch(x){}})()`;
 })();
