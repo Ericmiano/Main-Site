@@ -17,7 +17,7 @@ import {
 import { cn } from "@/lib/utils";
 import { InitiativeLink } from "@/components/site/InitiativeLink";
 import { InitiativeEmblem } from "@/components/site/InitiativeEmblem";
-import { OccasionGarland, OccasionStrip } from "@/components/site/Occasion";
+import { OccasionBanner, OccasionStrip } from "@/components/site/Occasion";
 import logoHorizontal from "@/assets/aak-logo-horizontal.webp";
 import {
   Accordion,
@@ -259,7 +259,7 @@ export function Header() {
         {/* Main bar */}
         <div
           ref={navRef}
-          className="relative bg-primary"
+          className="site-main-bar relative bg-primary"
           onMouseLeave={scheduleCloseMenu}
           onMouseEnter={cancelCloseMenu}
         >
@@ -669,8 +669,8 @@ export function Header() {
           </Suspense>
         ) : null}
       </header>
-      {/* A holiday's decoration across the top of the page; scrolls away. */}
-      <OccasionGarland />
+      {/* A holiday's greeting banner and garland; scrolls away with the page. */}
+      <OccasionBanner />
     </>
   );
 }

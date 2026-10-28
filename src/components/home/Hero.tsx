@@ -13,7 +13,7 @@ import {
 } from "@/data/site";
 import { renderTime } from "@/lib/render-time";
 import { cn } from "@/lib/utils";
-import { OccasionDecor, OccasionGreeting } from "@/components/site/Occasion";
+import { OccasionDecor } from "@/components/site/Occasion";
 
 /** The hero's rotating photographs: AAK's people at work, built from the
  * largest originals available as public/img/hero/<name>-<width>.webp. */
@@ -371,7 +371,6 @@ export function Hero() {
           <p className="meta-label text-foreground/70">
             The Architectural Association of Kenya &middot; Est. 1967
           </p>
-          <OccasionGreeting />
           {/* Visible from first paint (no entrance animation): it's the page's LCP. */}
           <h1
             id="hero-title"

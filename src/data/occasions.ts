@@ -28,28 +28,102 @@ export type OccasionId =
   | "jamhuri-day"
   | "christmas";
 
-/** The decoration: Kenyan flag, Christmas lights, crescent and stars,
- * confetti, leaves, or a warm sunrise glow. */
+/** The homepage photos' decoration: Kenyan flag, Christmas lights, crescent
+ * and stars, confetti, leaves, or a warm sunrise glow. */
 export type OccasionMotif = "flag" | "lights" | "crescent" | "confetti" | "leaves" | "dawn";
+
+/** What hangs under each page's occasion banner (styles.css .occasion-garland-*). */
+export type OccasionGarland =
+  "flag" | "lights" | "lanterns" | "crescents" | "confetti" | "leaves" | "flowers" | "tools";
 
 export interface Occasion {
   id: OccasionId;
   greeting: string;
+  /** One line under the greeting in the banner and footer. National days'
+   * lines are dated facts; the rest are wishes. */
+  message: string;
   motif: OccasionMotif;
+  garland: OccasionGarland;
 }
 
 export const OCCASIONS: Occasion[] = [
-  { id: "new-year", greeting: "Happy New Year", motif: "confetti" },
-  { id: "ramadan", greeting: "Ramadan Kareem", motif: "crescent" },
-  { id: "eid-al-fitr", greeting: "Eid Mubarak", motif: "crescent" },
-  { id: "easter", greeting: "Happy Easter", motif: "dawn" },
-  { id: "labour-day", greeting: "Happy Labour Day", motif: "dawn" },
-  { id: "eid-al-adha", greeting: "Eid Mubarak", motif: "crescent" },
-  { id: "madaraka-day", greeting: "Happy Madaraka Day", motif: "flag" },
-  { id: "mazingira-day", greeting: "Happy Mazingira Day", motif: "leaves" },
-  { id: "mashujaa-day", greeting: "Happy Mashujaa Day", motif: "flag" },
-  { id: "jamhuri-day", greeting: "Happy Jamhuri Day", motif: "flag" },
-  { id: "christmas", greeting: "Merry Christmas", motif: "lights" },
+  {
+    id: "new-year",
+    greeting: "Happy New Year",
+    message: "Wishing you a prosperous year ahead",
+    motif: "confetti",
+    garland: "confetti",
+  },
+  {
+    id: "ramadan",
+    greeting: "Ramadan Kareem",
+    message: "Wishing you a blessed month of Ramadan",
+    motif: "crescent",
+    garland: "lanterns",
+  },
+  {
+    id: "eid-al-fitr",
+    greeting: "Eid al-Fitr Mubarak",
+    message: "Wishing you and your family a joyous Eid",
+    motif: "crescent",
+    garland: "crescents",
+  },
+  {
+    id: "easter",
+    greeting: "Happy Easter",
+    message: "Wishing you a joyful Easter",
+    motif: "dawn",
+    garland: "flowers",
+  },
+  {
+    id: "labour-day",
+    greeting: "Happy Labour Day",
+    message: "Celebrating the workers who build Kenya",
+    motif: "dawn",
+    garland: "tools",
+  },
+  {
+    id: "eid-al-adha",
+    greeting: "Eid al-Adha Mubarak",
+    message: "Wishing you and your family a blessed Eid",
+    motif: "crescent",
+    garland: "crescents",
+  },
+  {
+    id: "madaraka-day",
+    greeting: "Happy Madaraka Day",
+    message: "Marking self-rule, attained on 1 June 1963",
+    motif: "flag",
+    garland: "flag",
+  },
+  {
+    id: "mazingira-day",
+    greeting: "Happy Mazingira Day",
+    message: "A day for Kenya's environment",
+    motif: "leaves",
+    garland: "leaves",
+  },
+  {
+    id: "mashujaa-day",
+    greeting: "Happy Mashujaa Day",
+    message: "Honouring the heroes who shaped Kenya",
+    motif: "flag",
+    garland: "flag",
+  },
+  {
+    id: "jamhuri-day",
+    greeting: "Happy Jamhuri Day",
+    message: "Celebrating Kenya's independence (1963) and republic (1964)",
+    motif: "flag",
+    garland: "flag",
+  },
+  {
+    id: "christmas",
+    greeting: "Merry Christmas",
+    message: "Wishing you peace and joy this festive season",
+    motif: "lights",
+    garland: "lights",
+  },
 ];
 
 /** Occasions sharing a motif, as a space-separated list for data-occasion-for. */

@@ -7,7 +7,7 @@ import {
   IconMoonStars,
   IconSunrise,
 } from "@tabler/icons-react";
-import { OCCASIONS, occasionsWith, type OccasionId } from "@/data/occasions";
+import { OCCASIONS, occasionsWith, type OccasionGarland, type OccasionId } from "@/data/occasions";
 
 /*
  * Occasion themes (see data/occasions.ts). Everything here is rendered on
@@ -42,77 +42,71 @@ const ICONS: Record<OccasionId, ReactNode> = {
   christmas: <IconChristmasTree className="h-4 w-4 text-[#2f7d32]" aria-hidden="true" />,
 };
 
-/** A thin strip in the occasion's colours along the bottom of the main bar. */
+/** On the national days, the flag's stripes along the bottom of the main bar
+ * (it stays in view as the header sticks). */
 export function OccasionStrip() {
   return (
-    <>
-      {(["flag", "lights", "crescent", "confetti", "leaves", "dawn"] as const).map((motif) => (
-        <div
-          key={motif}
-          aria-hidden="true"
-          data-occasion-for={occasionsWith(motif)}
-          className={`occasion-strip occasion-strip-${motif} pointer-events-none absolute inset-x-0 top-full z-30 ${motif === "flag" ? "h-3" : "h-2"}`}
-        />
-      ))}
-    </>
-  );
-}
-
-/** The homepage greeting, beside the AAK line above the headline. */
-export function OccasionGreeting() {
-  return (
-    <>
-      {OCCASIONS.map((o) => (
-        <p
-          key={o.id}
-          data-occasion-for={o.id}
-          className="mt-4 w-fit items-center gap-2 rounded-full border border-border bg-background px-3.5 py-1.5 text-sm font-semibold text-foreground shadow-sm"
-        >
-          {ICONS[o.id]}
-          {o.greeting} from AAK
-        </p>
-      ))}
-    </>
+    <div
+      aria-hidden="true"
+      data-occasion-for={occasionsWith("flag")}
+      className="occasion-strip occasion-strip-flag pointer-events-none absolute inset-x-0 top-full z-30 h-3"
+    />
   );
 }
 
 // Fixed "random" placements, so every build draws the same.
 const scatter = (i: number, a: number, b: number) => ((i * a + b) % 100) / 100;
 
-type Motif = "flag" | "lights" | "crescent" | "confetti" | "leaves" | "dawn";
-const MOTIFS: Motif[] = ["flag", "lights", "crescent", "confetti", "leaves", "dawn"];
+/** The occasions hanging a given garland, for data-occasion-for. */
+const withGarland = (garland: OccasionGarland) =>
+  OCCASIONS.filter((o) => o.garland === garland)
+    .map((o) => o.id)
+    .join(" ");
+const GARLANDS = [...new Set(OCCASIONS.map((o) => o.garland))];
 
 /**
  * The occasion's decoration hanging along a scalloped string across the full
- * width: pennants in the flag's colours (or New Year's), Christmas lights,
- * lanterns and stars, or a leafy vine; Easter and Labour Day get a sunrise
- * glow. Drawn as repeating images in styles.css (.occasion-garland-*), so
- * pages carry one empty element, not hundreds of pieces.
+ * width (flag bunting, lights, lanterns, crescents, flowers, tools, leaves or
+ * confetti). Drawn as repeating images in styles.css (.occasion-garland-*),
+ * so a page carries one empty element, not hundreds of pieces.
  */
-function Garland({ motif }: { motif: Motif }) {
+function Garland({ garland }: { garland: OccasionGarland }) {
   return (
-    <div className={`occasion-garland occasion-garland-${motif} absolute inset-x-0 top-0 h-12`} />
+    <div className={`occasion-garland occasion-garland-${garland} absolute inset-x-0 top-0 h-12`} />
   );
 }
 
 /**
- * On every page, under the header: the occasion's decoration hanging across
- * the top of the page. It sits in the page (not the sticky header), so it
- * scrolls away with the content instead of covering it.
+ * On every page, under the header: a banner with the occasion's greeting and
+ * a line about it, on its own artwork (.occasion-banner-<id>), with its
+ * garland hanging below. It's in the page, not the sticky header, so it
+ * scrolls away with the content.
  */
-export function OccasionGarland() {
+export function OccasionBanner() {
   return (
-    <div aria-hidden="true" className="pointer-events-none relative z-40 h-0">
-      {MOTIFS.map((motif) => (
-        <div
-          key={motif}
-          data-occasion-for={occasionsWith(motif)}
-          className="absolute inset-x-0 top-0"
+    <>
+      {OCCASIONS.map((o) => (
+        <section
+          key={o.id}
+          data-occasion-for={o.id}
+          aria-label={o.greeting}
+          className={`occasion-banner occasion-banner-${o.id} relative z-40 text-white`}
         >
-          <Garland motif={motif} />
-        </div>
+          <div className="mx-auto flex w-full max-w-[1400px] flex-col items-center justify-center gap-1 px-6 py-6 text-center [text-shadow:0_1px_8px_rgb(0_0_0/0.6)] sm:flex-row sm:gap-5 sm:py-7 lg:px-12">
+            <p className="flex items-center gap-3 font-display text-3xl font-semibold tracking-tight sm:text-4xl">
+              <span className="flex shrink-0 [&>span]:h-5 [&>span]:w-7 [&>svg]:h-8 [&>svg]:w-8 [&>svg]:text-[#f2c94c]">
+                {ICONS[o.id]}
+              </span>
+              {o.greeting}
+            </p>
+            <p className="text-sm text-white/85 sm:text-base">{o.message} &middot; AAK</p>
+          </div>
+          <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-full">
+            <Garland garland={o.garland} />
+          </div>
+        </section>
       ))}
-    </div>
+    </>
   );
 }
 
@@ -123,29 +117,28 @@ export function OccasionFooterBanner() {
       data-occasion-for={OCCASIONS.map((o) => o.id).join(" ")}
       className="relative overflow-hidden border-b border-background/10"
     >
-      {MOTIFS.map((motif) => (
+      {GARLANDS.map((garland) => (
         <div
-          key={motif}
+          key={garland}
           aria-hidden="true"
-          data-occasion-for={occasionsWith(motif)}
+          data-occasion-for={withGarland(garland)}
           className="pointer-events-none absolute inset-0"
         >
-          <Garland motif={motif} />
+          <Garland garland={garland} />
         </div>
       ))}
       <div className="relative mx-auto flex w-full max-w-[1400px] flex-col gap-2 px-6 pt-20 pb-10 lg:flex-row lg:items-end lg:justify-between lg:px-12">
         {OCCASIONS.map((o) => (
-          <p
-            key={o.id}
-            data-occasion-for={o.id}
-            className="items-center gap-3 font-display text-3xl font-semibold tracking-tight sm:text-4xl"
-          >
-            {/* Larger, and gold to read on the dark footer (the flag keeps its colours). */}
-            <span className="flex shrink-0 [&>span]:h-5 [&>span]:w-7 [&>svg]:h-8 [&>svg]:w-8 [&>svg]:text-[#f2c94c]">
-              {ICONS[o.id]}
-            </span>
-            {o.greeting}
-          </p>
+          <div key={o.id} data-occasion-for={o.id} className="flex-col gap-1">
+            <p className="flex items-center gap-3 font-display text-3xl font-semibold tracking-tight sm:text-4xl">
+              {/* Larger, and gold to read on the dark footer (the flag keeps its colours). */}
+              <span className="flex shrink-0 [&>span]:h-5 [&>span]:w-7 [&>svg]:h-8 [&>svg]:w-8 [&>svg]:text-[#f2c94c]">
+                {ICONS[o.id]}
+              </span>
+              {o.greeting}
+            </p>
+            <p className="text-sm text-background/70">{o.message}</p>
+          </div>
         ))}
         <p className="text-sm text-background/65">from the Architectural Association of Kenya</p>
       </div>
