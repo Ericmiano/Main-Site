@@ -48,9 +48,8 @@ export function NotFound() {
               <Snake404 {...NOT_FOUND_SNAKE} />
             </div>
             <figcaption className="mt-3 text-sm text-muted-foreground">
-              Click the game and steer with the arrow keys, or swipe. It starts slow and speeds up
-              with every bite. Eat the whole 404 to reach level 2, then spell out AAK and more round
-              the black blocks. Esc hands it back.
+              To play, click the game, then steer with the arrow keys (or swipe on a phone). Press
+              Esc to stop.
             </figcaption>
           </figure>
         </div>

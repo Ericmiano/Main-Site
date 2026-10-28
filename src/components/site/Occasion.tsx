@@ -12,8 +12,10 @@ import { OCCASIONS, occasionsWith, type OccasionId } from "@/data/occasions";
 /*
  * Occasion themes (see data/occasions.ts). Everything here is rendered on
  * every build and hidden by default ([data-occasion-for] in styles.css);
- * OCCASION_SCRIPT shows the pieces for the occasion that's on. All of it is
- * decoration except the greeting, which is plain text.
+ * OCCASION_SCRIPT shows the pieces for the occasion that's on: on every page
+ * a strip under the main bar, a garland across the top of the page and a
+ * greeting atop the footer; on the homepage a greeting and a decoration on
+ * the photos. All of it is decoration except the greetings, which are text.
  */
 
 /** The Kenyan flag's stripes, small, for the national days' greeting. */
@@ -76,6 +78,80 @@ export function OccasionGreeting() {
 
 // Fixed "random" placements, so every build draws the same.
 const scatter = (i: number, a: number, b: number) => ((i * a + b) % 100) / 100;
+
+type Motif = "flag" | "lights" | "crescent" | "confetti" | "leaves" | "dawn";
+const MOTIFS: Motif[] = ["flag", "lights", "crescent", "confetti", "leaves", "dawn"];
+
+/**
+ * The occasion's decoration hanging along a scalloped string across the full
+ * width: pennants in the flag's colours (or New Year's), Christmas lights,
+ * lanterns and stars, or a leafy vine; Easter and Labour Day get a sunrise
+ * glow. Drawn as repeating images in styles.css (.occasion-garland-*), so
+ * pages carry one empty element, not hundreds of pieces.
+ */
+function Garland({ motif }: { motif: Motif }) {
+  return (
+    <div className={`occasion-garland occasion-garland-${motif} absolute inset-x-0 top-0 h-12`} />
+  );
+}
+
+/**
+ * On every page, under the header: the occasion's decoration hanging across
+ * the top of the page. It sits in the page (not the sticky header), so it
+ * scrolls away with the content instead of covering it.
+ */
+export function OccasionGarland() {
+  return (
+    <div aria-hidden="true" className="pointer-events-none relative z-40 h-0">
+      {MOTIFS.map((motif) => (
+        <div
+          key={motif}
+          data-occasion-for={occasionsWith(motif)}
+          className="absolute inset-x-0 top-0"
+        >
+          <Garland motif={motif} />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/** On every page, atop the footer: the occasion's greeting from AAK, large. */
+export function OccasionFooterBanner() {
+  return (
+    <div
+      data-occasion-for={OCCASIONS.map((o) => o.id).join(" ")}
+      className="relative overflow-hidden border-b border-background/10"
+    >
+      {MOTIFS.map((motif) => (
+        <div
+          key={motif}
+          aria-hidden="true"
+          data-occasion-for={occasionsWith(motif)}
+          className="pointer-events-none absolute inset-0"
+        >
+          <Garland motif={motif} />
+        </div>
+      ))}
+      <div className="relative mx-auto flex w-full max-w-[1400px] flex-col gap-2 px-6 pt-20 pb-10 lg:flex-row lg:items-end lg:justify-between lg:px-12">
+        {OCCASIONS.map((o) => (
+          <p
+            key={o.id}
+            data-occasion-for={o.id}
+            className="items-center gap-3 font-display text-3xl font-semibold tracking-tight sm:text-4xl"
+          >
+            {/* Larger, and gold to read on the dark footer (the flag keeps its colours). */}
+            <span className="flex shrink-0 [&>span]:h-5 [&>span]:w-7 [&>svg]:h-8 [&>svg]:w-8 [&>svg]:text-[#f2c94c]">
+              {ICONS[o.id]}
+            </span>
+            {o.greeting}
+          </p>
+        ))}
+        <p className="text-sm text-background/65">from the Architectural Association of Kenya</p>
+      </div>
+    </div>
+  );
+}
 
 /** Christmas: a string of lights along the top of the photos. */
 function Lights() {

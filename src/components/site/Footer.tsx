@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { chapters } from "@/data/site";
 import logoWhite from "@/assets/aak-logo-white.webp";
 import { portalLinks, socialLinks } from "@/data/site";
+import { OccasionFooterBanner } from "@/components/site/Occasion";
 
 const associationLinks = [
   { label: "About Us", to: "/about" as const },
@@ -46,6 +47,8 @@ const externalQuickLinks = [
 export function Footer() {
   return (
     <footer className="bg-ink-deep text-background">
+      {/* A holiday's greeting from AAK, when one is on. */}
+      <OccasionFooterBanner />
       <div className="mx-auto max-w-[1400px] px-6 py-20 lg:px-12">
         <div className="grid gap-14 lg:grid-cols-[1.3fr_0.8fr_0.8fr_0.8fr_0.8fr]">
           <div>
