@@ -17,6 +17,7 @@ import {
 import { cn } from "@/lib/utils";
 import { InitiativeLink } from "@/components/site/InitiativeLink";
 import { InitiativeEmblem } from "@/components/site/InitiativeEmblem";
+import { OccasionStrip } from "@/components/site/Occasion";
 import logoHorizontal from "@/assets/aak-logo-horizontal.webp";
 import {
   Accordion,
@@ -414,6 +415,9 @@ export function Header() {
               className="h-full origin-left scale-x-0 bg-primary-foreground/80"
             />
           </div>
+
+          {/* A holiday's colours along the bar's bottom edge, when one is on. */}
+          <OccasionStrip />
 
           {/* Mega menu panel */}
           {activeEntry ? (

@@ -749,7 +749,158 @@ html[data-announce-dismissed] [data-announcement="bar"] {
   animation-delay: 620ms;
 }
 
+/* Occasion themes (data/occasions.ts, components/site/Occasion.tsx). Hidden
+   until OCCASION_SCRIPT shows the occasion that's on. */
+[data-occasion-for] {
+  display: none;
+}
+/* The Kenyan flag's stripes: black, red and green, with white between. */
+.occasion-flag-stripes {
+  background: linear-gradient(
+    #000 0 28%,
+    #fff 28% 36%,
+    #bb0000 36% 64%,
+    #fff 64% 72%,
+    #006600 72% 100%
+  );
+}
+.occasion-strip-flag {
+  background: linear-gradient(#000 0 30%, #fff 30% 40%, #bb0000 40% 60%, #fff 60% 70%, #006600 70%);
+}
+.occasion-strip-lights {
+  background: repeating-linear-gradient(
+    90deg,
+    #c0392b 0 24px,
+    #f2c94c 24px 48px,
+    #2f7d32 48px 72px,
+    #f7f3ea 72px 96px
+  );
+}
+.occasion-strip-crescent {
+  background:
+    radial-gradient(circle, #f2c94c 1.5px, transparent 2px) 0 50% / 14px 100%,
+    #0f6b4b;
+}
+.occasion-strip-confetti {
+  background: repeating-linear-gradient(
+    90deg,
+    var(--aak-red) 0 18px,
+    #f2c94c 18px 36px,
+    #1f8a8a 36px 54px,
+    #151515 54px 72px
+  );
+}
+.occasion-strip-leaves {
+  background: linear-gradient(90deg, #1b5e20, #43a047, #9ccc65, #43a047, #1b5e20);
+}
+.occasion-strip-dawn {
+  background: linear-gradient(90deg, #f6a623, #f2c94c, #ffe08a, #f2c94c, #f6a623);
+}
+
+/* Christmas lights: a glowing bulb that twinkles. */
+.occasion-bulb {
+  position: absolute;
+  width: 9px;
+  height: 12px;
+  margin-left: -4.5px;
+  border-radius: 50% 50% 45% 45%;
+  animation: occasion-twinkle 2.4s ease-in-out infinite;
+}
+.occasion-bulb-0 {
+  background: #ff5a4e;
+  box-shadow: 0 0 12px 3px rgb(255 90 78 / 0.7);
+}
+.occasion-bulb-1 {
+  background: #ffd25e;
+  box-shadow: 0 0 12px 3px rgb(255 210 94 / 0.7);
+}
+.occasion-bulb-2 {
+  background: #5fd068;
+  box-shadow: 0 0 12px 3px rgb(95 208 104 / 0.7);
+}
+.occasion-bulb-3 {
+  background: #fff7e0;
+  box-shadow: 0 0 12px 3px rgb(255 247 224 / 0.75);
+}
+@keyframes occasion-twinkle {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+.occasion-crescent {
+  filter: drop-shadow(0 0 18px rgb(242 201 76 / 0.55));
+}
+.occasion-star {
+  animation: occasion-twinkle 3s ease-in-out infinite;
+}
+
+/* New Year confetti and Mazingira Day leaves: drifting down the photos. */
+.occasion-confetti {
+  position: absolute;
+  width: 7px;
+  height: 12px;
+  border-radius: 1px;
+  animation: occasion-fall linear infinite;
+}
+.occasion-confetti-0 {
+  background: var(--aak-red);
+}
+.occasion-confetti-1 {
+  background: #f2c94c;
+}
+.occasion-confetti-2 {
+  background: #fff;
+}
+.occasion-confetti-3 {
+  background: #1f8a8a;
+  width: 10px;
+  height: 6px;
+}
+.occasion-confetti-4 {
+  background: #f6a623;
+  border-radius: 50%;
+  width: 8px;
+  height: 8px;
+}
+.occasion-leaf {
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  animation: occasion-fall 14s linear infinite;
+}
+.occasion-leaf-0 {
+  fill: #43a047;
+}
+.occasion-leaf-1 {
+  fill: #7cb342;
+}
+.occasion-leaf-2 {
+  fill: #2e7d32;
+}
+@keyframes occasion-fall {
+  from {
+    translate: 0 0;
+    rotate: 0deg;
+  }
+  to {
+    translate: 4rem 76svh;
+    rotate: 540deg;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  /* Occasion decorations hold still, where the build scattered them. */
+  .occasion-bulb,
+  .occasion-star,
+  .occasion-confetti,
+  .occasion-leaf {
+    animation: none;
+  }
   .pin-ripple {
     display: none;
   }

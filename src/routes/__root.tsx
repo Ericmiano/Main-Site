@@ -1,6 +1,7 @@
 import { InfoDialogHost } from "@/components/info/InfoDialogHost";
 import { ANNOUNCEMENT_SCRIPT } from "@/data/announcement";
 import { TIMED_HIDE_SCRIPT } from "@/data/timed-hide";
+import { OCCASION_SCRIPT } from "@/data/occasions";
 import { renderTime } from "@/lib/render-time";
 import { MotionLayer } from "@/components/site/MotionLayer";
 import { HashScroll } from "@/components/site/HashScroll";
@@ -102,6 +103,8 @@ export const Route = createRootRoute({
       ...(ANNOUNCEMENT_SCRIPT ? [{ children: ANNOUNCEMENT_SCRIPT }] : []),
       // Takes events off the homepage the moment they end.
       { children: TIMED_HIDE_SCRIPT },
+      // Puts on the theme for a holiday or occasion (data/occasions.ts).
+      { children: OCCASION_SCRIPT },
       ...(CF_BEACON_TOKEN
         ? [
             {
