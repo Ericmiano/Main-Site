@@ -4,8 +4,8 @@
  * what they use, a starting layout for each kind of post, an editor limited
  * to what aak.or.ke displays, and checks before anything is published.
  *
- * Administrators keep the full WordPress back office; everyone else (authors,
- * editors, contributors) gets the simpler one.
+ * Administrators keep the full WordPress back office; Editors (everyone who
+ * writes; see the roles in aak-site-connector.php) get the simpler one.
  */
 
 if (!defined('ABSPATH')) {
@@ -289,6 +289,8 @@ add_action('admin_menu', function () {
             remove_submenu_page('index.php', $item[2]);
         }
     }
+    // The four kinds of post are fixed: a new category wouldn't become one.
+    remove_submenu_page('edit.php', 'edit-tags.php?taxonomy=category');
 }, PHP_INT_MAX);
 
 add_action('admin_bar_menu', function ($bar) {
@@ -359,7 +361,10 @@ function aak_write_widget(): void
         );
     });
 
-    if (current_user_can('edit_others_posts')) {
+    // Posts someone set to "Pending review" (rare now there are no
+    // Contributors): listed only when there are some.
+    $pending = (int) (wp_count_posts('post')->pending ?? 0);
+    if ($pending && current_user_can('edit_others_posts')) {
         echo '<h3>Waiting for review</h3>';
         aak_post_list(['post_status' => 'pending'], function ($post) {
             return sprintf(

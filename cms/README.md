@@ -34,7 +34,7 @@ design.
 3. **Plugin:** in WordPress, *Plugins* › *Add New* › *Upload Plugin* ›
    `aak-site-connector.zip` › *Activate*. This:
    - creates the Blog, Article, Op-ed and News categories
-   - makes new users Authors, who can publish their own posts
+   - makes new users Editors (see *People* below)
    - turns comments off
    - keeps WordPress out of search engines
 4. **Check two settings:**
@@ -48,10 +48,14 @@ design.
    - Install the **Two Factor** plugin (by WordPress.org) and turn it on for
      every account.
    - Don't install other plugins or themes unless they're needed.
-6. **People:** *Users* › *Add New*.
-   - **Author:** writes and publishes their own posts.
-   - **Editor:** can also edit others' posts and manage **Certificates**.
-   - **Administrator:** everything, including users and settings.
+6. **People:** *Users* › *Add New*. There are two roles:
+   - **Editor:** everyone who writes. Writes, publishes and edits any post,
+     in the simpler back office (Dashboard, Posts, Media, Profile).
+   - **Administrator:** everything, including users, settings and
+     **Certificates**.
+
+   Updating the plugin to 1.3.0 turns existing Authors and Contributors into
+   Editors.
 
 If WordPress ends up at an address other than `cms.aak.or.ke`, create
 `/home/<account>/aak-cms-config.php` containing
@@ -73,7 +77,7 @@ The site uses its own fonts and colours, so text colours, font sizes, columns
 and buttons from the editor aren't carried over. Write with headings, lists,
 quotes and images and it will look right.
 
-## For staff: certificates
+## For Administrators: certificates
 
 1. *Certificates* › choose the spreadsheet (Excel or CSV). It needs a **Serial
    number** column and a **Name** column, and **only one of each**. Event,

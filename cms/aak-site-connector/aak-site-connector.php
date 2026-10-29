@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       AAK Site Connector
  * Description:       Turns this WordPress into the private back office for aak.or.ke: posts publish to News & insights on the main site, and event certificates are uploaded here for verification.
- * Version:           1.2.0
+ * Version:           1.3.0
  * Requires at least: 6.0
  * Requires PHP:      7.4
  * Author:            Architectural Association of Kenya
@@ -18,6 +18,7 @@ if (!defined('ABSPATH')) {
 }
 
 define('AAK_CONNECTOR_DIR', __DIR__);
+const AAK_CONNECTOR_VERSION = '1.3.0';
 
 /** The public site posts appear on. */
 function aak_site_url(): string
@@ -38,21 +39,52 @@ register_activation_hook(__FILE__, function () {
             wp_insert_term($name, 'category');
         }
     }
-    // Anyone given a login can write and publish their own posts.
-    update_option('default_role', 'author');
+    aak_setup_roles();
+    update_option('aak_connector_version', AAK_CONNECTOR_VERSION);
     update_option('default_comment_status', 'closed');
     update_option('default_ping_status', 'closed');
     update_option('blog_public', '0'); // the back office itself stays out of search engines
     if (!get_option('permalink_structure')) {
         update_option('permalink_structure', '/%postname%/');
     }
-    foreach (['administrator', 'editor'] as $role) {
-        $r = get_role($role);
-        if ($r) {
-            $r->add_cap('manage_aak_certificates');
-        }
-    }
     flush_rewrite_rules();
+});
+
+/* ---------------------------------------------------------------------------
+ * Two roles. Administrator: everything, including users, settings and
+ * Certificates. Editor: everyone who writes, who can write, publish and
+ * edit any post (so colleagues can fix each other's), but not certificates.
+ */
+function aak_setup_roles(): void
+{
+    update_option('default_role', 'editor');
+    $admin = get_role('administrator');
+    if ($admin) {
+        $admin->add_cap('manage_aak_certificates');
+    }
+    $editor = get_role('editor');
+    if ($editor) {
+        $editor->remove_cap('manage_aak_certificates');
+    }
+    // Authors and Contributors from before become Editors. (Subscribers, who
+    // can't write, are left as they are rather than given publishing rights.)
+    foreach (get_users(['role__in' => ['author', 'contributor'], 'fields' => 'ID']) as $id) {
+        (new WP_User((int) $id))->set_role('editor');
+    }
+}
+
+// The plugin is usually updated by uploading a new copy, which doesn't run
+// the activation step: apply the roles once when a new version first loads.
+add_action('init', function () {
+    if (get_option('aak_connector_version') !== AAK_CONNECTOR_VERSION) {
+        aak_setup_roles();
+        update_option('aak_connector_version', AAK_CONNECTOR_VERSION);
+    }
+});
+
+// Choosing someone's role (Users › Add New, their profile): just these two.
+add_filter('editable_roles', function ($roles) {
+    return array_intersect_key($roles, ['administrator' => true, 'editor' => true]);
 });
 
 /* ---------------------------------------------------------------------------
