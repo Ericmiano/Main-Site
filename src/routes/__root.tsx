@@ -5,6 +5,7 @@ import { OCCASION_SCRIPT } from "@/data/occasions";
 import { renderTime } from "@/lib/render-time";
 import { MotionLayer } from "@/components/site/MotionLayer";
 import { HashScroll } from "@/components/site/HashScroll";
+import { AakSurprise } from "@/components/site/AakSurprise";
 import { NotFound } from "@/components/site/NotFound";
 import {
   Outlet,
@@ -147,6 +148,7 @@ function RootComponent() {
       <InfoDialogHost />
       <MotionLayer />
       <HashScroll />
+      <AakSurprise />
     </>
   );
 }

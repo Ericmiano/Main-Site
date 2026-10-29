@@ -7,6 +7,7 @@ import { Footer } from "@/components/site/Footer";
 import { Reveal } from "@/components/site/Reveal";
 import { PageBreadcrumb } from "@/components/site/PageBreadcrumb";
 import { InitiativeEmblem } from "@/components/site/InitiativeEmblem";
+import { SpotTheUnsafeSite } from "@/components/site/SpotTheUnsafeSite";
 import { initiatives } from "@/data/site";
 import {
   getInitiativeDetail,
@@ -263,6 +264,27 @@ function InitiativeDetail() {
               </section>
             );
           })}
+
+          {initiative.slug === "mulika-mjengo" ? (
+            <section
+              id="spot-the-unsafe-site"
+              aria-labelledby="spot-title"
+              className="scroll-mt-24 border-t border-border py-14 lg:py-20"
+            >
+              <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
+                <p className="meta-label text-primary">Try it</p>
+                <h2
+                  id="spot-title"
+                  className="mt-3 font-display text-2xl font-semibold tracking-tight text-foreground sm:text-3xl"
+                >
+                  Spot the unsafe site
+                </h2>
+                <div className="mt-8">
+                  <SpotTheUnsafeSite />
+                </div>
+              </div>
+            </section>
+          ) : null}
 
           {moreVideos.length ? (
             <section className="border-t border-border py-14 lg:py-20">

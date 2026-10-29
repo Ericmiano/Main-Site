@@ -2,9 +2,11 @@ import { useMemo, useState, type ReactNode } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import {
+  IconArrowBackUp as TurnBack,
   IconArrowsMaximize as Maximize,
   IconAward as Award,
   IconChevronDown as ChevronDown,
+  IconRotate360 as TurnOver,
   IconX as X,
 } from "@tabler/icons-react";
 
@@ -14,7 +16,13 @@ import { Reveal } from "@/components/site/Reveal";
 import { SectionHeading } from "@/components/site/SectionHeading";
 import { PageBreadcrumb } from "@/components/site/PageBreadcrumb";
 import { chapterBranches, chapterCouncils, type CouncilRole } from "@/data/chapter-councils";
-import { chapterChairs, chapters, collegeOfFellows, secretariat } from "@/data/site";
+import {
+  chapterChairs,
+  chapters,
+  collegeOfFellows,
+  leadershipNotes,
+  secretariat,
+} from "@/data/site";
 import { jsonLd } from "@/lib/json-ld";
 
 const SITE_URL = "https://aak.or.ke";
@@ -109,7 +117,7 @@ function structuredData() {
 
 const FELLOWS_PAGE_SIZE = 15;
 
-/** The card's portrait as a button that opens a larger photo: the member's
+/** A button (on the card's back) that opens a larger photo: the member's
  * full-length one when there is one, otherwise the portrait itself (never
  * shown above its own size). */
 function FullPhoto({
@@ -124,16 +132,11 @@ function FullPhoto({
   return (
     <DialogPrimitive.Root>
       <DialogPrimitive.Trigger
-        className="group relative block w-full overflow-hidden focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-foreground"
+        className="inline-flex items-center gap-2 text-sm font-semibold underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-background"
         aria-label={`View larger photo of ${member.name}`}
       >
+        <Maximize className="h-4 w-4" aria-hidden="true" />
         {children}
-        <span
-          aria-hidden="true"
-          className="absolute right-2 bottom-2 inline-flex h-8 w-8 items-center justify-center rounded-full bg-background/85 text-foreground shadow-sm backdrop-blur-sm transition-colors group-hover:bg-background"
-        >
-          <Maximize className="h-4 w-4" />
-        </span>
       </DialogPrimitive.Trigger>
       <DialogPrimitive.Portal>
         <DialogPrimitive.Overlay className="fixed inset-0 z-[60] bg-foreground/70 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
@@ -164,43 +167,141 @@ function FullPhoto({
   );
 }
 
-/** Portrait cards: a head-and-shoulders photo (public/secretariat-photos,
- * 4:5, face centred) above the name and role. Two across on phones. */
-function PeopleGrid({ people }: { people: typeof secretariat }) {
+/** The profession a member's title names (Arch., L/Arch., QS., Eng.). */
+function profession(name: string) {
+  if (/^L\/Arch\./.test(name)) return "Landscape Architect";
+  if (/^Arch\./.test(name)) return "Architect";
+  if (/^QS\./.test(name)) return "Quantity Surveyor";
+  if (/^Eng\./.test(name)) return "Engineer";
+  return null;
+}
+
+/**
+ * A portrait card that turns over: the photo, name and role on the front;
+ * on the back, the role again with the member's profession (from their
+ * title), the term for office bearers, what checked sources say they have
+ * done at AAK (leadershipNotes), and the larger photo. It turns while the
+ * mouse is on it, or on a tap or key press (with a button to turn back).
+ * Only the side facing the reader can be reached by screen reader or Tab.
+ */
+function FlipCard({
+  member,
+  term,
+}: {
+  member: (typeof secretariat)[number];
+  term?: string | undefined;
+}) {
+  const [turned, setTurned] = useState(false);
+  const notes = leadershipNotes[member.name];
+  const job = profession(member.name);
+  return (
+    <div
+      className="flip-card h-full"
+      data-turned={turned || undefined}
+      onPointerEnter={(e) => e.pointerType === "mouse" && setTurned(true)}
+      onPointerLeave={(e) => e.pointerType === "mouse" && setTurned(false)}
+    >
+      <div className="flip-card-inner">
+        <button
+          type="button"
+          className="flip-card-face flex flex-col overflow-hidden rounded-2xl border border-border bg-background text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
+          aria-expanded={turned}
+          aria-label={`${member.name}, ${member.title}: more about them`}
+          inert={turned || undefined}
+          onClick={() => setTurned(true)}
+        >
+          {member.photo ? (
+            <img
+              src={member.photo}
+              alt=""
+              loading="lazy"
+              decoding="async"
+              width={600}
+              height={750}
+              className="aspect-4/5 w-full bg-secondary object-cover"
+            />
+          ) : (
+            <span
+              aria-hidden="true"
+              className="flex aspect-4/5 w-full items-center justify-center bg-primary font-display text-4xl font-semibold text-primary-foreground sm:text-5xl"
+            >
+              {initials(member.name)}
+            </span>
+          )}
+          <span className="flex flex-1 items-start justify-between gap-2 p-4 sm:p-5">
+            <span>
+              <span className="block font-display text-sm font-semibold leading-snug text-foreground sm:text-base">
+                {member.name}
+              </span>
+              <span className="mt-1 block text-xs leading-snug text-muted-foreground sm:text-sm">
+                {member.title}
+              </span>
+            </span>
+            <TurnOver className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
+          </span>
+        </button>
+        <div
+          className="flip-card-face flip-card-back flex flex-col rounded-2xl bg-ink-deep p-5 text-background sm:p-6"
+          inert={!turned || undefined}
+          aria-hidden={!turned}
+        >
+          <p className="font-display text-base font-semibold leading-snug sm:text-lg">
+            {member.name}
+          </p>
+          <p className="mt-1 text-sm text-background/75">{member.title}</p>
+          {job || term ? (
+            <p className="mt-3 meta-label text-background/60">
+              {[job, term].filter(Boolean).join(" · ")}
+            </p>
+          ) : null}
+          {notes?.quote ? (
+            <blockquote className="mt-4 border-l-2 border-primary pl-3 text-sm leading-relaxed text-background/90 italic">
+              &ldquo;{notes.quote}&rdquo;
+            </blockquote>
+          ) : null}
+          {notes?.lines.length ? (
+            <ul className="mt-4 space-y-2 text-sm leading-snug text-background/85">
+              {notes.lines.map((line) => (
+                <li key={line} className="flex gap-2">
+                  <span
+                    aria-hidden="true"
+                    className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary"
+                  />
+                  {line}
+                </li>
+              ))}
+            </ul>
+          ) : null}
+          <div className="mt-auto flex flex-wrap items-center justify-between gap-3 pt-5">
+            {member.photo ? (
+              <FullPhoto member={member} src={member.photoFull ?? member.photo}>
+                Larger photo
+              </FullPhoto>
+            ) : (
+              <span />
+            )}
+            <button
+              type="button"
+              onClick={() => setTurned(false)}
+              className="inline-flex items-center gap-1.5 rounded-full border border-background/30 px-3 py-1.5 text-xs font-semibold text-background transition-colors hover:bg-background/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-background"
+            >
+              <TurnBack className="h-3.5 w-3.5" aria-hidden="true" />
+              Turn back
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/** Portrait cards that turn over (FlipCard), two across on phones. */
+function PeopleGrid({ people, term }: { people: typeof secretariat; term?: string }) {
   return (
     <ul className="mt-14 grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4">
       {people.map((member) => (
         <li key={member.name}>
-          <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-background">
-            {member.photo ? (
-              <FullPhoto member={member} src={member.photoFull ?? member.photo}>
-                <img
-                  src={member.photo}
-                  alt=""
-                  loading="lazy"
-                  decoding="async"
-                  width={600}
-                  height={750}
-                  className="aspect-4/5 w-full bg-secondary object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                />
-              </FullPhoto>
-            ) : (
-              <span
-                aria-hidden="true"
-                className="flex aspect-4/5 w-full items-center justify-center bg-primary font-display text-4xl font-semibold text-primary-foreground sm:text-5xl"
-              >
-                {initials(member.name)}
-              </span>
-            )}
-            <div className="flex-1 p-4 sm:p-5">
-              <h3 className="font-display text-sm font-semibold leading-snug text-foreground sm:text-base">
-                {member.name}
-              </h3>
-              <p className="mt-1 text-xs leading-snug text-muted-foreground sm:text-sm">
-                {member.title}
-              </p>
-            </div>
-          </div>
+          <FlipCard member={member} term={term} />
         </li>
       ))}
     </ul>
@@ -270,7 +371,7 @@ function TeamPage() {
               description="The Association's elected office bearers for the 2025/2027 term."
               bold
             />
-            <PeopleGrid people={executive} />
+            <PeopleGrid people={executive} term="2025/2027 term" />
           </div>
         </section>
 

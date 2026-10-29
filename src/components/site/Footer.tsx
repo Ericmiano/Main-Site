@@ -61,6 +61,8 @@ export function Footer() {
             <img
               src={logoWhite}
               alt="Architectural Association of Kenya: promoting excellence in the built environment"
+              // Three quick taps: a small surprise (AakSurprise).
+              data-aak-surprise=""
               className="h-auto w-44 sm:w-52"
               width={440}
               height={317}

@@ -1121,6 +1121,39 @@ export const secretariat: SecretariatMember[] = [
   },
 ];
 
+/**
+ * For the backs of the leadership cards on /team: what a checked source
+ * says each person has done at AAK, by name as in `secretariat`. Sources:
+ * the Mulika Mjengo Report 2025 (project team, editors, authors and experts
+ * engaged), AAK's public statement on the Eastleigh building collapse
+ * (28 October 2026), and AAK's X post of 29 October 2026 quoting the Vice
+ * President at the Smart Cities Forum. Add a line only with a source.
+ */
+export const leadershipNotes: Record<string, { lines: string[]; quote?: string }> = {
+  "Arch. George Arabbu Ndege": {
+    lines: [
+      "Signed AAK's public statement on the Eastleigh building collapse (28 October 2026)",
+      "Editor, Mulika Mjengo Report 2025",
+    ],
+  },
+  "Arch. Brenda Nyawara": {
+    lines: ["Spoke at the Smart Cities Forum, 2nd edition (29 October 2026)"],
+    quote:
+      "We meet at a defining moment for Nairobi. The question is not whether technology will advance our cities, but whether our cities will truly protect life and serve their people.",
+  },
+  "Arch. Bernard Segecha": { lines: ["Project lead and editor, Mulika Mjengo Report 2025"] },
+  "QS. Diana Musyoka": { lines: ["One of the experts engaged on the Mulika Mjengo project"] },
+  "Eng. Nashon O. Tambo": { lines: ["Project lead, Mulika Mjengo Report 2025"] },
+  "Jacob Mwangi": { lines: ["Editor, Mulika Mjengo Report 2025"] },
+  "Michelle Ouma": { lines: ["Author, Mulika Mjengo Report 2025"] },
+  "Mary Ngaruiya": { lines: ["Author, Mulika Mjengo Report 2025"] },
+  "Alex Otieno": {
+    lines: [
+      "Author, and the project assistant who ran daily operations, Mulika Mjengo Report 2025",
+    ],
+  },
+};
+
 /** College of Fellows 2026 — the highest honour AAK bestows on members. */
 /** The Fellows' names, from AAK's register (see fellowsRegister in fellows.ts). */
 export const collegeOfFellows: string[] = fellowsRegister.map((fellow) => fellow.name);

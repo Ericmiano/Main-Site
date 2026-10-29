@@ -994,6 +994,149 @@ html[data-announce-dismissed] [data-announcement="bar"] {
   }
 }
 
+/* "Spot the unsafe site" (SpotTheUnsafeSite.tsx). The tap targets are
+   invisible until found, and the cursor is the same crosshair everywhere on
+   the drawing, so hovering gives nothing away; keyboard focus shows a ring. */
+.spot-scene {
+  cursor: crosshair;
+}
+.spot-hotspot {
+  position: absolute;
+  width: 10%;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 9999px;
+  cursor: crosshair;
+  background: transparent;
+}
+.spot-hotspot:focus-visible {
+  outline: 2px dashed var(--foreground);
+  outline-offset: 2px;
+}
+.spot-hotspot[data-found] {
+  border: 3px solid var(--primary);
+  background: color-mix(in oklab, var(--primary) 12%, transparent);
+  animation: spot-found 420ms cubic-bezier(0.2, 0.9, 0.3, 1.4);
+}
+@keyframes spot-found {
+  from {
+    scale: 0.4;
+    opacity: 0;
+  }
+}
+.spot-number {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 9999px;
+  background: var(--primary);
+  color: var(--primary-foreground);
+  font-size: 11px;
+  font-weight: 700;
+}
+.spot-label {
+  fill: currentColor;
+  stroke: none;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+.spot-label-small {
+  font-size: 7px;
+  font-weight: 600;
+}
+.spot-label-red {
+  fill: var(--primary);
+}
+@media (prefers-reduced-motion: reduce) {
+  .spot-hotspot[data-found] {
+    animation: none;
+  }
+}
+
+/* Leadership cards that turn over (team.tsx FlipCard): the front sets the
+   card's size; the back sits behind it, turned away until the card turns. */
+.flip-card {
+  perspective: 1400px;
+}
+.flip-card-inner {
+  position: relative;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 700ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.flip-card[data-turned] .flip-card-inner {
+  transform: rotateY(180deg);
+}
+.flip-card-face {
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.flip-card-back {
+  position: absolute;
+  inset: 0;
+  transform: rotateY(180deg);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+/* Narrow cards (two across on phones): smaller type on the back, no quote. */
+@media (max-width: 639px) {
+  .flip-card-back {
+    padding: 0.875rem;
+    font-size: 0.75rem;
+  }
+  .flip-card-back :is(p, li, blockquote) {
+    font-size: 0.75rem;
+  }
+  .flip-card-back blockquote {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .flip-card-inner {
+    transition: none;
+  }
+}
+
+/* The cover that follows the pointer along a document list (ReportArchive).
+   Its position is set by script (transform); it pops in with `scale`. */
+.cursor-preview {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 50;
+  pointer-events: none;
+  opacity: 0;
+  scale: 0.9;
+  transition:
+    opacity 160ms ease,
+    scale 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.cursor-preview[data-shown] {
+  opacity: 1;
+  scale: 1;
+}
+.cursor-preview img {
+  display: block;
+  width: 160px;
+  border-radius: 3px;
+  background: var(--secondary);
+  box-shadow:
+    0 1px 2px rgb(0 0 0 / 0.12),
+    0 18px 40px -12px rgb(0 0 0 / 0.45);
+}
+@media (prefers-reduced-motion: reduce) {
+  .cursor-preview {
+    transition: none;
+  }
+}
+
 /* A drawing's lettering (the KICC title block) is written in once the lines
    are nearly done. */
 .arch-drawing-label {
