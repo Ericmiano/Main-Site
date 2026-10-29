@@ -14,6 +14,7 @@ Needs PyMuPDF and Pillow (pip install pymupdf pillow). Previews already made
 are kept; delete one to render it again.
 """
 
+import hashlib
 import io
 import json
 import re
@@ -30,8 +31,17 @@ LIST = ROOT / "src/data/document-previews.ts"
 WIDTH = 320  # shown at up to 160px wide: sharp on 2x screens
 
 
+MAX_NAME = 48  # file names short enough for deep folders on Windows (260-character paths)
+
+
 def slug(name: str) -> str:
-    return re.sub(r"[^a-z0-9]+", "-", Path(name).stem.lower()).strip("-")
+    full = re.sub(r"[^a-z0-9]+", "-", Path(name).stem.lower()).strip("-")
+    if len(full) <= MAX_NAME:
+        return full
+    # Shortened, with a few characters of the full name's hash so two long
+    # names that start alike stay apart.
+    tag = hashlib.sha1(full.encode()).hexdigest()[:6]
+    return f"{full[: MAX_NAME - 7].rstrip('-')}-{tag}"
 
 
 def main() -> None:

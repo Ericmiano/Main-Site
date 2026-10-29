@@ -67,7 +67,7 @@ export const documentPreviews: Record<string, { src: string; width: number; heig
     height: 453,
   },
   "AAK-Basco-DuraCoat-Awards-of-Excellence-2026-Applicant-Guidelines.pdf": {
-    src: "/img/publications/previews/aak-basco-duracoat-awards-of-excellence-2026-applicant-guidelines.webp",
+    src: "/img/publications/previews/aak-basco-duracoat-awards-of-excellence-2-c83004.webp",
     width: 320,
     height: 414,
   },
@@ -77,7 +77,7 @@ export const documentPreviews: Record<string, { src: string; width: number; heig
     height: 427,
   },
   "AAK-Leadership-at-National-Regional-and-International-Positions.pdf": {
-    src: "/img/publications/previews/aak-leadership-at-national-regional-and-international-positions.webp",
+    src: "/img/publications/previews/aak-leadership-at-national-regional-and-i-e1b8c8.webp",
     width: 320,
     height: 226,
   },
@@ -87,7 +87,7 @@ export const documentPreviews: Record<string, { src: string; width: number; heig
     height: 414,
   },
   "AAK-Memorandum-on-the-Architectural-and-Quantity-Surveying-Practitioners-Bill-2026.pdf": {
-    src: "/img/publications/previews/aak-memorandum-on-the-architectural-and-quantity-surveying-practitioners-bill-2026.webp",
+    src: "/img/publications/previews/aak-memorandum-on-the-architectural-and-q-72fb8d.webp",
     width: 320,
     height: 414,
   },
@@ -127,17 +127,17 @@ export const documentPreviews: Record<string, { src: string; width: number; heig
     height: 453,
   },
   "AAK-Statement-Avert-the-Looming-Environmental-Crisis-20261016.pdf": {
-    src: "/img/publications/previews/aak-statement-avert-the-looming-environmental-crisis-20261016.webp",
+    src: "/img/publications/previews/aak-statement-avert-the-looming-environme-a4b517.webp",
     width: 320,
     height: 414,
   },
   "AAK-Statement-Eastleigh-Building-Collapse-20261028.pdf": {
-    src: "/img/publications/previews/aak-statement-eastleigh-building-collapse-20261028.webp",
+    src: "/img/publications/previews/aak-statement-eastleigh-building-collapse-4403d2.webp",
     width: 320,
     height: 453,
   },
   "AAK-Status-of-the-Built-Environment-Report-2025-1.pdf": {
-    src: "/img/publications/previews/aak-status-of-the-built-environment-report-2025-1.webp",
+    src: "/img/publications/previews/aak-status-of-the-built-environment-repor-2dc470.webp",
     width: 320,
     height: 453,
   },
@@ -152,7 +152,7 @@ export const documentPreviews: Record<string, { src: string; width: number; heig
     height: 420,
   },
   "Advancing-Social-Equity-and-Community-Engagement-through-3iF.pdf": {
-    src: "/img/publications/previews/advancing-social-equity-and-community-engagement-through-3if.webp",
+    src: "/img/publications/previews/advancing-social-equity-and-community-eng-ca5cd4.webp",
     width: 320,
     height: 414,
   },
@@ -167,7 +167,7 @@ export const documentPreviews: Record<string, { src: string; width: number; heig
     height: 453,
   },
   "Analysis-of-the-Finance-Bill-2024-on-the-Construction-Industry.pdf": {
-    src: "/img/publications/previews/analysis-of-the-finance-bill-2024-on-the-construction-industry.webp",
+    src: "/img/publications/previews/analysis-of-the-finance-bill-2024-on-the-e4b24e.webp",
     width: 320,
     height: 414,
   },
@@ -202,7 +202,7 @@ export const documentPreviews: Record<string, { src: string; width: number; heig
     height: 453,
   },
   "Built-Environment-Associations-Press-Statement-20260108.pdf": {
-    src: "/img/publications/previews/built-environment-associations-press-statement-20260108.webp",
+    src: "/img/publications/previews/built-environment-associations-press-stat-1a41fa.webp",
     width: 320,
     height: 415,
   },
@@ -257,17 +257,17 @@ export const documentPreviews: Record<string, { src: string; width: number; heig
     height: 453,
   },
   "Environmental-Management-and-Co-ordination-Act-1999.pdf": {
-    src: "/img/publications/previews/environmental-management-and-co-ordination-act-1999.webp",
+    src: "/img/publications/previews/environmental-management-and-co-ordinatio-703175.webp",
     width: 320,
     height: 453,
   },
   "FEASIBILITY-OF-CENTRALIZATION-OF-DEVELOPMENT-CONTROL-SYSTEMS-IN-KENYA-2.pdf": {
-    src: "/img/publications/previews/feasibility-of-centralization-of-development-control-systems-in-kenya-2.webp",
+    src: "/img/publications/previews/feasibility-of-centralization-of-developm-61f768.webp",
     width: 320,
     height: 453,
   },
   "FINAL_AUTOMATION-OF-DEVELOPMENT-CONTROLAUTOMATION-OF-DEVELOPMENT-CONTROL.pdf": {
-    src: "/img/publications/previews/final-automation-of-development-controlautomation-of-development-control.webp",
+    src: "/img/publications/previews/final-automation-of-development-controlau-5415ac.webp",
     width: 320,
     height: 453,
   },
@@ -282,7 +282,7 @@ export const documentPreviews: Record<string, { src: string; width: number; heig
     height: 453,
   },
   "Kenya-National-Buildings-and-Construction-Decarbonization-Roadmap-2026-2040.pdf": {
-    src: "/img/publications/previews/kenya-national-buildings-and-construction-decarbonization-roadmap-2026-2040.webp",
+    src: "/img/publications/previews/kenya-national-buildings-and-construction-c3cf4e.webp",
     width: 320,
     height: 453,
   },
@@ -312,7 +312,7 @@ export const documentPreviews: Record<string, { src: string; width: number; heig
     height: 453,
   },
   "Nairobi-Physical-and-Land-Use-Planning-Liaison-Committee.pdf": {
-    src: "/img/publications/previews/nairobi-physical-and-land-use-planning-liaison-committee.webp",
+    src: "/img/publications/previews/nairobi-physical-and-land-use-planning-li-471b5b.webp",
     width: 320,
     height: 226,
   },
@@ -387,7 +387,7 @@ export const documentPreviews: Record<string, { src: string; width: number; heig
     height: 453,
   },
   "STATUS-OF-THE-BUILT-ENVIRONMENT.-JANUARY-JUNE-2018-2.pdf": {
-    src: "/img/publications/previews/status-of-the-built-environment-january-june-2018-2.webp",
+    src: "/img/publications/previews/status-of-the-built-environment-january-j-2a56ca.webp",
     width: 320,
     height: 226,
   },
@@ -402,7 +402,7 @@ export const documentPreviews: Record<string, { src: string; width: number; heig
     height: 453,
   },
   "South-C-Building-Collapse-Built-Environment-Associations-Press-Statement-20260108-2.pdf": {
-    src: "/img/publications/previews/south-c-building-collapse-built-environment-associations-press-statement-20260108-2.webp",
+    src: "/img/publications/previews/south-c-building-collapse-built-environme-2b19e1.webp",
     width: 320,
     height: 415,
   },
@@ -437,12 +437,12 @@ export const documentPreviews: Record<string, { src: string; width: number; heig
     height: 412,
   },
   "UIA-Heritage-Conference-Mombasa-2023-Speakers-and-Programme.pdf": {
-    src: "/img/publications/previews/uia-heritage-conference-mombasa-2023-speakers-and-programme.webp",
+    src: "/img/publications/previews/uia-heritage-conference-mombasa-2023-spea-e710d0.webp",
     width: 320,
     height: 453,
   },
   "UIA-Heritage-Conference-Mombasa-2023-Synopsis-and-Themes.pdf": {
-    src: "/img/publications/previews/uia-heritage-conference-mombasa-2023-synopsis-and-themes.webp",
+    src: "/img/publications/previews/uia-heritage-conference-mombasa-2023-syno-073806.webp",
     width: 320,
     height: 180,
   },
