@@ -1,6 +1,11 @@
 import { useEffect } from "react";
 import { useLocation, useRouter } from "@tanstack/react-router";
 
+/** In <head>, before the page is drawn: a reload or a page opened from
+ * another site starts at the top, rather than where the browser remembers
+ * the reader having been (unless the address names a section). */
+export const TOP_ON_LOAD_SCRIPT = `(function(){try{if(!location.hash&&"scrollRestoration"in history)history.scrollRestoration="manual"}catch(e){}})()`;
+
 /**
  * Takes the reader to the section named in the address (/team#secretariat-title,
  * /#latest, a search result's section…) on any page. The router opens new
@@ -25,6 +30,20 @@ export function HashScroll() {
       window.clearTimeout(settle);
     };
   }, [pathname, hash]);
+
+  // Every page opens at the top: after a link, and after Back or Forward too
+  // (the router would otherwise put back the spot the reader left), unless
+  // the address names a section. Only when the page itself changes: a new
+  // search or filter on the same page (/search?q=, /news?category=) stays put.
+  useEffect(
+    () =>
+      router.subscribe("onRendered", (event) => {
+        if (!event.pathChanged || event.toLocation.hash) return;
+        // After the router has restored its remembered spot, which this replaces.
+        requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: "instant" }));
+      }),
+    [router],
+  );
 
   // A link to the page already open (Contact us in the footer while on
   // /contact) would leave the reader where they are: the router "navigates"

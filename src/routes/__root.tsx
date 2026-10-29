@@ -4,7 +4,7 @@ import { TIMED_HIDE_SCRIPT } from "@/data/timed-hide";
 import { OCCASION_SCRIPT } from "@/data/occasions";
 import { renderTime } from "@/lib/render-time";
 import { MotionLayer } from "@/components/site/MotionLayer";
-import { HashScroll } from "@/components/site/HashScroll";
+import { HashScroll, TOP_ON_LOAD_SCRIPT } from "@/components/site/HashScroll";
 import { AakSurprise } from "@/components/site/AakSurprise";
 import { NotFound } from "@/components/site/NotFound";
 import {
@@ -107,6 +107,8 @@ export const Route = createRootRoute({
       { children: TIMED_HIDE_SCRIPT },
       // Puts on the theme for a holiday or occasion (data/occasions.ts).
       { children: OCCASION_SCRIPT },
+      // Every page opens at the top, a reload too (HashScroll).
+      { children: TOP_ON_LOAD_SCRIPT },
       ...(CF_BEACON_TOKEN
         ? [
             {
