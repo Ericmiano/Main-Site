@@ -14,6 +14,7 @@ import {
 import { renderTime } from "@/lib/render-time";
 import { cn } from "@/lib/utils";
 import { OccasionDecor } from "@/components/site/Occasion";
+import { NewPost } from "@/components/home/NewPost";
 
 /** The hero's rotating photographs: AAK's people at work, built from the
  * largest originals available as public/img/hero/<name>-<width>.webp. */
@@ -380,7 +381,8 @@ export function Hero() {
           </h1>
         </div>
 
-        <div className="hero-item hero-delay-1 lg:pb-2">
+        {/* min-w-0: a long title in the "New today" chip is cut short, not widening the page. */}
+        <div className="hero-item hero-delay-1 min-w-0 lg:pb-2">
           <p className="max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
             The umbrella professional body for Kenya&rsquo;s built and natural environment, uniting
             eight chapters: <span className="text-foreground">{chapterList}</span>.
@@ -406,12 +408,14 @@ export function Hero() {
               </a>
             ) : null}
           </div>
+          <NewPost variant="inline" />
         </div>
       </div>
 
       <div className="relative isolate h-[58svh] min-h-[22rem] overflow-hidden bg-ink-deep lg:h-[68svh]">
         <HeroPhotos />
         <OccasionDecor />
+        <NewPost variant="overlay" />
 
         <HeroEvents events={heroEvents} asOf={asOf} />
       </div>
