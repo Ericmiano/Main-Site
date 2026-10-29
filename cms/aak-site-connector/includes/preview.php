@@ -53,6 +53,27 @@ add_filter('preview_post_link', function ($link, $post) {
     return aak_site_url() . '/news/preview?token=' . aak_preview_token((int) $post->ID, get_current_user_id());
 }, 10, 2);
 
+// The editor doesn't always use that link: for a draft it saves the post and
+// opens WordPress's own preview address (?p=…&preview=true). Send that on to
+// aak.or.ke too, with a fresh link, for anyone allowed to edit the post.
+add_action('template_redirect', function () {
+    if (!is_preview() || !is_singular('post')) {
+        return;
+    }
+    $post = get_queried_object();
+    if (!$post instanceof WP_Post || !current_user_can('edit_post', $post->ID)) {
+        return;
+    }
+    $url = aak_site_url() . '/news/preview?token=' . aak_preview_token((int) $post->ID, get_current_user_id());
+    // A featured image chosen in the editor but not saved yet.
+    $thumbnail = (int) ($_GET['_thumbnail_id'] ?? 0);
+    if ($thumbnail > 0) {
+        $url .= '&_thumbnail_id=' . $thumbnail;
+    }
+    wp_redirect($url, 302);
+    exit;
+}, 0);
+
 // /news/preview is the preview's address, so no post may take "preview" as its own.
 add_filter('wp_unique_post_slug', function ($slug, $id, $status, $type) {
     return $type === 'post' && $slug === 'preview' ? 'preview-2' : $slug;

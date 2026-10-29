@@ -220,6 +220,16 @@ add_action('after_setup_theme', function () {
     remove_theme_support('core-block-patterns');
 }, 100);
 add_filter('should_load_remote_block_patterns', '__return_false');
+// No ready-made patterns either: a theme's are page designs, built from blocks
+// aak.or.ke doesn't show. The layouts above are the starting points.
+add_action('init', function () {
+    if (!class_exists('WP_Block_Patterns_Registry')) {
+        return;
+    }
+    foreach (WP_Block_Patterns_Registry::get_instance()->get_all_registered() as $pattern) {
+        unregister_block_pattern($pattern['name']);
+    }
+}, PHP_INT_MAX);
 remove_action('enqueue_block_editor_assets', 'wp_enqueue_editor_block_directory_assets');
 add_filter('block_editor_settings_all', function ($settings, $context) {
     if (isset($context->post) && $context->post->post_type === 'post') {
@@ -238,7 +248,7 @@ add_action('enqueue_block_editor_assets', function () {
     wp_enqueue_script(
         'aak-editor',
         plugins_url('assets/editor.js', AAK_CONNECTOR_DIR . '/aak-site-connector.php'),
-        ['wp-plugins', 'wp-edit-post', 'wp-editor', 'wp-element', 'wp-components', 'wp-data', 'wp-core-data', 'wp-blocks', 'wp-block-editor', 'wp-dom-ready', 'wp-hooks', 'wp-notices'],
+        ['wp-plugins', 'wp-edit-post', 'wp-editor', 'wp-element', 'wp-components', 'wp-data', 'wp-core-data', 'wp-blocks', 'wp-block-editor', 'wp-dom-ready', 'wp-hooks', 'wp-notices', 'wp-rich-text', 'wp-format-library'],
         (string) filemtime($file),
         true
     );
@@ -302,6 +312,11 @@ add_action('wp_dashboard_setup', function () {
     }
     add_meta_box('aak_write', 'Write for aak.or.ke', 'aak_write_widget', 'dashboard', 'normal', 'high');
 }, PHP_INT_MAX);
+
+// On the simpler dashboard, "Write for aak.or.ke" is all there is: give it the full width.
+add_filter('get_user_option_screen_layout_dashboard', function ($columns) {
+    return aak_simple_screens() ? 1 : $columns;
+});
 
 function aak_post_list(array $query, callable $line): void
 {

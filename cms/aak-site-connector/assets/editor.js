@@ -5,7 +5,9 @@
  *   and its alt text, set right there; and warnings about anything that
  *   wouldn't come out well on aak.or.ke. The server refuses to publish until
  *   the required items are done (includes/writing.php).
- * - Only YouTube among the embeds, and headings H2 to H4: what aak.or.ke shows.
+ * - Only what aak.or.ke shows: YouTube among the embeds, headings H2 to H4,
+ *   and no colours, font sizes, spacing, borders, alignment or style
+ *   variations (the site sets the look; it would drop these).
  * Plain script on WordPress's own editor libraries; no build step.
  */
 (function (wp, config) {
@@ -33,12 +35,96 @@
     return Object.assign({}, settings, { attributes: attributes });
   });
 
-  wp.domReady(function () {
-    // Embeds: YouTube only. Other embeds don't appear on aak.or.ke.
-    (wp.blocks.getBlockVariations("core/embed") || []).forEach(function (variation) {
-      if (variation.name !== "youtube")
-        wp.blocks.unregisterBlockVariation("core/embed", variation.name);
+  // No styling controls, style variations or embeds aak.or.ke drops: the site
+  // shows every article in its own design, removes the classes a style
+  // variation adds (a theme's "Display", core's "Rounded"…), and shows
+  // YouTube videos only. Core blocks register after this script runs, so the
+  // changes are made as each one registers…
+  // The blocks the editor offers for posts (includes/writing.php). Other core
+  // blocks (the theme's template around the post) are left as they are.
+  var POST_BLOCKS = [
+    "core/paragraph",
+    "core/heading",
+    "core/list",
+    "core/list-item",
+    "core/quote",
+    "core/pullquote",
+    "core/image",
+    "core/embed",
+    "core/table",
+    "core/separator",
+  ];
+  var STYLING = [
+    "color",
+    "typography",
+    "spacing",
+    "__experimentalBorder",
+    "border",
+    "dimensions",
+    "shadow",
+    "background",
+    "filter",
+    "align",
+    "alignWide",
+  ];
+  wp.hooks.addFilter("blocks.registerBlockType", "aak/site-look", function (settings, name) {
+    if (POST_BLOCKS.indexOf(name) === -1) return settings;
+    var supports = Object.assign({}, settings.supports);
+    STYLING.forEach(function (key) {
+      if (key in supports) supports[key] = false;
     });
+    var changes = { supports: supports, styles: [] };
+    if (name === "core/embed") {
+      changes.variations = (settings.variations || []).filter(function (v) {
+        return v.name === "youtube";
+      });
+    }
+    return Object.assign({}, settings, changes);
+  });
+
+  // …and anything a theme or plugin adds afterwards is taken out again.
+  var tidying = false;
+  function tidyBlocks() {
+    if (tidying) return;
+    tidying = true;
+    try {
+      var blocks = wp.data.select("core/blocks");
+      blocks.getBlockTypes().forEach(function (type) {
+        if (POST_BLOCKS.indexOf(type.name) === -1) return;
+        (blocks.getBlockStyles(type.name) || []).forEach(function (style) {
+          if (!style.isDefault) wp.blocks.unregisterBlockStyle(type.name, style.name);
+        });
+      });
+      (blocks.getBlockVariations("core/embed") || []).forEach(function (v) {
+        if (v.name !== "youtube") wp.blocks.unregisterBlockVariation("core/embed", v.name);
+      });
+    } catch (e) {
+      // Never let the tidying stop the editor from working.
+    } finally {
+      tidying = false;
+    }
+  }
+  wp.data.subscribe(tidyBlocks, "core/blocks");
+
+  // Text formats aak.or.ke drops (highlight colour, keyboard keys, language
+  // marks, inline images, notes, footnotes: the format would vanish) or
+  // removes with its content (maths).
+  var DROPPED_FORMATS = [
+    "core/text-color",
+    "core/keyboard",
+    "core/language",
+    "core/image",
+    "core/note",
+    "core/footnote",
+    "core/math",
+  ];
+
+  wp.domReady(function () {
+    var formats = wp.data.select("core/rich-text");
+    DROPPED_FORMATS.forEach(function (name) {
+      if (formats && formats.getFormatType(name)) wp.richText.unregisterFormatType(name);
+    });
+    tidyBlocks();
     // The kind of post is chosen in "Ready to publish?", one click instead of
     // a list of checkboxes.
     if (config.simple && config.kinds.length) {
@@ -299,11 +385,28 @@
     );
   }
 
+  // The checklist panel starts open (and opens again on the next visit if
+  // closed): it's what to look at before publishing.
+  var PANEL = "aak-ready/aak-ready";
+  function OpenPanel() {
+    var editor = useDispatch("core/editor");
+    var opened = useSelect(function (select) {
+      return select("core/editor").isEditorPanelOpened(PANEL);
+    }, []);
+    wp.element.useEffect(function () {
+      if (!opened && editor.toggleEditorPanelOpened) editor.toggleEditorPanelOpened(PANEL);
+      // Once, when the editor opens.
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+    return null;
+  }
+
   wp.plugins.registerPlugin("aak-ready", {
     render: function () {
       return el(
         wp.element.Fragment,
         null,
+        el(OpenPanel),
         el(
           editorUi.PluginDocumentSettingPanel,
           { name: "aak-ready", title: "Ready to publish?", initialOpen: true },
