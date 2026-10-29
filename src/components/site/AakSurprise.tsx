@@ -1,43 +1,45 @@
 import { useEffect } from "react";
+import logoMark from "@/assets/aak-logo-mark.webp";
 import { prefersReducedMotion } from "@/lib/gsap";
 
 const WORD = "aak";
-const PIECES = 46;
+const PIECES = 40;
 const TAPS = 3;
 const TAP_WINDOW_MS = 1200;
 
-/** One falling piece: an AAK triangle, solid red, solid ink, or outlined. */
-function piece(kind: number, size: number) {
-  const ns = "http://www.w3.org/2000/svg";
-  const svg = document.createElementNS(ns, "svg");
-  svg.setAttribute("viewBox", "0 0 20 18");
-  svg.setAttribute("width", String(size));
-  svg.setAttribute("height", String(size * 0.9));
-  svg.setAttribute("aria-hidden", "true");
-  const tri = document.createElementNS(ns, "polygon");
-  tri.setAttribute("points", "10,1 19,17 1,17");
-  tri.setAttribute("stroke-linejoin", "round");
-  if (kind === 0) tri.setAttribute("fill", "var(--primary)");
-  else if (kind === 1) tri.setAttribute("fill", "var(--foreground)");
-  else {
-    tri.setAttribute("fill", "none");
-    tri.setAttribute("stroke", "var(--primary)");
-    tri.setAttribute("stroke-width", "2");
-  }
-  svg.appendChild(tri);
-  svg.style.position = "absolute";
-  svg.style.top = "0";
-  svg.style.left = "0";
-  svg.style.willChange = "transform";
-  return svg;
+/** One falling piece: a miniature of the AAK emblem. */
+function piece(size: number) {
+  const img = document.createElement("img");
+  img.src = logoMark;
+  img.alt = "";
+  img.width = size;
+  img.height = size;
+  Object.assign(img.style, {
+    position: "absolute",
+    top: "0",
+    left: "0",
+    willChange: "transform",
+    filter: "drop-shadow(0 2px 3px rgb(0 0 0 / 0.18))",
+  });
+  return img;
 }
+
+/** The emblem, loaded once, so no piece starts out blank. */
+let emblem: Promise<void> | null = null;
+const emblemReady = () =>
+  (emblem ??= new Promise<void>((resolve) => {
+    const img = new Image();
+    img.onload = img.onerror = () => resolve();
+    img.src = logoMark;
+  }));
 
 let running = false;
 
-/** A shower of AAK triangles down the screen, tidied away when it lands. */
-function shower() {
+/** A shower of little AAK emblems down the screen, tidied away when it lands. */
+async function shower() {
   if (running || prefersReducedMotion()) return;
   running = true;
+  await emblemReady();
   const layer = document.createElement("div");
   layer.setAttribute("aria-hidden", "true");
   Object.assign(layer.style, {
@@ -50,13 +52,14 @@ function shower() {
   document.body.appendChild(layer);
   const width = window.innerWidth;
   const height = window.innerHeight;
-  const falls = Array.from({ length: PIECES }, (_, i) => {
-    const size = 12 + Math.random() * 22;
-    const el = piece(i % 3, size);
+  const falls = Array.from({ length: PIECES }, () => {
+    const size = 22 + Math.random() * 26;
+    const el = piece(size);
     layer.appendChild(el);
-    const x = Math.random() * width;
+    const x = Math.random() * width - size / 2;
     const drift = (Math.random() - 0.5) * 220;
-    const spin = (Math.random() < 0.5 ? -1 : 1) * (240 + Math.random() * 480);
+    // A gentle turn: a logo whirling fast reads as a glitch.
+    const spin = (Math.random() < 0.5 ? -1 : 1) * (40 + Math.random() * 200);
     return el.animate(
       [
         { transform: `translate(${x}px, ${-60 - Math.random() * 120}px) rotate(0deg)`, opacity: 1 },
@@ -86,7 +89,7 @@ const typingInto = (target: EventTarget | null) =>
 /**
  * A small surprise for those who find it: typing A-A-K anywhere on the site
  * (not into a form), or tapping the footer's AAK logo three times quickly
- * ([data-aak-surprise]), showers AAK triangles down the screen. Nothing at
+ * ([data-aak-surprise]), showers little AAK emblems down the screen. Nothing at
  * all with reduced motion. Mounted once in the root layout.
  */
 export function AakSurprise() {
@@ -99,7 +102,7 @@ export function AakSurprise() {
       typed = (typed + event.key.toLowerCase()).slice(-WORD.length);
       if (typed === WORD) {
         typed = "";
-        shower();
+        void shower();
       }
     };
     const onClick = (event: MouseEvent) => {
@@ -109,7 +112,7 @@ export function AakSurprise() {
       taps = [...taps.filter((t) => now - t < TAP_WINDOW_MS), now];
       if (taps.length >= TAPS) {
         taps = [];
-        shower();
+        void shower();
       }
     };
     document.addEventListener("keydown", onKey);
