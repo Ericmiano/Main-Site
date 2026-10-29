@@ -6,10 +6,12 @@ const REPORT_FORM = "https://forms.cloud.microsoft/r/h1TCEjvRNz?origin=lprLink";
 const REPORT_PDF = fileUrl("/documents/Mulika-Mjengo-Report-2025.pdf");
 
 /**
- * What the Mulika Mjengo team found at reported sites in Nairobi County, as
- * the Mulika Mjengo Report 2025 records it ("Key issues identified from the
- * site inspections", pp. 9–11), with where it was seen. `x`, `y`: where the
- * problem is in the drawing (its 800 × 480 frame).
+ * The eight problems, each as the Mulika Mjengo Report 2025 records it in
+ * "Key Issues Identified from the Site Inspections" (pp. 9–11): `body`
+ * follows the report's own wording; "Photographed:" lines are the report's
+ * photo captions; `pages` are the report pages they come from (the PDF's page
+ * numbers match the printed ones). Change nothing here without the report.
+ * `x`, `y`: where the problem is in the drawing (its 800 × 480 frame).
  */
 const PROBLEMS = [
   {
@@ -17,65 +19,121 @@ const PROBLEMS = [
     x: 650,
     y: 318,
     title: "No proper site board",
-    body: "Sites must display a site board at the entrance. The team found sites with none, and boards missing their approval numbers from the county government, NCA or NEMA (Ridgeways Estate).",
+    body: "The team noted no site board at the entrance of some construction sites, and boards lacking complete information, such as missing approval numbers from the county government, NCA or NEMA.",
+    photographed: "a missing site board in Ridgeways Estate.",
+    pages: [10],
   },
   {
     id: "stop-work",
     x: 230,
     y: 358,
     title: "Building through a stop-work notice",
-    body: "Some sites carried on working after the authorities had issued stop-work notices (Westlands).",
+    body: "Some construction works were proceeding despite stop-work notices from the relevant authorities.",
+    photographed: "a stop-work notice issued to a project in Westlands.",
+    pages: [10],
   },
   {
     id: "ppe",
     x: 470,
     y: 240,
     title: "No protective gear",
-    body: "Workers without personal protective equipment (PPE), or with too little of it, were seen on sites in Kilimani and Tassia.",
+    body: "Workers lacked personal protective equipment (PPE), or were provided with insufficient equipment.",
+    photographed: "workers lacking PPE in Kilimani and in Tassia.",
+    pages: [11],
   },
   {
     id: "netting",
     x: 578,
     y: 198,
     title: "No safety netting",
-    body: "Sites lacked safety netting to catch falling debris, and were missing safety signs, scaffolding and site hoarding.",
+    body: "The team observed missing safety signage, safety netting for arresting debris, scaffolding and site hoarding.",
+    photographed: null,
+    pages: [11],
   },
   {
     id: "cracks",
     x: 372,
     y: 298,
     title: "Cracks and honeycombing",
-    body: "The team found large cracks and honeycombing (voids in the concrete) at several sites, including an active construction in Kamulu.",
+    body: "Significant structural integrity issues at several inspected sites, including honeycombing and large cracks in some developments.",
+    photographed: "honeycombing on an active construction in Kamulu.",
+    pages: [9, 10],
   },
   {
     id: "effluent",
     x: 618,
     y: 440,
     title: "Effluent on the road",
-    body: "Untreated effluent was discharged onto roads (Muchai Drive, Kamulu), a serious health risk to the neighbours.",
+    body: "Discharge of untreated effluent onto the road, posing significant health risks to neighbouring developments.",
+    photographed: "discharge of effluent along Muchai Drive, and untreated effluent in Kamulu.",
+    pages: [11],
   },
   {
     id: "riparian",
     x: 70,
     y: 424,
     title: "Debris in the river reserve",
-    body: "Debris was dumped into riparian reserves and green spaces, and construction went up on wetlands and public land (South C, Karen, Kangemi, Chaani, Parklands).",
+    body: "Illegal construction on wetlands, playgrounds, public land and green spaces, and dumping of debris into riparian reserves and green spaces, reported in South C, Karen, Kangemi, KALRO, Chaani and Parklands.",
+    photographed: null,
+    pages: [11],
   },
   {
     id: "road-reserve",
     x: 492,
     y: 418,
     title: "Building on the road reserve",
-    body: "Construction spilled onto the road reserve (Tassia, Embakasi), and building lines were ignored (Pangani).",
+    body: "Among the sites the report shows: building on the road reserve, and the building line not observed.",
+    photographed:
+      "construction on the road reserve in Tassia, Embakasi; lack of observance of the building line in Pangani; beacon-to-beacon construction in South C.",
+    pages: [9, 10],
   },
 ] as const;
 
-type ProblemId = (typeof PROBLEMS)[number]["id"];
+type Problem = (typeof PROBLEMS)[number];
+type ProblemId = Problem["id"];
+
+/** "Mulika Mjengo Report 2025, p. 10", each page linked to that page of the PDF. */
+function Source({ pages, className }: { pages: readonly number[]; className?: string }) {
+  return (
+    <p className={className}>
+      Source: Mulika Mjengo Report 2025, {pages.length > 1 ? "pp." : "p."}{" "}
+      {pages.map((page, i) => (
+        <span key={page}>
+          {i > 0 ? ", " : null}
+          <a
+            href={`${REPORT_PDF}#page=${page}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline underline-offset-2 hover:text-foreground"
+          >
+            {page}
+          </a>
+        </span>
+      ))}
+    </p>
+  );
+}
+
+/** A problem's explanation: the report's finding, its photo caption, its source. */
+function Finding({ problem }: { problem: Problem }) {
+  return (
+    <>
+      {problem.body}
+      {problem.photographed ? (
+        <>
+          {" "}
+          <span className="italic">Photographed: {problem.photographed}</span>
+        </>
+      ) : null}
+    </>
+  );
+}
 
 /**
- * "Spot the unsafe site": a drawing of a construction site with the eight
- * problems AAK's Mulika Mjengo team found on real sites. Tapping one marks it
- * and explains it; finding all eight leads on to reporting a site. The list
+ * "Spot the unsafe site": an illustration of a construction site with the
+ * eight problems the Mulika Mjengo Report 2025 records from AAK's inspections
+ * of reported sites. Tapping one marks it and gives the report's finding with
+ * its source page; finding all eight leads on to reporting a site. The list
  * of problems is readable without playing (and "Show all" reveals them).
  */
 export function SpotTheUnsafeSite() {
@@ -135,12 +193,16 @@ export function SpotTheUnsafeSite() {
           {shown ? (
             <>
               <p className="font-display text-xl font-semibold text-foreground">{shown.title}</p>
-              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{shown.body}</p>
+              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                <Finding problem={shown} />
+              </p>
+              <Source pages={shown.pages} className="mt-3 text-xs text-muted-foreground" />
             </>
           ) : (
             <p className="text-sm leading-relaxed text-muted-foreground">
-              This building site has eight problems that AAK&rsquo;s Mulika Mjengo team found on
-              real sites in Nairobi. Tap each one you can spot.
+              This illustration shows eight problems that the Mulika Mjengo Report 2025 records from
+              AAK&rsquo;s inspections of reported sites in Nairobi County. Tap each one you can
+              spot.
             </p>
           )}
         </div>
@@ -192,13 +254,16 @@ export function SpotTheUnsafeSite() {
           <ol className="mt-3 list-decimal space-y-3 pl-5 text-muted-foreground">
             {PROBLEMS.map((p) => (
               <li key={p.id}>
-                <span className="font-semibold text-foreground">{p.title}.</span> {p.body}
+                <span className="font-semibold text-foreground">{p.title}.</span>{" "}
+                <Finding problem={p} />
+                <Source pages={p.pages} className="mt-1 text-xs" />
               </li>
             ))}
           </ol>
           <p className="mt-3 text-xs text-muted-foreground">
-            Source: Mulika Mjengo Report 2025, &ldquo;Key issues identified from the site
-            inspections&rdquo;.
+            All eight from the Mulika Mjengo Report 2025, &ldquo;Key Issues Identified from the Site
+            Inspections&rdquo; (pp. 9&ndash;11), which covers the 26 reported sites the team
+            inspected in Nairobi County (p. 6). The drawing is an illustration, not a real site.
           </p>
         </details>
       </div>
