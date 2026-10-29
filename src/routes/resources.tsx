@@ -5,6 +5,7 @@ import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { Reveal } from "@/components/site/Reveal";
 import { PageBreadcrumb } from "@/components/site/PageBreadcrumb";
+import { PublicationShelf } from "@/components/site/PublicationShelf";
 import { publications } from "@/data/site";
 import { jsonLd } from "@/lib/json-ld";
 
@@ -139,6 +140,19 @@ function ResourcesPage() {
               </h1>
               <p className="mt-5 text-base leading-relaxed text-muted-foreground">{DESCRIPTION}</p>
             </Reveal>
+          </div>
+        </section>
+
+        <section aria-labelledby="shelf-title" className="pt-16 lg:pt-24">
+          <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
+            <h2
+              id="shelf-title"
+              className="font-display text-2xl font-semibold tracking-tight text-foreground"
+            >
+              Featured publications
+            </h2>
+            <p className="mt-2 text-sm text-muted-foreground">Choose a book to open it (PDF).</p>
+            <PublicationShelf />
           </div>
         </section>
 

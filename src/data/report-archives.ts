@@ -584,3 +584,177 @@ export const reportArchivePages: { category: string; to: string; documents: Arch
       documents: generalDownloadsDocuments,
     },
   ];
+
+/**
+ * The Resource Centre's shelf of flagship publications (PublicationShelf).
+ * Titles and files as in the archives above; covers are each PDF's first
+ * page, rendered at 400px wide (public/img/publications/shelf/).
+ */
+export interface ShelfPublication {
+  /** The publication's full title, as in its archive. */
+  title: string;
+  /** What it is, which sets how the book looks on the shelf: a thin glossy
+   * magazine, a softcover report, or a stapled booklet (under 32 pages). */
+  kind: "magazine" | "report" | "booklet";
+  /** A short label under the book. */
+  label: string;
+  year: string;
+  pages: number;
+  href: string;
+  cover: { src: string; width: number; height: number };
+}
+
+const shelfCover = (name: string, height = 566) => ({
+  src: `/img/publications/shelf/${name}.webp`,
+  width: 400,
+  height,
+});
+
+// Newest first.
+export const shelfPublications: ShelfPublication[] = [
+  {
+    kind: "magazine",
+    title: "AAK Annual Convention 2026 Magazine",
+    label: "Convention Magazine",
+    year: "2026",
+    pages: 130,
+    href: fileUrl("/documents/AAK-Annual-Convention-Magazine-2026.pdf"),
+    cover: shelfCover("convention-magazine-2026"),
+  },
+  {
+    kind: "report",
+    title: "2026 AGM Report and Audited Financial Statements for the year 2025",
+    label: "AGM Report",
+    year: "2026",
+    pages: 88,
+    href: fileUrl("/documents/AAK-AGM-Report-2026.pdf"),
+    cover: shelfCover("agm-report-2026"),
+  },
+  {
+    kind: "report",
+    title: "AAK Status of the Built Environment Report 2025",
+    label: "Status of the Built Environment",
+    year: "2025",
+    pages: 86,
+    href: fileUrl("/documents/AAK-Status-of-the-Built-Environment-Report-2025-1.pdf"),
+    cover: shelfCover("status-of-the-built-environment-2025"),
+  },
+  {
+    kind: "magazine",
+    title: "BuildPress, October 2025 Convention Edition: Shaping the Urban Future",
+    label: "BuildPress Magazine",
+    year: "2025",
+    pages: 84,
+    href: fileUrl("/documents/AAK_BuildPress2025_Kisumu.pdf"),
+    cover: shelfCover("buildpress-2025", 525),
+  },
+  {
+    kind: "booklet",
+    title: "AAK 2025 Convention Rapporteur General's Report",
+    label: "Convention Rapporteur's Report",
+    year: "2025",
+    pages: 29,
+    href: fileUrl("/documents/AAK-Convention-2025-Rapporteur-Generals-Report.pdf"),
+    cover: shelfCover("convention-rapporteur-2025", 534),
+  },
+  {
+    kind: "booklet",
+    title: "Is that Building Safe? A Report of the Mulika Mjengo Project",
+    label: "Mulika Mjengo Report",
+    year: "2025",
+    pages: 16,
+    href: fileUrl("/documents/Mulika-Mjengo-Report-2025.pdf"),
+    cover: shelfCover("mulika-mjengo-report-2025"),
+  },
+  {
+    kind: "report",
+    title: "AAK AGM Report",
+    label: "AGM Report",
+    year: "2025",
+    pages: 99,
+    href: fileUrl("/documents/AAK-AGM-Report-2025_compressed.pdf"),
+    cover: shelfCover("agm-report-2025"),
+  },
+  {
+    kind: "booklet",
+    title: "Healthy Homes Guidelines and Checklist (2024)",
+    label: "Healthy Homes Guidelines",
+    year: "2024",
+    pages: 28,
+    href: fileUrl("/documents/Healthy-Homes-Guidelines-and-Checklist-2024.pdf"),
+    cover: shelfCover("healthy-homes-guidelines-2024", 568),
+  },
+  {
+    kind: "booklet",
+    title:
+      "Urban Thinkers Campus 9.0 Report (2024): Holistic Housing Solutions for Inclusive and Sustainable Urban Futures",
+    label: "Urban Thinkers Campus 9.0",
+    year: "2024",
+    pages: 17,
+    href: fileUrl("/documents/AAK-Urban-Thinkers-Campus-9.0-Report-2024.pdf"),
+    cover: shelfCover("urban-thinkers-campus-2024"),
+  },
+  {
+    kind: "report",
+    title: "Status of the Built Environment Report",
+    label: "Status of the Built Environment",
+    year: "2024",
+    pages: 64,
+    href: fileUrl("/documents/Status-of-the-Built-Environment-Report-2024.pdf"),
+    cover: shelfCover("status-of-the-built-environment-2024"),
+  },
+  {
+    kind: "report",
+    title: "Status of the Built Environment Report",
+    label: "Status of the Built Environment",
+    year: "2023",
+    pages: 42,
+    href: fileUrl("/documents/STATUS-OF-THE-BUILT-ENVIRONMENT-REPORT-2023.pdf"),
+    cover: shelfCover("status-of-the-built-environment-2023"),
+  },
+  {
+    kind: "report",
+    title: "AAK Salary Survey Report 2022 (Second Edition)",
+    label: "Salary Survey",
+    year: "2022",
+    pages: 42,
+    href: fileUrl("/documents/AAK-Salary-Survey-Report-2022-Second-Edition.pdf"),
+    cover: shelfCover("salary-survey-2022"),
+  },
+  {
+    kind: "report",
+    title: "Status of the Built Environment Report",
+    label: "Status of the Built Environment",
+    year: "2022",
+    pages: 46,
+    href: fileUrl("/documents/THE-STATUS-OF-THE-BUILT-ENVIRONMENT-REPORT-2022.pdf"),
+    cover: shelfCover("status-of-the-built-environment-2022"),
+  },
+  {
+    kind: "magazine",
+    title: "BuildPress Magazine",
+    label: "BuildPress Magazine",
+    year: "2021",
+    pages: 45,
+    href: fileUrl("/documents/BuildPress-Magazine-2021f.pdf"),
+    cover: shelfCover("buildpress-2021"),
+  },
+  {
+    kind: "magazine",
+    title: "BuildPress, Issue 2",
+    label: "BuildPress, Issue 2",
+    year: "2020",
+    pages: 81,
+    href: fileUrl("/documents/Buildpress-Issue-2-v1-15.9.20.pdf"),
+    cover: shelfCover("buildpress-issue-2-2020"),
+  },
+  {
+    kind: "magazine",
+    title: "BuildPress — The Architect, Issue 14",
+    label: "The Architect, Issue 14",
+    year: "2018",
+    pages: 56,
+    href: fileUrl("/documents/The-Architect-2018-Issue-14.pdf"),
+    cover: shelfCover("the-architect-14-2018", 514),
+  },
+];
