@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       AAK Site Connector
  * Description:       Turns this WordPress into the private back office for aak.or.ke: posts publish to News & insights on the main site, and event certificates are uploaded here for verification.
- * Version:           1.1.0
+ * Version:           1.2.0
  * Requires at least: 6.0
  * Requires PHP:      7.4
  * Author:            Architectural Association of Kenya
@@ -26,6 +26,8 @@ function aak_site_url(): string
 }
 
 require_once __DIR__ . '/includes/certificates.php';
+require_once __DIR__ . '/includes/writing.php';
+require_once __DIR__ . '/includes/preview.php';
 
 /* ---------------------------------------------------------------------------
  * Set-up, once, when the plugin is activated.
@@ -79,10 +81,7 @@ add_filter('post_link', function ($link, $post) {
     return $link;
 }, 10, 2);
 
-// Previews of drafts stay here (shown with the WordPress theme, logged-in only).
-add_filter('preview_post_link', function ($link, $post) {
-    return add_query_arg(['p' => $post->ID, 'preview' => 'true'], home_url('/'));
-}, 10, 2);
+// Preview opens the draft on aak.or.ke, in its own design: includes/preview.php.
 
 /* ---------------------------------------------------------------------------
  * Lock-down: no comments, pingbacks or XML-RPC; usernames not public.
@@ -195,65 +194,57 @@ add_action('login_init', 'aak_security_headers');
 /* ---------------------------------------------------------------------------
  * What the main site needs from each post, ready to use.
  */
+/** The author's name as shown on aak.or.ke. */
+function aak_post_author_name(int $postId): string
+{
+    // Read from the post itself: with ?_fields= the response may not include "author".
+    $user = get_userdata((int) get_post_field('post_author', $postId));
+    return $user ? $user->display_name : '';
+}
+
+/** An image (the featured image) in the size aak.or.ke uses, with its alt text. */
+function aak_image_for(int $attachmentId): ?array
+{
+    if (!$attachmentId) {
+        return null;
+    }
+    $src = wp_get_attachment_image_src($attachmentId, 'large') ?: wp_get_attachment_image_src($attachmentId, 'full');
+    if (!$src) {
+        return null;
+    }
+    return [
+        'src' => $src[0],
+        'width' => (int) $src[1],
+        'height' => (int) $src[2],
+        'alt' => (string) get_post_meta($attachmentId, '_wp_attachment_image_alt', true),
+    ];
+}
+
+/** The post's kinds (categories), WordPress's "Uncategorized" left out. */
+function aak_post_categories(int $postId): array
+{
+    $out = [];
+    foreach (get_the_category($postId) as $cat) {
+        if ($cat->slug !== 'uncategorized') {
+            $out[] = ['name' => html_entity_decode($cat->name), 'slug' => $cat->slug];
+        }
+    }
+    return $out;
+}
+
 add_action('rest_api_init', function () {
     register_rest_field('post', 'aak_author', [
-        'get_callback' => function ($post) {
-            // Read from the post itself: with ?_fields= the response may not include "author".
-            $user = get_userdata((int) get_post_field('post_author', (int) $post['id']));
-            return $user ? $user->display_name : '';
-        },
+        'get_callback' => fn ($post) => aak_post_author_name((int) $post['id']),
         'schema' => ['type' => 'string', 'context' => ['view']],
     ]);
     register_rest_field('post', 'aak_image', [
-        'get_callback' => function ($post) {
-            $id = get_post_thumbnail_id($post['id']);
-            if (!$id) {
-                return null;
-            }
-            $src = wp_get_attachment_image_src($id, 'large') ?: wp_get_attachment_image_src($id, 'full');
-            if (!$src) {
-                return null;
-            }
-            return [
-                'src' => $src[0],
-                'width' => (int) $src[1],
-                'height' => (int) $src[2],
-                'alt' => (string) get_post_meta($id, '_wp_attachment_image_alt', true),
-            ];
-        },
+        'get_callback' => fn ($post) => aak_image_for((int) get_post_thumbnail_id($post['id'])),
         'schema' => ['type' => ['object', 'null'], 'context' => ['view']],
     ]);
     register_rest_field('post', 'aak_categories', [
-        'get_callback' => function ($post) {
-            $out = [];
-            foreach (get_the_category($post['id']) as $cat) {
-                if ($cat->slug !== 'uncategorized') {
-                    $out[] = ['name' => html_entity_decode($cat->name), 'slug' => $cat->slug];
-                }
-            }
-            return $out;
-        },
+        'get_callback' => fn ($post) => aak_post_categories((int) $post['id']),
         'schema' => ['type' => 'array', 'context' => ['view']],
     ]);
-});
-
-/* ---------------------------------------------------------------------------
- * A short guide on the dashboard for the people who'll be posting.
- */
-add_action('wp_dashboard_setup', function () {
-    wp_add_dashboard_widget('aak_guide', 'Posting to aak.or.ke', function () {
-        $site = esc_url(aak_site_url() . '/news');
-        echo '<ol style="margin-left:1.2em;line-height:1.7">';
-        echo '<li>Go to <strong>Posts &rsaquo; Add New Post</strong> and write your post.</li>';
-        echo '<li>In the panel on the right, tick a <strong>category</strong> (Blog, Article, Op-ed, News) and set a <strong>featured image</strong>.</li>';
-        echo '<li>Optionally write a short <strong>excerpt</strong>: it shows on the news page and when the post is shared.</li>';
-        echo '<li>Press <strong>Publish</strong>. The post appears on <a href="' . $site . '" target="_blank" rel="noopener">aak.or.ke/news</a> within a minute.</li>';
-        echo '</ol>';
-        echo '<p>To change or remove a post later, edit it or move it to the Bin; the site follows within a minute.</p>';
-        if (current_user_can('manage_aak_certificates')) {
-            echo '<p><strong>Certificates:</strong> upload event certificate lists under <a href="' . esc_url(admin_url('admin.php?page=aak-certificates')) . '">Certificates</a>.</p>';
-        }
-    });
 });
 
 /* ---------------------------------------------------------------------------

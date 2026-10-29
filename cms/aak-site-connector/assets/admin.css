@@ -1,0 +1,111 @@
+/* AAK Site Connector: the dashboard's "Write for aak.or.ke" and the posts list. */
+
+.aak-write .aak-lead {
+  margin: 0 0 10px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.aak-kinds {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+}
+
+.aak-kind {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 16px;
+  border: 1px solid #c3c4c7;
+  border-radius: 8px;
+  background: #fff;
+  color: #1d2327;
+  text-decoration: none;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
+}
+
+.aak-kind strong {
+  font-size: 15px;
+  color: #a50d0d;
+}
+
+.aak-kind strong::before {
+  content: "+ ";
+}
+
+.aak-kind span {
+  font-size: 12px;
+  color: #50575e;
+}
+
+.aak-kind:hover,
+.aak-kind:focus {
+  border-color: #a50d0d;
+  box-shadow: 0 0 0 1px #a50d0d;
+  color: #1d2327;
+}
+
+.aak-write h3 {
+  margin: 22px 0 8px;
+  padding-top: 14px;
+  border-top: 1px solid #f0f0f1;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.aak-posts {
+  margin: 0;
+}
+
+.aak-posts li {
+  margin: 0 0 6px;
+}
+
+.aak-meta,
+.aak-empty {
+  color: #646970;
+}
+
+.aak-foot {
+  margin: 18px 0 0;
+  color: #50575e;
+}
+
+/* Posts list */
+.fixed .column-aak_image {
+  width: 64px;
+}
+
+.column-aak_image img,
+.aak-noimage {
+  display: block;
+  width: 56px;
+  height: 56px;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.aak-noimage {
+  border: 1px dashed #c3c4c7;
+}
+
+.fixed .column-aak_status {
+  width: 14em;
+}
+
+.aak-needs {
+  color: #b32d2e;
+}
+
+.aak-ready {
+  color: #007017;
+}
+
+/* Quick and bulk edit can't publish: publishing goes through the editor,
+   where the post is checked first. */
+.inline-edit-row .inline-edit-status {
+  display: none !important;
+}

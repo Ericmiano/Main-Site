@@ -78,7 +78,8 @@
   # shared article template itself isn't a page.
   RewriteRule ^api/news/?$ api/news.php [L]
   RewriteRule ^news/__article__ - [R=404,L]
-  RewriteRule ^news/([a-z0-9-]+)/?$ api/news-page.php?slug=$1 [L]
+  # (QSA keeps ?token= on /news/preview, the editor's Preview.)
+  RewriteRule ^news/([a-z0-9-]+)/?$ api/news-page.php?slug=$1 [QSA,L]
   RewriteRule ^news-sitemap\.xml$ api/news-sitemap.php [L]
 
   # Old WordPress addresses -> their new pages, so existing links and search

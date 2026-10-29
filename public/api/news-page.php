@@ -14,10 +14,24 @@ const SITE_URL = 'https://aak.or.ke';
 
 $root = $_SERVER['DOCUMENT_ROOT'] ?? dirname(__DIR__);
 $slug = (string) ($_GET['slug'] ?? '');
-$post = preg_match('/^[a-z0-9-]{1,200}$/', $slug) ? news_single($slug) : null;
+// /news/preview?token=…: the editor's Preview, a post as it will look (no
+// post may take "preview" as its address: the back office prevents it).
+$preview = $slug === 'preview';
+$token = (string) ($_GET['token'] ?? '');
+if ($preview) {
+    $post = preg_match('/^\d{1,20}\.\d{1,20}\.\d{1,12}\.[a-f0-9]{32}$/', $token)
+        ? news_preview($token, (int) ($_GET['_thumbnail_id'] ?? 0))
+        : null;
+} else {
+    $post = preg_match('/^[a-z0-9-]{1,200}$/', $slug) ? news_single($slug) : null;
+}
 $template = @file_get_contents($root . '/news/__article__/index.html');
 
 header('X-Content-Type-Options: nosniff');
+if ($preview) {
+    header('Cache-Control: no-store');
+    header('X-Robots-Tag: noindex, nofollow');
+}
 
 if (!$post || $template === false) {
     http_response_code(404);
@@ -53,9 +67,9 @@ $jsonLd = [
 ];
 $json = fn ($v) => json_encode($v, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP);
 
-$head = '<title>' . $e($title) . '</title>'
+$head = '<title>' . $e(($preview ? 'Preview: ' : '') . $title) . '</title>'
     . '<meta name="description" content="' . $e($description) . '"/>'
-    . '<link rel="canonical" href="' . $e($url) . '"/>'
+    . ($preview ? '<meta name="robots" content="noindex, nofollow"/>' : '<link rel="canonical" href="' . $e($url) . '"/>')
     . '<meta property="og:type" content="article"/>'
     . '<meta property="og:title" content="' . $e($post['title']) . '"/>'
     . '<meta property="og:description" content="' . $e($description) . '"/>'
@@ -70,5 +84,7 @@ $head = '<title>' . $e($title) . '</title>'
 $html = preg_replace('#</head>#i', $head . '</head>', $template, 1);
 
 header('Content-Type: text/html; charset=utf-8');
-header('Cache-Control: public, max-age=60');
+if (!$preview) {
+    header('Cache-Control: public, max-age=60');
+}
 echo $html;

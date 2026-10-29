@@ -227,8 +227,13 @@ function news_sanitize(string $html): string
     foreach ($root->childNodes as $child) {
         $out .= $doc->saveHTML($child);
     }
-    // Drop paragraphs left empty by the clean-up.
-    return trim(preg_replace('#<p>(\s|&nbsp;|<br>)*</p>#u', '', $out));
+    // Drop paragraphs left empty by the clean-up, then headings, quotes and
+    // figures left empty (a starting layout's unused blocks).
+    $out = preg_replace('#<p>(\s|&nbsp;|<br>)*</p>#u', '', $out);
+    for ($i = 0; $i < 3; $i++) {
+        $out = preg_replace('#<(h[234]|blockquote|figure|cite|figcaption)>(\s|&nbsp;|<br>)*</\1>#u', '', $out);
+    }
+    return trim($out);
 }
 
 /** A WordPress post in the shape the site uses. */
@@ -307,4 +312,38 @@ function news_single(string $slug): ?array
     $res = news_fetch('/wp/v2/posts?' . http_build_query(['slug' => $slug, 'status' => 'publish', '_fields' => NEWS_FIELDS . ',content']));
     $first = $res['data'][0] ?? null;
     return is_array($first) ? news_post($first, true) : null;
+}
+
+/**
+ * A post as the editor's Preview shows it (see the back office's
+ * includes/preview.php): the signed link is passed on, and the answer is
+ * never cached. Null when the link is invalid or has expired.
+ */
+function news_preview(string $token, int $thumbnail): ?array
+{
+    $query = ['token' => $token];
+    if ($thumbnail > 0) {
+        $query['thumbnail'] = $thumbnail;
+    }
+    $raw = @file_get_contents(news_cms_url() . '/wp-json/aak/v1/preview?' . http_build_query($query), false, stream_context_create([
+        'http' => [
+            'method' => 'GET',
+            'timeout' => 8,
+            'ignore_errors' => true,
+            'header' => "Accept: application/json\r\nUser-Agent: aak.or.ke news\r\n",
+        ],
+    ]));
+    $status = 0;
+    foreach ($http_response_header ?? [] as $line) {
+        if (preg_match('#^HTTP/\S+\s+(\d{3})#', $line, $m)) {
+            $status = (int) $m[1];
+        }
+    }
+    $data = $status === 200 && $raw !== false ? json_decode($raw, true) : null;
+    if (!is_array($data) || ($data['slug'] ?? '') !== 'preview') {
+        return null;
+    }
+    $post = news_post($data, true);
+    $post['preview'] = ['published' => ($data['status'] ?? '') === 'publish'];
+    return $post;
 }

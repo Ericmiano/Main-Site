@@ -24,6 +24,8 @@ export interface NewsPost {
   readingMinutes: number;
   /** Cleaned article HTML; only present for a single post. */
   content?: string;
+  /** Set on the editor's Preview (/news/preview): whether the post is already live. */
+  preview?: { published: boolean };
 }
 
 export interface NewsList {

@@ -42,6 +42,14 @@ export const Route = createFileRoute("/news/$slug")({
     const post = loaderData?.state === "ready" ? loaderData.data : null;
     const url = `${SITE_URL}/news/${params.slug}`;
     if (!post) return { meta: [{ title: `News & insights${SUFFIX}` }] };
+    if (post.preview) {
+      return {
+        meta: [
+          { title: `Preview: ${post.title}${SUFFIX}` },
+          { name: "robots", content: "noindex, nofollow" },
+        ],
+      };
+    }
     return {
       meta: [
         { title: post.title + SUFFIX },
@@ -151,6 +159,20 @@ function Article({ post }: { post: NewsPost }) {
   const url = `${SITE_URL}/news/${post.slug}`;
   return (
     <>
+      {post.preview ? (
+        // The editor's Preview: say so, above everything else on the page.
+        <div role="status" className="border-b border-amber-300 bg-amber-50 text-amber-950">
+          <div className="mx-auto max-w-3xl px-6 py-4 text-sm leading-relaxed">
+            <strong className="font-semibold">
+              {post.preview.published
+                ? "Preview of your changes: they aren’t live yet."
+                : "Preview: this post isn’t published yet."}
+            </strong>{" "}
+            This is how it will look on aak.or.ke. Only people with this link can see it, and the
+            link works for an hour: press Preview in the editor for a fresh one.
+          </div>
+        </div>
+      ) : null}
       <article>
         <header className="border-b border-border bg-secondary/40 py-12 lg:py-16">
           <div className="mx-auto max-w-3xl px-6">
@@ -202,10 +224,10 @@ function Article({ post }: { post: NewsPost }) {
           ) : null}
           {/* Cleaned by the server (api/news-lib.php): structure only, no scripts or styling. */}
           <div className="article-prose" dangerouslySetInnerHTML={{ __html: post.content ?? "" }} />
-          <ShareLinks url={url} title={post.title} />
+          {post.preview ? null : <ShareLinks url={url} title={post.title} />}
         </div>
       </article>
-      <MoreNews currentSlug={post.slug} />
+      <MoreNews currentId={post.id} />
     </>
   );
 }
@@ -267,19 +289,20 @@ function ShareLinks({ url, title }: { url: string; title: string }) {
   );
 }
 
-function MoreNews({ currentSlug }: { currentSlug: string }) {
+function MoreNews({ currentId }: { currentId: number }) {
   const [posts, setPosts] = useState<NewsPost[]>([]);
   useEffect(() => {
     let cancelled = false;
     void fetchNewsList(1, "", 4).then((res) => {
       if (!cancelled && res.state === "ready") {
-        setPosts(res.data.posts.filter((p) => p.slug !== currentSlug).slice(0, 3));
+        // By id: a preview's address isn't the post's own.
+        setPosts(res.data.posts.filter((p) => p.id !== currentId).slice(0, 3));
       }
     });
     return () => {
       cancelled = true;
     };
-  }, [currentSlug]);
+  }, [currentId]);
 
   if (posts.length === 0) return null;
   return (
