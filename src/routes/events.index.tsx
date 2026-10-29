@@ -118,7 +118,7 @@ function EventsIndex() {
                   href={fileUrl("/documents/2027-AAK-Calendar-of-Events.pdf")}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2.5 rounded-xl border border-primary px-6 py-[0.8125rem] text-sm leading-5 font-semibold text-primary transition-colors hover:bg-primary/5"
+                  className="inline-flex items-center gap-2.5 rounded-[0.75rem] border border-primary px-6 py-[0.8125rem] text-sm leading-5 font-semibold text-primary transition-colors hover:bg-primary/5"
                 >
                   <FileDownload className="h-4 w-4" aria-hidden="true" />
                   2027 calendar of events (PDF)
